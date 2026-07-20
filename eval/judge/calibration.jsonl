@@ -1,0 +1,10 @@
+{"id":"good_character_01","human_passed":true,"judge_passed":true}
+{"id":"good_lore_01","human_passed":true,"judge_passed":true}
+{"id":"good_emotion_01","human_passed":true,"judge_passed":true}
+{"id":"good_dialogue_01","human_passed":true,"judge_passed":true}
+{"id":"bad_ooc_01","human_passed":false,"judge_passed":false}
+{"id":"bad_lore_01","human_passed":false,"judge_passed":false}
+{"id":"bad_emotion_01","human_passed":false,"judge_passed":false}
+{"id":"bad_dialogue_01","human_passed":false,"judge_passed":false}
+{"id":"ambiguous_style_01","human_passed":true,"judge_passed":true}
+{"id":"ambiguous_lore_01","human_passed":false,"judge_passed":true}

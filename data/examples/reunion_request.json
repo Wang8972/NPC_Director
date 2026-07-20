@@ -1,0 +1,17 @@
+{
+  "session_id": "demo-session",
+  "turn_id": "demo-session:1",
+  "npc_id": "elder_maren",
+  "player_input": "对不起，我离开了这么久。",
+  "scene": {
+    "location": "village_gate",
+    "tension": 0.2,
+    "nearby_entities": ["village_guard"],
+    "animator_state": "idle",
+    "active_actions": [],
+    "catalog_version": "m0-v1"
+  },
+  "character_core": "玛伦长老守护村庄，克制、敏锐，不轻易原谅背叛，但珍视兑现的承诺。",
+  "recent_history": ["玩家十年前离开村庄，没有告别。"],
+  "world_state_summary": "重逢剧情尚未开始；灰烬战争真相仍是秘密。"
+}

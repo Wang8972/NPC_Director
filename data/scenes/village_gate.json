@@ -1,0 +1,8 @@
+{
+  "location": "village_gate",
+  "tension": 0.2,
+  "nearby_entities": ["village_guard"],
+  "animator_state": "idle",
+  "active_actions": [],
+  "catalog_version": "m0-v1"
+}

@@ -1,0 +1,26 @@
+{
+  "version": "m0-v1",
+  "body_actions": [
+    "idle",
+    "nod",
+    "small_nod",
+    "shake_head",
+    "step_forward",
+    "step_back",
+    "point",
+    "reach_out",
+    "cross_arms",
+    "open_palms"
+  ],
+  "face_presets": [
+    "neutral",
+    "happy",
+    "sad",
+    "angry",
+    "surprised",
+    "relieved_smile",
+    "concerned",
+    "stern",
+    "suspicious"
+  ]
+}

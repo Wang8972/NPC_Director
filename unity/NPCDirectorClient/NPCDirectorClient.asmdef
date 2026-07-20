@@ -1,0 +1,14 @@
+{
+  "name": "NPCDirectorClient",
+  "rootNamespace": "NPCDirector",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": ["WebGL"],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
