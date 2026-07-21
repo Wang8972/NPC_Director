@@ -25,6 +25,7 @@ class Settings:
     performance_model: str | None = None
     judge_model: str | None = None
     fallback_model: str | None = None
+    model_profile: str | None = None
     timeout_seconds: float = 30.0
     max_turns: int = 4
     max_specialist_calls: int = 4
@@ -63,6 +64,7 @@ class Settings:
             performance_model=_optional_string("NPC_DIRECTOR_PERFORMANCE_MODEL"),
             judge_model=_optional_string("NPC_DIRECTOR_JUDGE_MODEL"),
             fallback_model=_optional_string("NPC_DIRECTOR_FALLBACK_MODEL"),
+            model_profile=_optional_string("NPC_DIRECTOR_MODEL_PROFILE"),
             timeout_seconds=timeout_seconds,
             max_turns=max_turns,
             max_specialist_calls=int(os.getenv("NPC_DIRECTOR_MAX_SPECIALIST_CALLS", "4")),
@@ -91,6 +93,14 @@ class Settings:
         return settings
 
     def validate(self) -> None:
+        if self.model_profile is not None:
+            from npc_director.model_profile.registry import PROFILE_NAMES
+
+            if self.model_profile not in PROFILE_NAMES:
+                raise ValueError(
+                    "NPC_DIRECTOR_MODEL_PROFILE must be one of "
+                    f"{sorted(PROFILE_NAMES)}, got {self.model_profile!r}"
+                )
         if not 1 <= self.max_specialist_calls <= 8:
             raise ValueError("NPC_DIRECTOR_MAX_SPECIALIST_CALLS must be between 1 and 8")
         if not 0 <= self.max_handoffs <= 2:

@@ -39,6 +39,7 @@ from npc_director.governance import (
     build_safe_input_proposal,
     check_input,
 )
+from npc_director.model_profile import get_active_profile
 
 EVAL_DIR = Path(__file__).resolve().parent
 DEFAULT_CASES_PATH = EVAL_DIR / "cases" / "golden.jsonl"
@@ -204,15 +205,48 @@ def _load_live_runner() -> Callable[[TurnRequest], Awaitable[Any] | Any]:
     return run_turn
 
 
+async def _pace_live_cases() -> None:
+    delay = float(os.getenv("NPC_DIRECTOR_EVAL_CASE_INTERVAL_SECONDS", "0"))
+    if delay > 0:
+        await asyncio.sleep(delay)
+
+
+async def _call_with_throttle_retry(invoke: Callable[[], Awaitable[Any]]) -> Any:
+    """Retry transient gateway failures using the active model profile's policy."""
+    retry_policy = get_active_profile().retry
+    attempts = int(
+        os.getenv("NPC_DIRECTOR_EVAL_THROTTLE_RETRIES", str(retry_policy.max_attempts))
+    )
+    backoff_override = os.getenv("NPC_DIRECTOR_EVAL_THROTTLE_BACKOFF_SECONDS", "").strip()
+    for attempt in range(attempts + 1):
+        try:
+            return await invoke()
+        except Exception as exc:
+            if attempt >= attempts or not retry_policy.is_retryable(exc):
+                raise
+            if backoff_override:
+                delay = float(backoff_override) * (attempt + 1)
+            else:
+                delay = retry_policy.backoff_seconds(attempt)
+            await asyncio.sleep(delay)
+
+
 async def _run_live_cases(cases: Sequence[EvalCase]) -> list[CandidateResult]:
     run_turn = _load_live_runner()
     candidates = []
-    for case in cases:
+    for index, case in enumerate(cases):
+        if index:
+            await _pace_live_cases()
         started = time.perf_counter()
         try:
-            result = run_turn(case.input)
-            if inspect.isawaitable(result):
-                result = await result
+
+            async def _invoke(current_case: EvalCase = case):
+                result = run_turn(current_case.input)
+                if inspect.isawaitable(result):
+                    result = await result
+                return result
+
+            result = await _call_with_throttle_retry(_invoke)
             elapsed_ms = (time.perf_counter() - started) * 1_000
             proposal, metrics, specialists_called, handoffs = _coerce_live_result(
                 result, elapsed_ms
@@ -259,7 +293,9 @@ async def _run_live_main_sub_cases(cases: Sequence[EvalCase]) -> list[CandidateR
         )
         executor = ResilientDirectorExecutor(settings, lore_retriever=lore_retriever)
         candidates = []
-        for case in cases:
+        for index, case in enumerate(cases):
+            if index:
+                await _pace_live_cases()
             try:
                 guard = check_input(case.input)
                 if guard.status is CheckStatus.FAIL:
@@ -280,7 +316,9 @@ async def _run_live_main_sub_cases(cases: Sequence[EvalCase]) -> list[CandidateR
                     case.input,
                     NPCDomainState(npc_id=case.input.npc_id),
                 )
-                result = await executor.generate(built.director_input)
+                result = await _call_with_throttle_retry(
+                    lambda built=built: executor.generate(built.director_input)
+                )
                 candidates.append(
                     CandidateResult(
                         id=case.id,

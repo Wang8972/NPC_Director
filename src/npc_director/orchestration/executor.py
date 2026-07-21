@@ -12,8 +12,12 @@ from agents import RunHooks, Runner, SQLiteSession, trace
 from agents.models import get_default_model
 from agents.tool import Tool
 from agents.tool_context import ToolContext
-from openai import APIConnectionError, APITimeoutError, InternalServerError, RateLimitError
-from tenacity import AsyncRetrying, retry_if_exception_type, stop_after_attempt, wait_exponential
+from tenacity import (
+    AsyncRetrying,
+    retry_if_exception,
+    stop_after_attempt,
+    wait_exponential,
+)
 
 from npc_director.config import Settings
 from npc_director.contracts import (
@@ -24,8 +28,18 @@ from npc_director.contracts import (
     SpecialistName,
     TurnProposal,
 )
+from npc_director.model_profile import RETRYABLE_MODEL_ERRORS, get_active_profile
+from npc_director.model_provider import build_run_config
 from npc_director.rag import LoreRetriever, RetrievalBudget
 from npc_director.runtime import AgentRuntimeDependencies
+
+__all__ = [
+    "RETRYABLE_MODEL_ERRORS",  # re-exported; canonical home is npc_director.model_profile
+    "DirectorExecutor",
+    "OpenAIDirectorExecutor",
+    "ResilientDirectorExecutor",
+    "SpecialistBudgetExceeded",
+]
 
 TOOL_TO_SPECIALIST = {
     "narrative_planner": SpecialistName.NARRATIVE_PLANNER,
@@ -33,14 +47,6 @@ TOOL_TO_SPECIALIST = {
     "screenwriter": SpecialistName.SCREENWRITER,
     "performance_specialist": SpecialistName.PERFORMANCE,
 }
-
-RETRYABLE_MODEL_ERRORS = (
-    RateLimitError,
-    InternalServerError,
-    APITimeoutError,
-    APIConnectionError,
-    TimeoutError,
-)
 
 
 class SpecialistBudgetExceeded(RuntimeError):
@@ -198,6 +204,7 @@ class OpenAIDirectorExecutor:
                             hooks=hooks,
                             session=session,
                             context=runtime_dependencies,
+                            run_config=build_run_config(self.settings),
                         )
         finally:
             session.close()
@@ -248,8 +255,11 @@ class ResilientDirectorExecutor:
         *,
         repair_feedback: str | None = None,
     ) -> DirectorRunResult:
+        retry_policy = get_active_profile(self.settings).retry
         retrying = AsyncRetrying(
-            retry=retry_if_exception_type(RETRYABLE_MODEL_ERRORS),
+            retry=retry_if_exception(
+                lambda exc: isinstance(exc, Exception) and retry_policy.is_retryable(exc)
+            ),
             wait=wait_exponential(multiplier=0.5, min=0.5, max=8),
             stop=stop_after_attempt(self.settings.model_retry_attempts),
             reraise=True,
@@ -261,7 +271,9 @@ class ResilientDirectorExecutor:
                         director_input,
                         repair_feedback=repair_feedback,
                     )
-        except RETRYABLE_MODEL_ERRORS:
+        except Exception as exc:
+            if not retry_policy.is_retryable(exc):
+                raise
             if self.settings.fallback_model:
                 fallback_settings = dataclasses.replace(
                     self.settings,

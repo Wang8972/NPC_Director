@@ -12,6 +12,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from eval.models import EvalCase
 from npc_director.config import Settings
 from npc_director.contracts import TurnProposal
+from npc_director.model_provider import build_run_config
 
 
 class JudgeModel(BaseModel):
@@ -71,6 +72,7 @@ class OpenAIQualityJudge:
             self.agent,
             json.dumps(payload, ensure_ascii=False),
             max_turns=2,
+            run_config=build_run_config(),
         )
         return result.final_output_as(QualityVerdict, raise_if_incorrect_type=True)
 

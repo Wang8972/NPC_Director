@@ -4,6 +4,7 @@ from agents import Agent
 
 from npc_director.config import Settings
 from npc_director.contracts import TurnProposal
+from npc_director.model_profile import get_active_profile
 
 BASELINE_PROMPT_VERSION = "baseline-v1"
 
@@ -26,9 +27,10 @@ BASELINE_INSTRUCTIONS = """
 
 def create_baseline_agent(settings: Settings | None = None) -> Agent[None]:
     resolved = settings or Settings.from_env()
+    profile = get_active_profile(resolved)
     kwargs: dict[str, object] = {
         "name": "NPC Director Baseline",
-        "instructions": BASELINE_INSTRUCTIONS,
+        "instructions": profile.prompts.baseline_instructions(BASELINE_INSTRUCTIONS),
         "output_type": TurnProposal,
     }
     if resolved.model:

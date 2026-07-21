@@ -5,6 +5,7 @@ from agents.tool import Tool
 from pydantic import BaseModel
 
 from npc_director.config import Settings
+from npc_director.model_profile import get_active_profile
 
 
 def build_specialist_agent(
@@ -17,9 +18,10 @@ def build_specialist_agent(
     tools: list[Tool] | None = None,
 ) -> Agent[None]:
     resolved = settings or Settings.from_env()
+    profile = get_active_profile(resolved)
     kwargs: dict[str, object] = {
         "name": name,
-        "instructions": instructions,
+        "instructions": profile.prompts.specialist_instructions(role, instructions),
         "output_type": output_type,
         "tools": list(tools or []),
     }

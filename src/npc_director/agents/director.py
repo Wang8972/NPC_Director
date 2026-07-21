@@ -20,6 +20,7 @@ from npc_director.contracts import (
     ScreenwriterInput,
     TurnProposal,
 )
+from npc_director.model_profile import get_active_profile
 
 DIRECTOR_PROMPT_VERSION = "director-v1"
 
@@ -111,6 +112,7 @@ def build_minimal_specialist_input(options: StructuredToolInputBuilderOptions) -
 
 def build_director_agent(settings: Settings | None = None) -> Agent[None]:
     resolved = settings or Settings.from_env()
+    profile = get_active_profile(resolved)
     narrative_planner = build_narrative_planner_agent(resolved)
     lore_specialist = build_lore_specialist_agent(resolved)
     screenwriter = build_screenwriter_agent(resolved)
@@ -154,7 +156,7 @@ def build_director_agent(settings: Settings | None = None) -> Agent[None]:
 
     kwargs: dict[str, object] = {
         "name": "NPC Director",
-        "instructions": DIRECTOR_INSTRUCTIONS,
+        "instructions": profile.prompts.director_instructions(DIRECTOR_INSTRUCTIONS),
         "tools": tools,
         "handoffs": [quest_negotiator],
         "output_type": TurnProposal,

@@ -11,6 +11,8 @@ from npc_director.agents.baseline import BASELINE_PROMPT_VERSION, create_baselin
 from npc_director.config import Settings
 from npc_director.contracts import GenerationMetrics, TurnProposal, TurnRequest, TurnRunResult
 from npc_director.governance.finalizer import finalize_baseline_proposal
+from npc_director.model_profile import get_active_profile
+from npc_director.model_provider import build_run_config
 from npc_director.unity_adapter.base import EngineAdapter
 
 
@@ -30,6 +32,7 @@ async def run_turn(
     adapter: EngineAdapter | None = None,
 ) -> TurnRunResult:
     resolved = settings or Settings.from_env()
+    profile = get_active_profile(resolved)
     agent = create_baseline_agent(resolved)
     started_at = time.perf_counter()
 
@@ -43,10 +46,13 @@ async def run_turn(
                 agent,
                 build_agent_input(request),
                 max_turns=resolved.max_turns,
+                run_config=build_run_config(resolved),
             )
 
     latency_ms = (time.perf_counter() - started_at) * 1_000
-    proposal = result.final_output_as(TurnProposal, raise_if_incorrect_type=True)
+    proposal = profile.normalizer.normalize(
+        result.final_output_as(TurnProposal, raise_if_incorrect_type=True)
+    )
     usage = result.context_wrapper.usage
     resolved_model = resolved.model or get_default_model()
     metrics = GenerationMetrics(
@@ -60,10 +66,13 @@ async def run_turn(
             usage.output_tokens,
         ),
     )
+    version_tag = profile.prompts.version_tag
     directive = finalize_baseline_proposal(
         request,
         proposal,
-        prompt_version=BASELINE_PROMPT_VERSION,
+        prompt_version=(
+            f"{BASELINE_PROMPT_VERSION}+{version_tag}" if version_tag else BASELINE_PROMPT_VERSION
+        ),
         model=resolved_model,
         trace_id=workflow_trace.trace_id,
         response_id=result.last_response_id,

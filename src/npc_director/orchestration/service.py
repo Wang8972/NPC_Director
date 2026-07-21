@@ -44,6 +44,7 @@ from npc_director.governance import (
     finalize_proposal,
     run_checks,
 )
+from npc_director.model_profile import get_active_profile
 from npc_director.orchestration.context_adapter import DefaultContextBuilder
 from npc_director.orchestration.executor import DirectorExecutor, ResilientDirectorExecutor
 from npc_director.rag import CachedLoreRetriever, LexicalLoreIndex, LexicalLoreRetriever
@@ -114,6 +115,7 @@ class NPCDirectorService:
         self.outbox_store = outbox_store
         self.memory_store = memory_store
         self.memory_distiller = memory_distiller or MemoryDistillationService()
+        self.model_profile = get_active_profile(settings)
         self.finalizer = Finalizer(low_confidence_threshold=settings.low_confidence_threshold)
         self._turn_locks: WeakValueDictionary[str, asyncio.Lock] = WeakValueDictionary()
         self._turn_locks_guard = asyncio.Lock()
@@ -127,6 +129,17 @@ class NPCDirectorService:
         turn_lock = await self._turn_lock(request.turn_id)
         async with turn_lock:
             return await self._run_turn(request, adapter=adapter)
+
+    def _prompt_versions(
+        self,
+        specialists: Collection[SpecialistName],
+        handoffs: Collection[str] = (),
+    ) -> list[str]:
+        return _prompt_versions(
+            specialists,
+            handoffs,
+            version_tag=self.model_profile.prompts.version_tag,
+        )
 
     async def _turn_lock(self, turn_id: str) -> asyncio.Lock:
         async with self._turn_locks_guard:
@@ -190,7 +203,9 @@ class NPCDirectorService:
                 trace_id = turn.trace_id
                 response_id = turn.response_id
                 handoffs = turn.handoffs
-                prompt_versions = turn.prompt_versions or _prompt_versions(specialists, handoffs)
+                prompt_versions = turn.prompt_versions or self._prompt_versions(
+                    specialists, handoffs
+                )
                 available_lore_refs = turn.available_lore_refs
                 delegations = []
                 recovered_proposal = False
@@ -199,14 +214,14 @@ class NPCDirectorService:
                     built_context.director_input,
                     repair_feedback=repair_feedback,
                 )
-                proposal = director_result.proposal
+                proposal = self.model_profile.normalizer.normalize(director_result.proposal)
                 specialists = _actual_specialists(director_result.delegations)
                 requested_tools = [event.tool_name for event in director_result.delegations]
                 metrics = director_result.metrics
                 trace_id = director_result.trace_id
                 response_id = director_result.response_id
                 handoffs = director_result.handoffs
-                prompt_versions = _prompt_versions(specialists, handoffs)
+                prompt_versions = self._prompt_versions(specialists, handoffs)
                 available_lore_refs = sorted(director_result.lore_refs_accessed)
                 delegations = director_result.delegations
             checks = await run_checks(
@@ -680,6 +695,8 @@ def _tool_name(specialist: SpecialistName) -> str:
 def _prompt_versions(
     specialists: Collection[SpecialistName],
     handoffs: Collection[str] = (),
+    *,
+    version_tag: str | None = None,
 ) -> list[str]:
     versions = [DIRECTOR_PROMPT_VERSION]
     versions.extend(
@@ -689,6 +706,8 @@ def _prompt_versions(
     )
     if "Quest Negotiator" in handoffs:
         versions.append(QUEST_NEGOTIATOR_PROMPT_VERSION)
+    if version_tag:
+        versions = [f"{version}+{version_tag}" for version in versions]
     return versions
 
 
