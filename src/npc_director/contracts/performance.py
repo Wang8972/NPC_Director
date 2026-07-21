@@ -74,10 +74,9 @@ class PerformanceContent(ContractModel):
     @field_validator("face_cues", "body_cues")
     @classmethod
     def cues_must_be_time_ordered(cls, cues: list[FaceCue] | list[BodyCue]):
-        starts = [cue.start_ms for cue in cues]
-        if starts != sorted(starts):
-            raise ValueError("cues must be ordered by start_ms")
-        return cues
+        # Models occasionally emit unordered cues; sort deterministically at parse
+        # time instead of rejecting, so Unity still receives time-ordered cues.
+        return sorted(cues, key=lambda cue: cue.start_ms)
 
 
 class PerformanceDraft(PerformanceContent):

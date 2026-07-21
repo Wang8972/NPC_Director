@@ -64,6 +64,30 @@ def test_contract_rejects_unknown_action() -> None:
         TurnProposal.model_validate(payload)
 
 
+def test_contract_sorts_unordered_cues_at_parse_time() -> None:
+    payload = valid_proposal_payload()
+    payload["performance"]["face_cues"] = [
+        {"preset": "relieved_smile", "start_ms": 800},
+        {"preset": "happy", "start_ms": 0},
+    ]
+    payload["performance"]["body_cues"] = [
+        {"action": "step_forward", "start_ms": 500},
+        {"action": "small_nod", "start_ms": 0},
+        {"action": "open_palms", "start_ms": 500},
+    ]
+
+    proposal = TurnProposal.model_validate(payload)
+
+    assert [cue.start_ms for cue in proposal.performance.face_cues] == [0, 800]
+    assert [cue.start_ms for cue in proposal.performance.body_cues] == [0, 500, 500]
+    # Stable sort keeps the original relative order of equal start_ms cues.
+    assert [cue.action.value for cue in proposal.performance.body_cues] == [
+        "small_nod",
+        "step_forward",
+        "open_palms",
+    ]
+
+
 def test_contract_rejects_model_authored_runtime_meta() -> None:
     payload = valid_proposal_payload()
     payload["performance"]["runtime_meta"] = {"specialists_called": ["baseline"]}

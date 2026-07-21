@@ -46,6 +46,7 @@ from npc_director.governance import (
 )
 from npc_director.model_profile import get_active_profile
 from npc_director.orchestration.context_adapter import DefaultContextBuilder
+from npc_director.orchestration.emotion_policy import correct_emotion
 from npc_director.orchestration.executor import DirectorExecutor, ResilientDirectorExecutor
 from npc_director.rag import CachedLoreRetriever, LexicalLoreIndex, LexicalLoreRetriever
 from npc_director.state import (
@@ -214,7 +215,9 @@ class NPCDirectorService:
                     built_context.director_input,
                     repair_feedback=repair_feedback,
                 )
-                proposal = self.model_profile.normalizer.normalize(director_result.proposal)
+                proposal = correct_emotion(
+                    self.model_profile.normalizer.normalize(director_result.proposal)
+                )
                 specialists = _actual_specialists(director_result.delegations)
                 requested_tools = [event.tool_name for event in director_result.delegations]
                 metrics = director_result.metrics

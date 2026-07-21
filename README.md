@@ -449,7 +449,7 @@ python -m scripts.run_turn data/examples/reunion_request.json --html
 |---|---|---|---|
 | `OPENAI_API_KEY` | 无 | — | 仅 live Agent 运行需要；离线验收不需要 |
 | `NPC_DIRECTOR_MODEL` | 空 | — | 全局模型；留空用 Agents SDK 默认模型 |
-| `NPC_DIRECTOR_MODEL_PROFILE` | 空 | `default` / `idealab_deepseek` | 模型定制 profile（见 4.3）；留空按模型名自动推断 |
+| `NPC_DIRECTOR_MODEL_PROFILE` | 空 | `default` / `idealab_deepseek` / `idealab_qwen` | 模型定制 profile（见 4.3）；留空按模型名自动推断 |
 | `NPC_DIRECTOR_DIRECTOR_MODEL` 等 | 空 | — | 按角色覆盖模型（见 4.2） |
 | `NPC_DIRECTOR_TIMEOUT_SECONDS` | 30 | >0 | 单次模型调用超时 |
 | `NPC_DIRECTOR_MAX_TURNS` | 4 | ≥1 | Agent loop 最大轮次 |
@@ -468,6 +468,7 @@ python -m scripts.run_turn data/examples/reunion_request.json --html
 | `NPC_DIRECTOR_OUTBOX_RETRY_LIMIT` | 5 | ≥1 | outbox 重发上限 |
 | `NPC_DIRECTOR_INPUT_COST_PER_MILLION` | 空 | ≥0 | 可选，仅用于 eval 成本估算 |
 | `NPC_DIRECTOR_OUTPUT_COST_PER_MILLION` | 空 | ≥0 | 可选，同上 |
+| `NPC_DIRECTOR_EVAL_SCORE_THRESHOLD` | 0.75 | 0–1 | eval 加权分通过阈值（见 6.3） |
 
 配置非法（超出合法范围）会在启动时抛出 `ValueError`，快速失败。
 
@@ -506,24 +507,32 @@ export NPC_DIRECTOR_OUTPUT_COST_PER_MILLION="..."
 
 | 接口 | 职责 |
 |---|---|
-| `GatewayAdapter` | 网关适配：API 类型（chat/completions vs responses）、tracing 开关、模型名前缀透传 |
+| `GatewayAdapter` | 网关适配：API 类型（chat/completions vs responses）、tracing 开关、模型名前缀透传；`supports_tools_with_structured_output` 声明网关能否同时启用 tools 与 structured output（False 时 main_sub 自动切两阶段生成，见下文） |
 | `RetryPolicy` | 重试错误分类与退避节奏（运行时 executor 与 eval 共用同一套判定） |
 | `PromptAdapter` | 按模型追加/变换 Director、Baseline、Specialist 指令；`version_tag` 会追加到 prompt_versions 便于审计 |
 | `ProposalNormalizer` | 进入治理检查前的确定性输出修正（不绕过任何检查） |
 
-内置两个实现：
+内置三个实现：
 
 - `default`：行为与未引入 profile 前完全一致；网关配置仍由
   `NPC_DIRECTOR_OPENAI_API` / `NPC_DIRECTOR_DISABLE_TRACING` 环境变量控制。
 - `idealab_deepseek`：面向 idealab 网关 + deepseek 系模型；自动切 chat/completions
   并关闭 tracing（无需手工设环境变量），识别以 HTTP 400 返回的 `MPE-429` 限流并重试，
   追加路由强制与情绪标注约定的 prompt 补丁（prompt_versions 带 `+idealab-deepseek-v1` 后缀）。
-  已知限制：该模型在 tools 与 structured output 同时启用时会跳过工具调用直接输出 JSON，
-  prompt 层无法修复 specialist 路由，需后续在编排层解决（如两阶段生成）。
+- `idealab_qwen`：面向 idealab 网关 + qwen 系模型；复用 idealab 网关适配与限流重试，
+  暂无 prompt 补丁（version_tag `idealab-qwen-v1`）。
+
+两个 idealab profile 均声明 `supports_tools_with_structured_output=False`：实测该网关上
+模型在 tools 与 structured output 同时启用时会跳过工具调用直接输出 JSON。此时 main_sub
+的 Director 自动改为两阶段生成：阶段 1 纯文本编排（tools/handoffs 照常，无 output_type）；
+阶段 2 用无工具的汇总 Agent 把阶段 1 的工具调用记录与文本汇总转写为结构化 `TurnProposal`
+（若阶段 1 的 handoff 已产出 proposal 则跳过）。两阶段共用总超时，usage 累加计入同一份
+`GenerationMetrics`；`plan.required_specialists` 以运行时 hooks 记录的实际委派轨迹覆写，
+不信模型自报。default profile（OpenAI 原生）行为零变化。
 
 选择规则：`NPC_DIRECTOR_MODEL_PROFILE` 显式指定优先；未指定时，模型名以
-`bailian/deepseek` 开头自动选 `idealab_deepseek`，否则用 `default`。
-新接入一个模型时，在 `model_profile/` 下新建实现并注册到
+`bailian/deepseek` 开头自动选 `idealab_deepseek`，以 `qwen` 开头自动选 `idealab_qwen`，
+否则用 `default`。新接入一个模型时，在 `model_profile/` 下新建实现并注册到
 `registry.py` 的 `_PROFILE_BUILDERS` 即可，无需改动编排/治理代码。
 
 ### 4.4 数据与配置文件
@@ -681,9 +690,10 @@ make load-test
 - `eval/reports/judge_calibration.json`：judge 与人工标签校准结果。
 - `eval/reports/load_test.json`：确定性离线服务压力数据。
 
-当前 recorded 结果：single baseline 和动态 Main-sub 均为 36/36；固定全调用仅 7/36，
-无记忆版本为 33/36；全量 Lore 保持质量但平均 token 为动态 JIT RAG 的约 4.4 倍。
-Judge 校准为 9/10。具体数值以报告文件为准。
+当前 recorded 结果（分层计分口径，见 6.3）：single baseline 与动态 Main-sub 均为 36/36；
+固定全调用 36/36 但 average_score 降至 ≈0.876（多余调用全部计入 regressions）；
+无记忆版本为 33/36（跨回合台词踩中 forbidden_text 门禁）；全量 Lore 保持质量但平均
+token 为动态 JIT RAG 的约 4.4 倍。Judge 校准为 9/10。具体数值以报告文件为准。
 
 ### 6.2 真实模型评测
 
@@ -718,6 +728,18 @@ python -m scripts.trace_to_regression "session-1:1" \
 Eval 的路由判定只信运行时 hooks 记录的 Specialist/Handoff trace，不信模型在
 `plan.required_specialists` 中的自报信息。Schema、动作、状态权限和路由使用确定性 diff；
 主观质量才使用校准后的 judge。
+
+单条 case 的通过判定为分层计分：
+
+- **安全门禁**：`schema` 与 `forbidden_text` 必须全部通过，任一失败直接判挂；
+- **加权分**：其余检查按权重计分（intent 0.20、required_text 0.20、emotion 0.15、
+  specialist_routing 0.15、handoff_routing 0.10、action_allowlist 0.10、
+  state_patch_allowlist 0.10；不适用项按剩余权重归一化），总分 ≥ 阈值（默认 0.75，
+  `NPC_DIRECTOR_EVAL_SCORE_THRESHOLD` 可覆盖）才算通过。
+
+单项路由类失败不再直接挂掉整条 case，但仍会计入 `regressions` 明细并拉低分数；
+报告中的 `by_check` 逐项通过率口径不变，与历史报告可直接对比；新增 `average_score`
+反映套件平均加权分。
 
 ### 6.4 Unity 集成验证清单
 

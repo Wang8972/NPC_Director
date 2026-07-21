@@ -139,6 +139,7 @@ class CheckResult(EvalModel):
 class CaseResult(EvalModel):
     id: str
     passed: bool
+    score: float = Field(ge=0.0, le=1.0)
     checks: list[CheckResult]
 
 
@@ -161,6 +162,7 @@ class QualitySummary(EvalModel):
     passed_cases: int
     failed_cases: int
     case_pass_rate: float
+    average_score: float
     by_check: dict[str, RateSummary]
 
 

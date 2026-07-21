@@ -14,6 +14,10 @@ from npc_director.model_profile.idealab_deepseek import (
     IDEALAB_DEEPSEEK_PROFILE_NAME,
     build_idealab_deepseek_profile,
 )
+from npc_director.model_profile.idealab_qwen import (
+    IDEALAB_QWEN_PROFILE_NAME,
+    build_idealab_qwen_profile,
+)
 from npc_director.model_profile.registry import (
     PROFILE_NAMES,
     get_active_profile,
@@ -24,6 +28,7 @@ from npc_director.model_profile.registry import (
 __all__ = [
     "DEFAULT_PROFILE_NAME",
     "IDEALAB_DEEPSEEK_PROFILE_NAME",
+    "IDEALAB_QWEN_PROFILE_NAME",
     "PROFILE_NAMES",
     "RETRYABLE_MODEL_ERRORS",
     "GatewayAdapter",
@@ -33,6 +38,7 @@ __all__ = [
     "RetryPolicy",
     "build_default_profile",
     "build_idealab_deepseek_profile",
+    "build_idealab_qwen_profile",
     "get_active_profile",
     "reset_profile_cache",
     "resolve_profile_name",

@@ -273,6 +273,7 @@ async def _run_live_cases(cases: Sequence[EvalCase]) -> list[CandidateResult]:
 async def _run_live_main_sub_cases(cases: Sequence[EvalCase]) -> list[CandidateResult]:
     from npc_director.config import Settings
     from npc_director.orchestration.context_adapter import DefaultContextBuilder
+    from npc_director.orchestration.emotion_policy import correct_emotion
     from npc_director.orchestration.executor import ResilientDirectorExecutor
     from npc_director.rag import CachedLoreRetriever, LexicalLoreIndex, LexicalLoreRetriever
 
@@ -319,10 +320,15 @@ async def _run_live_main_sub_cases(cases: Sequence[EvalCase]) -> list[CandidateR
                 result = await _call_with_throttle_retry(
                     lambda built=built: executor.generate(built.director_input)
                 )
+                # Mirror the service-layer post-processing chain so live eval
+                # sees the same proposals Unity would receive.
+                proposal = correct_emotion(
+                    get_active_profile().normalizer.normalize(result.proposal)
+                )
                 candidates.append(
                     CandidateResult(
                         id=case.id,
-                        proposal=result.proposal,
+                        proposal=proposal,
                         metrics=result.metrics,
                         specialists_called=[event.specialist for event in result.delegations],
                         handoffs=result.handoffs,

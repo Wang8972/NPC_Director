@@ -13,6 +13,7 @@ from npc_director.contracts import GenerationMetrics, TurnProposal, TurnRequest,
 from npc_director.governance.finalizer import finalize_baseline_proposal
 from npc_director.model_profile import get_active_profile
 from npc_director.model_provider import build_run_config
+from npc_director.orchestration.emotion_policy import correct_emotion
 from npc_director.unity_adapter.base import EngineAdapter
 
 
@@ -50,8 +51,10 @@ async def run_turn(
             )
 
     latency_ms = (time.perf_counter() - started_at) * 1_000
-    proposal = profile.normalizer.normalize(
-        result.final_output_as(TurnProposal, raise_if_incorrect_type=True)
+    proposal = correct_emotion(
+        profile.normalizer.normalize(
+            result.final_output_as(TurnProposal, raise_if_incorrect_type=True)
+        )
     )
     usage = result.context_wrapper.usage
     resolved_model = resolved.model or get_default_model()

@@ -101,8 +101,11 @@ def test_main_sub_routing_uses_actual_trace_not_declared_plan() -> None:
         dataset_errors=errors,
     )
 
-    assert not report.passed
+    # Routing misses alone stay at/above the weighted threshold, but the
+    # failed check is still exposed as a regression and lowers the score.
+    assert report.passed
     assert f"{case.id}:specialist_routing" in report.regressions
+    assert report.cases[0].score == pytest.approx(0.85)
 
 
 def test_main_sub_handoff_routing_uses_actual_trace() -> None:
@@ -119,8 +122,9 @@ def test_main_sub_handoff_routing_uses_actual_trace() -> None:
         dataset_errors=errors,
     )
 
-    assert not report.passed
+    assert report.passed
     assert f"{case.id}:handoff_routing" in report.regressions
+    assert report.cases[0].score == pytest.approx(0.9)
 
 
 def test_missing_generation_metrics_is_a_schema_regression() -> None:

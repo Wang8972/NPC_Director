@@ -9,8 +9,10 @@ from npc_director.contracts import TurnProposal
 from npc_director.model_profile import (
     DEFAULT_PROFILE_NAME,
     IDEALAB_DEEPSEEK_PROFILE_NAME,
+    IDEALAB_QWEN_PROFILE_NAME,
     build_default_profile,
     build_idealab_deepseek_profile,
+    build_idealab_qwen_profile,
     resolve_profile_name,
 )
 
@@ -53,6 +55,33 @@ def test_bailian_deepseek_model_infers_idealab_profile() -> None:
 def test_unrelated_model_resolves_default_profile() -> None:
     assert resolve_profile_name(Settings()) == DEFAULT_PROFILE_NAME
     assert resolve_profile_name(Settings(model="gpt-4.1-mini")) == DEFAULT_PROFILE_NAME
+
+
+def test_qwen_model_infers_idealab_qwen_profile() -> None:
+    assert (
+        resolve_profile_name(Settings(model="qwen3.7-max")) == IDEALAB_QWEN_PROFILE_NAME
+    )
+    assert (
+        resolve_profile_name(Settings(director_model="qwen3.7-max"))
+        == IDEALAB_QWEN_PROFILE_NAME
+    )
+
+
+def test_idealab_qwen_profile_reuses_gateway_without_prompt_patches() -> None:
+    profile = build_idealab_qwen_profile()
+    assert profile.name == IDEALAB_QWEN_PROFILE_NAME
+    assert profile.prompts.version_tag == "idealab-qwen-v1"
+    # No prompt patches: instructions pass through untouched.
+    assert profile.prompts.director_instructions(DIRECTOR_INSTRUCTIONS) == DIRECTOR_INSTRUCTIONS
+    assert profile.prompts.baseline_instructions(BASELINE_INSTRUCTIONS) == BASELINE_INSTRUCTIONS
+    # Idealab throttling retry semantics are shared with the deepseek profile.
+    assert profile.retry.is_retryable(ValueError("Error code: 400 - MPE-429"))
+
+
+def test_gateway_two_phase_flag_per_profile() -> None:
+    assert build_default_profile().gateway.supports_tools_with_structured_output
+    assert not build_idealab_deepseek_profile().gateway.supports_tools_with_structured_output
+    assert not build_idealab_qwen_profile().gateway.supports_tools_with_structured_output
 
 
 def test_settings_rejects_unknown_profile_name() -> None:

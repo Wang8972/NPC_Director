@@ -36,6 +36,10 @@ class DefaultGatewayAdapter:
     def build_run_config(self) -> RunConfig:
         return RunConfig(model_provider=shared_multi_provider())
 
+    @property
+    def supports_tools_with_structured_output(self) -> bool:
+        return True
+
 
 class TypedRetryPolicy:
     """Retries only well-known transient exception types (previous executor behavior)."""

@@ -87,6 +87,20 @@ def test_every_baseline_has_exactly_the_golden_ids(baseline_path: Path) -> None:
     assert [candidate.id for candidate in candidates] == case_ids
 
 
+def test_golden_expectations_use_keyword_texts_and_multi_choice_emotions() -> None:
+    for row in _jsonl_rows(CASES_PATH):
+        expect = row["expect"]
+        # required_text is keyword-sized so it checks semantics, not phrasing.
+        for fragment in expect.get("required_text", []):
+            assert len(fragment) <= 4, f"{row['id']}: required_text too long: {fragment}"
+        # emotion expectations are multi-choice lists with an open secondary
+        # (coarse may stay single where only neutral is plausible, e.g. guardrails).
+        emotion = expect["emotion"]
+        assert isinstance(emotion["coarse"], list) and emotion["coarse"]
+        assert isinstance(emotion["primary"], list) and len(emotion["primary"]) >= 2
+        assert not emotion.get("secondary")
+
+
 @pytest.mark.parametrize(
     "baseline_path",
     [BASELINES_DIR / "recorded.jsonl", BASELINES_DIR / "single_agent.jsonl"],
@@ -131,7 +145,10 @@ def test_dynamic_main_sub_passes_quality_and_routing() -> None:
 def test_fixed_all_exposes_unnecessary_calls_on_simple_cases() -> None:
     report = _report(BASELINES_DIR / "main_sub_fixed_all.jsonl", "main_sub")
 
-    assert not report.passed
+    # Routing-only misses stay at/above the weighted threshold, so cases keep
+    # passing, but every violation is still exposed and lowers the score.
+    assert report.passed
+    assert report.quality.average_score < 1.0
     assert report.schema_summary.pass_rate == 1.0
     assert "greeting_001:specialist_routing" in report.regressions
     assert "smalltalk_001:specialist_routing" in report.regressions
@@ -150,7 +167,6 @@ def test_no_memory_has_explicit_cross_turn_quality_regressions() -> None:
     assert not report.passed
     assert report.schema_summary.pass_rate == 1.0
     assert {
-        "promise_followup_001:required_text",
         "promise_followup_001:forbidden_text",
         "relationship_change_001:required_text",
         "relationship_change_001:forbidden_text",

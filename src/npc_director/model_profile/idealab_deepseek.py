@@ -20,17 +20,17 @@ _THROTTLING_MARKERS = ("MPE-429", "Throttling", "限流")
 
 # Known limitation (live-probed 2025-07): with tools + structured output (output_type)
 # combined, deepseek-v4-pro via idealab skips tool calls and emits the final JSON
-# directly; with plain-text output the same model calls tools normally. Prompt-level
-# enforcement below therefore cannot fix specialist routing — that requires an
-# orchestration change (e.g. two-phase generation), outside the profile's scope.
+# directly; with plain-text output the same model calls tools normally. The gateway
+# adapter therefore reports supports_tools_with_structured_output=False, which makes
+# the executor run two-phase generation (plain-text orchestration + structured
+# summarization). The routing disciplines below remain as prompt-level reinforcement.
 _DIRECTOR_ADDENDUM = """
 针对当前模型的强制路由纪律（在上述规则基础上必须执行）：
 A. 每个回合都必须真实调用工具，至少依次调用 screenwriter 和 performance_specialist；
-   禁止不调用任何工具就直接输出 TurnProposal。
+   禁止不调用任何工具就直接给出最终答复。
 B. 玩家询问世界观事实（历史、事件、人物、地点、传闻）时，必须先调用 lore_specialist
    获取证据，再调用 screenwriter。
 C. 任务接受、关键选择等需要状态变化的回合，必须先调用 narrative_planner。
-D. required_specialists 只能列出你真实调用过的工具对应枚举，禁止虚报或漏报。
 """.strip()
 
 _EMOTION_CONVENTIONS = """
@@ -60,6 +60,11 @@ class IdealabGatewayAdapter:
 
     def build_run_config(self) -> RunConfig:
         return RunConfig(model_provider=shared_multi_provider())
+
+    @property
+    def supports_tools_with_structured_output(self) -> bool:
+        # Live-probed gateway defect: structured output suppresses tool calls.
+        return False
 
 
 class IdealabRetryPolicy(TypedRetryPolicy):

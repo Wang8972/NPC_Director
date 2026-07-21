@@ -17,6 +17,12 @@ class GatewayAdapter(Protocol):
 
     def build_run_config(self) -> RunConfig: ...
 
+    @property
+    def supports_tools_with_structured_output(self) -> bool:
+        """False when the gateway skips tool calls once output_type is set,
+        which switches the Director to two-phase generation."""
+        ...
+
 
 class RetryPolicy(Protocol):
     """Classifies model-call failures and paces retries for one model/gateway."""

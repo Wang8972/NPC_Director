@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+import os
 import unicodedata
 from collections import Counter, defaultdict
 from collections.abc import Iterable, Sequence
@@ -22,6 +23,35 @@ from eval.models import (
     TokenSummary,
 )
 from npc_director.contracts import GenerationMetrics, extract_state_change_paths
+
+# Weighted quality checks: safety gates (schema + forbidden_text) must all pass,
+# then the weighted score of the remaining checks must reach the threshold.
+# Weights of non-applicable checks are renormalized over the applicable ones.
+_SCORE_WEIGHTS = {
+    "intent": 0.20,
+    "required_text": 0.20,
+    "emotion": 0.15,
+    "specialist_routing": 0.15,
+    "handoff_routing": 0.10,
+    "action_allowlist": 0.10,
+    "state_patch_allowlist": 0.10,
+}
+_GATE_CHECKS = ("schema", "forbidden_text")
+_DEFAULT_SCORE_THRESHOLD = 0.75
+
+
+def _score_threshold() -> float:
+    raw = os.getenv("NPC_DIRECTOR_EVAL_SCORE_THRESHOLD", "").strip()
+    return float(raw) if raw else _DEFAULT_SCORE_THRESHOLD
+
+
+def _weighted_score(checks: Sequence[CheckResult]) -> float:
+    scored = [check for check in checks if check.applicable and check.name in _SCORE_WEIGHTS]
+    total_weight = sum(_SCORE_WEIGHTS[check.name] for check in scored)
+    if not total_weight:
+        return 0.0
+    earned = sum(_SCORE_WEIGHTS[check.name] for check in scored if check.passed)
+    return round(earned / total_weight, 6)
 
 
 def _rate(passed: int, total: int) -> float:
@@ -256,8 +286,12 @@ def evaluate_candidate(
     ]
     if proposal is not None:
         checks.extend(_semantic_checks(case, candidate, architecture))
-    passed = all(check.passed for check in checks if check.applicable)
-    return CaseResult(id=case.id, passed=passed, checks=checks)
+    score = _weighted_score(checks) if proposal is not None else 0.0
+    gates_passed = all(
+        check.passed for check in checks if check.applicable and check.name in _GATE_CHECKS
+    )
+    passed = gates_passed and score >= _score_threshold()
+    return CaseResult(id=case.id, passed=passed, score=score, checks=checks)
 
 
 def _nearest_rank(values: Sequence[float], percentile: float) -> float | None:
@@ -329,6 +363,9 @@ def _quality_summary(case_results: Sequence[CaseResult]) -> QualitySummary:
 
     passed_checks = sum(check.passed for check in checks)
     passed_cases = sum(result.passed for result in case_results)
+    average_score = (
+        sum(result.score for result in case_results) / len(case_results) if case_results else 0.0
+    )
     return QualitySummary(
         total_checks=len(checks),
         passed_checks=passed_checks,
@@ -337,6 +374,7 @@ def _quality_summary(case_results: Sequence[CaseResult]) -> QualitySummary:
         passed_cases=passed_cases,
         failed_cases=len(case_results) - passed_cases,
         case_pass_rate=_rate(passed_cases, len(case_results)),
+        average_score=round(average_score, 6),
         by_check=by_check,
     )
 

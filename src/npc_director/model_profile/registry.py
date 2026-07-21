@@ -9,10 +9,15 @@ from npc_director.model_profile.idealab_deepseek import (
     IDEALAB_DEEPSEEK_PROFILE_NAME,
     build_idealab_deepseek_profile,
 )
+from npc_director.model_profile.idealab_qwen import (
+    IDEALAB_QWEN_PROFILE_NAME,
+    build_idealab_qwen_profile,
+)
 
 _PROFILE_BUILDERS: dict[str, Callable[[], ModelProfile]] = {
     DEFAULT_PROFILE_NAME: build_default_profile,
     IDEALAB_DEEPSEEK_PROFILE_NAME: build_idealab_deepseek_profile,
+    IDEALAB_QWEN_PROFILE_NAME: build_idealab_qwen_profile,
 }
 
 PROFILE_NAMES = frozenset(_PROFILE_BUILDERS)
@@ -25,8 +30,12 @@ def resolve_profile_name(settings: Settings) -> str:
     if settings.model_profile:
         return settings.model_profile
     for candidate in (settings.director_model, settings.model):
-        if candidate and candidate.startswith("bailian/deepseek"):
+        if not candidate:
+            continue
+        if candidate.startswith("bailian/deepseek"):
             return IDEALAB_DEEPSEEK_PROFILE_NAME
+        if candidate.startswith("qwen"):
+            return IDEALAB_QWEN_PROFILE_NAME
     return DEFAULT_PROFILE_NAME
 
 
