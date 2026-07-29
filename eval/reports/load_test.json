@@ -1,0 +1,10 @@
+{
+  "turns": 100,
+  "concurrency": 10,
+  "elapsed_seconds": 0.358,
+  "throughput_per_second": 279.35,
+  "average_ms": 27.838,
+  "p50_ms": 9.147,
+  "p95_ms": 120.748,
+  "max_ms": 356.141
+}

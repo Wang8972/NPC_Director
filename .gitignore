@@ -8,5 +8,4 @@ __pycache__/
 htmlcov/
 .env
 artifacts/
-eval/reports/*.json
 data/runtime/*.db*

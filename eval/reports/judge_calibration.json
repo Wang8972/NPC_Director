@@ -1,0 +1,9 @@
+{
+  "total": 10,
+  "agreements": 9,
+  "accuracy": 0.9,
+  "false_positives": [
+    "ambiguous_lore_01"
+  ],
+  "false_negatives": []
+}
