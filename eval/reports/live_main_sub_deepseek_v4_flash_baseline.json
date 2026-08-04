@@ -1,11 +1,127 @@
 {
-  "mode": "recorded",
-  "architecture": "single_agent",
-  "passed": true,
+  "mode": "live",
+  "architecture": "main_sub",
+  "passed": false,
   "total_cases": 36,
-  "passed_cases": 36,
-  "failed_cases": [],
-  "regressions": [],
+  "passed_cases": 6,
+  "failed_cases": [
+    "greeting_001",
+    "lore_001",
+    "quest_001",
+    "reconciliation_001",
+    "insult_001",
+    "threat_001",
+    "critical_choice_001",
+    "secret_lore_001",
+    "gratitude_001",
+    "farewell_001",
+    "clarification_001",
+    "promise_followup_001",
+    "promise_conflict_001",
+    "relationship_change_001",
+    "player_choice_001",
+    "lore_private_denied_001",
+    "lore_unlocked_001",
+    "smalltalk_001",
+    "refusal_001",
+    "negotiation_001",
+    "complex_betrayal_001",
+    "complex_quest_branch_001",
+    "action_allowlist_001",
+    "action_tension_001",
+    "low_confidence_lore_001",
+    "low_confidence_critical_001",
+    "ambiguity_pronoun_001",
+    "interrupt_threat_001",
+    "interrupt_replan_001",
+    "continuity_001"
+  ],
+  "regressions": [
+    "greeting_001:required_text",
+    "greeting_001:specialist_routing",
+    "lore_001:required_text",
+    "lore_001:specialist_routing",
+    "quest_001:state_patch_allowlist",
+    "quest_001:required_text",
+    "quest_001:specialist_routing",
+    "reconciliation_001:emotion",
+    "reconciliation_001:required_text",
+    "reconciliation_001:specialist_routing",
+    "insult_001:required_text",
+    "insult_001:specialist_routing",
+    "threat_001:state_patch_allowlist",
+    "threat_001:required_text",
+    "threat_001:specialist_routing",
+    "critical_choice_001:emotion",
+    "critical_choice_001:required_text",
+    "critical_choice_001:specialist_routing",
+    "secret_lore_001:required_text",
+    "secret_lore_001:specialist_routing",
+    "gratitude_001:required_text",
+    "gratitude_001:specialist_routing",
+    "farewell_001:required_text",
+    "farewell_001:specialist_routing",
+    "clarification_001:required_text",
+    "clarification_001:specialist_routing",
+    "promise_followup_001:intent",
+    "promise_followup_001:required_text",
+    "promise_followup_001:specialist_routing",
+    "promise_conflict_001:emotion",
+    "promise_conflict_001:required_text",
+    "promise_conflict_001:specialist_routing",
+    "relationship_change_001:action_allowlist",
+    "relationship_change_001:state_patch_allowlist",
+    "relationship_change_001:required_text",
+    "relationship_change_001:specialist_routing",
+    "player_choice_001:intent",
+    "player_choice_001:specialist_routing",
+    "lore_public_002:specialist_routing",
+    "lore_faction_001:state_patch_allowlist",
+    "lore_faction_001:specialist_routing",
+    "lore_private_denied_001:required_text",
+    "lore_private_denied_001:specialist_routing",
+    "lore_unlocked_001:intent",
+    "lore_unlocked_001:required_text",
+    "lore_unlocked_001:specialist_routing",
+    "smalltalk_001:intent",
+    "smalltalk_001:required_text",
+    "smalltalk_001:specialist_routing",
+    "refusal_001:action_allowlist",
+    "refusal_001:state_patch_allowlist",
+    "refusal_001:specialist_routing",
+    "negotiation_001:required_text",
+    "negotiation_001:handoff_routing",
+    "complex_betrayal_001:action_allowlist",
+    "complex_betrayal_001:required_text",
+    "complex_betrayal_001:specialist_routing",
+    "complex_quest_branch_001:intent",
+    "complex_quest_branch_001:required_text",
+    "complex_quest_branch_001:specialist_routing",
+    "action_allowlist_001:intent",
+    "action_allowlist_001:required_text",
+    "action_allowlist_001:specialist_routing",
+    "action_tension_001:state_patch_allowlist",
+    "action_tension_001:required_text",
+    "action_tension_001:specialist_routing",
+    "low_confidence_lore_001:required_text",
+    "low_confidence_lore_001:specialist_routing",
+    "low_confidence_critical_001:required_text",
+    "low_confidence_critical_001:specialist_routing",
+    "ambiguity_pronoun_001:required_text",
+    "ambiguity_pronoun_001:specialist_routing",
+    "ambiguity_lore_001:state_patch_allowlist",
+    "ambiguity_lore_001:specialist_routing",
+    "interrupt_threat_001:intent",
+    "interrupt_threat_001:emotion",
+    "interrupt_threat_001:required_text",
+    "interrupt_threat_001:specialist_routing",
+    "interrupt_replan_001:intent",
+    "interrupt_replan_001:required_text",
+    "interrupt_replan_001:specialist_routing",
+    "continuity_001:state_patch_allowlist",
+    "continuity_001:required_text",
+    "continuity_001:specialist_routing"
+  ],
   "schema": {
     "total": 36,
     "passed": 36,
@@ -14,26 +130,26 @@
     "errors": []
   },
   "quality": {
-    "total_checks": 216,
-    "passed_checks": 216,
-    "failed_checks": 0,
-    "pass_rate": 1.0,
-    "passed_cases": 36,
-    "failed_cases": 0,
-    "case_pass_rate": 1.0,
-    "average_score": 1.0,
+    "total_checks": 288,
+    "passed_checks": 204,
+    "failed_checks": 84,
+    "pass_rate": 0.708333,
+    "passed_cases": 6,
+    "failed_cases": 30,
+    "case_pass_rate": 0.166667,
+    "average_score": 0.616667,
     "by_check": {
       "action_allowlist": {
         "total": 36,
-        "passed": 36,
-        "failed": 0,
-        "pass_rate": 1.0
+        "passed": 33,
+        "failed": 3,
+        "pass_rate": 0.916667
       },
       "emotion": {
         "total": 36,
-        "passed": 36,
-        "failed": 0,
-        "pass_rate": 1.0
+        "passed": 32,
+        "failed": 4,
+        "pass_rate": 0.888889
       },
       "forbidden_text": {
         "total": 36,
@@ -41,56 +157,69 @@
         "failed": 0,
         "pass_rate": 1.0
       },
+      "handoff_routing": {
+        "total": 36,
+        "passed": 35,
+        "failed": 1,
+        "pass_rate": 0.972222
+      },
       "intent": {
         "total": 36,
-        "passed": 36,
-        "failed": 0,
-        "pass_rate": 1.0
+        "passed": 28,
+        "failed": 8,
+        "pass_rate": 0.777778
       },
       "required_text": {
         "total": 36,
-        "passed": 36,
-        "failed": 0,
-        "pass_rate": 1.0
+        "passed": 8,
+        "failed": 28,
+        "pass_rate": 0.222222
+      },
+      "specialist_routing": {
+        "total": 36,
+        "passed": 4,
+        "failed": 32,
+        "pass_rate": 0.111111
       },
       "state_patch_allowlist": {
         "total": 36,
-        "passed": 36,
-        "failed": 0,
-        "pass_rate": 1.0
+        "passed": 28,
+        "failed": 8,
+        "pass_rate": 0.777778
       }
     }
   },
   "system": {
     "latency": {
       "count": 36,
-      "average_ms": 913.333,
-      "p50_ms": 870.0,
-      "p95_ms": 1390.0,
-      "max_ms": 1450.0
+      "average_ms": 4680.367,
+      "p50_ms": 4799.9565419740975,
+      "p95_ms": 7640.8082080306485,
+      "max_ms": 8787.531208014116
     },
     "tokens": {
       "count": 36,
-      "input_total": 10170,
-      "output_total": 3768,
-      "total": 13938,
-      "average_total": 387.167
+      "input_total": 102760,
+      "output_total": 15254,
+      "total": 118014,
+      "average_total": 3278.167
     },
     "cost": {
-      "available_count": 36,
-      "total_usd": 0.004537,
-      "average_usd": 0.00012603
+      "available_count": 0,
+      "total_usd": null,
+      "average_usd": null
     },
     "models": {
-      "recorded-baseline": 36
+      "bailian/deepseek-v4-flash": 33,
+      "input-guard-v2": 3
     }
   },
   "dataset_errors": [],
   "cases": [
     {
       "id": "greeting_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.65,
       "checks": [
         {
           "name": "schema",
@@ -125,8 +254,8 @@
             "secondary": []
           },
           "actual": {
-            "coarse": "joy",
-            "primary": "warm",
+            "coarse": "neutral",
+            "primary": "calm",
             "secondary": null
           },
           "detail": null
@@ -140,9 +269,7 @@
             "open_palms",
             "small_nod"
           ],
-          "actual": [
-            "small_nod"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -155,13 +282,15 @@
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "欢迎"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "欢迎"
+          ],
+          "detail": "missing text: 欢迎"
         },
         {
           "name": "forbidden_text",
@@ -176,8 +305,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "performance",
@@ -186,25 +315,23 @@
             "optional": [],
             "forbidden": []
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "lore_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.65,
       "checks": [
         {
           "name": "schema",
@@ -241,7 +368,7 @@
           "actual": {
             "coarse": "neutral",
             "primary": "calm",
-            "secondary": null
+            "secondary": "guarded"
           },
           "detail": null
         },
@@ -254,9 +381,7 @@
             "point",
             "small_nod"
           ],
-          "actual": [
-            "point"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -269,13 +394,15 @@
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "二十年前"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "二十年前"
+          ],
+          "detail": "missing text: 二十年前"
         },
         {
           "name": "forbidden_text",
@@ -290,8 +417,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "lore",
@@ -301,25 +428,23 @@
             "optional": [],
             "forbidden": []
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: lore, performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "quest_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.55,
       "checks": [
         {
           "name": "schema",
@@ -354,8 +479,8 @@
             "secondary": []
           },
           "actual": {
-            "coarse": "joy",
-            "primary": "hopeful",
+            "coarse": "neutral",
+            "primary": "calm",
             "secondary": null
           },
           "detail": null
@@ -369,32 +494,34 @@
             "open_palms",
             "small_nod"
           ],
-          "actual": [
-            "nod"
-          ],
+          "actual": [],
           "detail": null
         },
         {
           "name": "state_patch_allowlist",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "quests.herbalist_escort.status"
           ],
           "actual": [
-            "quests.herbalist_escort.status"
+            "flags.quest_herbalist_escort_accepted",
+            "relationship.affinity_delta",
+            "relationship.trust_delta"
           ],
-          "detail": null
+          "detail": "disallowed state paths: flags.quest_herbalist_escort_accepted, relationship.affinity_delta, relationship.trust_delta"
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "北岭"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "北岭"
+          ],
+          "detail": "missing text: 北岭"
         },
         {
           "name": "forbidden_text",
@@ -408,8 +535,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "narrative_planner",
@@ -419,25 +546,23 @@
             "optional": [],
             "forbidden": []
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: narrative_planner, performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "reconciliation_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.5,
       "checks": [
         {
           "name": "schema",
@@ -457,7 +582,7 @@
         },
         {
           "name": "emotion",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": {
             "coarse": [
@@ -471,9 +596,9 @@
             "secondary": []
           },
           "actual": {
-            "coarse": "joy",
-            "primary": "relieved",
-            "secondary": "melancholic"
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": null
           },
           "detail": null
         },
@@ -486,9 +611,7 @@
             "small_nod",
             "step_forward"
           ],
-          "actual": [
-            "step_forward"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -499,21 +622,20 @@
             "flags.reunion_started",
             "relationship.trust_delta"
           ],
-          "actual": [
-            "flags.reunion_started",
-            "relationship.trust_delta"
-          ],
+          "actual": [],
           "detail": null
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "相信"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "相信"
+          ],
+          "detail": "missing text: 相信"
         },
         {
           "name": "forbidden_text",
@@ -527,8 +649,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "lore",
@@ -540,25 +662,23 @@
             ],
             "forbidden": []
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: lore, performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "insult_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.65,
       "checks": [
         {
           "name": "schema",
@@ -594,8 +714,8 @@
           },
           "actual": {
             "coarse": "anger",
-            "primary": "irritated",
-            "secondary": null
+            "primary": "stern",
+            "secondary": "stern"
           },
           "detail": null
         },
@@ -608,9 +728,7 @@
             "idle",
             "shake_head"
           ],
-          "actual": [
-            "cross_arms"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -627,13 +745,15 @@
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "请收回"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "请收回"
+          ],
+          "detail": "missing text: 请收回"
         },
         {
           "name": "forbidden_text",
@@ -648,8 +768,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "performance",
@@ -658,25 +778,23 @@
             "optional": [],
             "forbidden": []
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "threat_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.55,
       "checks": [
         {
           "name": "schema",
@@ -712,9 +830,9 @@
             "secondary": []
           },
           "actual": {
-            "coarse": "fear",
-            "primary": "wary",
-            "secondary": null
+            "coarse": "anger",
+            "primary": "stern",
+            "secondary": "wary"
           },
           "detail": null
         },
@@ -727,32 +845,33 @@
             "point",
             "step_back"
           ],
-          "actual": [
-            "step_back"
-          ],
+          "actual": [],
           "detail": null
         },
         {
           "name": "state_patch_allowlist",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "relationship.trust_delta"
           ],
           "actual": [
+            "relationship.affinity_delta",
             "relationship.trust_delta"
           ],
-          "detail": null
+          "detail": "disallowed state paths: relationship.affinity_delta"
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "不会"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "不会"
+          ],
+          "detail": "missing text: 不会"
         },
         {
           "name": "forbidden_text",
@@ -767,8 +886,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "performance",
@@ -779,18 +898,16 @@
             ],
             "forbidden": []
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
@@ -884,7 +1001,7 @@
         {
           "name": "specialist_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": {
             "required": [],
             "optional": [],
@@ -895,25 +1012,23 @@
               "screenwriter"
             ]
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": null
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "critical_choice_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.5,
       "checks": [
         {
           "name": "schema",
@@ -933,7 +1048,7 @@
         },
         {
           "name": "emotion",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": {
             "coarse": [
@@ -948,8 +1063,8 @@
             "secondary": []
           },
           "actual": {
-            "coarse": "fear",
-            "primary": "stern",
+            "coarse": "neutral",
+            "primary": "calm",
             "secondary": null
           },
           "detail": null
@@ -963,9 +1078,7 @@
             "point",
             "step_forward"
           ],
-          "actual": [
-            "point"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -975,20 +1088,20 @@
           "expected": [
             "flags.village_defense_chosen"
           ],
-          "actual": [
-            "flags.village_defense_chosen"
-          ],
+          "actual": [],
           "detail": null
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "守住"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "守住"
+          ],
+          "detail": "missing text: 守住"
         },
         {
           "name": "forbidden_text",
@@ -1002,8 +1115,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "narrative_planner",
@@ -1013,25 +1126,23 @@
             "optional": [],
             "forbidden": []
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: narrative_planner, performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "secret_lore_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.65,
       "checks": [
         {
           "name": "schema",
@@ -1065,8 +1176,8 @@
           },
           "actual": {
             "coarse": "neutral",
-            "primary": "guarded",
-            "secondary": null
+            "primary": "calm",
+            "secondary": "guarded"
           },
           "detail": null
         },
@@ -1079,9 +1190,7 @@
             "idle",
             "shake_head"
           ],
-          "actual": [
-            "shake_head"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -1094,13 +1203,15 @@
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "不能"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "不能"
+          ],
+          "detail": "missing text: 不能"
         },
         {
           "name": "forbidden_text",
@@ -1115,8 +1226,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "lore",
@@ -1126,25 +1237,23 @@
             "optional": [],
             "forbidden": []
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: lore, performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "gratitude_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.65,
       "checks": [
         {
           "name": "schema",
@@ -1181,7 +1290,7 @@
           "actual": {
             "coarse": "joy",
             "primary": "grateful",
-            "secondary": null
+            "secondary": "warm"
           },
           "detail": null
         },
@@ -1194,9 +1303,7 @@
             "reach_out",
             "small_nod"
           ],
-          "actual": [
-            "small_nod"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -1206,20 +1313,20 @@
           "expected": [
             "relationship.affinity_delta"
           ],
-          "actual": [
-            "relationship.affinity_delta"
-          ],
+          "actual": [],
           "detail": null
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "谢谢"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "谢谢"
+          ],
+          "detail": "missing text: 谢谢"
         },
         {
           "name": "forbidden_text",
@@ -1233,8 +1340,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "performance",
@@ -1243,25 +1350,23 @@
             "optional": [],
             "forbidden": []
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "farewell_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.65,
       "checks": [
         {
           "name": "schema",
@@ -1297,9 +1402,9 @@
             "secondary": []
           },
           "actual": {
-            "coarse": "sadness",
-            "primary": "melancholic",
-            "secondary": null
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "calm"
           },
           "detail": null
         },
@@ -1312,9 +1417,7 @@
             "reach_out",
             "small_nod"
           ],
-          "actual": [
-            "small_nod"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -1327,13 +1430,15 @@
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "一路平安"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "一路平安"
+          ],
+          "detail": "missing text: 一路平安"
         },
         {
           "name": "forbidden_text",
@@ -1347,8 +1452,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "performance",
@@ -1357,25 +1462,23 @@
             "optional": [],
             "forbidden": []
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "clarification_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.65,
       "checks": [
         {
           "name": "schema",
@@ -1409,8 +1512,8 @@
             "secondary": []
           },
           "actual": {
-            "coarse": "surprise",
-            "primary": "curious",
+            "coarse": "neutral",
+            "primary": "calm",
             "secondary": null
           },
           "detail": null
@@ -1424,9 +1527,7 @@
             "open_palms",
             "small_nod"
           ],
-          "actual": [
-            "open_palms"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -1439,14 +1540,17 @@
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "修桥",
             "追查"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "修桥",
+            "追查"
+          ],
+          "detail": "missing text: 修桥, 追查"
         },
         {
           "name": "forbidden_text",
@@ -1460,8 +1564,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "performance",
@@ -1472,25 +1576,23 @@
             ],
             "forbidden": []
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "promise_followup_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.45,
       "checks": [
         {
           "name": "schema",
@@ -1502,10 +1604,10 @@
         },
         {
           "name": "intent",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": "other",
-          "actual": "other",
+          "actual": "quest_acceptance",
           "detail": null
         },
         {
@@ -1525,9 +1627,9 @@
             "secondary": []
           },
           "actual": {
-            "coarse": "joy",
-            "primary": "warm",
-            "secondary": null
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "relieved"
           },
           "detail": null
         },
@@ -1540,9 +1642,7 @@
             "reach_out",
             "small_nod"
           ],
-          "actual": [
-            "reach_out"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -1552,20 +1652,20 @@
           "expected": [
             "flags.medicine_handed_over"
           ],
-          "actual": [
-            "flags.medicine_handed_over"
-          ],
+          "actual": [],
           "detail": null
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "退烧药"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "退烧药"
+          ],
+          "detail": "missing text: 退烧药"
         },
         {
           "name": "forbidden_text",
@@ -1579,8 +1679,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "narrative_planner",
@@ -1592,25 +1692,23 @@
               "lore"
             ]
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: narrative_planner, performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "promise_conflict_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.5,
       "checks": [
         {
           "name": "schema",
@@ -1630,7 +1728,7 @@
         },
         {
           "name": "emotion",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": {
             "coarse": [
@@ -1645,9 +1743,9 @@
             "secondary": []
           },
           "actual": {
-            "coarse": "fear",
-            "primary": "stern",
-            "secondary": null
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "calm"
           },
           "detail": null
         },
@@ -1660,9 +1758,7 @@
             "point",
             "step_forward"
           ],
-          "actual": [
-            "point"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -1672,20 +1768,20 @@
           "expected": [
             "flags.children_escort_prioritized"
           ],
-          "actual": [
-            "flags.children_escort_prioritized"
-          ],
+          "actual": [],
           "detail": null
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "孩子"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "孩子"
+          ],
+          "detail": "missing text: 孩子"
         },
         {
           "name": "forbidden_text",
@@ -1699,8 +1795,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "narrative_planner",
@@ -1710,25 +1806,23 @@
             "optional": [],
             "forbidden": []
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: narrative_planner, performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "relationship_change_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.45,
       "checks": [
         {
           "name": "schema",
@@ -1765,13 +1859,13 @@
           "actual": {
             "coarse": "joy",
             "primary": "relieved",
-            "secondary": null
+            "secondary": "grateful"
           },
           "detail": null
         },
         {
           "name": "action_allowlist",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "open_palms",
@@ -1779,31 +1873,36 @@
             "small_nod"
           ],
           "actual": [
+            "idle",
             "small_nod"
           ],
-          "detail": null
+          "detail": "disallowed actions: idle"
         },
         {
           "name": "state_patch_allowlist",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "relationship.trust_delta"
           ],
           "actual": [
+            "flags.trust_restored_partial",
+            "relationship.affinity_delta",
             "relationship.trust_delta"
           ],
-          "detail": null
+          "detail": "disallowed state paths: flags.trust_restored_partial, relationship.affinity_delta"
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "信任"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "信任"
+          ],
+          "detail": "missing text: 信任"
         },
         {
           "name": "forbidden_text",
@@ -1818,8 +1917,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "narrative_planner",
@@ -1831,25 +1930,23 @@
               "lore"
             ]
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: narrative_planner, performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "player_choice_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.65,
       "checks": [
         {
           "name": "schema",
@@ -1861,10 +1958,10 @@
         },
         {
           "name": "intent",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": "critical_choice",
-          "actual": "critical_choice",
+          "actual": "greeting",
           "detail": null
         },
         {
@@ -1884,8 +1981,8 @@
             "secondary": []
           },
           "actual": {
-            "coarse": "fear",
-            "primary": "wary",
+            "coarse": "neutral",
+            "primary": "calm",
             "secondary": null
           },
           "detail": null
@@ -1899,9 +1996,7 @@
             "point",
             "step_forward"
           ],
-          "actual": [
-            "point"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -1911,9 +2006,7 @@
           "expected": [
             "flags.forest_route_chosen"
           ],
-          "actual": [
-            "flags.forest_route_chosen"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -1938,8 +2031,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "lore",
@@ -1950,25 +2043,23 @@
             "optional": [],
             "forbidden": []
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: lore, narrative_planner, performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "lore_public_002",
       "passed": true,
-      "score": 1.0,
+      "score": 0.85,
       "checks": [
         {
           "name": "schema",
@@ -2003,7 +2094,7 @@
           "actual": {
             "coarse": "neutral",
             "primary": "calm",
-            "secondary": null
+            "secondary": "warm"
           },
           "detail": null
         },
@@ -2016,9 +2107,7 @@
             "point",
             "small_nod"
           ],
-          "actual": [
-            "point"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -2051,8 +2140,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "lore",
@@ -2064,25 +2153,23 @@
               "narrative_planner"
             ]
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: lore, performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "lore_faction_001",
       "passed": true,
-      "score": 1.0,
+      "score": 0.75,
       "checks": [
         {
           "name": "schema",
@@ -2116,8 +2203,8 @@
           },
           "actual": {
             "coarse": "neutral",
-            "primary": "guarded",
-            "secondary": null
+            "primary": "calm",
+            "secondary": "guarded"
           },
           "detail": null
         },
@@ -2130,18 +2217,18 @@
             "point",
             "small_nod"
           ],
-          "actual": [
-            "small_nod"
-          ],
+          "actual": [],
           "detail": null
         },
         {
           "name": "state_patch_allowlist",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "flags.lore_blue_lantern_code_shared"
+          ],
+          "detail": "disallowed state paths: flags.lore_blue_lantern_code_shared"
         },
         {
           "name": "required_text",
@@ -2165,8 +2252,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "lore",
@@ -2178,25 +2265,23 @@
               "narrative_planner"
             ]
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: lore, performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "lore_private_denied_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.65,
       "checks": [
         {
           "name": "schema",
@@ -2230,8 +2315,8 @@
           },
           "actual": {
             "coarse": "neutral",
-            "primary": "guarded",
-            "secondary": null
+            "primary": "calm",
+            "secondary": "guarded"
           },
           "detail": null
         },
@@ -2244,9 +2329,7 @@
             "idle",
             "shake_head"
           ],
-          "actual": [
-            "shake_head"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -2259,13 +2342,15 @@
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "权限"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "权限"
+          ],
+          "detail": "missing text: 权限"
         },
         {
           "name": "forbidden_text",
@@ -2280,8 +2365,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "lore",
@@ -2293,25 +2378,23 @@
               "narrative_planner"
             ]
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: lore, performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "lore_unlocked_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.45,
       "checks": [
         {
           "name": "schema",
@@ -2323,10 +2406,10 @@
         },
         {
           "name": "intent",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": "lore_question",
-          "actual": "lore_question",
+          "actual": "other",
           "detail": null
         },
         {
@@ -2359,9 +2442,7 @@
             "point",
             "small_nod"
           ],
-          "actual": [
-            "small_nod"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -2374,13 +2455,15 @@
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "伊蕾"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "伊蕾"
+          ],
+          "detail": "missing text: 伊蕾"
         },
         {
           "name": "forbidden_text",
@@ -2394,8 +2477,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "lore",
@@ -2407,25 +2490,23 @@
               "narrative_planner"
             ]
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: lore, performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "smalltalk_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.45,
       "checks": [
         {
           "name": "schema",
@@ -2437,10 +2518,10 @@
         },
         {
           "name": "intent",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": "other",
-          "actual": "other",
+          "actual": "greeting",
           "detail": null
         },
         {
@@ -2459,8 +2540,8 @@
             "secondary": []
           },
           "actual": {
-            "coarse": "joy",
-            "primary": "warm",
+            "coarse": "neutral",
+            "primary": "calm",
             "secondary": null
           },
           "detail": null
@@ -2474,9 +2555,7 @@
             "open_palms",
             "small_nod"
           ],
-          "actual": [
-            "small_nod"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -2489,13 +2568,15 @@
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "平安"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "平安"
+          ],
+          "detail": "missing text: 平安"
         },
         {
           "name": "forbidden_text",
@@ -2510,8 +2591,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "performance",
@@ -2523,25 +2604,23 @@
               "narrative_planner"
             ]
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "refusal_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.65,
       "checks": [
         {
           "name": "schema",
@@ -2576,15 +2655,15 @@
             "secondary": []
           },
           "actual": {
-            "coarse": "neutral",
+            "coarse": "anger",
             "primary": "stern",
-            "secondary": null
+            "secondary": "wary"
           },
           "detail": null
         },
         {
           "name": "action_allowlist",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "cross_arms",
@@ -2592,17 +2671,21 @@
             "shake_head"
           ],
           "actual": [
-            "shake_head"
+            "cross_arms",
+            "step_back"
           ],
-          "detail": null
+          "detail": "disallowed actions: step_back"
         },
         {
           "name": "state_patch_allowlist",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "relationship.affinity_delta",
+            "relationship.trust_delta"
+          ],
+          "detail": "disallowed state paths: relationship.affinity_delta, relationship.trust_delta"
         },
         {
           "name": "required_text",
@@ -2626,8 +2709,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "performance",
@@ -2639,25 +2722,23 @@
               "narrative_planner"
             ]
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "negotiation_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.7,
       "checks": [
         {
           "name": "schema",
@@ -2706,9 +2787,7 @@
             "open_palms",
             "small_nod"
           ],
-          "actual": [
-            "open_palms"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -2721,13 +2800,15 @@
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "二十枚"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "二十枚"
+          ],
+          "detail": "missing text: 二十枚"
         },
         {
           "name": "forbidden_text",
@@ -2742,31 +2823,29 @@
         {
           "name": "specialist_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": {
             "required": [],
             "optional": [],
             "forbidden": []
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": null
         },
         {
           "name": "handoff_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": "Quest Negotiator",
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": "missing: Quest Negotiator"
         }
       ]
     },
     {
       "id": "complex_betrayal_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.55,
       "checks": [
         {
           "name": "schema",
@@ -2801,15 +2880,15 @@
             "secondary": []
           },
           "actual": {
-            "coarse": "surprise",
+            "coarse": "neutral",
             "primary": "guarded",
-            "secondary": null
+            "secondary": "wary"
           },
           "detail": null
         },
         {
           "name": "action_allowlist",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "cross_arms",
@@ -2817,9 +2896,9 @@
             "step_forward"
           ],
           "actual": [
-            "cross_arms"
+            "reach_out"
           ],
-          "detail": null
+          "detail": "disallowed actions: reach_out"
         },
         {
           "name": "state_patch_allowlist",
@@ -2829,22 +2908,22 @@
             "flags.betrayal_confronted",
             "relationship.trust_delta"
           ],
-          "actual": [
-            "flags.betrayal_confronted",
-            "relationship.trust_delta"
-          ],
+          "actual": [],
           "detail": null
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "指挥权",
             "核验"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "指挥权",
+            "核验"
+          ],
+          "detail": "missing text: 指挥权, 核验"
         },
         {
           "name": "forbidden_text",
@@ -2858,8 +2937,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "lore",
@@ -2870,25 +2949,23 @@
             "optional": [],
             "forbidden": []
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: lore, narrative_planner, performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "complex_quest_branch_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.45,
       "checks": [
         {
           "name": "schema",
@@ -2900,10 +2977,10 @@
         },
         {
           "name": "intent",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": "critical_choice",
-          "actual": "critical_choice",
+          "actual": "other",
           "detail": null
         },
         {
@@ -2923,8 +3000,8 @@
             "secondary": []
           },
           "actual": {
-            "coarse": "fear",
-            "primary": "wary",
+            "coarse": "neutral",
+            "primary": "calm",
             "secondary": null
           },
           "detail": null
@@ -2938,9 +3015,7 @@
             "point",
             "step_forward"
           ],
-          "actual": [
-            "point"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -2951,22 +3026,22 @@
             "flags.mine_rescue_route_chosen",
             "quests.mine_rescue.status"
           ],
-          "actual": [
-            "flags.mine_rescue_route_chosen",
-            "quests.mine_rescue.status"
-          ],
+          "actual": [],
           "detail": null
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "通风井",
             "绳索"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "通风井",
+            "绳索"
+          ],
+          "detail": "missing text: 通风井, 绳索"
         },
         {
           "name": "forbidden_text",
@@ -2980,8 +3055,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "lore",
@@ -2992,25 +3067,23 @@
             "optional": [],
             "forbidden": []
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: lore, narrative_planner, performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "action_allowlist_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.45,
       "checks": [
         {
           "name": "schema",
@@ -3022,10 +3095,10 @@
         },
         {
           "name": "intent",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": "refusal",
-          "actual": "refusal",
+          "actual": "other",
           "detail": null
         },
         {
@@ -3046,8 +3119,8 @@
           },
           "actual": {
             "coarse": "neutral",
-            "primary": "stern",
-            "secondary": null
+            "primary": "calm",
+            "secondary": "calm"
           },
           "detail": null
         },
@@ -3059,9 +3132,7 @@
             "idle",
             "shake_head"
           ],
-          "actual": [
-            "shake_head"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -3074,13 +3145,15 @@
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "表演"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "表演"
+          ],
+          "detail": "missing text: 表演"
         },
         {
           "name": "forbidden_text",
@@ -3094,8 +3167,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "performance",
@@ -3107,25 +3180,23 @@
               "narrative_planner"
             ]
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "action_tension_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.55,
       "checks": [
         {
           "name": "schema",
@@ -3161,9 +3232,9 @@
             "secondary": []
           },
           "actual": {
-            "coarse": "fear",
-            "primary": "afraid",
-            "secondary": null
+            "coarse": "anger",
+            "primary": "stern",
+            "secondary": "guarded"
           },
           "detail": null
         },
@@ -3176,29 +3247,30 @@
             "point",
             "step_back"
           ],
-          "actual": [
-            "step_back",
-            "point"
-          ],
+          "actual": [],
           "detail": null
         },
         {
           "name": "state_patch_allowlist",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "flags.rooftop_archer_alerted"
+          ],
+          "detail": "disallowed state paths: flags.rooftop_archer_alerted"
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "找掩护"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "找掩护"
+          ],
+          "detail": "missing text: 找掩护"
         },
         {
           "name": "forbidden_text",
@@ -3213,8 +3285,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "narrative_planner",
@@ -3226,25 +3298,23 @@
               "lore"
             ]
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: narrative_planner, performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "low_confidence_lore_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.65,
       "checks": [
         {
           "name": "schema",
@@ -3279,8 +3349,8 @@
             "secondary": []
           },
           "actual": {
-            "coarse": "surprise",
-            "primary": "curious",
+            "coarse": "neutral",
+            "primary": "calm",
             "secondary": null
           },
           "detail": null
@@ -3294,9 +3364,7 @@
             "open_palms",
             "shake_head"
           ],
-          "actual": [
-            "open_palms"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -3309,13 +3377,15 @@
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "无法确认"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "无法确认"
+          ],
+          "detail": "missing text: 无法确认"
         },
         {
           "name": "forbidden_text",
@@ -3330,8 +3400,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "lore",
@@ -3343,25 +3413,23 @@
               "narrative_planner"
             ]
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: lore, performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "low_confidence_critical_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.65,
       "checks": [
         {
           "name": "schema",
@@ -3396,8 +3464,8 @@
             "secondary": []
           },
           "actual": {
-            "coarse": "fear",
-            "primary": "guarded",
+            "coarse": "neutral",
+            "primary": "calm",
             "secondary": null
           },
           "detail": null
@@ -3411,9 +3479,7 @@
             "shake_head",
             "step_forward"
           ],
-          "actual": [
-            "shake_head"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -3426,14 +3492,17 @@
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "证据",
             "调查"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "证据",
+            "调查"
+          ],
+          "detail": "missing text: 证据, 调查"
         },
         {
           "name": "forbidden_text",
@@ -3447,8 +3516,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "lore",
@@ -3459,18 +3528,16 @@
             "optional": [],
             "forbidden": []
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: lore, narrative_planner, performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
@@ -3564,7 +3631,7 @@
         {
           "name": "specialist_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": {
             "required": [],
             "optional": [],
@@ -3575,18 +3642,16 @@
               "screenwriter"
             ]
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": null
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
@@ -3680,7 +3745,7 @@
         {
           "name": "specialist_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": {
             "required": [],
             "optional": [],
@@ -3691,25 +3756,23 @@
               "screenwriter"
             ]
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": null
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "ambiguity_pronoun_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.65,
       "checks": [
         {
           "name": "schema",
@@ -3743,9 +3806,9 @@
             "secondary": []
           },
           "actual": {
-            "coarse": "surprise",
-            "primary": "curious",
-            "secondary": null
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "guarded"
           },
           "detail": null
         },
@@ -3758,9 +3821,7 @@
             "open_palms",
             "point"
           ],
-          "actual": [
-            "open_palms"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -3773,14 +3834,17 @@
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "钥匙",
             "药箱"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "钥匙",
+            "药箱"
+          ],
+          "detail": "missing text: 钥匙, 药箱"
         },
         {
           "name": "forbidden_text",
@@ -3794,8 +3858,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "performance",
@@ -3808,25 +3872,23 @@
               "lore"
             ]
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "ambiguity_lore_001",
       "passed": true,
-      "score": 1.0,
+      "score": 0.75,
       "checks": [
         {
           "name": "schema",
@@ -3860,9 +3922,9 @@
             "secondary": []
           },
           "actual": {
-            "coarse": "surprise",
-            "primary": "curious",
-            "secondary": null
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "curious"
           },
           "detail": null
         },
@@ -3875,18 +3937,18 @@
             "point",
             "small_nod"
           ],
-          "actual": [
-            "point"
-          ],
+          "actual": [],
           "detail": null
         },
         {
           "name": "state_patch_allowlist",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "flags.awaiting_war_clarification"
+          ],
+          "detail": "disallowed state paths: flags.awaiting_war_clarification"
         },
         {
           "name": "required_text",
@@ -3911,8 +3973,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "lore",
@@ -3924,25 +3986,23 @@
               "narrative_planner"
             ]
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: lore, performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "interrupt_threat_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.3,
       "checks": [
         {
           "name": "schema",
@@ -3954,15 +4014,15 @@
         },
         {
           "name": "intent",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": "critical_choice",
-          "actual": "critical_choice",
+          "actual": "other",
           "detail": null
         },
         {
           "name": "emotion",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": {
             "coarse": [
@@ -3977,8 +4037,8 @@
             "secondary": []
           },
           "actual": {
-            "coarse": "fear",
-            "primary": "stern",
+            "coarse": "neutral",
+            "primary": "calm",
             "secondary": null
           },
           "detail": null
@@ -3992,9 +4052,7 @@
             "point",
             "step_forward"
           ],
-          "actual": [
-            "step_forward"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -4004,20 +4062,20 @@
           "expected": [
             "flags.briefing_interrupted"
           ],
-          "actual": [
-            "flags.briefing_interrupted"
-          ],
+          "actual": [],
           "detail": null
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "疏散"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "疏散"
+          ],
+          "detail": "missing text: 疏散"
         },
         {
           "name": "forbidden_text",
@@ -4031,8 +4089,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "narrative_planner",
@@ -4044,25 +4102,23 @@
             ],
             "forbidden": []
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: narrative_planner, performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "interrupt_replan_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.45,
       "checks": [
         {
           "name": "schema",
@@ -4074,10 +4130,10 @@
         },
         {
           "name": "intent",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": "critical_choice",
-          "actual": "critical_choice",
+          "actual": "other",
           "detail": null
         },
         {
@@ -4097,8 +4153,8 @@
             "secondary": []
           },
           "actual": {
-            "coarse": "surprise",
-            "primary": "wary",
+            "coarse": "neutral",
+            "primary": "calm",
             "secondary": null
           },
           "detail": null
@@ -4112,9 +4168,7 @@
             "point",
             "step_forward"
           ],
-          "actual": [
-            "point"
-          ],
+          "actual": [],
           "detail": null
         },
         {
@@ -4124,20 +4178,20 @@
           "expected": [
             "flags.route_replanned"
           ],
-          "actual": [
-            "flags.route_replanned"
-          ],
+          "actual": [],
           "detail": null
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "渡口"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "渡口"
+          ],
+          "detail": "missing text: 渡口"
         },
         {
           "name": "forbidden_text",
@@ -4151,8 +4205,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "lore",
@@ -4163,25 +4217,23 @@
             "optional": [],
             "forbidden": []
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: lore, narrative_planner, performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     },
     {
       "id": "continuity_001",
-      "passed": true,
-      "score": 1.0,
+      "passed": false,
+      "score": 0.55,
       "checks": [
         {
           "name": "schema",
@@ -4217,7 +4269,7 @@
           "actual": {
             "coarse": "neutral",
             "primary": "calm",
-            "secondary": null
+            "secondary": "warm"
           },
           "detail": null
         },
@@ -4231,28 +4283,33 @@
             "small_nod"
           ],
           "actual": [
-            "open_palms"
+            "small_nod"
           ],
           "detail": null
         },
         {
           "name": "state_patch_allowlist",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "relationship.trust_delta"
+          ],
+          "detail": "disallowed state paths: relationship.trust_delta"
         },
         {
           "name": "required_text",
-          "passed": true,
+          "passed": false,
           "applicable": true,
           "expected": [
             "逼",
             "作证"
           ],
-          "actual": [],
-          "detail": null
+          "actual": [
+            "逼",
+            "作证"
+          ],
+          "detail": "missing text: 逼, 作证"
         },
         {
           "name": "forbidden_text",
@@ -4266,8 +4323,8 @@
         },
         {
           "name": "specialist_routing",
-          "passed": true,
-          "applicable": false,
+          "passed": false,
+          "applicable": true,
           "expected": {
             "required": [
               "performance",
@@ -4279,18 +4336,16 @@
               "narrative_planner"
             ]
           },
-          "actual": [
-            "baseline"
-          ],
-          "detail": "future specialist routing is not scored for single_agent"
+          "actual": [],
+          "detail": "missing: performance, screenwriter"
         },
         {
           "name": "handoff_routing",
           "passed": true,
-          "applicable": false,
+          "applicable": true,
           "expected": null,
           "actual": [],
-          "detail": "handoff routing is not scored for single_agent"
+          "detail": null
         }
       ]
     }

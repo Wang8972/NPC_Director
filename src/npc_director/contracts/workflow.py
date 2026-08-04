@@ -3,14 +3,16 @@ from __future__ import annotations
 from datetime import UTC, datetime
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from npc_director.contracts.enums import (
     ApprovalStatus,
+    BodyAction,
     CheckSeverity,
     CheckStatus,
     DecisionAction,
     EngineEventType,
+    FacePreset,
     SpecialistName,
     TurnStatus,
 )
@@ -69,6 +71,20 @@ class TurnStateRecord(WorkflowContract):
     status: TurnStatus = TurnStatus.RUNNING
     request: TurnRequest
     domain_version: int | None = Field(default=None, ge=0)
+    policy_digest: str | None = Field(
+        default=None,
+        min_length=64,
+        max_length=64,
+        pattern=r"^[0-9a-f]{64}$",
+    )
+    policy_catalog_version: str | None = Field(default=None, max_length=40)
+    allowed_actions: list[BodyAction] = Field(default_factory=list)
+    allowed_faces: list[FacePreset] = Field(default_factory=list)
+    allowed_state_paths: list[str] = Field(default_factory=list, max_length=24)
+    state_tokens: list[str] = Field(default_factory=list, max_length=24)
+    max_tool_calls: int = Field(default=0, ge=0, le=8)
+    max_specialist_calls: int = Field(default=0, ge=0, le=8)
+    max_handoffs: int = Field(default=0, ge=0, le=2)
     proposal: TurnProposal | None = None
     directive: PerformanceDirective | None = None
     metrics: GenerationMetrics | None = None
@@ -79,11 +95,41 @@ class TurnStateRecord(WorkflowContract):
     response_id: str | None = None
     available_lore_refs: list[str] = Field(default_factory=list, max_length=32)
     checks: list[CheckResult] = Field(default_factory=list)
-    repair_attempts: int = Field(default=0, ge=0, le=2)
+    repair_attempts: int = Field(default=0, ge=0, le=4)
     approval_id: str | None = None
     idempotency_key: str | None = None
     created_at: datetime = Field(default_factory=utc_now)
     updated_at: datetime = Field(default_factory=utc_now)
+
+    @field_validator("allowed_state_paths")
+    @classmethod
+    def state_paths_must_be_exact_and_unique(cls, paths: list[str]) -> list[str]:
+        normalized = [path.strip() for path in paths]
+        if any(not path for path in normalized):
+            raise ValueError("allowed_state_paths must not contain blank paths")
+        wildcard_paths = sorted(path for path in normalized if any(char in path for char in "*?["))
+        if wildcard_paths:
+            raise ValueError("allowed_state_paths must be exact: " + ", ".join(wildcard_paths))
+        if len(normalized) != len(set(normalized)):
+            raise ValueError("allowed_state_paths must not contain duplicates")
+        return sorted(normalized)
+
+    @field_validator("state_tokens")
+    @classmethod
+    def state_tokens_must_be_non_blank_and_unique(cls, tokens: list[str]) -> list[str]:
+        normalized = [token.strip() for token in tokens]
+        if any(not token for token in normalized):
+            raise ValueError("state_tokens must not contain blank tokens")
+        if len(normalized) != len(set(normalized)):
+            raise ValueError("state_tokens must not contain duplicates")
+        return sorted(normalized)
+
+    @field_validator("allowed_actions", "allowed_faces")
+    @classmethod
+    def enum_capabilities_must_be_unique(cls, values: list[Any]) -> list[Any]:
+        if len(values) != len(set(values)):
+            raise ValueError("policy capabilities must not contain duplicates")
+        return values
 
 
 class ApprovalRecord(WorkflowContract):

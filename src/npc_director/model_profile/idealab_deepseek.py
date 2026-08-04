@@ -21,9 +21,9 @@ _THROTTLING_MARKERS = ("MPE-429", "Throttling", "限流")
 # Known limitation (live-probed 2025-07): with tools + structured output (output_type)
 # combined, deepseek-v4-pro via idealab skips tool calls and emits the final JSON
 # directly; with plain-text output the same model calls tools normally. The gateway
-# adapter therefore reports supports_tools_with_structured_output=False, which makes
-# the executor run two-phase generation (plain-text orchestration + structured
-# summarization). The routing disciplines below remain as prompt-level reinforcement.
+# adapter therefore reports supports_tools_with_structured_output=False. The legacy
+# ReAct executor then uses two-phase generation (plain-text orchestration + structured
+# summarization); production bounded orchestration avoids this tool/output combination.
 _DIRECTOR_ADDENDUM = """
 针对当前模型的强制路由纪律（在上述规则基础上必须执行）：
 A. 每个回合都必须真实调用工具，至少依次调用 screenwriter 和 performance_specialist；

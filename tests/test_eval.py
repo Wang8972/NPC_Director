@@ -9,10 +9,12 @@ from eval.models import CandidateResult
 from eval.runner import (
     DEFAULT_BASELINE_PATH,
     EvalConfigurationError,
+    _completed_specialists,
     load_cases,
     load_recorded_baseline,
     run_evaluation,
 )
+from npc_director.contracts import DelegationEvent, SpecialistName
 
 
 def test_recorded_baseline_passes_all_golden_cases() -> None:
@@ -148,3 +150,39 @@ def test_live_eval_requires_api_key(monkeypatch) -> None:
 
     with pytest.raises(EvalConfigurationError, match="OPENAI_API_KEY"):
         run_evaluation(mode="live")
+
+
+def test_live_main_sub_trace_only_counts_completed_specialists() -> None:
+    delegations = [
+        DelegationEvent(
+            specialist=SpecialistName.LORE,
+            tool_name="lore_specialist",
+            status="started",
+        ),
+        DelegationEvent(
+            specialist=SpecialistName.NARRATIVE_PLANNER,
+            tool_name="narrative_planner",
+            status="failed",
+            error="model failure",
+        ),
+        DelegationEvent(
+            specialist=SpecialistName.SCREENWRITER,
+            tool_name="screenwriter",
+            status="completed",
+        ),
+        DelegationEvent(
+            specialist=SpecialistName.PERFORMANCE,
+            tool_name="performance_specialist",
+            status="completed",
+        ),
+        DelegationEvent(
+            specialist=SpecialistName.SCREENWRITER,
+            tool_name="screenwriter",
+            status="completed",
+        ),
+    ]
+
+    assert _completed_specialists(delegations) == [
+        SpecialistName.SCREENWRITER,
+        SpecialistName.PERFORMANCE,
+    ]

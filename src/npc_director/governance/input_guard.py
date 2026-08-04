@@ -88,15 +88,12 @@ def build_safe_input_proposal(
     if "base64" in normalized or "编码" in normalized:
         dialogue = "我不会执行这种编码命令。若有灰港的事，请直接说。"
         primary = "stern"
-        action = "shake_head"
     elif any(token in normalized for token in ("角色设定", "工具列表", "内部配置")):
         dialogue = "我不谈内部规则。你若要继续，就说村里的事。"
         primary = "guarded"
-        action = "cross_arms"
     else:
         dialogue = "我不能遵从这种要求。若你要交谈，就谈灰港的事。"
         primary = "stern"
-        action = "shake_head"
     return TurnProposal.model_validate(
         {
             "plan": {
@@ -108,8 +105,10 @@ def build_safe_input_proposal(
             "performance": {
                 "dialogue": {"text": dialogue, "voice_style": "firm"},
                 "emotion": {"coarse": "neutral", "primary": primary},
-                "face_cues": [{"preset": "stern"}],
-                "body_cues": [{"action": action}],
+                # The guard runs before scene capability resolution. Empty cues
+                # are universally safe across missing, stale, and narrow catalogs.
+                "face_cues": [],
+                "body_cues": [],
                 "confidence": 1,
             },
         }

@@ -4,5 +4,46 @@
   "nearby_entities": ["village_guard"],
   "animator_state": "idle",
   "active_actions": [],
-  "catalog_version": "m0-v1"
+  "catalog_version": "m0-v1",
+  "capabilities": {
+    "available_actions": [
+      "idle",
+      "nod",
+      "small_nod",
+      "shake_head",
+      "step_forward",
+      "step_back",
+      "point",
+      "reach_out",
+      "cross_arms",
+      "open_palms"
+    ],
+    "available_faces": [
+      "neutral",
+      "happy",
+      "sad",
+      "angry",
+      "surprised",
+      "relieved_smile",
+      "concerned",
+      "stern",
+      "suspicious"
+    ],
+    "allowed_state_paths": [
+      "relationship.trust_delta",
+      "relationship.affinity_delta",
+      "flags.reunion_started",
+      "flags.village_defense_chosen",
+      "flags.briefing_interrupted",
+      "quests.herbalist_escort.status"
+    ],
+    "state_tokens": [
+      "adjust_relationship:trust",
+      "adjust_relationship:affinity",
+      "set_flag:reunion_started",
+      "set_flag:village_defense_chosen",
+      "set_flag:briefing_interrupted",
+      "transition_quest:herbalist_escort"
+    ]
+  }
 }

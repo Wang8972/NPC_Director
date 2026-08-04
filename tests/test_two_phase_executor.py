@@ -94,6 +94,15 @@ def test_two_phase_runs_summary_agent_and_overrides_specialists(tmp_path, monkey
     def responder(agent, run_input, kwargs):
         if agent is PHASE_ONE_AGENT:
             hooks = kwargs["hooks"]
+            hooks.delegations.append(
+                DelegationEvent(
+                    specialist=SpecialistName.NARRATIVE_PLANNER,
+                    tool_name="narrative_planner",
+                    call_id="unfinished-call",
+                    input_payload="{}",
+                    status="started",
+                )
+            )
             for specialist, tool_name in (
                 (SpecialistName.SCREENWRITER, "screenwriter"),
                 (SpecialistName.PERFORMANCE, "performance_specialist"),
@@ -127,6 +136,29 @@ def test_two_phase_runs_summary_agent_and_overrides_specialists(tmp_path, monkey
     assert result.metrics.input_tokens == 20
     assert result.metrics.output_tokens == 10
     assert result.metrics.total_tokens == 30
+
+
+def test_legacy_hooks_honor_narrower_per_turn_budgets(tmp_path, monkeypatch) -> None:
+    settings = make_settings(tmp_path, model="gpt-4.1-mini")
+    captured_hooks = []
+
+    def responder(agent, run_input, kwargs):
+        captured_hooks.append(kwargs["hooks"])
+        return FakeRunResult(make_proposal())
+
+    install_fake_runner(monkeypatch, [], responder)
+    turn_input = make_director_input().model_copy(
+        update={
+            "max_tool_calls": 2,
+            "max_specialist_calls": 3,
+            "max_handoffs": 0,
+        }
+    )
+
+    asyncio.run(build_executor(settings).generate(turn_input))
+
+    assert captured_hooks[0].max_specialist_calls == 2
+    assert captured_hooks[0].max_handoffs == 0
 
 
 def test_default_profile_stays_single_phase(tmp_path, monkeypatch) -> None:

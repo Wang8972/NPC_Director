@@ -190,6 +190,15 @@ def _coerce_live_result(
     )
 
 
+def _completed_specialists(delegations: Sequence[Any]) -> list[SpecialistName]:
+    completed: list[SpecialistName] = []
+    for event in delegations:
+        if event.status != "completed" or event.specialist in completed:
+            continue
+        completed.append(event.specialist)
+    return completed
+
+
 def _load_live_runner() -> Callable[[TurnRequest], Awaitable[Any] | Any]:
     try:
         from npc_director.orchestration.run_turn import run_turn
@@ -214,9 +223,7 @@ async def _pace_live_cases() -> None:
 async def _call_with_throttle_retry(invoke: Callable[[], Awaitable[Any]]) -> Any:
     """Retry transient gateway failures using the active model profile's policy."""
     retry_policy = get_active_profile().retry
-    attempts = int(
-        os.getenv("NPC_DIRECTOR_EVAL_THROTTLE_RETRIES", str(retry_policy.max_attempts))
-    )
+    attempts = int(os.getenv("NPC_DIRECTOR_EVAL_THROTTLE_RETRIES", str(retry_policy.max_attempts)))
     backoff_override = os.getenv("NPC_DIRECTOR_EVAL_THROTTLE_BACKOFF_SECONDS", "").strip()
     for attempt in range(attempts + 1):
         try:
@@ -288,6 +295,7 @@ async def _run_live_main_sub_cases(cases: Sequence[EvalCase]) -> list[CandidateR
         context_builder = DefaultContextBuilder(
             lore_retriever=lore_retriever,
             character_root=settings.character_path,
+            settings=settings,
             lore_top_k=settings.lore_top_k,
             lore_token_budget=settings.lore_token_budget,
             history_limit=settings.context_history_limit,
@@ -330,7 +338,7 @@ async def _run_live_main_sub_cases(cases: Sequence[EvalCase]) -> list[CandidateR
                         id=case.id,
                         proposal=proposal,
                         metrics=result.metrics,
-                        specialists_called=[event.specialist for event in result.delegations],
+                        specialists_called=_completed_specialists(result.delegations),
                         handoffs=result.handoffs,
                     )
                 )

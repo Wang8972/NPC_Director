@@ -118,6 +118,14 @@ class DirectorContextBuilder:
         lore_scopes: Sequence[str] = ("public",),
         allowed_actions: Sequence[BodyAction] = (BodyAction.IDLE,),
         allowed_faces: Sequence[FacePreset] = (FacePreset.NEUTRAL,),
+        allowed_state_paths: Sequence[str] = (),
+        state_tokens: Sequence[str] = (),
+        response_obligations: Sequence[str] = (),
+        policy_digest: str | None = None,
+        catalog_version: str | None = None,
+        max_tool_calls: int = 4,
+        max_specialist_calls: int = 4,
+        max_handoffs: int = 1,
         scene_summary: str | None = None,
     ) -> DirectorInput:
         combined_world_state = _join_limited(
@@ -143,6 +151,14 @@ class DirectorContextBuilder:
             lore_scopes=list(lore_scopes),
             allowed_actions=list(allowed_actions),
             allowed_faces=list(allowed_faces),
+            allowed_state_paths=list(allowed_state_paths),
+            state_tokens=list(state_tokens),
+            response_obligations=list(response_obligations),
+            policy_digest=policy_digest,
+            catalog_version=catalog_version,
+            max_tool_calls=max_tool_calls,
+            max_specialist_calls=max_specialist_calls,
+            max_handoffs=max_handoffs,
         )
         return self._record(request.turn_id, ContextAudience.DIRECTOR, model)
 
@@ -154,6 +170,7 @@ class DirectorContextBuilder:
         current_quest_summary: str = "",
         relationship_summary: str = "",
         relevant_flags: Sequence[str] = (),
+        allowed_state_paths: Sequence[str] = (),
         turn_id: str = "unbound",
     ) -> NarrativeInput:
         model = NarrativeInput(
@@ -162,6 +179,7 @@ class DirectorContextBuilder:
             current_quest_summary=current_quest_summary,
             relationship_summary=relationship_summary,
             relevant_flags=list(relevant_flags),
+            allowed_state_paths=list(allowed_state_paths),
         )
         return self._record(turn_id, ContextAudience.NARRATIVE_PLANNER, model)
 
@@ -192,6 +210,7 @@ class DirectorContextBuilder:
         narrative_constraints: Sequence[str] = (),
         lore_evidence: LoreRetrievalResult | LoreEvidence | Sequence[LoreEvidenceItem] = (),
         recent_history: Sequence[str] = (),
+        response_obligations: Sequence[str] = (),
         turn_id: str = "unbound",
     ) -> ScreenwriterInput:
         model = ScreenwriterInput(
@@ -202,6 +221,7 @@ class DirectorContextBuilder:
             lore_evidence=_evidence_items(lore_evidence),
             recent_history=list(recent_history),
             player_input=player_input,
+            response_obligations=list(response_obligations),
         )
         return self._record(turn_id, ContextAudience.SCREENWRITER, model)
 

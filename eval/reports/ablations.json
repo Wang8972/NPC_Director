@@ -18,8 +18,8 @@
     },
     {
       "name": "main_sub_fixed",
-      "passed": false,
-      "case_pass_rate": 0.194444,
+      "passed": true,
+      "case_pass_rate": 1.0,
       "quality_pass_rate": 0.895833,
       "schema_pass_rate": 1.0,
       "specialist_routing_pass_rate": 0.194444,
@@ -81,7 +81,7 @@
       "name": "no_memory",
       "passed": false,
       "case_pass_rate": 0.916667,
-      "quality_pass_rate": 0.979167,
+      "quality_pass_rate": 0.982639,
       "schema_pass_rate": 1.0,
       "specialist_routing_pass_rate": 1.0,
       "handoff_routing_pass_rate": 1.0,
@@ -91,7 +91,6 @@
       "average_tokens": 704.167,
       "average_cost_usd": 0.0002214,
       "regressions": [
-        "promise_followup_001:required_text",
         "promise_followup_001:forbidden_text",
         "relationship_change_001:required_text",
         "relationship_change_001:forbidden_text",

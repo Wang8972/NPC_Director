@@ -17,7 +17,8 @@ NARRATIVE_INSTRUCTIONS = """
 3. 按当前任务、关系摘要和 relevant_flags 给出最短可执行目标与连续编号的 beats。
 4. proposed_state_changes 只是待治理层审核的建议，不得声称已写入任务、关系或世界状态。
 5. 不得虚构输入中没有的世界观事实；信息不足时把限制写入 constraints。
-6. 状态变化应克制、最小化，并严格使用契约允许的字段。
+6. 状态变化应克制、最小化，只能使用 allowed_state_paths 明确列出的路径；列表为空时必须
+   返回空 proposed_state_changes，不得自行创造 flag 或 quest id。
 """.strip()
 
 

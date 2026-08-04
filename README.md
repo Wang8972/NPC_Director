@@ -1,8 +1,8 @@
 # NPC Director
 
-面向 Unity 的 NPC 演出编排系统。Director 使用 OpenAI Agents SDK 按需调用剧情、Lore、
-台词和演出 Specialist；确定性 Workflow 负责安全、权限、HITL、状态提交、回放、outbox
-和 Unity 副作用。
+面向 Unity 的 NPC 演出编排系统。Semantic Router 使用 OpenAI Agents SDK 理解回合语义，
+受约束的动态 DAG 按需调用剧情、Lore、台词和演出 Specialist；确定性 Workflow 负责权限、
+预算、组装、安全、HITL、状态提交、回放、outbox 和 Unity 副作用。
 
 本文档同时是面向游戏研发工程师的**接入操作手册**，按以下顺序阅读即可独立完成系统接入：
 
@@ -40,7 +40,7 @@ M0–M6 的代码与离线阶段门均已完成：
 |---|---|---|
 | M0 | Pydantic 单一契约源、动作/表情目录、Console/HTML 假引擎 | 离线通过 |
 | M1 | 单 Agent baseline、golden baseline、自动 diff、系统指标 | 离线通过 |
-| M2 | Director + 4 Specialists、Agents-as-tools、动态预算、Quest Negotiator Handoff | 离线通过 |
+| M2 | Semantic Router + 3 个模型 Specialist + Runtime Lore、受约束动态 DAG、Quest Negotiator Handoff | 离线通过 |
 | M3 | SQLite 状态/Event/HITL/outbox、治理检查、限次 repair、两阶段提交 | 离线通过 |
 | M4 | 36 条 Eval、5 组消融、judge 校准、回放、trace 转 regression | 离线通过 |
 | M5 | FastAPI/WebSocket、Unity C# 客户端、白名单、TTS 接口、打断和重连去重 | 协议测试通过 |
@@ -51,10 +51,12 @@ recorded baseline 与离线压力数据用于验证评测和治理链路，不�
 
 ### 1.3 核心边界
 
-- 模型只输出 `TurnProposal` / `PerformanceDraft`；可信身份、真实调用链和 prompt 版本由
-  Finalizer 写入 `PerformanceDirective.runtime_meta`。
-- Director 默认通过 Agents-as-tools 保持控制权；只有任务条件或报酬谈判才 Handoff 给
-  `Quest Negotiator`，每回合最多一次。
+- 模型节点只输出各自的 typed contract，不直接生成可信运行时字段或驱动 Unity；
+  Finalizer 把真实调用链和 prompt 版本写入 `PerformanceDirective.runtime_meta`。
+- 生产默认由 Main Agent 输出语义 `RouteDecision`，Runtime 在可信预算和依赖图内动态执行；
+  只有任务条件或报酬谈判才 Handoff 给 `Quest Negotiator`，每回合最多一次。
+- 普通分支通过 typed artifact 传递材料，最终 `TurnProposal` 由确定性 Assembler 组装；
+  谈判 handoff 走专用 sanitizer。状态路径、动作、表情和真实调用轨迹不由模型自报。
 - 玩家输入是 user payload 中的不可信数据；命中 prompt injection 后不调用任何创作 Agent。
 - Backend Domain State 是业务真源，不信任 Unity 上报的 world flags 或客户端角色核心。
 - 状态建议仅在 Unity `performance.completed` 后提交；ACK 前 turn 保持 `ready_to_emit`。
@@ -79,8 +81,8 @@ recorded baseline 与离线压力数据用于验证评测和治理链路，不�
 ┌─────────────────────────────────────────────────────────────┐
 │ 确定性 Workflow  (src/npc_director/orchestration)           │
 │  1. 输入防护（prompt injection 检测）                        │
-│  2. 上下文构建（角色核心 + 记忆 + JIT RAG Lore + 历史压缩） │
-│  3. 调用 Director Agent                                     │
+│  2. 上下文与 TurnPolicy（角色 + 记忆 + 权限 + 历史压缩）     │
+│  3. Semantic Router → 受约束动态 DAG                         │
 │  4. 治理检查（安全/Lore/人设/状态权限/schema）              │
 │  5. 决策：emit / repair(限次) / require_approval / reject   │
 │  6. Finalizer 注入 runtime_meta → PerformanceDirective      │
@@ -88,12 +90,14 @@ recorded baseline 与离线压力数据用于验证评测和治理链路，不�
 └──────┬──────────────────────────────────────┬───────────────┘
        ▼                                      ▼
 ┌────────────────────────┐        ┌───────────────────────────┐
-│ Director Agent         │        │ SQLite 状态层             │
-│ (Agents-as-tools)      │        │ (src/npc_director/state)  │
-│ ├─ Narrative Planner   │        │  domain / session / turn  │
-│ ├─ Lore Specialist     │        │  approvals / events       │
+│ Bounded Main-sub DAG   │        │ SQLite 状态层             │
+│ Semantic Router        │        │ (src/npc_director/state)  │
+│ ├─ Narrative（可选）   │        │  domain / session / turn  │
+│ ├─ Runtime Lore（可选）│        │  approvals / events       │
 │ ├─ Screenwriter        │        │  outbox / 长期记忆        │
 │ ├─ Performance         │        └───────────────────────────┘
+│ ├─ Deterministic       │
+│ │  Assembler           │
 │ └─ Handoff: Quest      │
 │    Negotiator (≤1/回合)│
 └────────────────────────┘
@@ -113,9 +117,9 @@ recorded baseline 与离线压力数据用于验证评测和治理链路，不�
 | 目录 | 组件 | 职责 |
 |---|---|---|
 | `src/npc_director/contracts/` | 契约层 | Pydantic 单一契约源：`TurnRequest`、`TurnProposal`、`PerformanceDirective`、协议消息、枚举（动作/表情/情绪/凝视）。Agent、治理、eval、API、Unity 全部依赖这一份定义 |
-| `src/npc_director/agents/` | Agent 层 | `director.py` 主导演 Agent，通过 Agents-as-tools 按需调用 `specialists/` 下的剧情、Lore、台词、演出 Specialist；`handoffs.py` 定义 Quest Negotiator 交接；`baseline.py` 为单 Agent 对照实现 |
+| `src/npc_director/agents/` | Agent 层 | `router.py` 只负责语义路由；`specialists/` 分别负责剧情、台词和演出；Lore 由 Runtime 按 Router 查询执行可信检索；`handoffs.py` 定义 Quest Negotiator；`director.py` 保留给 legacy ReAct 消融 |
 | `src/npc_director/governance/` | 治理层 | 确定性检查：`input_guard.py`（注入检测）、`safety_check.py`、`lore_check.py`、`persona_check.py`、`permissions.py`（状态 patch/工具白名单，fnmatch 通配）、`finalizer.py`（决策 emit/repair/审批/拒绝并注入可信 `runtime_meta`） |
-| `src/npc_director/orchestration/` | 编排层 | `run_turn.py` 单回合流水线；`service.py` 组装默认 Main-sub 服务（`build_default_service`）；`executor.py` 执行与重试；`context_adapter.py` 衔接上下文 |
+| `src/npc_director/orchestration/` | 编排层 | `bounded_executor.py` 执行受约束动态 DAG；`turn_policy.py` 解析能力与预算；`assembler.py` 编译路由并确定性组装；`executor.py` 提供重试、降级和 legacy ReAct 开关；`service.py` 负责治理与状态生命周期 |
 | `src/npc_director/state/` | 状态层 | SQLite 持久化：`domain_store.py` 业务真源（关系/flag/任务）、`turn_store.py` 回合记录、`approvals.py` HITL 审批、`event_log.py` 事件、`outbox.py` at-least-once 投递、`memory_store.py` 长期记忆 |
 | `src/npc_director/context/` | 上下文层 | `builder.py` 组装 Agent 上下文；`compaction.py` 历史压缩；`memory.py` 记忆读写策略 |
 | `src/npc_director/rag/` | 检索层 | `index.py` BM25 索引、`retriever.py` 权限过滤后的 JIT Lore 检索（受 top-k / token 预算 / TTL 缓存约束） |
@@ -451,8 +455,9 @@ python -m scripts.run_turn data/examples/reunion_request.json --html
 | `NPC_DIRECTOR_MODEL` | 空 | — | 全局模型；留空用 Agents SDK 默认模型 |
 | `NPC_DIRECTOR_MODEL_PROFILE` | 空 | `default` / `idealab_deepseek` / `idealab_qwen` | 模型定制 profile（见 4.3）；留空按模型名自动推断 |
 | `NPC_DIRECTOR_DIRECTOR_MODEL` 等 | 空 | — | 按角色覆盖模型（见 4.2） |
-| `NPC_DIRECTOR_TIMEOUT_SECONDS` | 30 | >0 | 单次模型调用超时 |
-| `NPC_DIRECTOR_MAX_TURNS` | 4 | ≥1 | Agent loop 最大轮次 |
+| `NPC_DIRECTOR_ORCHESTRATION_MODE` | `bounded` | `bounded` / `react` | 生产默认使用受约束动态 DAG；`react` 仅用于 legacy 消融 |
+| `NPC_DIRECTOR_TIMEOUT_SECONDS` | 30 | >0 | 单次 executor 调用的总超时（bounded 为整张回合 DAG） |
+| `NPC_DIRECTOR_MAX_TURNS` | 4 | ≥1 | legacy react Agent loop 最大轮次；bounded 模型节点固定单轮 |
 | `NPC_DIRECTOR_MAX_SPECIALIST_CALLS` | 4 | 1–8 | 每回合 Specialist 调用上限 |
 | `NPC_DIRECTOR_MAX_HANDOFFS` | 1 | 0–2 | 每回合 Handoff 上限 |
 | `NPC_DIRECTOR_MAX_REPAIR_ATTEMPTS` | 2 | 0–4 | 治理失败后限次修复次数 |
@@ -484,9 +489,9 @@ export NPC_DIRECTOR_MODEL="..."  # 留空则使用 Agents SDK 默认模型
 可按角色分别配置模型，未配置的角色回落到 `NPC_DIRECTOR_MODEL`：
 
 ```bash
-export NPC_DIRECTOR_DIRECTOR_MODEL="..."      # Director 主编排
+export NPC_DIRECTOR_DIRECTOR_MODEL="..."      # Semantic Router（react 模式下为 Director）
 export NPC_DIRECTOR_NARRATIVE_MODEL="..."     # 剧情规划 Specialist
-export NPC_DIRECTOR_LORE_MODEL="..."          # Lore Specialist
+export NPC_DIRECTOR_LORE_MODEL="..."          # legacy react 模式的 Lore Specialist
 export NPC_DIRECTOR_SCREENWRITER_MODEL="..."  # 台词 Specialist
 export NPC_DIRECTOR_PERFORMANCE_MODEL="..."   # 演出 Specialist
 export NPC_DIRECTOR_JUDGE_MODEL="..."         # Eval judge
@@ -507,7 +512,7 @@ export NPC_DIRECTOR_OUTPUT_COST_PER_MILLION="..."
 
 | 接口 | 职责 |
 |---|---|
-| `GatewayAdapter` | 网关适配：API 类型（chat/completions vs responses）、tracing 开关、模型名前缀透传；`supports_tools_with_structured_output` 声明网关能否同时启用 tools 与 structured output（False 时 main_sub 自动切两阶段生成，见下文） |
+| `GatewayAdapter` | 网关适配：API 类型（chat/completions vs responses）、tracing 开关、模型名前缀透传；`supports_tools_with_structured_output` 供 legacy ReAct 消融选择单阶段或两阶段生成 |
 | `RetryPolicy` | 重试错误分类与退避节奏（运行时 executor 与 eval 共用同一套判定） |
 | `PromptAdapter` | 按模型追加/变换 Director、Baseline、Specialist 指令；`version_tag` 会追加到 prompt_versions 便于审计 |
 | `ProposalNormalizer` | 进入治理检查前的确定性输出修正（不绕过任何检查） |
@@ -522,13 +527,12 @@ export NPC_DIRECTOR_OUTPUT_COST_PER_MILLION="..."
 - `idealab_qwen`：面向 idealab 网关 + qwen 系模型；复用 idealab 网关适配与限流重试，
   暂无 prompt 补丁（version_tag `idealab-qwen-v1`）。
 
-两个 idealab profile 均声明 `supports_tools_with_structured_output=False`：实测该网关上
-模型在 tools 与 structured output 同时启用时会跳过工具调用直接输出 JSON。此时 main_sub
-的 Director 自动改为两阶段生成：阶段 1 纯文本编排（tools/handoffs 照常，无 output_type）；
-阶段 2 用无工具的汇总 Agent 把阶段 1 的工具调用记录与文本汇总转写为结构化 `TurnProposal`
-（若阶段 1 的 handoff 已产出 proposal 则跳过）。两阶段共用总超时，usage 累加计入同一份
-`GenerationMetrics`；`plan.required_specialists` 以运行时 hooks 记录的实际委派轨迹覆写，
-不信模型自报。default profile（OpenAI 原生）行为零变化。
+两个 idealab profile 均声明 `supports_tools_with_structured_output=False`：实测该网关上模型在
+tools 与 structured output 同时启用时可能跳过工具。默认 `bounded` 模式把 Router、Narrative、
+Screenwriter、Performance 拆成独立的无工具结构化调用，Lore 由 Runtime 直接检索，因此不依赖
+这一组合能力，也不需要 Summary Agent 重写专家结果。若设置
+`NPC_DIRECTOR_ORCHESTRATION_MODE=react` 运行历史消融，旧 Director 会继续按 gateway capability
+选择单阶段或 two-phase 路径。
 
 选择规则：`NPC_DIRECTOR_MODEL_PROFILE` 显式指定优先；未指定时，模型名以
 `bailian/deepseek` 开头自动选 `idealab_deepseek`，以 `qwen` 开头自动选 `idealab_qwen`，
@@ -632,13 +636,12 @@ JSON 文档格式：
 
 ### 5.5 对话逻辑与状态
 
-- **意图识别**：玩家输入被分类为 `Intent`（greeting、lore_question、quest_acceptance、
-  reconciliation、insult、threat、negotiation、critical_choice、prompt_injection 等），
-  Director 据此动态决定调用哪些 Specialist（动态预算，而非固定全调用）。
+- **意图与路由**：Main Agent 输出包含 `Intent`、是否需要 Lore/Narrative、歧义与置信度的
+  `RouteDecision`；Runtime 在 TurnPolicy 预算内编译动态路径，而不是固定全调用。
 - **任务谈判**：仅 `negotiation` 类意图会触发唯一一次 Handoff 给 Quest Negotiator。
-- **状态变更**：模型只能"建议"状态变更（关系值、world flags、任务状态），路径必须命中
-  服务端 `state_patch_allowlist`（fnmatch 通配符），且仅在 Unity 上报
-  `performance.completed` 后由治理层提交到 Domain State。
+- **状态变更**：模型只能"建议"状态变更（关系值、world flags、任务状态）。路径必须命中
+  服务端场景目录解析出的精确 TurnPolicy，并随 turn 持久化；治理检查和 Unity 上报
+  `performance.completed` 后的提交使用同一份权限快照，不接受按 intent 扩大的通配授权。
 - **高危剧情**：`critical_choice` 类回合会走 HITL 审批（见 3.3），可在治理层扩展
   自定义高危规则。
 - **长期记忆**：跨会话记忆写入 SQLite `memory_store`，随上下文按需注入；历史超过

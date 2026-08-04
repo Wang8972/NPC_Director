@@ -7,6 +7,7 @@ from npc_director.contracts import (
     PerformanceDirective,
     TurnProposal,
     TurnRequest,
+    TurnStateRecord,
     extract_state_change_paths,
 )
 from npc_director.governance.finalizer import finalize_baseline_proposal
@@ -112,3 +113,19 @@ def test_finalizer_adds_trusted_runtime_meta() -> None:
     assert directive.runtime_meta.specialists_called == ["baseline"]
     assert directive.runtime_meta.trace_id == "trace-1"
     assert directive.runtime_meta.response_id == "response-1"
+
+
+def test_turn_record_supports_the_configured_repair_limit() -> None:
+    record = TurnStateRecord(
+        turn_id="session-17:42",
+        session_id="session-17",
+        npc_id="elder_maren",
+        request=valid_request(),
+        repair_attempts=4,
+    )
+
+    assert record.repair_attempts == 4
+    payload = record.model_dump(mode="python")
+    payload["repair_attempts"] = 5
+    with pytest.raises(ValidationError):
+        TurnStateRecord.model_validate(payload)

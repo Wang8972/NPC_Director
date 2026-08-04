@@ -8,7 +8,9 @@ import pytest
 from npc_director.contracts import (
     ApprovalRecord,
     ApprovalStatus,
+    BodyAction,
     DecisionAction,
+    FacePreset,
     FinalizationDecision,
     PerformanceDirective,
     TurnRequest,
@@ -62,6 +64,52 @@ async def test_turn_store_is_restart_and_worker_thread_safe(tmp_path) -> None:
     assert recovered is not None
     assert recovered.request == request
     assert recovered.status is TurnStatus.PENDING_APPROVAL
+
+
+def test_turn_store_persists_exact_policy_snapshot(tmp_path) -> None:
+    database = tmp_path / "state.db"
+    store = TurnStore(database)
+    started = store.start_turn(turn_request("session-1:policy"))
+    secured = store.save(
+        started.model_copy(
+            update={
+                "policy_digest": "a" * 64,
+                "policy_catalog_version": "m0-v1",
+                "allowed_actions": [BodyAction.IDLE, BodyAction.NOD],
+                "allowed_faces": [FacePreset.NEUTRAL, FacePreset.STERN],
+                "allowed_state_paths": [
+                    "quests.herbalist_escort.status",
+                    "flags.reunion_started",
+                ],
+                "state_tokens": [
+                    "transition_quest:herbalist_escort",
+                    "set_flag:reunion_started",
+                ],
+                "max_tool_calls": 3,
+                "max_specialist_calls": 2,
+                "max_handoffs": 1,
+            }
+        )
+    )
+    store.close()
+
+    recovered = TurnStore(database).require(secured.turn_id)
+
+    assert recovered.policy_digest == "a" * 64
+    assert recovered.policy_catalog_version == "m0-v1"
+    assert recovered.allowed_actions == [BodyAction.IDLE, BodyAction.NOD]
+    assert recovered.allowed_faces == [FacePreset.NEUTRAL, FacePreset.STERN]
+    assert recovered.allowed_state_paths == [
+        "flags.reunion_started",
+        "quests.herbalist_escort.status",
+    ]
+    assert recovered.state_tokens == [
+        "set_flag:reunion_started",
+        "transition_quest:herbalist_escort",
+    ]
+    assert recovered.max_tool_calls == 3
+    assert recovered.max_specialist_calls == 2
+    assert recovered.max_handoffs == 1
 
 
 def test_approval_actions_survive_restart(tmp_path) -> None:

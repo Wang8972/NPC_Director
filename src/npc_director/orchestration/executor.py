@@ -178,6 +178,8 @@ def build_summary_input(
 def _observed_specialists(delegations: list[DelegationEvent]) -> list[SpecialistName]:
     observed: list[SpecialistName] = []
     for event in delegations:
+        if event.status != "completed":
+            continue
         if event.specialist not in observed:
             observed.append(event.specialist)
     return observed
@@ -231,8 +233,15 @@ class OpenAIDirectorExecutor:
             messages_table="director_agent_messages",
         )
         hooks = DelegationHooks(
-            max_specialist_calls=self.settings.max_specialist_calls,
-            max_handoffs=self.settings.max_handoffs,
+            max_specialist_calls=min(
+                self.settings.max_specialist_calls,
+                director_input.max_tool_calls,
+                director_input.max_specialist_calls,
+            ),
+            max_handoffs=min(
+                self.settings.max_handoffs,
+                director_input.max_handoffs,
+            ),
         )
         agent = self._build_agent(two_phase=self._uses_two_phase())
         runtime_dependencies = AgentRuntimeDependencies(
@@ -337,10 +346,7 @@ class ResilientDirectorExecutor:
     ) -> None:
         self.settings = settings
         self.lore_retriever = lore_retriever
-        self.primary = primary or OpenAIDirectorExecutor(
-            settings,
-            lore_retriever=lore_retriever,
-        )
+        self.primary = primary or _build_primary_executor(settings, lore_retriever)
 
     async def generate(
         self,
@@ -372,10 +378,14 @@ class ResilientDirectorExecutor:
                     self.settings,
                     model=self.settings.fallback_model,
                     director_model=self.settings.fallback_model,
+                    narrative_model=self.settings.fallback_model,
+                    lore_model=self.settings.fallback_model,
+                    screenwriter_model=self.settings.fallback_model,
+                    performance_model=self.settings.fallback_model,
                 )
-                return await OpenAIDirectorExecutor(
+                return await _build_primary_executor(
                     fallback_settings,
-                    lore_retriever=self.lore_retriever,
+                    self.lore_retriever,
                 ).generate(
                     director_input,
                     repair_feedback=repair_feedback,
@@ -384,7 +394,31 @@ class ResilientDirectorExecutor:
         raise RuntimeError("retry loop ended without a result")
 
 
+def _build_primary_executor(
+    settings: Settings,
+    lore_retriever: LoreRetriever | None,
+) -> DirectorExecutor:
+    if settings.orchestration_mode == "react":
+        return OpenAIDirectorExecutor(settings, lore_retriever=lore_retriever)
+
+    # Import lazily so the bounded implementation can reuse the public
+    # DirectorExecutor contract without creating an executor import cycle.
+    from npc_director.orchestration.bounded_executor import BoundedDirectorExecutor
+
+    return BoundedDirectorExecutor(settings, lore_retriever=lore_retriever)
+
+
 def _safe_degraded_result(director_input: DirectorInput) -> DirectorRunResult:
+    body_cues = (
+        [{"action": "idle"}]
+        if any(action.value == "idle" for action in director_input.allowed_actions)
+        else []
+    )
+    face_cues = (
+        [{"preset": "neutral"}]
+        if any(face.value == "neutral" for face in director_input.allowed_faces)
+        else []
+    )
     proposal = TurnProposal.model_validate(
         {
             "plan": {
@@ -396,8 +430,8 @@ def _safe_degraded_result(director_input: DirectorInput) -> DirectorRunResult:
             "performance": {
                 "dialogue": {"text": "……请给我一点时间。"},
                 "emotion": {"coarse": "neutral", "primary": "guarded"},
-                "face_cues": [{"preset": "neutral"}],
-                "body_cues": [{"action": "idle"}],
+                "face_cues": face_cues,
+                "body_cues": body_cues,
                 "confidence": 0,
             },
         }

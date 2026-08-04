@@ -6,6 +6,7 @@ import httpx
 import pytest
 from openai import APITimeoutError
 
+import npc_director.orchestration.executor as executor_module
 from npc_director.config import Settings
 from npc_director.contracts import BodyAction, DirectorInput, FacePreset
 from npc_director.orchestration.executor import ResilientDirectorExecutor
@@ -94,3 +95,54 @@ async def test_local_turn_timeout_is_retried_and_degrades_safely() -> None:
 
     assert primary.calls == 2
     assert result.metrics.model == "safe-fallback"
+
+
+@pytest.mark.asyncio
+async def test_safe_degraded_result_respects_empty_action_and_face_policy() -> None:
+    primary = TimeoutExecutor()
+    executor = ResilientDirectorExecutor(
+        Settings(model_retry_attempts=1),
+        primary=primary,
+    )
+    constrained = director_input().model_copy(update={"allowed_actions": [], "allowed_faces": []})
+
+    result = await executor.generate(constrained)
+
+    assert result.proposal.performance.body_cues == []
+    assert result.proposal.performance.face_cues == []
+
+
+@pytest.mark.asyncio
+async def test_fallback_model_replaces_every_orchestration_role(monkeypatch) -> None:
+    captured_settings: list[Settings] = []
+
+    class FallbackExecutor:
+        async def generate(self, director_input, *, repair_feedback=None):
+            return executor_module._safe_degraded_result(director_input)
+
+    def build_fallback(settings, lore_retriever):
+        captured_settings.append(settings)
+        return FallbackExecutor()
+
+    monkeypatch.setattr(executor_module, "_build_primary_executor", build_fallback)
+    executor = ResilientDirectorExecutor(
+        Settings(
+            model="primary",
+            director_model="primary-director",
+            narrative_model="primary-narrative",
+            lore_model="primary-lore",
+            screenwriter_model="primary-screenwriter",
+            performance_model="primary-performance",
+            fallback_model="fallback",
+            model_retry_attempts=1,
+        ),
+        primary=TimeoutExecutor(),
+    )
+
+    await executor.generate(director_input())
+
+    fallback_settings = captured_settings[0]
+    assert {
+        fallback_settings.model_for(role)
+        for role in ("director", "narrative", "lore", "screenwriter", "performance")
+    } == {"fallback"}

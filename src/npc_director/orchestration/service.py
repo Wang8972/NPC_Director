@@ -10,6 +10,7 @@ from weakref import WeakValueDictionary
 
 from npc_director.agents.director import DIRECTOR_PROMPT_VERSION
 from npc_director.agents.handoffs import QUEST_NEGOTIATOR_PROMPT_VERSION
+from npc_director.agents.router import ROUTER_PROMPT_VERSION
 from npc_director.agents.specialists import (
     LORE_PROMPT_VERSION,
     NARRATIVE_PROMPT_VERSION,
@@ -24,6 +25,7 @@ from npc_director.contracts import (
     CheckSeverity,
     CheckStatus,
     DecisionAction,
+    DirectorInput,
     EngineEvent,
     EngineEventType,
     FinalizationDecision,
@@ -45,9 +47,19 @@ from npc_director.governance import (
     run_checks,
 )
 from npc_director.model_profile import get_active_profile
+from npc_director.orchestration.assembler import (
+    sanitize_handoff_proposal,
+    sanitize_proposal,
+)
 from npc_director.orchestration.context_adapter import DefaultContextBuilder
 from npc_director.orchestration.emotion_policy import correct_emotion
 from npc_director.orchestration.executor import DirectorExecutor, ResilientDirectorExecutor
+from npc_director.orchestration.turn_policy import (
+    AgentBudget,
+    PolicyDigestMismatch,
+    StateCapabilities,
+    TurnPolicy,
+)
 from npc_director.rag import CachedLoreRetriever, LexicalLoreIndex, LexicalLoreRetriever
 from npc_director.state import (
     ApprovalStore,
@@ -57,6 +69,7 @@ from npc_director.state import (
     OptimisticLockError,
     OutboxStore,
     RecordNotFoundError,
+    StatePatchPermissionError,
     TurnStore,
 )
 from npc_director.unity_adapter.base import EngineAdapter, build_idempotency_key
@@ -74,21 +87,6 @@ PROMPT_VERSION_BY_SPECIALIST = {
     SpecialistName.SCREENWRITER: SCREENWRITER_PROMPT_VERSION,
     SpecialistName.PERFORMANCE: PERFORMANCE_PROMPT_VERSION,
 }
-
-
-def state_patch_allowlist(intent: Intent) -> tuple[str, ...]:
-    return {
-        Intent.RECONCILIATION: (
-            "relationship.trust_delta",
-            "relationship.affinity_delta",
-            "flags.reunion_started",
-        ),
-        Intent.GRATITUDE: ("relationship.affinity_delta",),
-        Intent.INSULT: ("relationship.affinity_delta", "relationship.trust_delta"),
-        Intent.THREAT: ("relationship.trust_delta", "relationship.affinity_delta"),
-        Intent.QUEST_ACCEPTANCE: ("quests.*.status",),
-        Intent.CRITICAL_CHOICE: ("flags.*", "quests.*.status"),
-    }.get(intent, ())
 
 
 class NPCDirectorService:
@@ -139,6 +137,11 @@ class NPCDirectorService:
         return _prompt_versions(
             specialists,
             handoffs,
+            base_version=(
+                ROUTER_PROMPT_VERSION
+                if self.settings.orchestration_mode == "bounded"
+                else DIRECTOR_PROMPT_VERSION
+            ),
             version_tag=self.model_profile.prompts.version_tag,
         )
 
@@ -172,14 +175,82 @@ class NPCDirectorService:
         if guard.status is CheckStatus.FAIL:
             return await self._emit_safe_input_response(turn, guard, adapter)
 
+        if turn.proposal is not None and turn.policy_digest is None:
+            policy_check = CheckResult(
+                name="turn_policy_recovery",
+                status=CheckStatus.FAIL,
+                severity=CheckSeverity.CRITICAL,
+                reason=(
+                    "recovered proposal has no trusted turn policy; "
+                    "regeneration requires a new turn_id"
+                ),
+            )
+            turn = await self.turn_store.asave(
+                turn.model_copy(
+                    update={
+                        "status": TurnStatus.FAILED,
+                        "checks": [*turn.checks, policy_check],
+                    }
+                )
+            )
+            await self._record(
+                turn,
+                "turn.recovery_failed",
+                {"check": policy_check.model_dump(mode="json")},
+                suffix="recovery-policy",
+            )
+            return self._execution_result(turn)
+
+        if turn.proposal is not None and turn.domain_version is None:
+            version_check = CheckResult(
+                name="domain_version_recovery",
+                status=CheckStatus.FAIL,
+                severity=CheckSeverity.CRITICAL,
+                reason=(
+                    "recovered proposal has no generation-time domain version; "
+                    "regeneration requires a new turn_id"
+                ),
+            )
+            turn = await self.turn_store.asave(
+                turn.model_copy(
+                    update={
+                        "status": TurnStatus.FAILED,
+                        "checks": [*turn.checks, version_check],
+                    }
+                )
+            )
+            await self._record(
+                turn,
+                "turn.recovery_failed",
+                {"check": version_check.model_dump(mode="json")},
+                suffix="recovery-domain-version",
+            )
+            return self._execution_result(turn)
+
         domain_state = await self.domain_store.aget_or_create(request.npc_id)
         built_context = await self.context_builder.build(request, domain_state)
+        director_input = built_context.director_input
         trusted_request = request.model_copy(
-            update={"character_core": built_context.director_input.character_core}
+            update={"character_core": director_input.character_core}
+        )
+        if turn.policy_digest is None:
+            policy = _policy_from_director_input(director_input)
+        else:
+            policy = _verified_policy_from_turn(turn)
+        domain_version = (
+            turn.domain_version
+            if turn.proposal is not None and turn.domain_version is not None
+            else domain_state.version
         )
         turn = await self.turn_store.asave(
-            turn.model_copy(update={"domain_version": domain_state.version})
+            turn.model_copy(
+                update={
+                    "domain_version": domain_version,
+                    **_turn_policy_record_fields(policy),
+                }
+            )
         )
+        director_input = director_input.model_copy(update=_director_input_policy_fields(policy))
         await self._record(
             turn,
             "turn.request",
@@ -212,7 +283,7 @@ class NPCDirectorService:
                 recovered_proposal = False
             else:
                 director_result = await self.executor.generate(
-                    built_context.director_input,
+                    director_input,
                     repair_feedback=repair_feedback,
                 )
                 proposal = correct_emotion(
@@ -227,10 +298,15 @@ class NPCDirectorService:
                 prompt_versions = self._prompt_versions(specialists, handoffs)
                 available_lore_refs = sorted(director_result.lore_refs_accessed)
                 delegations = director_result.delegations
+            proposal = (
+                sanitize_handoff_proposal(proposal, policy=policy)
+                if "Quest Negotiator" in handoffs
+                else sanitize_proposal(proposal, policy=policy)
+            )
             checks = await run_checks(
                 proposal,
                 trusted_request,
-                state_patch_allowlist=state_patch_allowlist(proposal.plan.intent),
+                state_patch_allowlist=turn.allowed_state_paths,
                 available_lore_refs=available_lore_refs,
                 requested_tools=requested_tools,
                 tool_allowlist=ALL_SPECIALIST_TOOLS,
@@ -358,14 +434,19 @@ class NPCDirectorService:
             if turn.proposal is None or turn.domain_version is None:
                 raise RuntimeError("completed turn is missing proposal or domain version")
             try:
+                policy = _verified_policy_from_turn(turn)
                 await self.domain_store.acommit_completed(
                     turn.turn_id,
                     turn.npc_id,
                     turn.proposal.plan.proposed_state_changes,
                     expected_version=turn.domain_version,
-                    allowed_paths=state_patch_allowlist(turn.proposal.plan.intent),
+                    allowed_paths=policy.allowed_state_paths,
                 )
-            except OptimisticLockError:
+            except (
+                OptimisticLockError,
+                PolicyDigestMismatch,
+                StatePatchPermissionError,
+            ):
                 turn = await self.turn_store.aupdate_status(turn.turn_id, TurnStatus.FAILED)
                 raise
             await self._distill_long_term_memory(turn)
@@ -498,6 +579,7 @@ class NPCDirectorService:
         adapter: EngineAdapter,
     ) -> TurnExecutionResult:
         proposal = build_safe_input_proposal(turn.request)
+        policy = _empty_turn_policy()
         domain_state = await self.domain_store.aget_or_create(turn.npc_id)
         directive = finalize_proposal(
             turn.request,
@@ -513,6 +595,7 @@ class NPCDirectorService:
                     "proposal": proposal,
                     "checks": [guard],
                     "domain_version": domain_state.version,
+                    **_turn_policy_record_fields(policy),
                 }
             )
         )
@@ -664,6 +747,7 @@ def build_default_service(settings: Settings | None = None) -> NPCDirectorServic
             lore_retriever=lore_retriever,
             memory_reader=memory_store,
             character_root=resolved.character_path,
+            settings=resolved,
             lore_top_k=resolved.lore_top_k,
             lore_token_budget=resolved.lore_token_budget,
             history_limit=resolved.context_history_limit,
@@ -680,9 +764,102 @@ def build_default_service(settings: Settings | None = None) -> NPCDirectorServic
 def _actual_specialists(delegations) -> list[SpecialistName]:
     result: list[SpecialistName] = []
     for event in delegations:
+        if event.status != "completed":
+            continue
         if event.specialist not in result:
             result.append(event.specialist)
     return result
+
+
+def _policy_from_director_input(director_input: DirectorInput) -> TurnPolicy:
+    policy = TurnPolicy(
+        allowed_actions=tuple(director_input.allowed_actions),
+        allowed_faces=tuple(director_input.allowed_faces),
+        state=StateCapabilities(
+            allowed_paths=frozenset(director_input.allowed_state_paths),
+            tokens=frozenset(director_input.state_tokens),
+        ),
+        budget=AgentBudget(
+            max_tool_calls=director_input.max_tool_calls,
+            max_specialist_calls=director_input.max_specialist_calls,
+            max_handoffs=director_input.max_handoffs,
+        ),
+        catalog_version=director_input.catalog_version,
+    )
+    if director_input.policy_digest is not None and director_input.policy_digest != policy.digest:
+        raise PolicyDigestMismatch(
+            "context turn policy digest does not match its capability snapshot"
+        )
+    return policy
+
+
+def _policy_from_turn(turn: TurnStateRecord) -> TurnPolicy:
+    return TurnPolicy(
+        allowed_actions=tuple(turn.allowed_actions),
+        allowed_faces=tuple(turn.allowed_faces),
+        state=StateCapabilities(
+            allowed_paths=frozenset(turn.allowed_state_paths),
+            tokens=frozenset(turn.state_tokens),
+        ),
+        budget=AgentBudget(
+            max_tool_calls=turn.max_tool_calls,
+            max_specialist_calls=turn.max_specialist_calls,
+            max_handoffs=turn.max_handoffs,
+        ),
+        catalog_version=turn.policy_catalog_version,
+    )
+
+
+def _verified_policy_from_turn(turn: TurnStateRecord) -> TurnPolicy:
+    if turn.policy_digest is None:
+        raise PolicyDigestMismatch("persisted turn has no policy digest")
+    policy = _policy_from_turn(turn)
+    if policy.digest != turn.policy_digest:
+        raise PolicyDigestMismatch(
+            "persisted turn policy digest does not match its capability snapshot"
+        )
+    return policy
+
+
+def _empty_turn_policy() -> TurnPolicy:
+    return TurnPolicy(
+        allowed_actions=(),
+        allowed_faces=(),
+        state=StateCapabilities(),
+        budget=AgentBudget(
+            max_tool_calls=0,
+            max_specialist_calls=0,
+            max_handoffs=0,
+        ),
+    )
+
+
+def _turn_policy_record_fields(policy: TurnPolicy) -> dict[str, object]:
+    return {
+        "policy_digest": policy.digest,
+        "policy_catalog_version": policy.catalog_version,
+        "allowed_actions": list(policy.allowed_actions),
+        "allowed_faces": list(policy.allowed_faces),
+        "allowed_state_paths": sorted(policy.allowed_state_paths),
+        "state_tokens": sorted(policy.state_tokens),
+        "max_tool_calls": policy.budget.max_tool_calls,
+        "max_specialist_calls": policy.budget.max_specialist_calls,
+        "max_handoffs": policy.budget.max_handoffs,
+    }
+
+
+def _director_input_policy_fields(policy: TurnPolicy) -> dict[str, object]:
+    return {
+        "policy_digest": policy.digest,
+        "catalog_version": policy.catalog_version,
+        "allowed_actions": list(policy.allowed_actions),
+        "allowed_faces": list(policy.allowed_faces),
+        "allowed_state_paths": sorted(policy.allowed_state_paths),
+        "state_tokens": sorted(policy.state_tokens),
+        "max_tool_calls": policy.budget.max_tool_calls,
+        "max_specialist_calls": policy.budget.max_specialist_calls,
+        "max_handoffs": policy.budget.max_handoffs,
+    }
 
 
 def _tool_name(specialist: SpecialistName) -> str:
@@ -699,9 +876,10 @@ def _prompt_versions(
     specialists: Collection[SpecialistName],
     handoffs: Collection[str] = (),
     *,
+    base_version: str = DIRECTOR_PROMPT_VERSION,
     version_tag: str | None = None,
 ) -> list[str]:
-    versions = [DIRECTOR_PROMPT_VERSION]
+    versions = [base_version]
     versions.extend(
         PROMPT_VERSION_BY_SPECIALIST[specialist]
         for specialist in specialists

@@ -19,8 +19,12 @@ class GatewayAdapter(Protocol):
 
     @property
     def supports_tools_with_structured_output(self) -> bool:
-        """False when the gateway skips tool calls once output_type is set,
-        which switches the Director to two-phase generation."""
+        """Whether legacy ReAct can combine tools with structured output.
+
+        The bounded executor uses independent typed nodes and does not depend on
+        this capability. The legacy executor uses it to select one- or two-phase
+        generation for ablation compatibility.
+        """
         ...
 
 

@@ -1,3 +1,4 @@
+from npc_director.orchestration.bounded_executor import BoundedDirectorExecutor
 from npc_director.orchestration.executor import (
     DelegationHooks,
     DirectorExecutor,
@@ -10,6 +11,7 @@ from npc_director.orchestration.service import NPCDirectorService, build_default
 from npc_director.orchestration.testing import DeterministicDirectorExecutor
 
 __all__ = [
+    "BoundedDirectorExecutor",
     "DelegationHooks",
     "DirectorExecutor",
     "DeterministicDirectorExecutor",

@@ -14,7 +14,6 @@ from npc_director.contracts import CheckResult, CheckSeverity, CheckStatus, Inte
 from npc_director.governance import Finalizer, run_checks
 from npc_director.orchestration.context_adapter import DefaultContextBuilder
 from npc_director.orchestration.executor import ResilientDirectorExecutor
-from npc_director.orchestration.service import state_patch_allowlist
 from npc_director.rag import CachedLoreRetriever, LexicalLoreIndex, LexicalLoreRetriever
 from npc_director.state import DomainStateStore, EventLog, LongTermMemoryStore, TurnStore
 
@@ -73,7 +72,7 @@ async def replay_deterministic(settings: Settings, turn_id: str) -> ReplayReport
     checks = await run_checks(
         turn.proposal,
         turn.request,
-        state_patch_allowlist=state_patch_allowlist(turn.proposal.plan.intent),
+        state_patch_allowlist=turn.allowed_state_paths,
         available_lore_refs=available_refs,
         requested_tools=tool_names,
         tool_allowlist=(
@@ -122,6 +121,7 @@ async def replay_reinfer(settings: Settings, turn_id: str) -> ReplayReport:
         lore_retriever=lore_retriever,
         memory_reader=LongTermMemoryStore(settings.database_path),
         character_root=settings.character_path,
+        settings=settings,
         lore_top_k=settings.lore_top_k,
         lore_token_budget=settings.lore_token_budget,
         history_limit=settings.context_history_limit,

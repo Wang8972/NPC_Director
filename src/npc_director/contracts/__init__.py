@@ -46,6 +46,7 @@ from npc_director.contracts.protocol import (
     TurnRequestMessage,
     UnityMessage,
 )
+from npc_director.contracts.routing import RouteDecision
 from npc_director.contracts.specialists import (
     DialogueDraft,
     DirectorInput,
@@ -132,6 +133,7 @@ __all__ = [
     "QuestPatch",
     "RelationshipPatch",
     "RuntimeMeta",
+    "RouteDecision",
     "SceneSnapshot",
     "ScreenwriterInput",
     "SpecialistName",
