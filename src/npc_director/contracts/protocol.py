@@ -50,6 +50,45 @@ class PerformanceEventMessage(ProtocolMessage):
         return self
 
 
+class PrototypeObjectStatePayload(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    object_id: str
+    state: str
+
+
+class PrototypeItemLocationPayload(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    item_id: str
+    location_id: str
+
+
+class PrototypeRouteFlagsPayload(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    fuse_route: Literal["none", "cooperation", "procedure"] = "none"
+    crate_c12_authorized: bool = False
+    control_cabinet_authorized: bool = False
+
+
+class StateSnapshotPayload(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    session_id: str
+    scene_id: Literal["prototype_gate_repair"]
+    world_version: int = Field(ge=0)
+    objective_state: str
+    object_states: list[PrototypeObjectStatePayload]
+    item_locations: list[PrototypeItemLocationPayload]
+    route_flags: PrototypeRouteFlagsPayload
+
+
+class StateSnapshotMessage(ProtocolMessage):
+    type: Literal["state.snapshot"] = "state.snapshot"
+    payload: StateSnapshotPayload
+
+
 class ErrorPayload(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -64,7 +103,11 @@ class ErrorMessage(ProtocolMessage):
 
 
 UnityMessage = Annotated[
-    TurnRequestMessage | PerformancePlanMessage | PerformanceEventMessage | ErrorMessage,
+    TurnRequestMessage
+    | PerformancePlanMessage
+    | PerformanceEventMessage
+    | StateSnapshotMessage
+    | ErrorMessage,
     Field(discriminator="type"),
 ]
 UNITY_MESSAGE_ADAPTER = TypeAdapter(UnityMessage)

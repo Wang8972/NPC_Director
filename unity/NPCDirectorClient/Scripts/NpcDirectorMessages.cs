@@ -168,4 +168,46 @@ namespace NPCDirector
         public string message;
         public string turn_id;
     }
+
+    [Serializable]
+    public sealed class StateSnapshotEnvelope
+    {
+        public string message_id;
+        public string type = "state.snapshot";
+        public PrototypeStateSnapshotPayload payload;
+    }
+
+    [Serializable]
+    public sealed class PrototypeStateSnapshotPayload
+    {
+        public string session_id;
+        public string scene_id;
+        public int world_version;
+        public string objective_state;
+        public PrototypeObjectState[] object_states = Array.Empty<PrototypeObjectState>();
+        public PrototypeItemLocation[] item_locations = Array.Empty<PrototypeItemLocation>();
+        public PrototypeRouteFlags route_flags = new PrototypeRouteFlags();
+    }
+
+    [Serializable]
+    public sealed class PrototypeObjectState
+    {
+        public string object_id;
+        public string state;
+    }
+
+    [Serializable]
+    public sealed class PrototypeItemLocation
+    {
+        public string item_id;
+        public string location_id;
+    }
+
+    [Serializable]
+    public sealed class PrototypeRouteFlags
+    {
+        public string fuse_route = "none";
+        public bool crate_c12_authorized;
+        public bool control_cabinet_authorized;
+    }
 }

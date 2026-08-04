@@ -21,7 +21,8 @@ def test_unity_client_contains_bidirectional_protocol_and_reconnect() -> None:
     assert "ErrorEnvelope" in read("NpcDirectorMessages.cs")
     assert 'schema_version != "1.0"' in client
     assert "session_id != sessionId" in client
-    assert "npc_id != npcId" in client
+    assert "npcRegistry.TryResolve" in client
+    assert "unknown npc_id" in client
 
 
 def test_executor_has_local_idempotency_and_all_feedback_events() -> None:
@@ -57,3 +58,19 @@ def test_unity_assembly_excludes_webgl_client_websocket() -> None:
     assembly = (ROOT / "NPCDirectorClient.asmdef").read_text(encoding="utf-8")
 
     assert '"WebGL"' in assembly
+
+
+def test_prototype_spike_client_has_registry_and_snapshot_guards() -> None:
+    registry = read("NpcRegistry.cs")
+    snapshots = read("PrototypeSceneStateController.cs")
+    runner = read("PrototypeSnapshotSpikeRunner.cs")
+
+    for npc_id in ("guard_captain_maren", "mechanic_lia", "porter_finn"):
+        assert npc_id in registry
+    assert "UnknownRouteCount" in registry
+    assert "[S1_SUMMARY]" in registry
+    assert "snapshot.world_version < lastWorldVersion" in snapshots
+    assert "snapshot.world_version == lastWorldVersion" in snapshots
+    assert "CanonicalObjectIds" in snapshots
+    assert "[S3_SUMMARY]" in runner
+    assert "resetHashMatches" in runner

@@ -15,6 +15,8 @@ namespace NPCDirector
         [SerializeField] private string sessionId = "session-1";
         [SerializeField] private string npcId = "elder_maren";
         [SerializeField] private PerformanceExecutor executor;
+        [SerializeField] private NpcRegistry npcRegistry;
+        [SerializeField] private PrototypeSceneStateController sceneStateController;
         [SerializeField] private Animator animator;
         [SerializeField] private string thinkingState = "thinking";
         [SerializeField] private string idleState = "idle";
@@ -156,6 +158,23 @@ namespace NPCDirector
                 });
                 return;
             }
+            if (header.type == "state.snapshot")
+            {
+                StateSnapshotEnvelope snapshot = JsonUtility.FromJson<StateSnapshotEnvelope>(json);
+                if (snapshot?.payload == null || snapshot.payload.session_id != sessionId)
+                {
+                    Debug.LogWarning("[S3_SNAPSHOT_REJECT] invalid session or payload");
+                    return;
+                }
+                mainThreadActions.Enqueue(() =>
+                {
+                    if (sceneStateController != null)
+                    {
+                        sceneStateController.ApplySnapshot(snapshot.payload);
+                    }
+                });
+                return;
+            }
             if (header.type != "performance.plan")
             {
                 return;
@@ -166,8 +185,7 @@ namespace NPCDirector
                 return;
             }
             if (plan.payload.directive.schema_version != "1.0" ||
-                plan.payload.directive.session_id != sessionId ||
-                plan.payload.directive.npc_id != npcId)
+                plan.payload.directive.session_id != sessionId)
             {
                 ReportEvent(
                     "error",
@@ -178,7 +196,21 @@ namespace NPCDirector
             }
             mainThreadActions.Enqueue(() =>
             {
-                bool accepted = executor != null && executor.TryExecute(plan.payload, ReportEvent);
+                PerformanceExecutor targetExecutor = null;
+                bool routeFound = npcRegistry != null
+                    ? npcRegistry.TryResolve(plan.payload.directive.npc_id, out targetExecutor)
+                    : plan.payload.directive.npc_id == npcId &&
+                      (targetExecutor = executor) != null;
+                if (!routeFound)
+                {
+                    ReportEvent(
+                        "error",
+                        plan.payload.directive.turn_id,
+                        plan.payload.idempotency_key,
+                        $"unknown npc_id: {plan.payload.directive.npc_id}");
+                    return;
+                }
+                bool accepted = targetExecutor.TryExecute(plan.payload, ReportEvent);
                 if (!accepted)
                 {
                     ReportEvent(

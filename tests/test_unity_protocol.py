@@ -139,3 +139,36 @@ def test_protocol_rejects_event_type_mismatch() -> None:
         assert "message type must be" in str(exc)
     else:
         raise AssertionError("mismatched event type was accepted")
+
+
+def test_protocol_accepts_strict_prototype_state_snapshot() -> None:
+    message = {
+        "message_id": "snapshot-1",
+        "type": "state.snapshot",
+        "payload": {
+            "session_id": "s1",
+            "scene_id": "prototype_gate_repair",
+            "world_version": 3,
+            "objective_state": "prototype_success",
+            "object_states": [
+                {"object_id": "gate_console", "state": "online"},
+                {"object_id": "generator", "state": "running"},
+                {"object_id": "control_cabinet", "state": "restart_complete"},
+                {"object_id": "cargo_crate_c12", "state": "sealed_anomaly"},
+                {"object_id": "manifest_board", "state": "readable"},
+                {"object_id": "alarm_lamp", "state": "solid_green"},
+            ],
+            "item_locations": [{"item_id": "spare_fuse", "location_id": "generator"}],
+            "route_flags": {
+                "fuse_route": "cooperation",
+                "crate_c12_authorized": False,
+                "control_cabinet_authorized": True,
+            },
+        },
+    }
+
+    parsed = UNITY_MESSAGE_ADAPTER.validate_python(message)
+
+    assert parsed.type == "state.snapshot"
+    assert parsed.payload.world_version == 3
+    assert len(parsed.payload.object_states) == 6

@@ -43,6 +43,8 @@ from npc_director.contracts.protocol import (
     ErrorPayload,
     PerformanceEventMessage,
     PerformancePlanMessage,
+    StateSnapshotMessage,
+    StateSnapshotPayload,
     TurnRequestMessage,
     UnityMessage,
 )
@@ -137,6 +139,8 @@ __all__ = [
     "SceneSnapshot",
     "ScreenwriterInput",
     "SpecialistName",
+    "StateSnapshotMessage",
+    "StateSnapshotPayload",
     "StateChangeProposal",
     "TurnExecutionResult",
     "TurnPlan",
