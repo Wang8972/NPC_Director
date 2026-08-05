@@ -15,6 +15,7 @@ from npc_director.contracts.enums import (
     PrimaryEmotion,
     SpecialistName,
     TurnStatus,
+    UncertaintyKind,
     VoiceStyle,
 )
 from npc_director.contracts.performance import (
@@ -79,6 +80,7 @@ from npc_director.contracts.workflow import (
     EngineEmitReceipt,
     EngineEvent,
     FinalizationDecision,
+    RoutingTrace,
     TurnExecutionResult,
     TurnStateRecord,
 )
@@ -136,6 +138,7 @@ __all__ = [
     "RelationshipPatch",
     "RuntimeMeta",
     "RouteDecision",
+    "RoutingTrace",
     "SceneSnapshot",
     "ScreenwriterInput",
     "SpecialistName",
@@ -150,6 +153,7 @@ __all__ = [
     "TurnRunResult",
     "TurnStateRecord",
     "TurnStatus",
+    "UncertaintyKind",
     "UNITY_MESSAGE_ADAPTER",
     "UnityMessage",
     "VoiceStyle",

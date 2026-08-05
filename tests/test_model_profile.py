@@ -13,6 +13,7 @@ from npc_director.model_profile import (
     build_default_profile,
     build_idealab_deepseek_profile,
     build_idealab_qwen_profile,
+    is_allocation_quota_error,
     resolve_profile_name,
 )
 
@@ -121,9 +122,17 @@ def test_idealab_retry_detects_throttling_text_markers() -> None:
     retry = build_idealab_deepseek_profile().retry
     assert retry.is_retryable(TimeoutError())
     assert retry.is_retryable(ValueError("Error code: 400 - MPE-429"))
-    assert retry.is_retryable(RuntimeError("Throttling.AllocationQuota"))
+    assert not retry.is_retryable(RuntimeError("Throttling.AllocationQuota"))
     assert not retry.is_retryable(ValueError("模型不存在"))
     assert retry.backoff_seconds(1) > retry.backoff_seconds(0)
+
+
+def test_allocation_quota_detection_follows_exception_chain() -> None:
+    cause = RuntimeError("Throttling.AllocationQuota: capacity exhausted")
+    wrapped = ValueError("gateway request failed")
+    wrapped.__cause__ = cause
+
+    assert is_allocation_quota_error(wrapped)
 
 
 def test_default_normalizer_is_identity() -> None:

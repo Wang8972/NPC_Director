@@ -9,18 +9,34 @@ from eval.models import CandidateResult
 from eval.runner import (
     DEFAULT_BASELINE_PATH,
     EvalConfigurationError,
+    EvalQuotaStopped,
+    _coerce_live_result,
     _completed_specialists,
     load_cases,
     load_recorded_baseline,
+    main,
+    partial_report_path,
     run_evaluation,
 )
-from npc_director.contracts import DelegationEvent, SpecialistName
+from npc_director.contracts import (
+    DelegationEvent,
+    DirectorRunResult,
+    RouteDecision,
+    RoutingTrace,
+    SpecialistName,
+)
 
 
 def test_recorded_baseline_passes_all_golden_cases() -> None:
     report = run_evaluation(mode="recorded")
 
     assert report.passed
+    assert report.report_version == 2
+    assert report.run_status == "completed"
+    assert report.requested_cases == report.total_cases
+    assert report.completed_cases == report.total_cases
+    assert report.stop_reason is None
+    assert len(report.candidates) == report.total_cases
     assert report.total_cases >= 30
     assert report.passed_cases == report.total_cases
     assert report.schema_summary.pass_rate == 1.0
@@ -186,3 +202,153 @@ def test_live_main_sub_trace_only_counts_completed_specialists() -> None:
         SpecialistName.SCREENWRITER,
         SpecialistName.PERFORMANCE,
     ]
+
+
+def test_live_director_result_preserves_routing_trace_in_raw_candidate() -> None:
+    candidates, errors = load_recorded_baseline()
+    assert not errors
+    recorded = candidates[0]
+    assert recorded.proposal is not None
+    assert recorded.metrics is not None
+    trace = RoutingTrace(
+        decision=RouteDecision(
+            intent="greeting",
+            objective="回应问候",
+            confidence=0.9,
+        ),
+        final_intent="greeting",
+    )
+    result = DirectorRunResult(
+        proposal=recorded.proposal,
+        metrics=recorded.metrics,
+        routing_trace=trace,
+    )
+
+    _proposal, _metrics, _specialists, _handoffs, routing_trace = _coerce_live_result(
+        result,
+        1.0,
+    )
+
+    assert routing_trace == trace
+
+
+def test_live_quota_stop_checkpoints_each_completed_case_and_keeps_partial(
+    monkeypatch,
+    tmp_path,
+) -> None:
+    cases = load_cases()[:3]
+    cases_path = tmp_path / "cases.jsonl"
+    cases_path.write_text(
+        "\n".join(case.model_dump_json() for case in cases) + "\n",
+        encoding="utf-8",
+    )
+    candidates, errors = load_recorded_baseline()
+    assert not errors
+    first_proposal = candidates[0].proposal
+    assert first_proposal is not None
+    calls = 0
+
+    async def fake_run_turn(_request):
+        nonlocal calls
+        calls += 1
+        if calls == 1:
+            return first_proposal
+        if calls == 2:
+            raise ValueError("malformed model response")
+        raise RuntimeError("MPE-429 Throttling.AllocationQuota")
+
+    monkeypatch.setenv("OPENAI_API_KEY", "test-only")
+    monkeypatch.setattr("eval.runner._load_live_runner", lambda: fake_run_turn)
+
+    write_events: list[tuple[str, int]] = []
+    from eval import runner
+
+    original_write_report = runner.write_report
+
+    def tracking_write_report(report, path):
+        write_events.append((report.run_status, report.completed_cases))
+        original_write_report(report, path)
+
+    monkeypatch.setattr(runner, "write_report", tracking_write_report)
+    output = tmp_path / "live.json"
+
+    exit_code = main(
+        [
+            "--mode",
+            "live",
+            "--cases",
+            str(cases_path),
+            "--output",
+            str(output),
+        ]
+    )
+
+    partial = partial_report_path(output)
+    assert exit_code == 75
+    assert calls == 3
+    assert write_events == [("running", 1), ("running", 2), ("stopped", 2)]
+    assert not output.exists()
+    payload = json.loads(partial.read_text(encoding="utf-8"))
+    assert payload["run_status"] == "stopped"
+    assert payload["requested_cases"] == 3
+    assert payload["completed_cases"] == 2
+    assert "Throttling.AllocationQuota" in payload["stop_reason"]
+    assert len(payload["candidates"]) == 2
+    assert payload["candidates"][0]["proposal"] is not None
+    assert "malformed model response" in payload["candidates"][1]["schema_error"]
+
+
+def test_run_evaluation_exposes_stopped_report_without_checkpoint(monkeypatch) -> None:
+    async def quota_failure(_cases, *, checkpoint=None):
+        del checkpoint
+        raise EvalQuotaStopped(
+            "greeting_001",
+            [],
+            RuntimeError("Throttling.AllocationQuota"),
+        )
+
+    monkeypatch.setenv("OPENAI_API_KEY", "test-only")
+    monkeypatch.setattr("eval.runner._run_live_cases", quota_failure)
+
+    with pytest.raises(EvalQuotaStopped) as stopped:
+        run_evaluation(mode="live")
+
+    assert stopped.value.report is not None
+    assert stopped.value.report.run_status == "stopped"
+    assert stopped.value.report.completed_cases == 0
+    assert not stopped.value.report.passed
+
+
+def test_successful_live_run_promotes_partial_to_final(monkeypatch, tmp_path) -> None:
+    case = load_cases()[0]
+    cases_path = tmp_path / "cases.jsonl"
+    cases_path.write_text(case.model_dump_json() + "\n", encoding="utf-8")
+    candidates, errors = load_recorded_baseline()
+    assert not errors
+    proposal = candidates[0].proposal
+    assert proposal is not None
+
+    async def fake_run_turn(_request):
+        return proposal
+
+    monkeypatch.setenv("OPENAI_API_KEY", "test-only")
+    monkeypatch.setattr("eval.runner._load_live_runner", lambda: fake_run_turn)
+    output = tmp_path / "live.json"
+
+    exit_code = main(
+        [
+            "--mode",
+            "live",
+            "--cases",
+            str(cases_path),
+            "--output",
+            str(output),
+        ]
+    )
+
+    assert exit_code == 0
+    assert output.exists()
+    assert not partial_report_path(output).exists()
+    payload = json.loads(output.read_text(encoding="utf-8"))
+    assert payload["run_status"] == "completed"
+    assert payload["completed_cases"] == payload["requested_cases"] == 1

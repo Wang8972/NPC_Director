@@ -4,6 +4,7 @@ from npc_director.model_profile.base import (
     PromptAdapter,
     ProposalNormalizer,
     RetryPolicy,
+    is_allocation_quota_error,
 )
 from npc_director.model_profile.default import (
     DEFAULT_PROFILE_NAME,
@@ -40,6 +41,7 @@ __all__ = [
     "build_idealab_deepseek_profile",
     "build_idealab_qwen_profile",
     "get_active_profile",
+    "is_allocation_quota_error",
     "reset_profile_cache",
     "resolve_profile_name",
 ]

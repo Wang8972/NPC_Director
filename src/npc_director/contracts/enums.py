@@ -71,6 +71,12 @@ class Intent(StrEnum):
     OTHER = "other"
 
 
+class UncertaintyKind(StrEnum):
+    NONE = "none"
+    REQUEST_AMBIGUITY = "request_ambiguity"
+    EVIDENCE_UNCERTAINTY = "evidence_uncertainty"
+
+
 class CoarseEmotion(StrEnum):
     NEUTRAL = "neutral"
     JOY = "joy"

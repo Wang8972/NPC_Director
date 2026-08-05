@@ -14,6 +14,7 @@ from npc_director.contracts import (
     PerformanceOutput,
     RouteDecision,
     SpecialistName,
+    StateChangeProposal,
     TurnProposal,
 )
 from npc_director.orchestration.bounded_executor import BoundedDirectorExecutor
@@ -474,7 +475,7 @@ async def test_negotiation_repair_reuses_route_and_only_reruns_handoff(monkeypat
 
 
 @pytest.mark.asyncio
-async def test_low_confidence_route_is_forced_to_clarification(monkeypatch) -> None:
+async def test_low_confidence_route_runs_advisory_narrative(monkeypatch) -> None:
     calls = install_fake_runner(
         monkeypatch,
         {
@@ -484,15 +485,16 @@ async def test_low_confidence_route_is_forced_to_clarification(monkeypatch) -> N
                 needs_narrative=True,
                 confidence=0.2,
             ),
-            WRITER: dialogue("你指的是哪一个选择？"),
+            NARRATIVE: narrative(),
+            WRITER: dialogue("证据不足，先核验再决定。"),
             PERFORMANCE: performance(),
         },
     )
 
     result = await build_executor().generate(director_input())
 
-    assert [call[0] for call in calls] == [ROUTER, WRITER, PERFORMANCE]
-    assert result.proposal.plan.intent.value == "clarification"
-    assert SpecialistName.NARRATIVE_PLANNER not in {
-        event.specialist for event in result.delegations
-    }
+    assert [call[0] for call in calls] == [ROUTER, NARRATIVE, WRITER, PERFORMANCE]
+    assert result.proposal.plan.intent.value == "critical_choice"
+    assert result.proposal.plan.proposed_state_changes == StateChangeProposal()
+    assert result.routing_trace is not None
+    assert result.routing_trace.advisory_only

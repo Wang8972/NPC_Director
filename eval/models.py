@@ -10,6 +10,7 @@ from npc_director.contracts import (
     GenerationMetrics,
     Intent,
     PrimaryEmotion,
+    RoutingTrace,
     SpecialistName,
     TurnProposal,
     TurnRequest,
@@ -17,6 +18,7 @@ from npc_director.contracts import (
 
 Architecture = Literal["single_agent", "main_sub"]
 RunMode = Literal["recorded", "live"]
+RunStatus = Literal["running", "completed", "stopped"]
 
 
 class EvalModel(BaseModel):
@@ -45,6 +47,29 @@ class EmotionExpectation(EvalModel):
         return values
 
 
+class TextConceptExpectation(EvalModel):
+    name: str = Field(min_length=1, max_length=80)
+    any_of: list[str] = Field(min_length=1, max_length=12)
+
+    @field_validator("name")
+    @classmethod
+    def name_must_not_be_blank(cls, value: str) -> str:
+        normalized = value.strip()
+        if not normalized:
+            raise ValueError("concept name must not be blank")
+        return normalized
+
+    @field_validator("any_of")
+    @classmethod
+    def phrases_must_be_unique_and_non_blank(cls, values: list[str]) -> list[str]:
+        normalized = [value.strip() for value in values]
+        if any(not value for value in normalized):
+            raise ValueError("concept phrases must not be blank")
+        if len(normalized) != len(set(normalized)):
+            raise ValueError("concept phrases must not contain duplicates")
+        return normalized
+
+
 class EvalExpectation(EvalModel):
     intent: Intent
     emotion: EmotionExpectation
@@ -52,6 +77,8 @@ class EvalExpectation(EvalModel):
     state_patch_allowlist: list[str]
     required_text: list[str] = Field(default_factory=list)
     forbidden_text: list[str] = Field(default_factory=list)
+    required_concepts: list[TextConceptExpectation] = Field(default_factory=list)
+    forbidden_claims: list[TextConceptExpectation] = Field(default_factory=list)
     required_specialists: list[SpecialistName] = Field(default_factory=list)
     optional_specialists: list[SpecialistName] = Field(default_factory=list)
     forbidden_specialists: list[SpecialistName] = Field(default_factory=list)
@@ -93,6 +120,13 @@ class EvalExpectation(EvalModel):
         forbidden = set(self.forbidden_specialists)
         if required & optional or required & forbidden or optional & forbidden:
             raise ValueError("required, optional, and forbidden specialists must be disjoint")
+        for label, concepts in (
+            ("required concepts", self.required_concepts),
+            ("forbidden claims", self.forbidden_claims),
+        ):
+            names = [concept.name for concept in concepts]
+            if len(names) != len(set(names)):
+                raise ValueError(f"{label} must not contain duplicate names")
         return self
 
 
@@ -124,6 +158,7 @@ class CandidateResult(EvalModel):
     metrics: GenerationMetrics | None = None
     specialists_called: list[SpecialistName] | None = None
     handoffs: list[str] | None = Field(default=None, max_length=1)
+    routing_trace: RoutingTrace | None = None
     schema_error: str | None = None
 
 
@@ -196,6 +231,11 @@ class SystemSummary(EvalModel):
 
 
 class EvalReport(EvalModel):
+    report_version: Literal[2] = 2
+    run_status: RunStatus = "completed"
+    requested_cases: int = Field(ge=0)
+    completed_cases: int = Field(ge=0)
+    stop_reason: str | None = None
     mode: RunMode
     architecture: Architecture
     passed: bool
@@ -208,3 +248,14 @@ class EvalReport(EvalModel):
     system: SystemSummary
     dataset_errors: list[str]
     cases: list[CaseResult]
+    candidates: list[CandidateResult]
+
+    @model_validator(mode="after")
+    def progress_metadata_must_be_consistent(self) -> EvalReport:
+        if self.completed_cases > self.requested_cases:
+            raise ValueError("completed_cases must not exceed requested_cases")
+        if self.run_status == "stopped" and not self.stop_reason:
+            raise ValueError("stopped reports require stop_reason")
+        if self.run_status != "stopped" and self.stop_reason is not None:
+            raise ValueError("stop_reason is only valid for stopped reports")
+        return self

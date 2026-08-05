@@ -7,6 +7,26 @@ from agents import RunConfig
 
 from npc_director.contracts import TurnProposal
 
+_ALLOCATION_QUOTA_MARKER = "throttling.allocationquota"
+
+
+def is_allocation_quota_error(exc: BaseException) -> bool:
+    """Return whether a failure says the gateway's allocation is exhausted.
+
+    The idealab gateway may wrap this signal in a generic 400 exception, so
+    classification must inspect the exception chain instead of relying on the
+    HTTP status or concrete exception type.
+    """
+
+    current: BaseException | None = exc
+    seen: set[int] = set()
+    while current is not None and id(current) not in seen:
+        seen.add(id(current))
+        if _ALLOCATION_QUOTA_MARKER in str(current).casefold():
+            return True
+        current = current.__cause__ or current.__context__
+    return False
+
 
 class GatewayAdapter(Protocol):
     """Adapts the Agents SDK to a specific OpenAI-compatible gateway."""

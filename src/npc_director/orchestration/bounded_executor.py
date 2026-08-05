@@ -34,6 +34,7 @@ from npc_director.contracts import (
     NarrativePlan,
     PerformanceOutput,
     RouteDecision,
+    RoutingTrace,
     SpecialistName,
     TurnProposal,
 )
@@ -229,6 +230,17 @@ class BoundedDirectorExecutor:
             delegations=delegations,
             handoffs=handoffs,
             lore_refs_accessed=sorted(accessed_lore_refs),
+            routing_trace=RoutingTrace(
+                decision=route.decision,
+                final_intent=route.intent,
+                uncertainty_kind=route.decision.uncertainty_kind,
+                use_lore=route.use_lore,
+                use_narrative=route.use_narrative,
+                use_negotiator=route.use_negotiator,
+                advisory_only=route.advisory_only,
+                clarification_fallback=route.clarification_fallback,
+                fallback_reason=route.fallback_reason,
+            ),
             trace_id=workflow_trace.trace_id,
             response_id=response_id,
         )
@@ -257,7 +269,11 @@ class BoundedDirectorExecutor:
                             current_quest_summary=director_input.quest_summary,
                             relationship_summary=director_input.relationship_summary,
                             relevant_flags=director_input.relevant_flags,
-                            allowed_state_paths=sorted(policy.allowed_state_paths),
+                            allowed_state_paths=(
+                                []
+                                if route.advisory_only
+                                else sorted(policy.allowed_state_paths)
+                            ),
                             turn_id=director_input.turn_id,
                         )
                         optional_tasks.append(

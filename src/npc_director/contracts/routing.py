@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
-from npc_director.contracts.enums import Intent
+from npc_director.contracts.enums import Intent, UncertaintyKind
 
 
 class RoutingContract(BaseModel):
@@ -21,7 +21,8 @@ class RouteDecision(RoutingContract):
     needs_lore: bool = False
     needs_narrative: bool = False
     negotiation: bool = False
-    ambiguity: bool = False
+    uncertainty_kind: UncertaintyKind = UncertaintyKind.NONE
+    requires_replan: bool = False
     confidence: float = Field(default=0.5, ge=0, le=1)
     lore_queries: list[str] = Field(default_factory=list, max_length=4)
     constraints: list[str] = Field(default_factory=list, max_length=8)

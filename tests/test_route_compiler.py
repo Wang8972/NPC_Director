@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from npc_director.contracts import Intent, RouteDecision, SpecialistName
+from npc_director.contracts import Intent, RouteDecision, SpecialistName, UncertaintyKind
 from npc_director.orchestration.assembler import (
     SAFE_CLARIFICATION_OBJECTIVE,
     SAFE_CLARIFICATION_OBLIGATION,
@@ -63,19 +63,12 @@ def test_compile_route_keeps_dynamic_specialists_within_budget() -> None:
     )
 
 
-@pytest.mark.parametrize(
-    ("updates", "reason"),
-    [
-        ({"confidence": 0.2, "ambiguity": False}, "low-confidence"),
-        ({"confidence": 0.9, "ambiguity": True}, "ambiguous"),
-    ],
-)
-def test_uncertain_decisions_are_runtime_forced_to_clarification(
-    updates: dict,
-    reason: str,
-) -> None:
+def test_request_ambiguity_is_runtime_forced_to_clarification() -> None:
     route = compile_route(
-        decision(negotiation=True, **updates),
+        decision(
+            negotiation=True,
+            uncertainty_kind=UncertaintyKind.REQUEST_AMBIGUITY,
+        ),
         policy(),
         low_confidence_threshold=0.55,
     )
@@ -84,7 +77,8 @@ def test_uncertain_decisions_are_runtime_forced_to_clarification(
     assert route.objective == SAFE_CLARIFICATION_OBJECTIVE
     assert route.response_obligations[0] == SAFE_CLARIFICATION_OBLIGATION
     assert route.clarification_fallback
-    assert reason in (route.fallback_reason or "")
+    assert route.fallback_reason == "request ambiguity"
+    assert route.advisory_only
     assert route.use_lore
     assert not route.use_narrative
     assert not route.use_negotiator
@@ -93,6 +87,58 @@ def test_uncertain_decisions_are_runtime_forced_to_clarification(
         SpecialistName.SCREENWRITER,
         SpecialistName.PERFORMANCE,
     )
+
+
+def test_low_confidence_keeps_intent_and_uses_advisory_narrative() -> None:
+    route = compile_route(
+        decision(confidence=0.2),
+        policy(),
+        low_confidence_threshold=0.55,
+    )
+
+    assert route.intent is Intent.CRITICAL_CHOICE
+    assert not route.clarification_fallback
+    assert route.advisory_only
+    assert route.use_lore
+    assert route.use_narrative
+    assert route.fallback_reason == "low-confidence advisory route"
+
+
+def test_evidence_uncertainty_forces_lore_without_overwriting_intent() -> None:
+    route = compile_route(
+        decision(
+            intent="lore_question",
+            needs_lore=False,
+            needs_narrative=False,
+            uncertainty_kind=UncertaintyKind.EVIDENCE_UNCERTAINTY,
+        ),
+        policy(),
+        low_confidence_threshold=0.55,
+    )
+
+    assert route.intent is Intent.LORE_QUESTION
+    assert route.use_lore
+    assert not route.use_narrative
+    assert route.advisory_only
+    assert not route.clarification_fallback
+
+
+def test_emergency_replan_forces_critical_choice_and_narrative() -> None:
+    route = compile_route(
+        decision(
+            intent="clarification",
+            needs_lore=False,
+            needs_narrative=False,
+            requires_replan=True,
+        ),
+        policy(),
+        low_confidence_threshold=0.55,
+    )
+
+    assert route.intent is Intent.CRITICAL_CHOICE
+    assert route.use_narrative
+    assert not route.use_lore
+    assert not route.use_negotiator
 
 
 def test_over_budget_route_degrades_without_exceeding_either_budget() -> None:

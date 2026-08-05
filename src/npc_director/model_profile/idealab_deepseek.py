@@ -5,7 +5,7 @@ import os
 from agents import RunConfig
 
 from npc_director.contracts import TurnProposal
-from npc_director.model_profile.base import ModelProfile
+from npc_director.model_profile.base import ModelProfile, is_allocation_quota_error
 from npc_director.model_profile.default import (
     PassthroughPromptAdapter,
     TypedRetryPolicy,
@@ -74,6 +74,8 @@ class IdealabRetryPolicy(TypedRetryPolicy):
         super().__init__(max_attempts=max_attempts)
 
     def is_retryable(self, exc: Exception) -> bool:
+        if is_allocation_quota_error(exc):
+            return False
         if super().is_retryable(exc):
             return True
         text = str(exc)

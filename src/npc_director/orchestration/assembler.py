@@ -16,6 +16,7 @@ from npc_director.contracts import (
     StateChangeProposal,
     TurnPlan,
     TurnProposal,
+    UncertaintyKind,
 )
 from npc_director.orchestration.turn_policy import TurnPolicy
 
@@ -41,6 +42,7 @@ class CompiledRoute:
     use_lore: bool
     use_narrative: bool
     use_negotiator: bool
+    advisory_only: bool
     clarification_fallback: bool
     fallback_reason: str | None
     required_specialists: tuple[SpecialistName, ...]
@@ -59,18 +61,34 @@ def compile_route(
     if not 0 <= low_confidence_threshold <= 1:
         raise ValueError("low_confidence_threshold must be between 0 and 1")
 
-    wants_lore = decision.needs_lore or decision.intent is Intent.LORE_QUESTION
-    wants_narrative = decision.needs_narrative or decision.intent in {
+    request_ambiguity = decision.uncertainty_kind is UncertaintyKind.REQUEST_AMBIGUITY
+    evidence_uncertainty = decision.uncertainty_kind is UncertaintyKind.EVIDENCE_UNCERTAINTY
+    final_intent = Intent.CRITICAL_CHOICE if decision.requires_replan else decision.intent
+    wants_lore = (
+        decision.needs_lore
+        or decision.intent is Intent.LORE_QUESTION
+        or evidence_uncertainty
+    )
+    wants_narrative = decision.needs_narrative or decision.requires_replan or final_intent in {
         Intent.QUEST_ACCEPTANCE,
         Intent.CRITICAL_CHOICE,
     }
-    wants_negotiation = decision.negotiation or decision.intent is Intent.NEGOTIATION
-    clarification = decision.ambiguity or decision.confidence < low_confidence_threshold
+    wants_negotiation = not decision.requires_replan and (
+        decision.negotiation or decision.intent is Intent.NEGOTIATION
+    )
+    clarification = request_ambiguity
+    advisory_only = (
+        request_ambiguity
+        or evidence_uncertainty
+        or decision.confidence < low_confidence_threshold
+    )
     fallback_reason: str | None = None
-    if decision.ambiguity:
-        fallback_reason = "ambiguous route decision"
-    elif decision.confidence < low_confidence_threshold:
-        fallback_reason = "low-confidence route decision"
+    if request_ambiguity:
+        fallback_reason = "request ambiguity"
+    elif evidence_uncertainty:
+        fallback_reason = "evidence-uncertain advisory route"
+    elif advisory_only:
+        fallback_reason = "low-confidence advisory route"
 
     call_budget = min(
         policy.budget.max_tool_calls,
@@ -87,6 +105,7 @@ def compile_route(
 
     if negotiation and policy.budget.max_handoffs < 1:
         clarification = True
+        advisory_only = True
         fallback_reason = "negotiation handoff is not permitted"
         negotiation = False
         use_narrative = False
@@ -98,6 +117,7 @@ def compile_route(
         # clarification response, retaining Lore only when the bounded route
         # can still afford it.
         clarification = True
+        advisory_only = True
         fallback_reason = (
             f"requested route exceeds tool/specialist budget: {specialist_count}>{call_budget}"
         )
@@ -128,11 +148,12 @@ def compile_route(
 
     return CompiledRoute(
         decision=decision,
-        intent=Intent.CLARIFICATION if clarification else decision.intent,
+        intent=Intent.CLARIFICATION if clarification else final_intent,
         objective=SAFE_CLARIFICATION_OBJECTIVE if clarification else decision.objective,
         use_lore=use_lore,
         use_narrative=use_narrative,
         use_negotiator=negotiation,
+        advisory_only=advisory_only,
         clarification_fallback=clarification,
         fallback_reason=fallback_reason,
         required_specialists=tuple(required_specialists),
@@ -187,7 +208,7 @@ def assemble_turn_proposal(
             if active_narrative is not None
             else StateChangeProposal()
         ),
-        policy.allowed_state_paths,
+        frozenset() if route.advisory_only else policy.allowed_state_paths,
     )
     constraints = _unique_limited(
         [

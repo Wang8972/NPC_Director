@@ -708,6 +708,11 @@ make eval-live
 make eval-live-main-sub
 ```
 
+Live eval 使用 v2 报告格式，保留每例原始 candidate 与 `routing_trace`。运行期间每完成一例
+都会原子更新同名 `_partial.json`；只有全部完成后才提升为最终报告。若网关返回
+`Throttling.AllocationQuota`，评测会立即停止、保留 partial，并以退出码 75 返回，避免重试
+配额耗尽请求或把未执行用例计成模型失败。
+
 ### 6.3 Eval 与回放
 
 主要命令：
@@ -730,7 +735,8 @@ python -m scripts.trace_to_regression "session-1:1" \
 
 Eval 的路由判定只信运行时 hooks 记录的 Specialist/Handoff trace，不信模型在
 `plan.required_specialists` 中的自报信息。Schema、动作、状态权限和路由使用确定性 diff；
-主观质量才使用校准后的 judge。
+必需语义与禁止主张使用确定性的同义概念组（禁止主张额外识别否定语境）；主观质量才使用
+校准后的 judge。
 
 单条 case 的通过判定为分层计分：
 

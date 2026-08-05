@@ -13,10 +13,13 @@ from npc_director.contracts.enums import (
     DecisionAction,
     EngineEventType,
     FacePreset,
+    Intent,
     SpecialistName,
     TurnStatus,
+    UncertaintyKind,
 )
 from npc_director.contracts.performance import PerformanceDirective, TurnProposal
+from npc_director.contracts.routing import RouteDecision
 from npc_director.contracts.state import GenerationMetrics, TurnRequest
 
 
@@ -54,12 +57,25 @@ class DelegationEvent(WorkflowContract):
     error: str | None = Field(default=None, max_length=2_000)
 
 
+class RoutingTrace(WorkflowContract):
+    decision: RouteDecision
+    final_intent: Intent
+    uncertainty_kind: UncertaintyKind = UncertaintyKind.NONE
+    use_lore: bool = False
+    use_narrative: bool = False
+    use_negotiator: bool = False
+    advisory_only: bool = False
+    clarification_fallback: bool = False
+    fallback_reason: str | None = Field(default=None, max_length=500)
+
+
 class DirectorRunResult(WorkflowContract):
     proposal: TurnProposal
     metrics: GenerationMetrics
     delegations: list[DelegationEvent] = Field(default_factory=list, max_length=8)
     handoffs: list[str] = Field(default_factory=list, max_length=1)
     lore_refs_accessed: list[str] = Field(default_factory=list, max_length=16)
+    routing_trace: RoutingTrace | None = None
     trace_id: str | None = None
     response_id: str | None = None
 

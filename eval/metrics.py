@@ -18,8 +18,10 @@ from eval.models import (
     QualitySummary,
     RateSummary,
     RunMode,
+    RunStatus,
     SchemaSummary,
     SystemSummary,
+    TextConceptExpectation,
     TokenSummary,
 )
 from npc_director.contracts import GenerationMetrics, extract_state_change_paths
@@ -38,6 +40,24 @@ _SCORE_WEIGHTS = {
 }
 _GATE_CHECKS = ("schema", "forbidden_text")
 _DEFAULT_SCORE_THRESHOLD = 0.75
+_NEGATION_WINDOW = 12
+_NEGATION_CUES = (
+    "不能",
+    "不可",
+    "不会",
+    "不得",
+    "不应",
+    "不该",
+    "无需",
+    "无须",
+    "没有",
+    "拒绝",
+    "禁止",
+    "别",
+    "未",
+    "不",
+)
+_DOUBLE_NEGATION_SUFFIXES = ("不得不", "不能不", "不可不")
 
 
 def _score_threshold() -> float:
@@ -61,6 +81,40 @@ def _rate(passed: int, total: int) -> float:
 def _normalize_text(value: str) -> str:
     normalized = unicodedata.normalize("NFKC", value).casefold()
     return " ".join(normalized.split())
+
+
+def _resolved_concepts(
+    concepts: Sequence[TextConceptExpectation],
+    legacy_phrases: Sequence[str],
+) -> list[TextConceptExpectation]:
+    if concepts:
+        return list(concepts)
+    return [TextConceptExpectation(name=phrase, any_of=[phrase]) for phrase in legacy_phrases]
+
+
+def _concept_present(text: str, concept: TextConceptExpectation) -> bool:
+    return any(_normalize_text(phrase) in text for phrase in concept.any_of)
+
+
+def _phrase_is_negated(text: str, start: int) -> bool:
+    prefix = text[max(0, start - _NEGATION_WINDOW) : start].rstrip()
+    if any(prefix.endswith(suffix) for suffix in _DOUBLE_NEGATION_SUFFIXES):
+        return False
+    return any(cue in prefix for cue in _NEGATION_CUES)
+
+
+def _unnegated_phrase_present(text: str, phrase: str) -> bool:
+    normalized = _normalize_text(phrase)
+    start = text.find(normalized)
+    while start >= 0:
+        if not _phrase_is_negated(text, start):
+            return True
+        start = text.find(normalized, start + len(normalized))
+    return False
+
+
+def _forbidden_claim_present(text: str, concept: TextConceptExpectation) -> bool:
+    return any(_unnegated_phrase_present(text, phrase) for phrase in concept.any_of)
 
 
 def _semantic_checks(
@@ -145,29 +199,37 @@ def _semantic_checks(
     )
 
     dialogue = _normalize_text(performance.dialogue.text)
+    required_concepts = _resolved_concepts(
+        expectation.required_concepts,
+        expectation.required_text,
+    )
     missing_text = [
-        fragment
-        for fragment in expectation.required_text
-        if _normalize_text(fragment) not in dialogue
+        concept.name for concept in required_concepts if not _concept_present(dialogue, concept)
     ]
     checks.append(
         CheckResult(
             name="required_text",
             passed=not missing_text,
-            expected=expectation.required_text,
+            expected=[concept.model_dump(mode="json") for concept in required_concepts],
             actual=missing_text,
             detail=(f"missing text: {', '.join(missing_text)}" if missing_text else None),
         )
     )
 
+    forbidden_claims = _resolved_concepts(
+        expectation.forbidden_claims,
+        expectation.forbidden_text,
+    )
     present_forbidden_text = [
-        fragment for fragment in expectation.forbidden_text if _normalize_text(fragment) in dialogue
+        concept.name
+        for concept in forbidden_claims
+        if _forbidden_claim_present(dialogue, concept)
     ]
     checks.append(
         CheckResult(
             name="forbidden_text",
             passed=not present_forbidden_text,
-            expected=expectation.forbidden_text,
+            expected=[concept.model_dump(mode="json") for concept in forbidden_claims],
             actual=present_forbidden_text,
             detail=(
                 f"forbidden text present: {', '.join(present_forbidden_text)}"
@@ -386,7 +448,13 @@ def evaluate_suite(
     mode: RunMode,
     architecture: Architecture = "single_agent",
     dataset_errors: Sequence[str] = (),
+    run_status: RunStatus = "completed",
+    requested_cases: int | None = None,
+    completed_cases: int | None = None,
+    stop_reason: str | None = None,
 ) -> EvalReport:
+    requested_count = len(cases) if requested_cases is None else requested_cases
+    completed_count = len(cases) if completed_cases is None else completed_cases
     candidates_by_id = {candidate.id: candidate for candidate in candidates}
     expected_ids = {case.id for case in cases}
     unexpected_ids = sorted(set(candidates_by_id) - expected_ids)
@@ -421,9 +489,18 @@ def evaluate_suite(
         if candidate.id in expected_ids and candidate.metrics is not None
     ]
     return EvalReport(
+        run_status=run_status,
+        requested_cases=requested_count,
+        completed_cases=completed_count,
+        stop_reason=stop_reason,
         mode=mode,
         architecture=architecture,
-        passed=not failed_cases and not all_dataset_errors,
+        passed=(
+            run_status == "completed"
+            and completed_count == requested_count
+            and not failed_cases
+            and not all_dataset_errors
+        ),
         total_cases=len(cases),
         passed_cases=len(cases) - len(failed_cases),
         failed_cases=failed_cases,
@@ -439,4 +516,5 @@ def evaluate_suite(
         system=_system_summary(report_metrics),
         dataset_errors=all_dataset_errors,
         cases=case_results,
+        candidates=list(candidates),
     )

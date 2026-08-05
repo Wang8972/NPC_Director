@@ -13,6 +13,10 @@
 
 ## Live 报告（真实模型跑 36 条 golden，命名 `live_<架构>_<模型>_<变体>.json`）
 
+v2 报告包含运行状态、请求/完成用例数、原始 candidates 与路由轨迹。Live 运行每完成一例
+原子写入同名 `_partial.json`，完整结束后才提升为最终文件；遇到
+`Throttling.AllocationQuota` 会保留 partial 并返回退出码 75。
+
 按实验时间顺序：
 
 | 文件 | 实验 | 关键结论 |

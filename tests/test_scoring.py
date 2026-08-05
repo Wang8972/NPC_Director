@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytest
 
 from eval.metrics import evaluate_candidate
-from eval.models import CandidateResult, EvalCase
+from eval.models import CandidateResult, EvalCase, TextConceptExpectation
 from eval.runner import load_cases, load_recorded_baseline
 from npc_director.contracts import BodyAction, CoarseEmotion, PrimaryEmotion, TurnProposal
 
@@ -89,3 +89,53 @@ def test_missing_proposal_scores_zero() -> None:
 
     assert result.score == 0.0
     assert not result.passed
+
+
+def test_required_concept_accepts_any_deterministic_synonym() -> None:
+    case = greeting_case().model_copy(deep=True)
+    case.expect.required_text = []
+    case.expect.required_concepts = [
+        TextConceptExpectation(name="欢迎", any_of=["欢迎", "幸会", "欢迎回来"])
+    ]
+    proposal, metrics = greeting_proposal_and_metrics()
+    proposal.performance.dialogue.text = "老朋友，幸会。"
+
+    result = evaluate_candidate(case, make_candidate(proposal, metrics), "single_agent")
+
+    required = next(check for check in result.checks if check.name == "required_text")
+    assert required.passed
+    assert required.actual == []
+
+
+@pytest.mark.parametrize("dialogue", ["不能立即处决。", "我拒绝立即处决。", "不应当立即处决。"])
+def test_forbidden_claim_ignores_negated_mentions(dialogue: str) -> None:
+    case = greeting_case().model_copy(deep=True)
+    case.expect.forbidden_text = []
+    case.expect.forbidden_claims = [
+        TextConceptExpectation(name="立即处决", any_of=["立即处决"])
+    ]
+    proposal, metrics = greeting_proposal_and_metrics()
+    proposal.performance.dialogue.text = dialogue
+
+    result = evaluate_candidate(case, make_candidate(proposal, metrics), "single_agent")
+
+    forbidden = next(check for check in result.checks if check.name == "forbidden_text")
+    assert forbidden.passed
+
+
+@pytest.mark.parametrize("dialogue", ["立即处决。", "必须立即处决。", "不得不立即处决。"])
+def test_forbidden_claim_still_catches_positive_or_double_negative_claims(
+    dialogue: str,
+) -> None:
+    case = greeting_case().model_copy(deep=True)
+    case.expect.forbidden_text = []
+    case.expect.forbidden_claims = [
+        TextConceptExpectation(name="立即处决", any_of=["立即处决"])
+    ]
+    proposal, metrics = greeting_proposal_and_metrics()
+    proposal.performance.dialogue.text = dialogue
+
+    result = evaluate_candidate(case, make_candidate(proposal, metrics), "single_agent")
+
+    forbidden = next(check for check in result.checks if check.name == "forbidden_text")
+    assert not forbidden.passed
