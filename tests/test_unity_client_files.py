@@ -74,3 +74,64 @@ def test_prototype_spike_client_has_registry_and_snapshot_guards() -> None:
     assert "CanonicalObjectIds" in snapshots
     assert "[S3_SUMMARY]" in runner
     assert "resetHashMatches" in runner
+
+
+def test_p1_graybox_has_local_state_rules_and_both_routes() -> None:
+    state = read("PrototypeWorldState.cs")
+    rules = read("PrototypePuzzleRules.cs")
+    runner = read("PrototypeP1GateRunner.cs")
+
+    for npc_id in ("guard_captain_maren", "mechanic_lia", "porter_finn"):
+        assert npc_id in rules
+    for object_id in (
+        "gate_console",
+        "generator",
+        "control_cabinet",
+        "cargo_crate_c12",
+        "manifest_board",
+        "alarm_lamp",
+    ):
+        assert object_id in state
+    for objective in (
+        "investigate_fault",
+        "find_fuse",
+        "install_fuse",
+        "restart_gate",
+        "prototype_success",
+    ):
+        assert objective in state + rules
+    assert '"cooperation"' in rules
+    assert '"procedure"' in rules
+    assert '"diagnose_generator"' not in state + rules
+    assert "PendingRoute" not in state + rules
+    assert "RunCooperationRoute" in runner
+    assert "RunProcedureRoute" in runner
+    assert '"[P1_SUMMARY]' in runner
+    assert "backendClientCount == 0" in runner
+    assert "ClientWebSocket" not in state + rules
+
+
+def test_p1_graybox_has_npc_selection_hotspots_ui_and_reset() -> None:
+    controller = read("PrototypeGameFlowController.cs")
+    hotspot = read("PrototypeHotspot.cs")
+    selector = read("PrototypeNpcSelector.cs")
+    ui_action = read("PrototypeUiAction.cs")
+    editor = (ROOT / "Editor" / "PrototypeP1SceneBuilder.cs").read_text(encoding="utf-8")
+    editor_assembly = (ROOT / "Editor" / "NPCDirectorClient.Editor.asmdef").read_text(
+        encoding="utf-8"
+    )
+
+    assert "HandleHotspot" in controller
+    assert "SelectNpc" in controller
+    assert "ResetPrototype" in controller
+    assert "feedbackText" in controller
+    assert "clueText" in controller
+    assert "OnMouseDown" in hotspot
+    assert "OnMouseDown" in selector
+    assert "ExecuteUiCommand" in ui_action
+    assert 'MenuItem("NPC Director/P1/Create or Reset Graybox Scene")' in editor
+    assert 'ScenePath = "Assets/Scenes/PrototypeGateRepairP1.unity"' in editor
+    assert "CreateNpcs(flow)" in editor
+    assert "CreateEnvironment(flow)" in editor
+    assert '"backend_clients=0"' in editor
+    assert '"Editor"' in editor_assembly

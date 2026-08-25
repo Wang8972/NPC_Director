@@ -1,0 +1,14 @@
+{
+  "name": "NPCDirectorClient.Editor",
+  "rootNamespace": "NPCDirector.Editor",
+  "references": ["NPCDirectorClient"],
+  "includePlatforms": ["Editor"],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
