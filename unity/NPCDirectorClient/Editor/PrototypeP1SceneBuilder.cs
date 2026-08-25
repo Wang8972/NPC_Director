@@ -42,7 +42,7 @@ namespace NPCDirector.Editor
             CreateUi(flow, sceneState);
             gateRunner.Configure(flow);
 
-            Directory.CreateDirectory(Path.GetDirectoryName(ScenePath));
+            EnsureAssetFolder("Assets/Scenes");
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.SaveAssets();
@@ -314,7 +314,7 @@ namespace NPCDirector.Editor
 
         private static Material GetOrCreateMaterial(string assetName, Color color)
         {
-            Directory.CreateDirectory(MaterialFolder);
+            EnsureAssetFolder(MaterialFolder);
             string assetPath = $"{MaterialFolder}/{assetName}.mat";
             Material material = AssetDatabase.LoadAssetAtPath<Material>(assetPath);
             if (material == null)
@@ -343,6 +343,22 @@ namespace NPCDirector.Editor
 #else
             return Resources.GetBuiltinResource<Font>("Arial.ttf");
 #endif
+        }
+
+        private static void EnsureAssetFolder(string folder)
+        {
+            if (AssetDatabase.IsValidFolder(folder))
+            {
+                return;
+            }
+            string parent = Path.GetDirectoryName(folder)?.Replace('\\', '/');
+            string name = Path.GetFileName(folder);
+            if (string.IsNullOrEmpty(parent) || string.IsNullOrEmpty(name))
+            {
+                return;
+            }
+            EnsureAssetFolder(parent);
+            AssetDatabase.CreateFolder(parent, name);
         }
     }
 }
