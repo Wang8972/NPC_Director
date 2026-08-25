@@ -1,0 +1,15 @@
+{
+  "connection_count": 1,
+  "errors": [],
+  "legal_completed": 30,
+  "recorded_at": "2026-08-25T14:04:53.802092+00:00",
+  "route_counts": {
+    "guard_captain_maren": 10,
+    "mechanic_lia": 10,
+    "porter_finn": 10
+  },
+  "session_id": "spike-unity-001",
+  "spike": "S1",
+  "status": "pass",
+  "unknown_npc_rejected": true
+}

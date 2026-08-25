@@ -1,0 +1,83 @@
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:471:[S1_REGISTRY] ready executors=3
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:490:[S1_ROUTE] npc_id=guard_captain_maren executor=MarenExecutor count=1
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:503:[S1_ROUTE_REJECT] unknown npc_id=mechanic_lia
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:516:[S1_ROUTE] npc_id=porter_finn executor=FinnExecutor count=1
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:529:[S1_ROUTE] npc_id=guard_captain_maren executor=MarenExecutor count=2
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:542:[S1_ROUTE_REJECT] unknown npc_id=mechanic_lia
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:555:[S1_ROUTE] npc_id=porter_finn executor=FinnExecutor count=2
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:568:[S1_ROUTE] npc_id=guard_captain_maren executor=MarenExecutor count=3
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:581:[S1_ROUTE_REJECT] unknown npc_id=mechanic_lia
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:594:[S1_ROUTE] npc_id=porter_finn executor=FinnExecutor count=3
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:607:[S1_ROUTE] npc_id=guard_captain_maren executor=MarenExecutor count=4
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:620:[S1_ROUTE_REJECT] unknown npc_id=mechanic_lia
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:633:[S1_ROUTE] npc_id=porter_finn executor=FinnExecutor count=4
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:646:[S1_ROUTE] npc_id=guard_captain_maren executor=MarenExecutor count=5
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:659:[S1_ROUTE_REJECT] unknown npc_id=mechanic_lia
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:672:[S1_ROUTE] npc_id=porter_finn executor=FinnExecutor count=5
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:685:[S1_ROUTE] npc_id=guard_captain_maren executor=MarenExecutor count=6
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:698:[S1_ROUTE_REJECT] unknown npc_id=mechanic_lia
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:711:[S1_ROUTE] npc_id=porter_finn executor=FinnExecutor count=6
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:724:[S1_ROUTE] npc_id=guard_captain_maren executor=MarenExecutor count=7
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:737:[S1_ROUTE_REJECT] unknown npc_id=mechanic_lia
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:750:[S1_ROUTE] npc_id=porter_finn executor=FinnExecutor count=7
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:763:[S1_ROUTE] npc_id=guard_captain_maren executor=MarenExecutor count=8
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:776:[S1_ROUTE_REJECT] unknown npc_id=mechanic_lia
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:789:[S1_ROUTE] npc_id=porter_finn executor=FinnExecutor count=8
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:802:[S1_ROUTE] npc_id=guard_captain_maren executor=MarenExecutor count=9
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:815:[S1_ROUTE_REJECT] unknown npc_id=mechanic_lia
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:828:[S1_ROUTE] npc_id=porter_finn executor=FinnExecutor count=9
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:841:[S1_ROUTE] npc_id=guard_captain_maren executor=MarenExecutor count=10
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:854:[S1_ROUTE_REJECT] unknown npc_id=mechanic_lia
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:867:[S1_ROUTE] npc_id=porter_finn executor=FinnExecutor count=10
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:880:[S1_ROUTE_REJECT] unknown npc_id=unknown_npc
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1019:[S1_REGISTRY] ready executors=3
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1038:[S1_ROUTE] npc_id=guard_captain_maren executor=MarenExecutor count=1
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1051:[S1_ROUTE] npc_id=mechanic_lia executor=LiaExecutor count=1
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1064:[S1_ROUTE] npc_id=porter_finn executor=FinnExecutor count=1
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1077:[S1_ROUTE] npc_id=guard_captain_maren executor=MarenExecutor count=2
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1090:[S1_ROUTE] npc_id=mechanic_lia executor=LiaExecutor count=2
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1103:[S1_ROUTE] npc_id=porter_finn executor=FinnExecutor count=2
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1116:[S1_ROUTE] npc_id=guard_captain_maren executor=MarenExecutor count=3
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1129:[S1_ROUTE] npc_id=mechanic_lia executor=LiaExecutor count=3
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1142:[S1_ROUTE] npc_id=porter_finn executor=FinnExecutor count=3
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1155:[S1_ROUTE] npc_id=guard_captain_maren executor=MarenExecutor count=4
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1168:[S1_ROUTE] npc_id=mechanic_lia executor=LiaExecutor count=4
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1181:[S1_ROUTE] npc_id=porter_finn executor=FinnExecutor count=4
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1194:[S1_ROUTE] npc_id=guard_captain_maren executor=MarenExecutor count=5
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1207:[S1_ROUTE] npc_id=mechanic_lia executor=LiaExecutor count=5
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1220:[S1_ROUTE] npc_id=porter_finn executor=FinnExecutor count=5
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1233:[S1_ROUTE] npc_id=guard_captain_maren executor=MarenExecutor count=6
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1246:[S1_ROUTE] npc_id=mechanic_lia executor=LiaExecutor count=6
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1259:[S1_ROUTE] npc_id=porter_finn executor=FinnExecutor count=6
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1272:[S1_ROUTE] npc_id=guard_captain_maren executor=MarenExecutor count=7
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1285:[S1_ROUTE] npc_id=mechanic_lia executor=LiaExecutor count=7
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1298:[S1_ROUTE] npc_id=porter_finn executor=FinnExecutor count=7
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1311:[S1_ROUTE] npc_id=guard_captain_maren executor=MarenExecutor count=8
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1324:[S1_ROUTE] npc_id=mechanic_lia executor=LiaExecutor count=8
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1337:[S1_ROUTE] npc_id=porter_finn executor=FinnExecutor count=8
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1350:[S1_ROUTE] npc_id=guard_captain_maren executor=MarenExecutor count=9
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1363:[S1_ROUTE] npc_id=mechanic_lia executor=LiaExecutor count=9
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1376:[S1_ROUTE] npc_id=porter_finn executor=FinnExecutor count=9
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1389:[S1_ROUTE] npc_id=guard_captain_maren executor=MarenExecutor count=10
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1402:[S1_ROUTE] npc_id=mechanic_lia executor=LiaExecutor count=10
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1415:[S1_ROUTE] npc_id=porter_finn executor=FinnExecutor count=10
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1428:[S1_ROUTE_REJECT] unknown npc_id=unknown_npc
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1443:[S1_SUMMARY] maren=10 lia=10 finn=10 unknown=1 registered=3
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1600:[S3_SNAPSHOT_REJECT] no Renderer for cargo_crate_c12
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1614:[S3_SNAPSHOT_REJECT] no Renderer for cargo_crate_c12
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1628:[S3_SNAPSHOT_REJECT] no Renderer for cargo_crate_c12
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1642:[S3_SNAPSHOT_REJECT] no Renderer for cargo_crate_c12
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1656:[S3_SNAPSHOT_REJECT] no Renderer for cargo_crate_c12
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1669:[S3_SNAPSHOT_REJECT] no Renderer for cargo_crate_c12
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1682:[S3_SNAPSHOT_REJECT] no Renderer for cargo_crate_c12
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1696:[S3_SUMMARY] FAIL mappings=0/24 stale_ignored=0 duplicate_ignored=0 side_effect_mappings=0 missing_renderers=6 reset_hash_match=True reset_hash=be40f899ef3d130e1512c7940e31c7da978d16302e2b3abff8b355b6ed70b699
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1708:[S3_SNAPSHOT_REJECT] no Renderer for cargo_crate_c12
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1817:[S3_SNAPSHOT_APPLIED] version=0 objective=investigate_fault mappings=6
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1831:[S3_SNAPSHOT_APPLIED] version=1 objective=install_fuse mappings=12
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1845:[S3_SNAPSHOT_APPLIED] version=2 objective=restart_gate mappings=18
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1859:[S3_SNAPSHOT_APPLIED] version=3 objective=prototype_success mappings=24
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1873:[S3_STALE_IGNORED] incoming=2 current=3
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1886:[S3_DUPLICATE_IGNORED] version=3
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1899:[S3_SNAPSHOT_APPLIED] version=0 objective=investigate_fault mappings=6
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1913:[S3_SUMMARY] PASS mappings=24/24 stale_ignored=1 duplicate_ignored=1 side_effect_mappings=24 missing_renderers=0 reset_hash_match=True reset_hash=a12761cc6dba76590226c9bf51d952a54d746c8f587914248e19ce34e3f93c71
+C:\Users\A\AppData\Local\Unity\Editor\Editor.log:1925:[S3_SNAPSHOT_APPLIED] version=3 objective=prototype_success mappings=6
