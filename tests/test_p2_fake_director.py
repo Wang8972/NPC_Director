@@ -281,6 +281,26 @@ def test_interrupt_does_not_commit_and_retry_can_succeed(tmp_path: Path) -> None
         observe(session, "console", "gate_console")
         planned = submit(session, 1, "mechanic_lia", "fixture:inspect_generator")
         before = session.repository.get_world(session.session_id)
+        locked = submit(session, 99, "porter_finn", "fixture:roundtable")
+        assert locked[0].payload.code == "input_locked"
+        plan = next(item for item in planned if isinstance(item, SceneActionPlanMessage))
+        bad_event = session.handle(
+            SceneActionEventMessage.model_validate(
+                {
+                    "message_id": "wrong-key",
+                    "type": "scene.action.completed",
+                    "payload": {
+                        "session_id": session.session_id,
+                        "turn_id": plan.payload.action.turn_id,
+                        "action_id": plan.payload.action.action_id,
+                        "idempotency_key": "wrong-key",
+                        "event_type": "completed",
+                    },
+                }
+            )
+        )
+        assert bad_event[0].payload.code == "event_rejected"
+        assert session.repository.get_world(session.session_id).version == before.version
         complete_scene_action(session, planned, terminal="interrupted")
         after = session.repository.get_world(session.session_id)
         assert after.version == before.version

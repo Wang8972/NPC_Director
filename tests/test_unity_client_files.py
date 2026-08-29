@@ -201,6 +201,8 @@ def test_p2_scene_builder_has_three_npcs_six_hotspots_and_single_backend_client(
         "fixture:install_fuse",
         "fixture:restart_gate",
         "fixture:roundtable",
+        "fixture:unknown_object",
+        "fixture:unauthorized_restart",
     ):
         assert fixture_id in editor
     assert "ApplySnapshot" in controller

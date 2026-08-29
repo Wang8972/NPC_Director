@@ -21,7 +21,7 @@ namespace NPCDirector
 
         [SerializeField] private string sessionId = "p2-fake-001";
         [SerializeField] private NpcRegistry npcRegistry;
-        [SerializeField] private float objectActionSeconds = 0.35f;
+        [SerializeField] private float objectActionSeconds = 2f;
 
         private readonly HashSet<string> completedKeys =
             new HashSet<string>(StringComparer.Ordinal);

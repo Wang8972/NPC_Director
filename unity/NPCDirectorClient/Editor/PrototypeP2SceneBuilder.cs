@@ -289,6 +289,9 @@ namespace NPCDirector.Editor
             CreateButton(panelObject.transform, font, controller, "玛伦重启闸门", "fixture:restart_gate", 10f, y, 305f);
             CreateButton(panelObject.transform, font, controller, "拒绝自动圆桌", "fixture:roundtable", 330f, y, 310f);
             y -= 45f;
+            CreateButton(panelObject.transform, font, controller, "测试未知对象拒绝", "fixture:unknown_object", 10f, y, 305f);
+            CreateButton(panelObject.transform, font, controller, "测试越权重启拒绝", "fixture:unauthorized_restart", 330f, y, 310f);
+            y -= 45f;
             CreateButton(panelObject.transform, font, controller, "中断当前场景动作", "interrupt", 10f, y, 305f);
             CreateButton(panelObject.transform, font, controller, "后端权威重置", "reset", 330f, y, 310f);
             return refs;
