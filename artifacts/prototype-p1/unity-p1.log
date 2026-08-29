@@ -1,0 +1,22 @@
+﻿[P1_RESET] session=p1-local-1 hash=13a0fb3d4e935c764d8cbc60108b113ea4fff29f6e02ab9adf4007e9f55bc8b2
+[P1_ROUTE] cooperation status=PASS version=7 hash=d1adad680d510a71612dee3a6b96b1b5ad53a1a06d070f4815a51a35e1ce2a23
+[P1_ROUTE] procedure status=PASS version=10 hash=b14490e8d6deb5087d128bf74af8627f76ddff4fe4cb556db5c87f4a63ff5444
+[P1_SUMMARY] PASS cooperation=1 procedure=1 reset_hash_match=True npcs=3 hotspots=6 backend_clients=0
+[P1_RESET] session=p1-local-2 hash=13a0fb3d4e935c764d8cbc60108b113ea4fff29f6e02ab9adf4007e9f55bc8b2
+[P1_ACTION] action=observe_gate_console actor= accepted=True changed=True version=1 objective=investigate_fault route=none code=observed
+[P1_SELECT] npc_id=mechanic_lia
+[P1_ACTION] action=inspect_generator actor=mechanic_lia accepted=True changed=True version=2 objective=find_fuse route=none code=completed
+[P1_SELECT] npc_id=porter_finn
+[P1_ACTION] action=tell_diagnosis actor=porter_finn accepted=True changed=True version=3 objective=find_fuse route=none code=completed
+[P1_ACTION] action=offer_cooperation actor=porter_finn accepted=True changed=True version=4 objective=install_fuse route=cooperation code=completed
+[P1_SELECT] npc_id=mechanic_lia
+[P1_ACTION] action=install_fuse actor=mechanic_lia accepted=True changed=True version=5 objective=restart_gate route=cooperation code=completed
+[P1_SELECT] npc_id=guard_captain_maren
+[P1_ACTION] action=authorize_restart actor=guard_captain_maren accepted=True changed=True version=6 objective=restart_gate route=cooperation code=completed
+[P1_ACTION] action=restart_gate actor=guard_captain_maren accepted=True changed=True version=7 objective=prototype_success route=cooperation code=completed
+[P1_RESET] session=p1-local-3 hash=13a0fb3d4e935c764d8cbc60108b113ea4fff29f6e02ab9adf4007e9f55bc8b2
+[P1_SELECT] npc_id=mechanic_lia
+[P1_ACTION] action=inspect_generator actor=mechanic_lia accepted=False changed=False version=0 objective=investigate_fault route=none code=error_missing_fact
+[P1_SELECT] npc_id=porter_finn
+[P1_ACTION] action=offer_cooperation actor=porter_finn accepted=False changed=False version=0 objective=investigate_fault route=none code=error_missing_precondition
+[P1_RESET] session=p1-local-4 hash=13a0fb3d4e935c764d8cbc60108b113ea4fff29f6e02ab9adf4007e9f55bc8b2
