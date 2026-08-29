@@ -38,6 +38,7 @@ from npc_director.prototype.orchestrator import (
 from npc_director.prototype.repository import PrototypeStateRepository
 
 FIXTURE_VERSION = "prototype-p2-fixture-v1"
+P2_ROUTE_RUNS_REQUIRED = 10
 
 
 class PrototypeFakeDirectorSession:
@@ -67,6 +68,10 @@ class PrototypeFakeDirectorSession:
         self._emitted_actions: dict[str, tuple[str, str]] = {}
         self._interactions: set[str] = set()
         self._route_success_counts = {"cooperation": 0, "procedure": 0}
+        self._route_semantic_hashes: dict[str, list[str]] = {
+            "cooperation": [],
+            "procedure": [],
+        }
         self._action_type_counts: dict[str, int] = {}
         self._rejection_counts: dict[str, int] = {}
         self._performance_plan_count = 0
@@ -153,7 +158,11 @@ class PrototypeFakeDirectorSession:
         }
         passed = (
             required_interactions <= self._interactions
-            and all(count >= 1 for count in self._route_success_counts.values())
+            and all(
+                count >= P2_ROUTE_RUNS_REQUIRED
+                for count in self._route_success_counts.values()
+            )
+            and all(len(set(hashes)) == 1 for hashes in self._route_semantic_hashes.values())
         )
         return {
             "stage": "P2 Fake Director",
@@ -163,6 +172,14 @@ class PrototypeFakeDirectorSession:
             "no_api_key_required": True,
             "interaction_types_seen": sorted(self._interactions),
             "route_success_counts": dict(self._route_success_counts),
+            "route_semantic_hashes": {
+                route: list(hashes) for route, hashes in self._route_semantic_hashes.items()
+            },
+            "route_hashes_stable": {
+                route: bool(hashes) and len(set(hashes)) == 1
+                for route, hashes in self._route_semantic_hashes.items()
+            },
+            "route_runs_required": P2_ROUTE_RUNS_REQUIRED,
             "scene_action_plan_count": self._scene_action_plan_count,
             "performance_plan_count": self._performance_plan_count,
             "action_type_counts": dict(sorted(self._action_type_counts.items())),
@@ -678,6 +695,7 @@ class PrototypeFakeDirectorSession:
                 route = commit.world.route_flags.fuse_route
                 if route in self._route_success_counts:
                     self._route_success_counts[route] += 1
+                    self._route_semantic_hashes[route].append(self.semantic_state_hash())
         return [
             self._world_event(
                 event_type,

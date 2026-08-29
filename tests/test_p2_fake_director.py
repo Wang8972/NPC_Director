@@ -168,54 +168,69 @@ def finish_route(session: PrototypeFakeDirectorSession, index: int) -> None:
     )
 
 
+def reset_session(session: PrototypeFakeDirectorSession, run_id: int) -> list[Any]:
+    return session.handle(
+        {
+            "message_id": f"reset-{run_id}",
+            "type": "prototype.reset.request",
+            "payload": {
+                "session_id": session.session_id,
+                "reset_token": f"p2-reset-{run_id}",
+            },
+        }
+    )
+
+
+def run_cooperation(session: PrototypeFakeDirectorSession, offset: int) -> None:
+    index = common_prefix(session, offset)
+    submit(session, index + 1, "porter_finn", "fixture:tell_diagnosis")
+    complete_scene_action(
+        session,
+        submit(session, index + 2, "porter_finn", "fixture:ask_fuse_location"),
+    )
+    complete_scene_action(
+        session,
+        submit(session, index + 3, "porter_finn", "fixture:cooperation_offer"),
+    )
+    finish_route(session, index + 3)
+
+
+def run_procedure(session: PrototypeFakeDirectorSession, offset: int) -> None:
+    index = common_prefix(session, offset)
+    observe(session, f"observe-manifest-{offset}", "manifest_board")
+    submit(session, index + 1, "guard_captain_maren", "fixture:tell_manifest")
+    complete_scene_action(
+        session,
+        submit(
+            session,
+            index + 2,
+            "guard_captain_maren",
+            "fixture:request_authorization",
+        ),
+    )
+    complete_scene_action(
+        session,
+        submit(session, index + 3, "porter_finn", "fixture:give_fuse"),
+    )
+    finish_route(session, index + 3)
+
+
 def test_p2_fake_runs_both_routes_and_all_four_interactions(tmp_path: Path) -> None:
     session = PrototypeFakeDirectorSession(tmp_path / "p2.sqlite3", reset_on_start=True)
     try:
-        index = common_prefix(session)
-        submit(session, index + 1, "porter_finn", "fixture:tell_diagnosis")
-        complete_scene_action(
-            session,
-            submit(session, index + 2, "porter_finn", "fixture:ask_fuse_location"),
-        )
-        complete_scene_action(
-            session,
-            submit(session, index + 3, "porter_finn", "fixture:cooperation_offer"),
-        )
-        finish_route(session, index + 3)
-        assert (
-            session.repository.get_world(session.session_id).objective_state
-            == "prototype_success"
-        )
-
-        reset = session.handle(
-            {
-                "message_id": "reset-1",
-                "type": "prototype.reset.request",
-                "payload": {"session_id": session.session_id, "reset_token": "p2-reset-1"},
-            }
-        )
-        assert reset[0].type == "world.event"
-        index = common_prefix(session, 20)
-        observe(session, "observe-manifest", "manifest_board")
-        submit(session, index + 1, "guard_captain_maren", "fixture:tell_manifest")
-        complete_scene_action(
-            session,
-            submit(
-                session,
-                index + 2,
-                "guard_captain_maren",
-                "fixture:request_authorization",
-            ),
-        )
-        complete_scene_action(
-            session,
-            submit(session, index + 3, "porter_finn", "fixture:give_fuse"),
-        )
-        finish_route(session, index + 3)
+        for run_id in range(10):
+            if run_id > 0:
+                reset_session(session, run_id)
+            run_cooperation(session, run_id * 100)
+        for run_id in range(10):
+            reset = reset_session(session, 100 + run_id)
+            assert reset[0].type == "world.event"
+            run_procedure(session, 1000 + run_id * 100)
 
         report = session.report()
         assert report["status"] == "pass"
-        assert report["route_success_counts"] == {"cooperation": 1, "procedure": 1}
+        assert report["route_success_counts"] == {"cooperation": 10, "procedure": 10}
+        assert report["route_hashes_stable"] == {"cooperation": True, "procedure": True}
         assert report["interaction_types_seen"] == [
             "npc_npc",
             "npc_scene",
