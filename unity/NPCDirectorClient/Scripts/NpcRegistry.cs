@@ -28,6 +28,12 @@ namespace NPCDirector
             Rebuild();
         }
 
+        public void Configure(NpcExecutorBinding[] executorBindings)
+        {
+            bindings = executorBindings ?? Array.Empty<NpcExecutorBinding>();
+            Rebuild();
+        }
+
         public void Rebuild()
         {
             executors.Clear();

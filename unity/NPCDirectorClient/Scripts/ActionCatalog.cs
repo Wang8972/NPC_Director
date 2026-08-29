@@ -27,6 +27,26 @@ namespace NPCDirector
 
         private void Awake()
         {
+            Rebuild();
+        }
+
+        public void ConfigureForPrototype()
+        {
+            entries = new List<ActionCatalogEntry>
+            {
+                new ActionCatalogEntry
+                {
+                    action = "nod",
+                    animatorState = "idle",
+                    layer = 0,
+                    defaultPriority = 50
+                }
+            };
+            Rebuild();
+        }
+
+        private void Rebuild()
+        {
             lookup.Clear();
             foreach (ActionCatalogEntry entry in entries)
             {

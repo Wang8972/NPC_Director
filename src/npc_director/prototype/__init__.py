@@ -1,3 +1,4 @@
+from npc_director.prototype.fake_director import PrototypeFakeDirectorSession
 from npc_director.prototype.harness import FakePrototypeRouteHarness
 from npc_director.prototype.models import (
     ACTION_TYPES,
@@ -30,6 +31,7 @@ __all__ = [
     "ActionCommitResult",
     "ApprovedAction",
     "FakePrototypeRouteHarness",
+    "PrototypeFakeDirectorSession",
     "InjectedCommitFailure",
     "PrototypeConversationOrchestrator",
     "PrototypeNpcState",

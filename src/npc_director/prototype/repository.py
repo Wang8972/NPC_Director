@@ -124,6 +124,26 @@ class PrototypeStateRepository(SQLiteStore):
                 )
         return self.get_world(session_id)
 
+    def reset(self, session_id: str) -> PrototypeWorldState:
+        """Delete exactly one prototype session and recreate its frozen initial state."""
+        with self.transaction() as connection:
+            connection.execute(
+                "DELETE FROM prototype_chain_jobs WHERE session_id = ?", (session_id,)
+            )
+            connection.execute(
+                "DELETE FROM prototype_action_commits WHERE session_id = ?", (session_id,)
+            )
+            connection.execute(
+                "DELETE FROM prototype_pending_actions WHERE session_id = ?", (session_id,)
+            )
+            connection.execute(
+                "DELETE FROM prototype_npc_session_states WHERE session_id = ?", (session_id,)
+            )
+            connection.execute(
+                "DELETE FROM prototype_game_session_states WHERE session_id = ?", (session_id,)
+            )
+        return self.initialize(session_id)
+
     def get_world(self, session_id: str) -> PrototypeWorldState:
         with self.connection() as connection:
             row = connection.execute(

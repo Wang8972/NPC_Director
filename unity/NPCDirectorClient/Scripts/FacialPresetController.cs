@@ -33,6 +33,18 @@ namespace NPCDirector
 
         private void Awake()
         {
+            Rebuild();
+        }
+
+        public void ConfigureForPrototype()
+        {
+            presets = new[] { new FacialPreset { name = "neutral" } };
+            Rebuild();
+        }
+
+        private void Rebuild()
+        {
+            lookup.Clear();
             foreach (FacialPreset preset in presets)
             {
                 if (preset != null && !string.IsNullOrWhiteSpace(preset.name))

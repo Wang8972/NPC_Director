@@ -34,6 +34,20 @@ namespace NPCDirector
 
         private INpcTtsPlayer TtsPlayer => ttsComponent as INpcTtsPlayer;
 
+        public void Configure(
+            Text subtitleText,
+            ActionCatalog catalog,
+            FacialPresetController faceController,
+            GazeController gaze = null,
+            Animator targetAnimator = null)
+        {
+            subtitle = subtitleText;
+            actionCatalog = catalog;
+            facialController = faceController;
+            gazeController = gaze;
+            animator = targetAnimator;
+        }
+
         private void Awake()
         {
             string persisted = PlayerPrefs.GetString(CompletedKeysPreference, "");

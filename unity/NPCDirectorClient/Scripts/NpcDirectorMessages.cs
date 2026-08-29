@@ -154,6 +154,110 @@ namespace NPCDirector
     }
 
     [Serializable]
+    public sealed class SceneObserveRequestEnvelope
+    {
+        public string message_id;
+        public string type = "scene.observe.request";
+        public SceneObserveRequestPayload payload;
+    }
+
+    [Serializable]
+    public sealed class SceneObserveRequestPayload
+    {
+        public string session_id;
+        public string request_id;
+        public string object_id;
+        public int expected_world_version;
+    }
+
+    [Serializable]
+    public sealed class SceneActionPlanEnvelope
+    {
+        public string message_id;
+        public string type = "scene.action.plan";
+        public SceneActionPlanPayload payload;
+    }
+
+    [Serializable]
+    public sealed class SceneActionPlanPayload
+    {
+        public SceneActionCommand action;
+        public PerformanceDirective pre_commit_directive;
+        public string idempotency_key;
+    }
+
+    [Serializable]
+    public sealed class SceneActionCommand
+    {
+        public string schema_version;
+        public string session_id;
+        public string turn_id;
+        public string action_id;
+        public string actor_id;
+        public string action_type;
+        public string object_id;
+        public string item_id;
+        public string target_id;
+        public string target_npc_id;
+        public string operation;
+        public int basis_world_version;
+    }
+
+    [Serializable]
+    public sealed class SceneActionEventEnvelope
+    {
+        public string message_id;
+        public string type;
+        public SceneActionEventPayload payload;
+    }
+
+    [Serializable]
+    public sealed class SceneActionEventPayload
+    {
+        public string session_id;
+        public string turn_id;
+        public string action_id;
+        public string idempotency_key;
+        public string event_type;
+        public string detail;
+        public string occurred_at;
+    }
+
+    [Serializable]
+    public sealed class WorldEventEnvelope
+    {
+        public string message_id;
+        public string type = "world.event";
+        public WorldEventPayload payload;
+    }
+
+    [Serializable]
+    public sealed class WorldEventPayload
+    {
+        public string session_id;
+        public string event_id;
+        public string event_type;
+        public int world_version;
+        public string summary;
+        public string[] revealed_fact_ids = Array.Empty<string>();
+    }
+
+    [Serializable]
+    public sealed class PrototypeResetRequestEnvelope
+    {
+        public string message_id;
+        public string type = "prototype.reset.request";
+        public PrototypeResetRequestPayload payload;
+    }
+
+    [Serializable]
+    public sealed class PrototypeResetRequestPayload
+    {
+        public string session_id;
+        public string reset_token;
+    }
+
+    [Serializable]
     public sealed class ErrorEnvelope
     {
         public string message_id;
@@ -186,7 +290,9 @@ namespace NPCDirector
         public string objective_state;
         public PrototypeObjectState[] object_states = Array.Empty<PrototypeObjectState>();
         public PrototypeItemLocation[] item_locations = Array.Empty<PrototypeItemLocation>();
+        public string[] discovered_fact_ids = Array.Empty<string>();
         public PrototypeRouteFlags route_flags = new PrototypeRouteFlags();
+        public PrototypePendingAction pending_action;
     }
 
     [Serializable]
@@ -209,5 +315,14 @@ namespace NPCDirector
         public string fuse_route = "none";
         public bool crate_c12_authorized;
         public bool control_cabinet_authorized;
+    }
+
+    [Serializable]
+    public sealed class PrototypePendingAction
+    {
+        public string action_id;
+        public string actor_id;
+        public string action_type;
+        public int basis_world_version;
     }
 }

@@ -159,11 +159,13 @@ def test_protocol_accepts_strict_prototype_state_snapshot() -> None:
                 {"object_id": "alarm_lamp", "state": "solid_green"},
             ],
             "item_locations": [{"item_id": "spare_fuse", "location_id": "generator"}],
+            "discovered_fact_ids": ["fact_fuse_installed", "fact_gate_restarted"],
             "route_flags": {
                 "fuse_route": "cooperation",
                 "crate_c12_authorized": False,
                 "control_cabinet_authorized": True,
             },
+            "pending_action": None,
         },
     }
 
@@ -172,3 +174,64 @@ def test_protocol_accepts_strict_prototype_state_snapshot() -> None:
     assert parsed.type == "state.snapshot"
     assert parsed.payload.world_version == 3
     assert len(parsed.payload.object_states) == 6
+
+
+def test_protocol_accepts_scene_action_lifecycle_and_rejects_type_mismatch() -> None:
+    event = {
+        "message_id": "scene-event-1",
+        "type": "scene.action.completed",
+        "payload": {
+            "session_id": "s1",
+            "turn_id": "s1:1",
+            "action_id": "s1:1:a1",
+            "idempotency_key": "key",
+            "event_type": "completed",
+        },
+    }
+    parsed = UNITY_MESSAGE_ADAPTER.validate_python(event)
+    assert parsed.payload.action_id == "s1:1:a1"
+
+    event["type"] = "scene.action.started"
+    try:
+        UNITY_MESSAGE_ADAPTER.validate_python(event)
+    except ValueError as exc:
+        assert "message type must be" in str(exc)
+    else:
+        raise AssertionError("mismatched scene action event type was accepted")
+
+
+def test_protocol_accepts_observe_reset_and_committed_world_event() -> None:
+    messages = [
+        {
+            "message_id": "observe-1",
+            "type": "scene.observe.request",
+            "payload": {
+                "session_id": "s1",
+                "request_id": "observe-request-1",
+                "object_id": "gate_console",
+                "expected_world_version": 0,
+            },
+        },
+        {
+            "message_id": "reset-1",
+            "type": "prototype.reset.request",
+            "payload": {"session_id": "s1", "reset_token": "p2-reset-1"},
+        },
+        {
+            "message_id": "world-1",
+            "type": "world.event",
+            "payload": {
+                "session_id": "s1",
+                "event_id": "event-1",
+                "event_type": "action_committed",
+                "world_version": 1,
+                "summary": "committed",
+                "revealed_fact_ids": ["fact_console_e17"],
+            },
+        },
+    ]
+    assert [UNITY_MESSAGE_ADAPTER.validate_python(item).type for item in messages] == [
+        "scene.observe.request",
+        "prototype.reset.request",
+        "world.event",
+    ]

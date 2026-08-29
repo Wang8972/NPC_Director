@@ -135,3 +135,74 @@ def test_p1_graybox_has_npc_selection_hotspots_ui_and_reset() -> None:
     assert "CreateEnvironment(flow)" in editor
     assert '"backend_clients=0"' in editor
     assert '"Editor"' in editor_assembly
+
+
+def test_p2_client_uses_one_socket_and_game_domain_protocol() -> None:
+    client = read("PrototypeP2Client.cs")
+    messages = read("NpcDirectorMessages.cs")
+
+    assert "ClientWebSocket" in client
+    assert "Guid.NewGuid" in client
+    assert "turnIndex" not in client
+    assert '"scene.action.plan"' in client
+    assert '"state.snapshot"' in client
+    assert '"world.event"' in client
+    assert "SceneObserveRequestEnvelope" in client
+    assert "PrototypeResetRequestEnvelope" in client
+    for message_type in (
+        "scene.observe.request",
+        "scene.action.plan",
+        "prototype.reset.request",
+        "world.event",
+    ):
+        assert f'"{message_type}"' in messages
+    assert "discovered_fact_ids" in messages
+    assert "pending_action" in messages
+
+
+def test_p2_scene_action_executor_has_actor_object_barrier_and_interrupt() -> None:
+    executor = read("PrototypeSceneActionExecutor.cs")
+
+    for action_type in (
+        "inspect_object",
+        "authorize_object",
+        "give_item",
+        "install_item",
+        "operate_object",
+        "tell_npc",
+        "tell_player",
+    ):
+        assert f'"{action_type}"' in executor
+    assert "elapsed < objectActionSeconds || actorTerminal == null" in executor
+    assert 'activeReporter?.Invoke("completed"' in executor
+    assert "InterruptCurrent" in executor
+    assert 'activeReporter?.Invoke("interrupted"' in executor
+    assert "npcRegistry.TryResolve" in executor
+    assert "GameObject.Find" in executor
+
+
+def test_p2_scene_builder_has_three_npcs_six_hotspots_and_single_backend_client() -> None:
+    editor = (ROOT / "Editor" / "PrototypeP2SceneBuilder.cs").read_text(encoding="utf-8")
+    controller = read("PrototypeP2GameController.cs")
+
+    assert 'MenuItem("NPC Director/P2/Create or Reset Fake Director Scene")' in editor
+    assert 'ScenePath = "Assets/Scenes/PrototypeGateRepairP2.unity"' in editor
+    assert "CreateNpcs(controller, ui.subtitle)" in editor
+    assert "CreateEnvironment(controller)" in editor
+    assert "clientCount == 1" in editor
+    assert "npcCount == 3" in editor
+    assert "hotspotCount == 6" in editor
+    assert "StandaloneInputModule" in editor
+    for fixture_id in (
+        "fixture:inspect_generator",
+        "fixture:lia_tell_maren_diagnosis",
+        "fixture:cooperation_offer",
+        "fixture:request_authorization",
+        "fixture:install_fuse",
+        "fixture:restart_gate",
+        "fixture:roundtable",
+    ):
+        assert fixture_id in editor
+    assert "ApplySnapshot" in controller
+    assert "sceneStateController?.ApplySnapshot(snapshot)" in controller
+    assert "Prototype Success" in controller
