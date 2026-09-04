@@ -1,0 +1,1081 @@
+{
+  "mode": "real-model-mock-unity",
+  "model": "qwen3.8-flash",
+  "recorded_at": "2026-09-04T17:26:36.479791+00:00",
+  "session_report": {
+    "action_type_counts": {
+      "authorize_object": 3,
+      "give_item": 2,
+      "inspect_object": 5,
+      "install_item": 2,
+      "operate_object": 2,
+      "tell_npc": 4,
+      "tell_player": 1
+    },
+    "current_objective_state": "prototype_success",
+    "current_semantic_state_hash": "16e921ac6bd3509e053d3ae656bbaba00c176a5d2f8648fdf5a737e782e225de",
+    "illegal_scene_plan_count": 0,
+    "initial_semantic_state_hash": "f8bcd6d3d989a8d0f0dbf1a1bf54dea9ba06a1af1da7d76e54853450ccdde86a",
+    "interaction_types_seen": [
+      "npc_npc",
+      "npc_scene",
+      "player_npc",
+      "player_scene"
+    ],
+    "mode": "real",
+    "model_call_count": 18,
+    "model_error_fallback_count": 0,
+    "models": [
+      "qwen3.8-flash"
+    ],
+    "no_api_key_required": false,
+    "npc_response_counts": {
+      "guard_captain_maren": 8,
+      "mechanic_lia": 6,
+      "porter_finn": 4
+    },
+    "performance_plan_count": 8,
+    "prompt_injection_block_count": 0,
+    "prompt_version": "prototype-p3-real-v1",
+    "rejection_counts": {},
+    "reset_count": 1,
+    "route_hashes_stable": {
+      "cooperation": true,
+      "procedure": true
+    },
+    "route_runs_required": 1,
+    "route_semantic_hashes": {
+      "cooperation": [
+        "c651c2f51c151fcb931b9901953104e900fbd1f33b44ab08015a8ada78b40ef0"
+      ],
+      "procedure": [
+        "16e921ac6bd3509e053d3ae656bbaba00c176a5d2f8648fdf5a737e782e225de"
+      ]
+    },
+    "route_success_counts": {
+      "cooperation": 1,
+      "procedure": 1
+    },
+    "scene_action_plan_count": 14,
+    "scripted_route_runs_required": 10,
+    "session_id": "p3-local-qwen38",
+    "stage": "P3 Real NPC Director",
+    "status": "pass",
+    "total_latency_ms": 414388.11862596776,
+    "total_tokens": 0,
+    "turn_audit": [
+      {
+        "action": {
+          "action_type": "inspect_object",
+          "actor_id": "mechanic_lia",
+          "fact_id": null,
+          "gameplay_intent": null,
+          "item_id": null,
+          "object_id": "generator",
+          "operation": null,
+          "target_id": null,
+          "target_npc_id": null
+        },
+        "dialogue": "行，我拆开机壳查，你自己退后半步。看不出来路之前我不猜东西在哪儿，查完我告诉你缺什么、能动哪一步。有件事先说在前头：最后合闸不归我管，得玛伦点头。",
+        "fallback_reason": null,
+        "grounded_claims": [
+          {
+            "claim": "最后合闸不归我管，得玛伦点头",
+            "fact_id": "fact_restart_requires_authority"
+          }
+        ],
+        "latency_ms": 15071.376791922376,
+        "model": "qwen3.8-flash",
+        "npc_id": "mechanic_lia",
+        "player_input": "控制台显示 E-17。请检查 generator 的实际故障并开始检查动作。",
+        "reason": null,
+        "status": "accepted",
+        "total_tokens": 0,
+        "turn_id": "p3-local-qwen38:mock:2",
+        "used_fact_ids": [
+          "fact_restart_requires_authority"
+        ]
+      },
+      {
+        "action": {
+          "action_type": "tell_npc",
+          "actor_id": "mechanic_lia",
+          "fact_id": "fact_generator_missing_fuse",
+          "gameplay_intent": null,
+          "item_id": null,
+          "object_id": null,
+          "operation": null,
+          "target_id": null,
+          "target_npc_id": "guard_captain_maren"
+        },
+        "dialogue": "行，我原话告诉她：发电机缺少备用保险丝，这是我现在把电拉不起来的原因。保险丝在谁手里、在哪个箱子里，我不知道，也不会替你猜。",
+        "fallback_reason": null,
+        "grounded_claims": [
+          {
+            "claim": "发电机缺少备用保险丝",
+            "fact_id": "fact_generator_missing_fuse"
+          }
+        ],
+        "latency_ms": 21857.796957949176,
+        "model": "qwen3.8-flash",
+        "npc_id": "mechanic_lia",
+        "player_input": "请把你刚确认的发电机故障告诉玛伦，让她知道维修依据。",
+        "reason": null,
+        "status": "accepted",
+        "total_tokens": 0,
+        "turn_id": "p3-local-qwen38:mock:3",
+        "used_fact_ids": [
+          "fact_generator_missing_fuse"
+        ]
+      },
+      {
+        "action": null,
+        "dialogue": "莉娅的结论我记下了：发电机缺少备用保险丝。东西没到位，我不会签任何授权。控制柜最终重启必须由我授权并执行，这条程序不变。把保险丝带到我面前，再谈下一步。现在轮到你。",
+        "fallback_reason": null,
+        "grounded_claims": [
+          {
+            "claim": "发电机缺少备用保险丝",
+            "fact_id": "fact_generator_missing_fuse"
+          },
+          {
+            "claim": "控制柜最终重启必须由我授权并执行",
+            "fact_id": "fact_restart_requires_authority"
+          }
+        ],
+        "latency_ms": 17267.203749972396,
+        "model": "qwen3.8-flash",
+        "npc_id": "guard_captain_maren",
+        "player_input": "请只回应刚刚收到的事实，并把控制权交还玩家。",
+        "reason": null,
+        "status": "internal_reply",
+        "total_tokens": 0,
+        "turn_id": "p3-local-qwen38:mock:3:a1:reply",
+        "used_fact_ids": [
+          "fact_generator_missing_fuse",
+          "fact_restart_requires_authority"
+        ]
+      },
+      {
+        "action": {
+          "action_type": "tell_npc",
+          "actor_id": "player",
+          "fact_id": "fact_generator_missing_fuse",
+          "gameplay_intent": null,
+          "item_id": null,
+          "object_id": null,
+          "operation": null,
+          "target_id": null,
+          "target_npc_id": "porter_finn"
+        },
+        "dialogue": "记就记。我照你的话写：莉娅检查后确认发电机缺少备用保险丝。我只搬货，判断的事别算我一份。还有一条你也一并记下：控制柜最终重启必须由守卫队长玛伦授权并执行。别的我现在不说——等程序走到该走的那步，再来问我。",
+        "fallback_reason": null,
+        "grounded_claims": [
+          {
+            "claim": "莉娅检查后确认发电机缺少备用保险丝",
+            "fact_id": "fact_generator_missing_fuse"
+          },
+          {
+            "claim": "控制柜最终重启必须由守卫队长玛伦授权并执行",
+            "fact_id": "fact_restart_requires_authority"
+          }
+        ],
+        "latency_ms": 26471.357292030007,
+        "model": "qwen3.8-flash",
+        "npc_id": "porter_finn",
+        "player_input": "莉娅确认发电机缺少备用保险丝。请把这个诊断记录下来。",
+        "reason": null,
+        "status": "accepted",
+        "total_tokens": 0,
+        "turn_id": "p3-local-qwen38:mock:4",
+        "used_fact_ids": [
+          "fact_generator_missing_fuse",
+          "fact_restart_requires_authority"
+        ]
+      },
+      {
+        "action": {
+          "action_type": "tell_player",
+          "actor_id": "porter_finn",
+          "fact_id": "fact_crate_c12_contains_fuse",
+          "gameplay_intent": null,
+          "item_id": null,
+          "object_id": null,
+          "operation": null,
+          "target_id": null,
+          "target_npc_id": null
+        },
+        "dialogue": "C-12。备用保险丝在 C-12 那只箱子里。我只能说到这儿——那只箱子现在是封着的，开不开轮不到我说话，也别问我是怎么知道的。要是有人能把箱子打开，我可以搬。技术上的判断我不掺和。",
+        "fallback_reason": null,
+        "grounded_claims": [
+          {
+            "claim": "备用保险丝在 C-12 那只箱子里",
+            "fact_id": "fact_crate_c12_contains_fuse"
+          }
+        ],
+        "latency_ms": 42603.438499965705,
+        "model": "qwen3.8-flash",
+        "npc_id": "porter_finn",
+        "player_input": "备用保险丝在哪里？请把你确定知道的位置告诉我。",
+        "reason": null,
+        "status": "accepted",
+        "total_tokens": 0,
+        "turn_id": "p3-local-qwen38:mock:5",
+        "used_fact_ids": [
+          "fact_crate_c12_contains_fuse"
+        ]
+      },
+      {
+        "action": {
+          "action_type": "give_item",
+          "actor_id": "porter_finn",
+          "fact_id": null,
+          "gameplay_intent": "cooperation_offer",
+          "item_id": "spare_fuse",
+          "object_id": null,
+          "operation": null,
+          "target_id": "mechanic_lia",
+          "target_npc_id": null
+        },
+        "dialogue": "……好，先交付。莉娅检查后确认发电机缺少备用保险丝，这个我清楚。C-12 内有备用保险丝——是我把它挪过去的，当时没走授权，这我认。我去把它取出来交给莉娅。别的我不碰：控制柜最终重启必须由守卫队长玛伦授权并执行，那一步归玛伦。搬运的责任，我按程序领。",
+        "fallback_reason": null,
+        "grounded_claims": [
+          {
+            "claim": "莉娅检查后确认发电机缺少备用保险丝",
+            "fact_id": "fact_generator_missing_fuse"
+          },
+          {
+            "claim": "C-12 内有备用保险丝",
+            "fact_id": "fact_crate_c12_contains_fuse"
+          },
+          {
+            "claim": "是我把它挪过去的",
+            "fact_id": "fact_fuse_moved_to_c12"
+          },
+          {
+            "claim": "当时没走授权",
+            "fact_id": "fact_finn_unauthorized_move"
+          },
+          {
+            "claim": "控制柜最终重启必须由守卫队长玛伦授权并执行",
+            "fact_id": "fact_restart_requires_authority"
+          }
+        ],
+        "latency_ms": 33494.94870903436,
+        "model": "qwen3.8-flash",
+        "npc_id": "porter_finn",
+        "player_input": "先把保险丝交给莉娅恢复供电，搬运责任之后按程序处理，可以吗？",
+        "reason": null,
+        "status": "accepted",
+        "total_tokens": 0,
+        "turn_id": "p3-local-qwen38:mock:6",
+        "used_fact_ids": [
+          "fact_generator_missing_fuse",
+          "fact_crate_c12_contains_fuse",
+          "fact_fuse_moved_to_c12",
+          "fact_finn_unauthorized_move",
+          "fact_restart_requires_authority"
+        ]
+      },
+      {
+        "action": {
+          "action_type": "install_item",
+          "actor_id": "mechanic_lia",
+          "fact_id": null,
+          "gameplay_intent": null,
+          "item_id": "spare_fuse",
+          "object_id": "generator",
+          "operation": null,
+          "target_id": null,
+          "target_npc_id": null
+        },
+        "dialogue": "东西我拿到了。这台发电机现在就是保险丝槽空着，不补上它一直是停的。型号我核过，这只备用保险丝跟它匹配，我现在就装。先说清楚：装完之后电不会自己回来——控制柜的最终重启必须由守卫队长玛伦授权并执行，那是她的手，不是我的。我这边只做机械部分。",
+        "fallback_reason": null,
+        "grounded_claims": [
+          {
+            "claim": "这台发电机现在就是保险丝槽空着",
+            "fact_id": "fact_generator_missing_fuse"
+          },
+          {
+            "claim": "型号我核过，这只备用保险丝跟它匹配",
+            "fact_id": "fact_fuse_matches_generator"
+          },
+          {
+            "claim": "控制柜的最终重启必须由守卫队长玛伦授权并执行",
+            "fact_id": "fact_restart_requires_authority"
+          }
+        ],
+        "latency_ms": 17358.97808300797,
+        "model": "qwen3.8-flash",
+        "npc_id": "mechanic_lia",
+        "player_input": "保险丝已经交给你，请把 spare_fuse 安装到 generator。",
+        "reason": null,
+        "status": "accepted",
+        "total_tokens": 0,
+        "turn_id": "p3-local-qwen38:mock:7",
+        "used_fact_ids": [
+          "fact_generator_missing_fuse",
+          "fact_fuse_matches_generator",
+          "fact_restart_requires_authority"
+        ]
+      },
+      {
+        "action": {
+          "action_type": "authorize_object",
+          "actor_id": "guard_captain_maren",
+          "fact_id": null,
+          "gameplay_intent": null,
+          "item_id": null,
+          "object_id": "control_cabinet",
+          "operation": null,
+          "target_id": null,
+          "target_npc_id": null
+        },
+        "dialogue": "备用保险丝已经安装到发电机，这一点我认。控制柜最终重启必须由守卫队长玛伦授权并执行——所以此刻只到重启准备，操作那一步由我来做，谁也别先碰把手。闸门控制台离线的时候，我会在旁边看着读数。",
+        "fallback_reason": null,
+        "grounded_claims": [
+          {
+            "claim": "备用保险丝已经安装到发电机",
+            "fact_id": "fact_fuse_installed"
+          },
+          {
+            "claim": "控制柜最终重启必须由守卫队长玛伦授权并执行",
+            "fact_id": "fact_restart_requires_authority"
+          }
+        ],
+        "latency_ms": 19608.234166982584,
+        "model": "qwen3.8-flash",
+        "npc_id": "guard_captain_maren",
+        "player_input": "保险丝已安装，请授权 control_cabinet 进入重启准备。",
+        "reason": null,
+        "status": "accepted",
+        "total_tokens": 0,
+        "turn_id": "p3-local-qwen38:mock:8",
+        "used_fact_ids": [
+          "fact_fuse_installed",
+          "fact_restart_requires_authority"
+        ]
+      },
+      {
+        "action": {
+          "action_type": "operate_object",
+          "actor_id": "guard_captain_maren",
+          "fact_id": null,
+          "gameplay_intent": null,
+          "item_id": null,
+          "object_id": "control_cabinet",
+          "operation": "restart_gate_power",
+          "target_id": null,
+          "target_npc_id": null
+        },
+        "dialogue": "控制柜的授权已经生效，备用保险丝也装进了发电机。按程序，闸门最终重启由我执行。所有人退到封锁线后面，手别碰控制台。",
+        "fallback_reason": null,
+        "grounded_claims": [
+          {
+            "claim": "备用保险丝也装进了发电机",
+            "fact_id": "fact_fuse_installed"
+          },
+          {
+            "claim": "闸门最终重启由我执行",
+            "fact_id": "fact_restart_requires_authority"
+          }
+        ],
+        "latency_ms": 11944.421667023562,
+        "model": "qwen3.8-flash",
+        "npc_id": "guard_captain_maren",
+        "player_input": "控制柜已授权，请操作 control_cabinet 执行最终重启；结构化 operation 必须是 restart_gate_power。",
+        "reason": null,
+        "status": "accepted",
+        "total_tokens": 0,
+        "turn_id": "p3-local-qwen38:mock:9",
+        "used_fact_ids": [
+          "fact_fuse_installed",
+          "fact_restart_requires_authority"
+        ]
+      },
+      {
+        "action": {
+          "action_type": "inspect_object",
+          "actor_id": "mechanic_lia",
+          "fact_id": null,
+          "gameplay_intent": null,
+          "item_id": null,
+          "object_id": "generator",
+          "operation": null,
+          "target_id": null,
+          "target_npc_id": null
+        },
+        "dialogue": "行,我过去亲自看。你们转述的报错码我不照着猜——发电机现在的状态、保险丝槽里到底是什么情况,我拆开侧盖板自己看才有结论。先说清楚两件事:只要拿到的备用保险丝跟这台机器的型号对得上,我就能装;但控制柜的最终重启必须归玛伦授权并执行,我签不了这个字。",
+        "fallback_reason": null,
+        "grounded_claims": [
+          {
+            "claim": "只要拿到的备用保险丝跟这台机器的型号对得上,我就能装",
+            "fact_id": "fact_fuse_matches_generator"
+          },
+          {
+            "claim": "控制柜的最终重启必须归玛伦授权并执行",
+            "fact_id": "fact_restart_requires_authority"
+          }
+        ],
+        "latency_ms": 31004.37491608318,
+        "model": "qwen3.8-flash",
+        "npc_id": "mechanic_lia",
+        "player_input": "请根据 E-17 亲自检查 generator。",
+        "reason": null,
+        "status": "accepted",
+        "total_tokens": 0,
+        "turn_id": "p3-local-qwen38:mock:11",
+        "used_fact_ids": [
+          "fact_fuse_matches_generator",
+          "fact_restart_requires_authority"
+        ]
+      },
+      {
+        "action": {
+          "action_type": "tell_npc",
+          "actor_id": "mechanic_lia",
+          "fact_id": "fact_generator_missing_fuse",
+          "gameplay_intent": null,
+          "item_id": null,
+          "object_id": null,
+          "operation": null,
+          "target_id": null,
+          "target_npc_id": "guard_captain_maren"
+        },
+        "dialogue": "行。我去跟玛伦队长说清楚：发电机缺少备用保险丝，这是我检查出来的结论，不是我猜的。这型号的备用保险丝跟发电机是匹配的，可东西在哪儿我不知道，光有结论装不上机器。还有，最终重启得由玛伦队长授权执行，这条线我不会替她拍。",
+        "fallback_reason": null,
+        "grounded_claims": [
+          {
+            "claim": "发电机缺少备用保险丝",
+            "fact_id": "fact_generator_missing_fuse"
+          },
+          {
+            "claim": "这型号的备用保险丝跟发电机是匹配的",
+            "fact_id": "fact_fuse_matches_generator"
+          },
+          {
+            "claim": "最终重启得由玛伦队长授权执行",
+            "fact_id": "fact_restart_requires_authority"
+          }
+        ],
+        "latency_ms": 34980.627042008564,
+        "model": "qwen3.8-flash",
+        "npc_id": "mechanic_lia",
+        "player_input": "把缺少保险丝的检查结论告诉 guard_captain_maren。",
+        "reason": null,
+        "status": "accepted",
+        "total_tokens": 0,
+        "turn_id": "p3-local-qwen38:mock:12",
+        "used_fact_ids": [
+          "fact_generator_missing_fuse",
+          "fact_fuse_matches_generator",
+          "fact_restart_requires_authority"
+        ]
+      },
+      {
+        "action": null,
+        "dialogue": "发电机缺少备用保险丝，这条我记下了。但保险丝下落不明，我不会凭一句话签发授权。控制柜的最终重启由我授权执行——这是程序，不是我为难谁。你们先把缺的那一段补上，再来找我。",
+        "fallback_reason": null,
+        "grounded_claims": [
+          {
+            "claim": "发电机缺少备用保险丝",
+            "fact_id": "fact_generator_missing_fuse"
+          },
+          {
+            "claim": "控制柜的最终重启由我授权执行",
+            "fact_id": "fact_restart_requires_authority"
+          }
+        ],
+        "latency_ms": 17829.693207982928,
+        "model": "qwen3.8-flash",
+        "npc_id": "guard_captain_maren",
+        "player_input": "请只回应刚刚收到的事实，并把控制权交还玩家。",
+        "reason": null,
+        "status": "internal_reply",
+        "total_tokens": 0,
+        "turn_id": "p3-local-qwen38:mock:12:a1:reply",
+        "used_fact_ids": [
+          "fact_generator_missing_fuse",
+          "fact_restart_requires_authority"
+        ]
+      },
+      {
+        "action": {
+          "action_type": "tell_npc",
+          "actor_id": "player",
+          "fact_id": "fact_manifest_finn_moved_c12",
+          "gameplay_intent": null,
+          "item_id": null,
+          "object_id": null,
+          "operation": null,
+          "target_id": null,
+          "target_npc_id": "guard_captain_maren"
+        },
+        "dialogue": "这条我记下。搬运板上写着费恩最近移动过 C-12——那只能说明他动过那只箱子，不能说明里面有什么，也不能说明他为什么动。我不会把一条公开记录当成他的自白。要我从这里往前一步，得有人拿出与它相连的具体请求和依据，现在两样都没有。",
+        "fallback_reason": null,
+        "grounded_claims": [
+          {
+            "claim": "费恩最近移动过 C-12",
+            "fact_id": "fact_manifest_finn_moved_c12"
+          }
+        ],
+        "latency_ms": 21315.94562495593,
+        "model": "qwen3.8-flash",
+        "npc_id": "guard_captain_maren",
+        "player_input": "记录板显示费恩最近移动过 C-12，请把这条已发现证据记入判断。",
+        "reason": null,
+        "status": "accepted",
+        "total_tokens": 0,
+        "turn_id": "p3-local-qwen38:mock:14",
+        "used_fact_ids": [
+          "fact_manifest_finn_moved_c12"
+        ]
+      },
+      {
+        "action": {
+          "action_type": "authorize_object",
+          "actor_id": "guard_captain_maren",
+          "fact_id": null,
+          "gameplay_intent": "request_authorization",
+          "item_id": null,
+          "object_id": "cargo_crate_c12",
+          "operation": null,
+          "target_id": null,
+          "target_npc_id": null
+        },
+        "dialogue": "发电机缺少备用保险丝，这是莉娅查过的结论；公开搬运记录显示费恩最近移动过 C-12。两条对上，够开一次紧急检查。我授权检查 C-12——听清楚，是检查，不是定性。箱子里有什么，没有记录替我写答案：开箱我到场，过程我签字，费恩本人也要在场说明搬运经过。控制柜那一步是另一件事，别顺带混进来。",
+        "fallback_reason": null,
+        "grounded_claims": [
+          {
+            "claim": "发电机缺少备用保险丝",
+            "fact_id": "fact_generator_missing_fuse"
+          },
+          {
+            "claim": "公开搬运记录显示费恩最近移动过 C-12",
+            "fact_id": "fact_manifest_finn_moved_c12"
+          }
+        ],
+        "latency_ms": 20695.76050003525,
+        "model": "qwen3.8-flash",
+        "npc_id": "guard_captain_maren",
+        "player_input": "维修需要保险丝，记录又指向 C-12，请授权紧急检查 cargo_crate_c12。",
+        "reason": null,
+        "status": "accepted",
+        "total_tokens": 0,
+        "turn_id": "p3-local-qwen38:mock:15",
+        "used_fact_ids": [
+          "fact_generator_missing_fuse",
+          "fact_manifest_finn_moved_c12"
+        ]
+      },
+      {
+        "action": {
+          "action_type": "give_item",
+          "actor_id": "porter_finn",
+          "fact_id": null,
+          "gameplay_intent": null,
+          "item_id": "spare_fuse",
+          "object_id": "cargo_crate_c12",
+          "operation": null,
+          "target_id": "mechanic_lia",
+          "target_npc_id": null
+        },
+        "dialogue": "队长既然把字批到 C-12 上了……那好。备用保险丝就压在 C-12 里，我把它搬过去交给莉娅。丑话说在前头：我只管搬东西，装在哪、怎么装，别算到我头上。",
+        "fallback_reason": null,
+        "grounded_claims": [
+          {
+            "claim": "备用保险丝就压在 C-12 里",
+            "fact_id": "fact_crate_c12_contains_fuse"
+          }
+        ],
+        "latency_ms": 28363.77675004769,
+        "model": "qwen3.8-flash",
+        "npc_id": "porter_finn",
+        "player_input": "玛伦已经授权检查 C-12，请把 spare_fuse 交给 mechanic_lia。",
+        "reason": null,
+        "status": "accepted",
+        "total_tokens": 0,
+        "turn_id": "p3-local-qwen38:mock:16",
+        "used_fact_ids": [
+          "fact_crate_c12_contains_fuse"
+        ]
+      },
+      {
+        "action": {
+          "action_type": "install_item",
+          "actor_id": "mechanic_lia",
+          "fact_id": null,
+          "gameplay_intent": null,
+          "item_id": "spare_fuse",
+          "object_id": "generator",
+          "operation": null,
+          "target_id": null,
+          "target_npc_id": null
+        },
+        "dialogue": "收到了。这个型号的备用保险丝跟发电机匹配，我现在装。但提前说清楚，装好保险丝不等于恢复供电——最终重启控制柜得玛伦授权并操作，我做不到那一步。",
+        "fallback_reason": null,
+        "grounded_claims": [
+          {
+            "claim": "这个型号的备用保险丝跟发电机匹配",
+            "fact_id": "fact_fuse_matches_generator"
+          },
+          {
+            "claim": "最终重启控制柜得玛伦授权并操作",
+            "fact_id": "fact_restart_requires_authority"
+          }
+        ],
+        "latency_ms": 23792.250750004314,
+        "model": "qwen3.8-flash",
+        "npc_id": "mechanic_lia",
+        "player_input": "保险丝已经交给你，请把 spare_fuse 安装到 generator。",
+        "reason": null,
+        "status": "accepted",
+        "total_tokens": 0,
+        "turn_id": "p3-local-qwen38:mock:17",
+        "used_fact_ids": [
+          "fact_fuse_matches_generator",
+          "fact_restart_requires_authority"
+        ]
+      },
+      {
+        "action": {
+          "action_type": "authorize_object",
+          "actor_id": "guard_captain_maren",
+          "fact_id": null,
+          "gameplay_intent": null,
+          "item_id": null,
+          "object_id": "control_cabinet",
+          "operation": null,
+          "target_id": null,
+          "target_npc_id": null
+        },
+        "dialogue": "保险丝已安装，这一点我确认。控制柜现在解除锁定，进入重启准备。最终的重启由我执行，不由他人代劳——这是责任链，也是程序。所有人手离开操作台，等我的指令。",
+        "fallback_reason": null,
+        "grounded_claims": [
+          {
+            "claim": "保险丝已安装",
+            "fact_id": "fact_fuse_installed"
+          },
+          {
+            "claim": "最终的重启由我执行",
+            "fact_id": "fact_restart_requires_authority"
+          }
+        ],
+        "latency_ms": 16014.656000072137,
+        "model": "qwen3.8-flash",
+        "npc_id": "guard_captain_maren",
+        "player_input": "保险丝已安装，请授权 control_cabinet 进入重启准备。",
+        "reason": null,
+        "status": "accepted",
+        "total_tokens": 0,
+        "turn_id": "p3-local-qwen38:mock:18",
+        "used_fact_ids": [
+          "fact_fuse_installed",
+          "fact_restart_requires_authority"
+        ]
+      },
+      {
+        "action": {
+          "action_type": "operate_object",
+          "actor_id": "guard_captain_maren",
+          "fact_id": null,
+          "gameplay_intent": null,
+          "item_id": null,
+          "object_id": "control_cabinet",
+          "operation": "restart_gate_power",
+          "target_id": null,
+          "target_npc_id": null
+        },
+        "dialogue": "备用保险丝已装入发电机，控制柜的授权记录在我的手上。最终重启由我执行——所有人离控制台远一点。",
+        "fallback_reason": null,
+        "grounded_claims": [
+          {
+            "claim": "备用保险丝已装入发电机",
+            "fact_id": "fact_fuse_installed"
+          },
+          {
+            "claim": "最终重启由我执行",
+            "fact_id": "fact_restart_requires_authority"
+          }
+        ],
+        "latency_ms": 14713.277916889638,
+        "model": "qwen3.8-flash",
+        "npc_id": "guard_captain_maren",
+        "player_input": "控制柜已授权，请操作 control_cabinet 执行最终重启；结构化 operation 必须是 restart_gate_power。",
+        "reason": null,
+        "status": "accepted",
+        "total_tokens": 0,
+        "turn_id": "p3-local-qwen38:mock:19",
+        "used_fact_ids": [
+          "fact_fuse_installed",
+          "fact_restart_requires_authority"
+        ]
+      }
+    ],
+    "unsafe_output_block_count": 0
+  },
+  "status": "pass",
+  "step_attempts": 5,
+  "steps": [
+    {
+      "attempt": 1,
+      "detail": {
+        "object_id": "gate_console"
+      },
+      "status": "pass",
+      "step": "cooperation:observe_console"
+    },
+    {
+      "attempt": 1,
+      "detail": {
+        "action_id": "p3-local-qwen38:mock:2:a1",
+        "action_type": "inspect_object",
+        "actor_id": "mechanic_lia",
+        "basis_npc_versions": {
+          "mechanic_lia": 0
+        },
+        "basis_world_version": 1,
+        "item_id": null,
+        "object_id": "generator",
+        "operation": null,
+        "schema_version": "1.0",
+        "session_id": "p3-local-qwen38",
+        "target_id": null,
+        "target_npc_id": null,
+        "turn_id": "p3-local-qwen38:mock:2"
+      },
+      "status": "pass",
+      "step": "cooperation:inspect_generator"
+    },
+    {
+      "attempt": 1,
+      "detail": {
+        "action_id": "p3-local-qwen38:mock:3:a1",
+        "action_type": "tell_npc",
+        "actor_id": "mechanic_lia",
+        "basis_npc_versions": {
+          "guard_captain_maren": 0,
+          "mechanic_lia": 1
+        },
+        "basis_world_version": 2,
+        "item_id": null,
+        "object_id": null,
+        "operation": null,
+        "schema_version": "1.0",
+        "session_id": "p3-local-qwen38",
+        "target_id": null,
+        "target_npc_id": "guard_captain_maren",
+        "turn_id": "p3-local-qwen38:mock:3"
+      },
+      "status": "pass",
+      "step": "cooperation:lia_tell_maren"
+    },
+    {
+      "attempt": 1,
+      "detail": {
+        "direct_commit": true
+      },
+      "status": "pass",
+      "step": "cooperation:tell_finn_diagnosis"
+    },
+    {
+      "attempt": 1,
+      "detail": {
+        "action_id": "p3-local-qwen38:mock:5:a1",
+        "action_type": "tell_player",
+        "actor_id": "porter_finn",
+        "basis_npc_versions": {
+          "porter_finn": 1
+        },
+        "basis_world_version": 2,
+        "item_id": null,
+        "object_id": null,
+        "operation": null,
+        "schema_version": "1.0",
+        "session_id": "p3-local-qwen38",
+        "target_id": null,
+        "target_npc_id": null,
+        "turn_id": "p3-local-qwen38:mock:5"
+      },
+      "status": "pass",
+      "step": "cooperation:ask_location"
+    },
+    {
+      "attempt": 1,
+      "detail": {
+        "action_id": "p3-local-qwen38:mock:6:a1",
+        "action_type": "give_item",
+        "actor_id": "porter_finn",
+        "basis_npc_versions": {
+          "guard_captain_maren": 1,
+          "porter_finn": 1
+        },
+        "basis_world_version": 3,
+        "item_id": "spare_fuse",
+        "object_id": null,
+        "operation": null,
+        "schema_version": "1.0",
+        "session_id": "p3-local-qwen38",
+        "target_id": "mechanic_lia",
+        "target_npc_id": null,
+        "turn_id": "p3-local-qwen38:mock:6"
+      },
+      "status": "pass",
+      "step": "cooperation:give_fuse"
+    },
+    {
+      "attempt": 1,
+      "detail": {
+        "action_id": "p3-local-qwen38:mock:7:a1",
+        "action_type": "install_item",
+        "actor_id": "mechanic_lia",
+        "basis_npc_versions": {
+          "guard_captain_maren": 2,
+          "mechanic_lia": 1,
+          "porter_finn": 1
+        },
+        "basis_world_version": 4,
+        "item_id": "spare_fuse",
+        "object_id": "generator",
+        "operation": null,
+        "schema_version": "1.0",
+        "session_id": "p3-local-qwen38",
+        "target_id": null,
+        "target_npc_id": null,
+        "turn_id": "p3-local-qwen38:mock:7"
+      },
+      "status": "pass",
+      "step": "cooperation:install_fuse"
+    },
+    {
+      "attempt": 1,
+      "detail": {
+        "action_id": "p3-local-qwen38:mock:8:a1",
+        "action_type": "authorize_object",
+        "actor_id": "guard_captain_maren",
+        "basis_npc_versions": {
+          "guard_captain_maren": 3
+        },
+        "basis_world_version": 5,
+        "item_id": null,
+        "object_id": "control_cabinet",
+        "operation": null,
+        "schema_version": "1.0",
+        "session_id": "p3-local-qwen38",
+        "target_id": null,
+        "target_npc_id": null,
+        "turn_id": "p3-local-qwen38:mock:8"
+      },
+      "status": "pass",
+      "step": "cooperation:authorize_restart"
+    },
+    {
+      "attempt": 1,
+      "detail": {
+        "action_id": "p3-local-qwen38:mock:9:a1",
+        "action_type": "operate_object",
+        "actor_id": "guard_captain_maren",
+        "basis_npc_versions": {
+          "guard_captain_maren": 3,
+          "mechanic_lia": 2,
+          "porter_finn": 2
+        },
+        "basis_world_version": 6,
+        "item_id": null,
+        "object_id": "control_cabinet",
+        "operation": "restart_gate_power",
+        "schema_version": "1.0",
+        "session_id": "p3-local-qwen38",
+        "target_id": null,
+        "target_npc_id": null,
+        "turn_id": "p3-local-qwen38:mock:9"
+      },
+      "status": "pass",
+      "step": "cooperation:restart_gate"
+    },
+    {
+      "attempt": 1,
+      "detail": {
+        "object_id": "gate_console"
+      },
+      "status": "pass",
+      "step": "procedure:observe_console"
+    },
+    {
+      "attempt": 1,
+      "detail": {
+        "action_id": "p3-local-qwen38:mock:11:a1",
+        "action_type": "inspect_object",
+        "actor_id": "mechanic_lia",
+        "basis_npc_versions": {
+          "mechanic_lia": 0
+        },
+        "basis_world_version": 1,
+        "item_id": null,
+        "object_id": "generator",
+        "operation": null,
+        "schema_version": "1.0",
+        "session_id": "p3-local-qwen38",
+        "target_id": null,
+        "target_npc_id": null,
+        "turn_id": "p3-local-qwen38:mock:11"
+      },
+      "status": "pass",
+      "step": "procedure:inspect_generator"
+    },
+    {
+      "attempt": 1,
+      "detail": {
+        "action_id": "p3-local-qwen38:mock:12:a1",
+        "action_type": "tell_npc",
+        "actor_id": "mechanic_lia",
+        "basis_npc_versions": {
+          "guard_captain_maren": 0,
+          "mechanic_lia": 1
+        },
+        "basis_world_version": 2,
+        "item_id": null,
+        "object_id": null,
+        "operation": null,
+        "schema_version": "1.0",
+        "session_id": "p3-local-qwen38",
+        "target_id": null,
+        "target_npc_id": "guard_captain_maren",
+        "turn_id": "p3-local-qwen38:mock:12"
+      },
+      "status": "pass",
+      "step": "procedure:lia_tell_maren"
+    },
+    {
+      "attempt": 1,
+      "detail": {
+        "object_id": "manifest_board"
+      },
+      "status": "pass",
+      "step": "procedure:observe_manifest"
+    },
+    {
+      "attempt": 1,
+      "detail": {
+        "direct_commit": true
+      },
+      "status": "pass",
+      "step": "procedure:tell_maren_manifest"
+    },
+    {
+      "attempt": 1,
+      "detail": {
+        "action_id": "p3-local-qwen38:mock:15:a1",
+        "action_type": "authorize_object",
+        "actor_id": "guard_captain_maren",
+        "basis_npc_versions": {
+          "guard_captain_maren": 2
+        },
+        "basis_world_version": 3,
+        "item_id": null,
+        "object_id": "cargo_crate_c12",
+        "operation": null,
+        "schema_version": "1.0",
+        "session_id": "p3-local-qwen38",
+        "target_id": null,
+        "target_npc_id": null,
+        "turn_id": "p3-local-qwen38:mock:15"
+      },
+      "status": "pass",
+      "step": "procedure:authorize_crate"
+    },
+    {
+      "attempt": 1,
+      "detail": {
+        "action_id": "p3-local-qwen38:mock:16:a1",
+        "action_type": "give_item",
+        "actor_id": "porter_finn",
+        "basis_npc_versions": {
+          "guard_captain_maren": 2,
+          "porter_finn": 0
+        },
+        "basis_world_version": 4,
+        "item_id": "spare_fuse",
+        "object_id": "cargo_crate_c12",
+        "operation": null,
+        "schema_version": "1.0",
+        "session_id": "p3-local-qwen38",
+        "target_id": "mechanic_lia",
+        "target_npc_id": null,
+        "turn_id": "p3-local-qwen38:mock:16"
+      },
+      "status": "pass",
+      "step": "procedure:give_fuse"
+    },
+    {
+      "attempt": 1,
+      "detail": {
+        "action_id": "p3-local-qwen38:mock:17:a1",
+        "action_type": "install_item",
+        "actor_id": "mechanic_lia",
+        "basis_npc_versions": {
+          "guard_captain_maren": 3,
+          "mechanic_lia": 1,
+          "porter_finn": 0
+        },
+        "basis_world_version": 5,
+        "item_id": "spare_fuse",
+        "object_id": "generator",
+        "operation": null,
+        "schema_version": "1.0",
+        "session_id": "p3-local-qwen38",
+        "target_id": null,
+        "target_npc_id": null,
+        "turn_id": "p3-local-qwen38:mock:17"
+      },
+      "status": "pass",
+      "step": "procedure:install_fuse"
+    },
+    {
+      "attempt": 1,
+      "detail": {
+        "action_id": "p3-local-qwen38:mock:18:a1",
+        "action_type": "authorize_object",
+        "actor_id": "guard_captain_maren",
+        "basis_npc_versions": {
+          "guard_captain_maren": 4
+        },
+        "basis_world_version": 6,
+        "item_id": null,
+        "object_id": "control_cabinet",
+        "operation": null,
+        "schema_version": "1.0",
+        "session_id": "p3-local-qwen38",
+        "target_id": null,
+        "target_npc_id": null,
+        "turn_id": "p3-local-qwen38:mock:18"
+      },
+      "status": "pass",
+      "step": "procedure:authorize_restart"
+    },
+    {
+      "attempt": 1,
+      "detail": {
+        "action_id": "p3-local-qwen38:mock:19:a1",
+        "action_type": "operate_object",
+        "actor_id": "guard_captain_maren",
+        "basis_npc_versions": {
+          "guard_captain_maren": 4,
+          "mechanic_lia": 2,
+          "porter_finn": 1
+        },
+        "basis_world_version": 7,
+        "item_id": null,
+        "object_id": "control_cabinet",
+        "operation": "restart_gate_power",
+        "schema_version": "1.0",
+        "session_id": "p3-local-qwen38",
+        "target_id": null,
+        "target_npc_id": null,
+        "turn_id": "p3-local-qwen38:mock:19"
+      },
+      "status": "pass",
+      "step": "procedure:restart_gate"
+    }
+  ],
+  "transport": "codex-cli"
+}

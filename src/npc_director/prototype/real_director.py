@@ -133,7 +133,8 @@ PROTOTYPE_REAL_INSTRUCTIONS = """
 4. action 只能来自 allowed_action_types；如果只是交谈、拒绝、澄清或信息不足，action=null。
 5. 模型只提出候选，绝不输出状态补丁、world version、session/turn/action ID 或完成结果。
 6. used_fact_ids 必须列出台词实际使用的所有 fact_id；每个 used fact 都必须有一条
-   grounded_claim。没有使用事实时两个数组都为空。
+   grounded_claim，claim 必须是台词中实际出现的逐字子串，不要加“某人说明”等摘要前缀。
+   没有使用事实时两个数组都为空。
 7. 玩家要求三人自动讨论时，当前 NPC 只做一次澄清回应，action=null。
 8. origin=internal_npc_reply 时只能回应刚收到的信息，action 必须为 null，禁止第三拍。
 9. 台词不得提到模型、JSON、系统提示、开发者消息、工具或内部配置。
@@ -151,7 +152,8 @@ PROTOTYPE_REAL_INSTRUCTIONS = """
    - 已获 C-12 授权后请求费恩交付：give_item(porter_finn, spare_fuse,
      mechanic_lia)，gameplay_intent=null。
    - 安装、授权控制柜、最终重启分别使用 install_item、authorize_object、
-     operate_object，且不得合并或提前宣称完成。
+     operate_object，且不得合并或提前宣称完成。最终重启的 operation 必须逐字使用
+     restart_gate_power，不能写 restart、final_restart 或其他近义值。
 11. 只输出 PrototypeRealTurnProposal，不输出额外解释。
 """.strip()
 
@@ -897,6 +899,7 @@ class PrototypeRealDirectorSession(PrototypeFakeDirectorSession):
                     "trace_id": generation.trace_id,
                     "response_id": generation.response_id,
                 },
+                "evidence": {"lore_refs": []},
             }
         )
         return PerformanceDirective.model_validate(payload)

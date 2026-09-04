@@ -296,6 +296,7 @@ async def test_real_model_candidate_uses_existing_rules_and_completed_commit(
         )
         plan = next(item for item in messages if isinstance(item, SceneActionPlanMessage))
         assert plan.payload.pre_commit_directive.dialogue.text == "我先检查发电机。"
+        assert plan.payload.pre_commit_directive.evidence.lore_refs == []
         assert session.repository.get_world(session.session_id).version == before.version
 
         await complete_action(session, messages)
