@@ -266,6 +266,11 @@ namespace NPCDirector
                 return;
             }
             gameController?.SetBusy(true, $"{plan.payload.directive.npc_id} 回应中");
+            string logPrefix = connectionModeLabel == "Real" ? "P3" : "P2";
+            Debug.Log(
+                $"[{logPrefix}_PERFORMANCE] npc_id={plan.payload.directive.npc_id} " +
+                $"turn_id={plan.payload.directive.turn_id} " +
+                $"text={plan.payload.directive.dialogue?.text}");
             bool accepted = executor.TryExecute(
                 plan.payload,
                 (eventType, turnId, key, detail) =>
@@ -291,6 +296,11 @@ namespace NPCDirector
                 return;
             }
             gameController?.SetBusy(true, $"执行 {plan.payload.action.action_type}");
+            string logPrefix = connectionModeLabel == "Real" ? "P3" : "P2";
+            Debug.Log(
+                $"[{logPrefix}_SCENE_PLAN] actor_id={plan.payload.action.actor_id} " +
+                $"action_type={plan.payload.action.action_type} " +
+                $"object_id={plan.payload.action.object_id}");
             sceneActionExecutor.TryExecute(plan.payload, ReportSceneActionEvent);
         }
 

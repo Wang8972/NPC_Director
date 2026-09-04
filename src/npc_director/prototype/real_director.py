@@ -473,6 +473,7 @@ class PrototypeRealDirectorSession(PrototypeFakeDirectorSession):
         self._total_latency_ms = 0.0
         self._total_tokens = 0
         self._models: set[str] = set()
+        self._turn_audit: list[dict[str, Any]] = []
 
     async def handle_async(self, message: Any) -> list[Any]:
         if isinstance(message, dict):
@@ -518,6 +519,7 @@ class PrototypeRealDirectorSession(PrototypeFakeDirectorSession):
                 "models": sorted(self._models),
                 "total_latency_ms": self._total_latency_ms,
                 "total_tokens": self._total_tokens,
+                "turn_audit": list(self._turn_audit),
             }
         )
         return report
@@ -580,6 +582,13 @@ class PrototypeRealDirectorSession(PrototypeFakeDirectorSession):
                     safe,
                 )
             ]
+            self._append_audit(
+                turn_id=request.turn_id,
+                npc_id=request.npc_id,
+                player_input=request.player_input,
+                status="input_guard_blocked",
+                generation=safe,
+            )
             self._turn_cache[request.turn_id] = (fingerprint, response)
             return response
 
@@ -610,6 +619,14 @@ class PrototypeRealDirectorSession(PrototypeFakeDirectorSession):
                 ),
                 self.snapshot_message(),
             ]
+            self._append_audit(
+                turn_id=request.turn_id,
+                npc_id=request.npc_id,
+                player_input=request.player_input,
+                status="governance_blocked",
+                generation=generation,
+                reason=None if governance is None else governance.reason_code,
+            )
             self._turn_cache[request.turn_id] = (fingerprint, response)
             return response
 
@@ -640,6 +657,18 @@ class PrototypeRealDirectorSession(PrototypeFakeDirectorSession):
                 generation,
                 action_type=candidate.action_type,
             )
+        rule_rejected = any(
+            isinstance(item, WorldEventMessage)
+            and item.payload.event_type == "action_rejected"
+            for item in response
+        )
+        self._append_audit(
+            turn_id=request.turn_id,
+            npc_id=request.npc_id,
+            player_input=request.player_input,
+            status="rule_rejected" if rule_rejected else "accepted",
+            generation=generation,
+        )
         self._npc_response_counts[request.npc_id] += 1
         self._turn_cache[request.turn_id] = (fingerprint, response)
         return response
@@ -668,6 +697,13 @@ class PrototypeRealDirectorSession(PrototypeFakeDirectorSession):
                 directive.turn_id,
                 generation,
                 idempotency_key=response.payload.idempotency_key,
+            )
+            self._append_audit(
+                turn_id=directive.turn_id,
+                npc_id=directive.npc_id,
+                player_input=context.player_input,
+                status="internal_reply",
+                generation=generation,
             )
             self._npc_response_counts[directive.npc_id] += 1
         return responses
@@ -709,6 +745,41 @@ class PrototypeRealDirectorSession(PrototypeFakeDirectorSession):
             self._models.add(result.metrics.model)
         if result.fallback_reason:
             self._fallback_count += 1
+
+    def _append_audit(
+        self,
+        *,
+        turn_id: str,
+        npc_id: str,
+        player_input: str,
+        status: str,
+        generation: PrototypeGenerationResult,
+        reason: str | None = None,
+    ) -> None:
+        proposal = generation.proposal
+        self._turn_audit.append(
+            {
+                "turn_id": turn_id,
+                "npc_id": npc_id,
+                "player_input": player_input,
+                "status": status,
+                "reason": reason,
+                "dialogue": proposal.performance.dialogue.text,
+                "action": (
+                    None if proposal.action is None else proposal.action.model_dump(mode="json")
+                ),
+                "used_fact_ids": list(proposal.used_fact_ids),
+                "grounded_claims": [
+                    claim.model_dump(mode="json") for claim in proposal.grounded_claims
+                ],
+                "model": generation.metrics.model,
+                "latency_ms": generation.metrics.latency_ms,
+                "total_tokens": generation.metrics.total_tokens,
+                "fallback_reason": generation.fallback_reason,
+            }
+        )
+        if len(self._turn_audit) > 200:
+            self._turn_audit = self._turn_audit[-200:]
 
     def _context(
         self,

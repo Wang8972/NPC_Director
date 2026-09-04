@@ -222,6 +222,10 @@ def test_p3_scene_reuses_p2_protocol_and_adds_real_text_input() -> None:
 
     assert "SendPlayerText" in client
     assert "SetConnectionModeLabel" in client
+    assert '"P3_PERFORMANCE"' not in client
+    assert '"P3" : "P2"' in client
+    assert "_PERFORMANCE]" in client
+    assert "_SCENE_PLAN]" in client
     assert "Guid.NewGuid" in client
     assert "SelectedNpcId" in controller
     assert "IsBusy" in controller

@@ -481,5 +481,6 @@ async def test_model_error_returns_explicit_safe_fallback_without_state_change(
         assert isinstance(messages[0], PerformancePlanMessage)
         assert session.repository.get_world(session.session_id).version == 0
         assert session.report()["model_error_fallback_count"] == 1
+        assert session.report()["turn_audit"][0]["status"] == "accepted"
     finally:
         session.close()
