@@ -94,7 +94,9 @@ namespace NPCDirector
         public void ApplySnapshot(PrototypeStateSnapshotPayload snapshot)
         {
             sceneStateController?.ApplySnapshot(snapshot);
-            busy = snapshot.pending_action != null;
+            bool hasPendingAction = snapshot.pending_action != null &&
+                                    !string.IsNullOrWhiteSpace(snapshot.pending_action.action_id);
+            busy = hasPendingAction;
             if (objectiveText != null)
             {
                 objectiveText.text = $"目标：{snapshot.objective_state}";
@@ -114,9 +116,9 @@ namespace NPCDirector
             }
             if (stateText != null)
             {
-                string pending = snapshot.pending_action == null
-                    ? "none"
-                    : $"{snapshot.pending_action.action_type}/{snapshot.pending_action.actor_id}";
+                string pending = hasPendingAction
+                    ? $"{snapshot.pending_action.action_type}/{snapshot.pending_action.actor_id}"
+                    : "none";
                 stateText.text =
                     $"world_version={snapshot.world_version}\n" +
                     $"pending={pending}\n" +

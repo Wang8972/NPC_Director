@@ -207,4 +207,8 @@ def test_p2_scene_builder_has_three_npcs_six_hotspots_and_single_backend_client(
         assert fixture_id in editor
     assert "ApplySnapshot" in controller
     assert "sceneStateController?.ApplySnapshot(snapshot)" in controller
+    assert "!string.IsNullOrWhiteSpace(snapshot.pending_action.action_id)" in controller
+    assert "busy = hasPendingAction" in controller
+    assert "string pending = hasPendingAction" in controller
+    assert "busy = snapshot.pending_action != null;" not in controller
     assert "Prototype Success" in controller
