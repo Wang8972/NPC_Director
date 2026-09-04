@@ -1,0 +1,49 @@
+{
+  "action_type_counts": {
+    "authorize_object": 3,
+    "give_item": 2,
+    "inspect_object": 10,
+    "install_item": 2,
+    "operate_object": 2,
+    "tell_npc": 4,
+    "tell_player": 1
+  },
+  "current_objective_state": "prototype_success",
+  "current_semantic_state_hash": "16e921ac6bd3509e053d3ae656bbaba00c176a5d2f8648fdf5a737e782e225de",
+  "fixture_version": "prototype-p2-fixture-v1",
+  "initial_semantic_state_hash": "f8bcd6d3d989a8d0f0dbf1a1bf54dea9ba06a1af1da7d76e54853450ccdde86a",
+  "interaction_types_seen": [
+    "npc_npc",
+    "npc_scene",
+    "player_npc",
+    "player_scene"
+  ],
+  "no_api_key_required": true,
+  "performance_plan_count": 5,
+  "recorded_at": "2026-09-04T13:08:22.758461+00:00",
+  "rejection_counts": {
+    "already_applied": 1
+  },
+  "reset_count": 3,
+  "route_hashes_stable": {
+    "cooperation": true,
+    "procedure": true
+  },
+  "route_runs_required": 10,
+  "route_semantic_hashes": {
+    "cooperation": [
+      "c651c2f51c151fcb931b9901953104e900fbd1f33b44ab08015a8ada78b40ef0"
+    ],
+    "procedure": [
+      "16e921ac6bd3509e053d3ae656bbaba00c176a5d2f8648fdf5a737e782e225de"
+    ]
+  },
+  "route_success_counts": {
+    "cooperation": 1,
+    "procedure": 1
+  },
+  "scene_action_plan_count": 17,
+  "session_id": "p2-fake-001",
+  "stage": "P2 Fake Director",
+  "status": "in_progress"
+}
