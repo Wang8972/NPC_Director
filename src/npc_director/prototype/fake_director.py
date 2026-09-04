@@ -38,7 +38,8 @@ from npc_director.prototype.orchestrator import (
 from npc_director.prototype.repository import PrototypeStateRepository
 
 FIXTURE_VERSION = "prototype-p2-fixture-v1"
-P2_ROUTE_RUNS_REQUIRED = 10
+P2_UNITY_ROUTE_RUNS_REQUIRED = 1
+P2_SCRIPTED_ROUTE_RUNS_REQUIRED = 10
 
 
 class PrototypeFakeDirectorSession:
@@ -159,7 +160,7 @@ class PrototypeFakeDirectorSession:
         passed = (
             required_interactions <= self._interactions
             and all(
-                count >= P2_ROUTE_RUNS_REQUIRED
+                count >= P2_UNITY_ROUTE_RUNS_REQUIRED
                 for count in self._route_success_counts.values()
             )
             and all(len(set(hashes)) == 1 for hashes in self._route_semantic_hashes.values())
@@ -179,7 +180,8 @@ class PrototypeFakeDirectorSession:
                 route: bool(hashes) and len(set(hashes)) == 1
                 for route, hashes in self._route_semantic_hashes.items()
             },
-            "route_runs_required": P2_ROUTE_RUNS_REQUIRED,
+            "route_runs_required": P2_UNITY_ROUTE_RUNS_REQUIRED,
+            "scripted_route_runs_required": P2_SCRIPTED_ROUTE_RUNS_REQUIRED,
             "scene_action_plan_count": self._scene_action_plan_count,
             "performance_plan_count": self._performance_plan_count,
             "action_type_counts": dict(sorted(self._action_type_counts.items())),

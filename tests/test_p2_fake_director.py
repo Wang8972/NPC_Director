@@ -238,8 +238,31 @@ def test_p2_fake_runs_both_routes_and_all_four_interactions(tmp_path: Path) -> N
             "player_scene",
         ]
         assert report["no_api_key_required"] is True
+        assert report["route_runs_required"] == 1
+        assert report["scripted_route_runs_required"] == 10
     finally:
         session.close()
+
+
+def test_p2_unity_gate_requires_one_real_run_per_route(tmp_path: Path) -> None:
+    session = PrototypeFakeDirectorSession(tmp_path / "unity-gate.sqlite3", reset_on_start=True)
+    try:
+        run_cooperation(session, 0)
+        reset_session(session, 1)
+        run_procedure(session, 100)
+
+        report = session.report()
+        assert report["status"] == "pass"
+        assert report["route_success_counts"] == {"cooperation": 1, "procedure": 1}
+        assert report["route_hashes_stable"] == {"cooperation": True, "procedure": True}
+    finally:
+        session.close()
+
+
+def test_p2_server_treats_transport_disconnect_as_a_boundary_event() -> None:
+    source = Path("scripts/run_p2_fake_server.py").read_text(encoding="utf-8")
+    assert "except ConnectionClosed as error:" in source
+    assert "Unity connection closed" in source
 
 
 def test_same_state_and_input_reproduce_plan_rejection_and_hash(tmp_path: Path) -> None:

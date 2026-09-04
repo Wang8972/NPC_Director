@@ -9,6 +9,7 @@ from typing import Any
 
 from pydantic import ValidationError
 from websockets.asyncio.server import ServerConnection, serve
+from websockets.exceptions import ConnectionClosed
 
 from npc_director.contracts import UNITY_MESSAGE_ADAPTER, ErrorMessage, ErrorPayload
 from npc_director.prototype.fake_director import PrototypeFakeDirectorSession
@@ -123,6 +124,11 @@ async def run_server(args: argparse.Namespace) -> None:
                         f"objective={report['current_objective_state']} "
                         f"interactions={report['interaction_types_seen']}"
                     )
+            except ConnectionClosed as error:
+                print(
+                    f"[P2_SERVER] Unity connection closed "
+                    f"code={error.code} reason={error.reason or 'none'}"
+                )
             finally:
                 write_report(args.output, session)
                 print("[P2_SERVER] Unity disconnected; state and report saved")
