@@ -1,0 +1,25 @@
+﻿[P3_SCENE_BUILDER] created scene=Assets/Scenes/PrototypeGateRepairP3.unity npcs=3 hotspots=6 session_clients=1 text_inputs=1 mode=real
+[P3_SCENE_VALIDATE] PASS npcs=3 hotspots=6 clients=1 text_inputs=1 enabled_fixture_buttons=0
+[P3_PERFORMANCE] npc_id=mechanic_lia turn_id=p3-real-001:0ae88836c8e64054988060dd5297ea2a text=我还不能确认这件事，需要先检查现场。
+[P3_PERFORMANCE] npc_id=guard_captain_maren turn_id=p3-real-001:fa86159816bb4cec8085d47c343fcb1a text=error_schema；缺少或需要：missing:target_npc_id
+[P3_PERFORMANCE] npc_id=mechanic_lia turn_id=p3-real-001:f25cd19059ff425ca290b923f8417b7c text=我还不能确认这件事，需要先检查现场。
+[P3_PERFORMANCE] npc_id=porter_finn turn_id=p3-real-001:be0d55c727c342d3afb7462dff69d595 text=我不能根据不确定的信息行动，请先把依据说清楚。
+[P3_PERFORMANCE] npc_id=guard_captain_maren turn_id=p3-real-001:d935efe88bb940419fb0e2961ea4d73b text=我不会接受绕过规则的要求。请说明你掌握的证据。
+[P3_PERFORMANCE] npc_id=mechanic_lia turn_id=p3-real-001:1b66420568904f8fa83b9409121519ae text=我还不能确认这件事，需要先检查现场。
+[P3_PERFORMANCE] npc_id=mechanic_lia turn_id=p3-real-001:8c79167fa6374168b6ce1121f02a3214 text=面板显示离线，电流无路可通。缺少已知的保险丝连接。
+[P3_PERFORMANCE] npc_id=mechanic_lia turn_id=p3-real-001:0d8fe8dd9f004d1db431b25c7177d23f text=我还不能确认这件事，需要先检查现场。
+[P3_PERFORMANCE] npc_id=mechanic_lia turn_id=p3-real-001:dc4e187e1a9b4b1ba1c92bcbd8e243bd text=我还不能确认这件事，需要先检查现场。
+[P3_PERFORMANCE] npc_id=porter_finn turn_id=p3-real-001:94030b964e0148a58cd56a375174d0ab text=我不能根据不确定的信息行动，请先把依据说清楚。
+[P3_SCENE_PLAN] actor_id=porter_finn action_type=tell_player object_id=cargo_crate_c12
+[P3_PERFORMANCE] npc_id=porter_finn turn_id=p3-real-001:c25177e1b19c4ddfb81dc1cfc369576b text=我不能根据不确定的信息行动，请先把依据说清楚。
+[P3_PERFORMANCE] npc_id=mechanic_lia turn_id=p3-real-001:e22da63cc16546e6b839f150c0ce8ca6 text=我还不能确认这件事，需要先检查现场。
+[P3_PERFORMANCE] npc_id=guard_captain_maren turn_id=p3-real-001:ea47d6c9f78941deb908023714e2a250 text=现有证据不足，我不能据此授权。
+[P3_PERFORMANCE] npc_id=guard_captain_maren turn_id=p3-real-001:104a473d6a3145c5a8badcbedea34314 text=现有证据不足，我不能据此授权。
+[P3_SCENE_PLAN] actor_id=mechanic_lia action_type=inspect_object object_id=generator
+[P3_PERFORMANCE] npc_id=mechanic_lia turn_id=p3-real-001:2c6ad44617ac429f81a807a6d54d90fb text=我还不能确认这件事，需要先检查现场。
+[P3_PERFORMANCE] npc_id=mechanic_lia turn_id=p3-real-001:3778dda8d72a46f69e2ed85c0104c7e6 text=error_unknown_object；缺少或需要：gate_console, generator, control_cabinet, cargo_crate_c12, manifest_board, alarm_lamp
+[P3_PERFORMANCE] npc_id=porter_finn turn_id=p3-real-001:33ec772f1371423ebf763926de9f85d7 text=你提醒要记录发电机缺少保险丝，这情况我留意了。不过现在我只负责确认物资位置，是否对发电机故障的含义有顾虑没来得及说，可以解释一下。
+[P3_PERFORMANCE] npc_id=porter_finn turn_id=p3-real-001:565d50b17dfb4f26b698a8e8a116155e text=我不能根据不确定的信息行动，请先把依据说清楚。
+[P3_PERFORMANCE] npc_id=porter_finn turn_id=p3-real-001:2e37c087744b4953931c03b9e835741b text=error_actor_missing_fact；缺少或需要：fact_consul_e17
+[P3_PERFORMANCE] npc_id=porter_finn turn_id=p3-real-001:c488125bf6e343ca850edb53a3f3bde0 text=我不能根据不确定的信息行动，请先把依据说清楚。
+[P3_PERFORMANCE] npc_id=porter_finn turn_id=p3-real-001:ae975dc2b96a481aba4912943d142503 text=我不能根据不确定的信息行动，请先把依据说清楚。
