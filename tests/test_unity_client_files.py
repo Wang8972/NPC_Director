@@ -237,3 +237,7 @@ def test_p3_scene_reuses_p2_protocol_and_adds_real_text_input() -> None:
     assert "PrototypeP2SceneBuilder.BuildBaseScene()" in editor
     assert "enabledFixtureButtons == 0" in editor
     assert 'MenuItem("NPC Director/P3/Create or Reset Real Director Scene")' in editor
+    assert "UnityEngine.Object.FindObjectsOfType" in editor
+    assert "UnityEngine.Object.FindObjectOfType<Canvas>()" in editor
+    assert " Object.FindObject" not in editor
+    assert " Object.FindObjects" not in editor

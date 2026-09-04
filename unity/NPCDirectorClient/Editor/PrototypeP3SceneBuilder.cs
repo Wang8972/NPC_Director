@@ -55,13 +55,13 @@ namespace NPCDirector.Editor
         [MenuItem("NPC Director/P3/Validate Open Real Director Scene")]
         public static void ValidateOpenScene()
         {
-            int npcCount = Object.FindObjectsOfType<PrototypeP2NpcSelector>(true).Length;
-            int hotspotCount = Object.FindObjectsOfType<PrototypeP2Hotspot>(true).Length;
-            int clientCount = Object.FindObjectsOfType<PrototypeP2Client>(true).Length;
-            int inputCount = Object.FindObjectsOfType<PrototypeP3TextInput>(true).Length;
+            int npcCount = UnityEngine.Object.FindObjectsOfType<PrototypeP2NpcSelector>(true).Length;
+            int hotspotCount = UnityEngine.Object.FindObjectsOfType<PrototypeP2Hotspot>(true).Length;
+            int clientCount = UnityEngine.Object.FindObjectsOfType<PrototypeP2Client>(true).Length;
+            int inputCount = UnityEngine.Object.FindObjectsOfType<PrototypeP3TextInput>(true).Length;
             int enabledFixtureButtons = 0;
             foreach (PrototypeP2UiAction action in
-                     Object.FindObjectsOfType<PrototypeP2UiAction>(true))
+                     UnityEngine.Object.FindObjectsOfType<PrototypeP2UiAction>(true))
             {
                 if (action.gameObject.activeInHierarchy &&
                     action.Command.StartsWith("fixture:", StringComparison.Ordinal))
@@ -80,7 +80,7 @@ namespace NPCDirector.Editor
         private static void DisableFakeFixtureButtons()
         {
             foreach (PrototypeP2UiAction action in
-                     Object.FindObjectsOfType<PrototypeP2UiAction>(true))
+                     UnityEngine.Object.FindObjectsOfType<PrototypeP2UiAction>(true))
             {
                 if (action.Command.StartsWith("fixture:", StringComparison.Ordinal))
                 {
@@ -91,7 +91,7 @@ namespace NPCDirector.Editor
 
         private static void ReplaceTitle()
         {
-            foreach (Text text in Object.FindObjectsOfType<Text>(true))
+            foreach (Text text in UnityEngine.Object.FindObjectsOfType<Text>(true))
             {
                 if (text.text == "P2 Fake Director")
                 {
@@ -108,7 +108,7 @@ namespace NPCDirector.Editor
             PrototypeP2Client client,
             PrototypeP2GameController controller)
         {
-            Canvas canvas = Object.FindObjectOfType<Canvas>();
+            Canvas canvas = UnityEngine.Object.FindObjectOfType<Canvas>();
             GameObject panel = new GameObject("P3NaturalLanguagePanel");
             panel.transform.SetParent(canvas.transform, false);
             RectTransform panelRect = panel.AddComponent<RectTransform>();
