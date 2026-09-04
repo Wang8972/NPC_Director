@@ -20,6 +20,9 @@ namespace NPCDirector
         private string selectedNpcId = "mechanic_lia";
         private bool busy;
 
+        public string SelectedNpcId => selectedNpcId;
+        public bool IsBusy => busy;
+
         public void Configure(
             PrototypeP2Client configuredClient,
             PrototypeSceneStateController sceneState,

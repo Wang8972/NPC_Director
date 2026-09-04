@@ -41,6 +41,11 @@ namespace NPCDirector.Editor
                 return;
             }
 
+            BuildBaseScene();
+        }
+
+        internal static GameObject BuildBaseScene()
+        {
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             CreateCameraAndLighting();
 
@@ -79,6 +84,7 @@ namespace NPCDirector.Editor
             Debug.Log(
                 $"[P2_SCENE_BUILDER] created scene={ScenePath} npcs=3 hotspots=6 " +
                 "session_clients=1 scene_action_executors=1");
+            return root;
         }
 
         [MenuItem("NPC Director/P2/Validate Open Fake Director Scene")]

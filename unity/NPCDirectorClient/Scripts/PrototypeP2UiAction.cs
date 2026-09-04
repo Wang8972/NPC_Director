@@ -7,6 +7,8 @@ namespace NPCDirector
         [SerializeField] private PrototypeP2GameController controller;
         [SerializeField] private string command;
 
+        public string Command => command;
+
         public void Configure(PrototypeP2GameController gameController, string configuredCommand)
         {
             controller = gameController;

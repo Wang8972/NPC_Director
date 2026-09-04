@@ -212,3 +212,24 @@ def test_p2_scene_builder_has_three_npcs_six_hotspots_and_single_backend_client(
     assert "string pending = hasPendingAction" in controller
     assert "busy = snapshot.pending_action != null;" not in controller
     assert "Prototype Success" in controller
+
+
+def test_p3_scene_reuses_p2_protocol_and_adds_real_text_input() -> None:
+    client = read("PrototypeP2Client.cs")
+    controller = read("PrototypeP2GameController.cs")
+    text_input = read("PrototypeP3TextInput.cs")
+    editor = (ROOT / "Editor" / "PrototypeP3SceneBuilder.cs").read_text(encoding="utf-8")
+
+    assert "SendPlayerText" in client
+    assert "SetConnectionModeLabel" in client
+    assert "Guid.NewGuid" in client
+    assert "SelectedNpcId" in controller
+    assert "IsBusy" in controller
+    assert "client.SendPlayerText(controller.SelectedNpcId, value)" in text_input
+    assert 'Endpoint = "ws://127.0.0.1:8767"' in editor
+    assert 'SessionId = "p3-real-001"' in editor
+    assert 'client.SetConnectionModeLabel("Real")' in editor
+    assert 'ScenePath = "Assets/Scenes/PrototypeGateRepairP3.unity"' in editor
+    assert "PrototypeP2SceneBuilder.BuildBaseScene()" in editor
+    assert "enabledFixtureButtons == 0" in editor
+    assert 'MenuItem("NPC Director/P3/Create or Reset Real Director Scene")' in editor

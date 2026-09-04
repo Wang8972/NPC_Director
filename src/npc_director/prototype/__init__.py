@@ -17,6 +17,17 @@ from npc_director.prototype.orchestrator import (
     PrototypeConversationOrchestrator,
     RecordingPrototypeAdapter,
 )
+from npc_director.prototype.real_director import (
+    OpenAIPrototypeTurnGenerator,
+    PrototypeKnowledgeProjector,
+    PrototypeRealDirectorSession,
+    PrototypeRealGovernance,
+    ResilientPrototypeTurnGenerator,
+)
+from npc_director.prototype.real_models import (
+    PrototypeRealTurnProposal,
+    PrototypeTrustedContext,
+)
 from npc_director.prototype.repository import (
     InjectedCommitFailure,
     PrototypeStateRepository,
@@ -35,6 +46,10 @@ __all__ = [
     "InjectedCommitFailure",
     "PrototypeConversationOrchestrator",
     "PrototypeNpcState",
+    "PrototypeKnowledgeProjector",
+    "PrototypeRealDirectorSession",
+    "PrototypeRealGovernance",
+    "PrototypeRealTurnProposal",
     "PrototypePuzzleRules",
     "PrototypeStateRepository",
     "PrototypeVersionConflict",
@@ -42,6 +57,9 @@ __all__ = [
     "RecordingPrototypeAdapter",
     "RejectedAction",
     "SceneActionCandidate",
+    "OpenAIPrototypeTurnGenerator",
+    "ResilientPrototypeTurnGenerator",
+    "PrototypeTrustedContext",
     "normalized_success_projection",
     "semantic_state_payload",
 ]

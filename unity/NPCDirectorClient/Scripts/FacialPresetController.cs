@@ -38,8 +38,24 @@ namespace NPCDirector
 
         public void ConfigureForPrototype()
         {
-            presets = new[] { new FacialPreset { name = "neutral" } };
+            presets = new[]
+            {
+                PrototypePreset("neutral"),
+                PrototypePreset("happy"),
+                PrototypePreset("sad"),
+                PrototypePreset("angry"),
+                PrototypePreset("surprised"),
+                PrototypePreset("relieved_smile"),
+                PrototypePreset("concerned"),
+                PrototypePreset("stern"),
+                PrototypePreset("suspicious")
+            };
             Rebuild();
+        }
+
+        private static FacialPreset PrototypePreset(string name)
+        {
+            return new FacialPreset { name = name };
         }
 
         private void Rebuild()

@@ -16,6 +16,7 @@ namespace NPCDirector
         [SerializeField] private NpcRegistry npcRegistry;
         [SerializeField] private PrototypeSceneActionExecutor sceneActionExecutor;
         [SerializeField] private PrototypeP2GameController gameController;
+        [SerializeField] private string connectionModeLabel = "Fake";
 
         private readonly ConcurrentQueue<Action> mainThreadActions =
             new ConcurrentQueue<Action>();
@@ -28,6 +29,11 @@ namespace NPCDirector
 
         public string SessionId => sessionId;
         public bool IsConnected => socket != null && socket.State == WebSocketState.Open;
+
+        public void SetConnectionModeLabel(string value)
+        {
+            connectionModeLabel = string.IsNullOrWhiteSpace(value) ? "Backend" : value;
+        }
 
         public void Configure(
             string configuredEndpoint,
@@ -80,6 +86,11 @@ namespace NPCDirector
 
         public void SendFixture(string npcId, string fixtureId)
         {
+            SendPlayerText(npcId, fixtureId);
+        }
+
+        public void SendPlayerText(string npcId, string playerInput)
+        {
             string turnId = $"{sessionId}:{Guid.NewGuid():N}";
             TurnRequestEnvelope request = new TurnRequestEnvelope
             {
@@ -89,12 +100,12 @@ namespace NPCDirector
                     session_id = sessionId,
                     turn_id = turnId,
                     npc_id = npcId,
-                    player_input = fixtureId,
+                    player_input = playerInput,
                     character_core = "P2 Fake fixture; backend profile is authoritative.",
                     scene = new SceneSnapshot { location = "prototype_gate_repair" }
                 }
             };
-            gameController?.SetBusy(true, $"发送 {fixtureId}");
+            gameController?.SetBusy(true, $"发送给 {npcId}");
             QueueMessage(JsonUtility.ToJson(request));
         }
 
@@ -149,7 +160,8 @@ namespace NPCDirector
                     gameController?.SetConnectionState("连接中");
                     await socket.ConnectAsync(new Uri(endpoint), token);
                     retry = 0;
-                    mainThreadActions.Enqueue(() => gameController?.SetConnectionState("已连接 Fake"));
+                    mainThreadActions.Enqueue(
+                        () => gameController?.SetConnectionState($"已连接 {connectionModeLabel}"));
                     await FlushOutgoingAsync(token);
                     await ReceiveLoopAsync(token);
                 }

@@ -34,15 +34,29 @@ namespace NPCDirector
         {
             entries = new List<ActionCatalogEntry>
             {
-                new ActionCatalogEntry
-                {
-                    action = "nod",
-                    animatorState = "idle",
-                    layer = 0,
-                    defaultPriority = 50
-                }
+                PrototypeEntry("idle"),
+                PrototypeEntry("nod"),
+                PrototypeEntry("small_nod"),
+                PrototypeEntry("shake_head"),
+                PrototypeEntry("step_forward"),
+                PrototypeEntry("step_back"),
+                PrototypeEntry("point"),
+                PrototypeEntry("reach_out"),
+                PrototypeEntry("cross_arms"),
+                PrototypeEntry("open_palms")
             };
             Rebuild();
+        }
+
+        private static ActionCatalogEntry PrototypeEntry(string action)
+        {
+            return new ActionCatalogEntry
+            {
+                action = action,
+                animatorState = "idle",
+                layer = 0,
+                defaultPriority = 50
+            };
         }
 
         private void Rebuild()
