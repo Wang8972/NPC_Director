@@ -40,9 +40,19 @@ from npc_director.prototype.real_models import (
 class CodexCliPrototypeTurnGenerator:
     """Use the current Codex provider/auth without copying its credential."""
 
-    def __init__(self, *, model: str, timeout_seconds: float) -> None:
+    def __init__(
+        self,
+        *,
+        model: str,
+        timeout_seconds: float,
+        input_cost_per_million: float | None = None,
+        output_cost_per_million: float | None = None,
+    ) -> None:
         self.model = model
         self.timeout_seconds = timeout_seconds
+        self.input_cost_per_million = input_cost_per_million
+        self.output_cost_per_million = output_cost_per_million
+        self.telemetry: list[dict[str, Any]] = []
         if shutil.which("codex") is None:
             raise RuntimeError("codex CLI is not available on PATH")
 
@@ -85,6 +95,7 @@ class CodexCliPrototypeTurnGenerator:
                 "codex",
                 "exec",
                 "--ephemeral",
+                "--json",
                 "--sandbox",
                 "read-only",
                 "--ignore-rules",
@@ -100,38 +111,122 @@ class CodexCliPrototypeTurnGenerator:
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.STDOUT,
             )
+            events: list[dict[str, Any]] = []
+            output_lines: list[str] = []
+            milestones: dict[str, float] = {}
+
+            async def collect() -> None:
+                assert process.stdout is not None
+                while line := await process.stdout.readline():
+                    value = line.decode(errors="replace").rstrip()
+                    output_lines.append(value)
+                    try:
+                        event = json.loads(value)
+                    except json.JSONDecodeError:
+                        continue
+                    events.append(event)
+                    event_type = str(event.get("type") or "")
+                    milestones.setdefault(event_type, time.perf_counter())
+                    if event_type == "item.completed":
+                        item_type = str((event.get("item") or {}).get("type") or "")
+                        milestones.setdefault(f"item:{item_type}", time.perf_counter())
+                await process.wait()
+
             try:
-                stdout, _ = await asyncio.wait_for(
-                    process.communicate(),
-                    timeout=self.timeout_seconds,
-                )
+                await asyncio.wait_for(collect(), timeout=self.timeout_seconds)
             except TimeoutError:
                 process.kill()
                 await process.wait()
                 raise TimeoutError("codex CLI model call timed out") from None
-            output = stdout.decode(errors="replace")
+            output = "\n".join(output_lines)
             if process.returncode != 0:
                 tail = "\n".join(output.splitlines()[-12:])
                 raise RuntimeError(f"codex CLI failed ({process.returncode}): {tail}")
             if not output_path.exists():
                 raise RuntimeError("codex CLI did not write the structured output file")
+            parse_started = time.perf_counter()
             proposal = PrototypeRealTurnProposal.model_validate_json(
                 _extract_json_object(output_path.read_text(encoding="utf-8"))
             )
+            parsed_at = time.perf_counter()
+            usage = next(
+                (
+                    event.get("usage") or {}
+                    for event in reversed(events)
+                    if event.get("type") == "turn.completed"
+                ),
+                {},
+            )
+            input_tokens = int(usage.get("input_tokens") or 0)
+            output_tokens = int(usage.get("output_tokens") or 0)
+            estimated_cost = None
+            if (
+                self.input_cost_per_million is not None
+                and self.output_cost_per_million is not None
+            ):
+                estimated_cost = (
+                    input_tokens * self.input_cost_per_million
+                    + output_tokens * self.output_cost_per_million
+                ) / 1_000_000
+            telemetry = _build_codex_telemetry(
+                started,
+                parsed_at,
+                parse_started,
+                milestones,
+                usage,
+                estimated_cost,
+            )
+            self.telemetry.append(telemetry)
         return PrototypeGenerationResult.model_validate(
             {
                 "proposal": proposal.model_dump(mode="json"),
                 "metrics": {
                     "model": self.model,
                     "latency_ms": (time.perf_counter() - started) * 1_000,
-                    "input_tokens": 0,
-                    "output_tokens": 0,
-                    "total_tokens": 0,
+                    "input_tokens": input_tokens,
+                    "output_tokens": output_tokens,
+                    "total_tokens": input_tokens + output_tokens,
+                    "estimated_cost_usd": estimated_cost,
                 },
                 "trace_id": None,
                 "response_id": None,
             }
         )
+
+
+def _build_codex_telemetry(
+    started: float,
+    parsed_at: float,
+    parse_started: float,
+    milestones: dict[str, float],
+    usage: dict[str, Any],
+    estimated_cost_usd: float | None,
+) -> dict[str, Any]:
+    thread = milestones.get("thread.started", started)
+    turn = milestones.get("turn.started", thread)
+    reasoning = milestones.get("item:reasoning", turn)
+    answer = milestones.get("item:agent_message", reasoning)
+    completed = milestones.get("turn.completed", answer)
+    return {
+        "stages_ms": {
+            "cli_startup": max(0.0, (thread - started) * 1_000),
+            "hooks_and_turn_setup": max(0.0, (turn - thread) * 1_000),
+            "model_reasoning_to_item": max(0.0, (reasoning - turn) * 1_000),
+            "model_answer_after_reasoning": max(0.0, (answer - reasoning) * 1_000),
+            "turn_finalize": max(0.0, (completed - answer) * 1_000),
+            "post_turn_process_exit": max(0.0, (parse_started - completed) * 1_000),
+            "json_parse_validate": max(0.0, (parsed_at - parse_started) * 1_000),
+        },
+        "total_ms": max(0.0, (parsed_at - started) * 1_000),
+        "usage": {
+            "input_tokens": int(usage.get("input_tokens") or 0),
+            "cached_input_tokens": int(usage.get("cached_input_tokens") or 0),
+            "cache_write_input_tokens": int(usage.get("cache_write_input_tokens") or 0),
+            "output_tokens": int(usage.get("output_tokens") or 0),
+            "reasoning_output_tokens": int(usage.get("reasoning_output_tokens") or 0),
+        },
+        "estimated_cost_usd": estimated_cost_usd,
+    }
 
 
 @dataclass(frozen=True, slots=True)

@@ -1,5 +1,6 @@
+from scripts.analyze_pivot_performance import analyze
 from scripts.run_p4_gate import FAULTS, FUNCTIONAL, RECORDED
-from scripts.run_p4_live_eval import CASES
+from scripts.run_p4_live_eval import CASES, _distribution
 
 
 def test_p4_frozen_matrix_sizes_and_ids() -> None:
@@ -40,3 +41,47 @@ def test_p4_live_matrix_is_ten_cases_with_three_trials_at_runtime() -> None:
         "EV-C04",
         "EV-S01",
     ]
+
+
+def test_latency_distribution_uses_tail_percentile() -> None:
+    result = _distribution([1, 2, 3, 4, 100])
+    assert result["p50"] == 3
+    assert result["p95"] == 4
+    assert result["max"] == 100
+
+
+def test_pivot_analysis_computes_residual_stage_tokens_and_cost() -> None:
+    report = {
+        "status": "pass",
+        "model": "test-model",
+        "results": [
+            {
+                "case_id": "EV-X",
+                "trial": 1,
+                "status": "accepted",
+                "profile": {
+                    "model_calls": [
+                        {
+                            "total_ms": 100,
+                            "stages_ms": {"cli_startup": 10, "model": 60},
+                            "usage": {
+                                "input_tokens": 100,
+                                "cached_input_tokens": 40,
+                                "output_tokens": 20,
+                            },
+                        }
+                    ]
+                },
+            }
+        ],
+    }
+    result = analyze(
+        report,
+        input_rate=2.0,
+        cached_input_rate=1.0,
+        output_rate=4.0,
+    )
+
+    assert result["stage_distributions_ms"]["post_turn_process_exit"]["p50"] == 30
+    assert result["usage"]["uncached_input_tokens"] == 60
+    assert result["pricing"]["estimated_total_cost"] == 0.00024

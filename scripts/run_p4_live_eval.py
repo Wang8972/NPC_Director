@@ -6,6 +6,7 @@ import asyncio
 import json
 import statistics
 import tempfile
+import time
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
@@ -218,7 +219,9 @@ async def run_case(case: LiveCase, trial: int, args: argparse.Namespace) -> dict
     with tempfile.TemporaryDirectory(prefix="p4-live-") as temp:
         database = Path(temp) / "state.sqlite3"
         session_id = f"p4-{case.case_id.lower()}-{trial}"
+        setup_started = time.perf_counter()
         prepare(database, session_id, case.setup)
+        setup_ms = (time.perf_counter() - setup_started) * 1_000
         settings = Settings(
             model=args.model,
             director_model=args.model,
@@ -226,12 +229,16 @@ async def run_case(case: LiveCase, trial: int, args: argparse.Namespace) -> dict
             max_repair_attempts=2,
         )
         generator = CodexCliPrototypeTurnGenerator(
-            model=args.model, timeout_seconds=args.timeout_seconds
+            model=args.model,
+            timeout_seconds=args.timeout_seconds,
+            input_cost_per_million=args.input_cost_per_million,
+            output_cost_per_million=args.output_cost_per_million,
         )
         real = PrototypeRealDirectorSession(
             database, session_id, settings=settings, generator=generator
         )
         try:
+            handle_started = time.perf_counter()
             if case.internal:
                 context = real._context(
                     f"{session_id}:t", case.npc_id, case.prompt, origin="internal_npc_reply"
@@ -280,6 +287,8 @@ async def run_case(case: LiveCase, trial: int, args: argparse.Namespace) -> dict
                 status = audit["status"]
             text = audit["dialogue"]
             safety = not any(value.casefold() in text.casefold() for value in case.forbidden)
+            handle_total_ms = (time.perf_counter() - handle_started) * 1_000
+            model_total_ms = sum(item["total_ms"] for item in generator.telemetry)
             return {
                 "case_id": case.case_id,
                 "trial": trial,
@@ -291,6 +300,12 @@ async def run_case(case: LiveCase, trial: int, args: argparse.Namespace) -> dict
                 "used_fact_ids": audit.get("used_fact_ids", []),
                 "latency_ms": audit.get("latency_ms", 0),
                 "model": audit.get("model"),
+                "profile": {
+                    "state_setup_ms": setup_ms,
+                    "handle_total_ms": handle_total_ms,
+                    "non_model_handle_ms": max(0.0, handle_total_ms - model_total_ms),
+                    "model_calls": list(generator.telemetry),
+                },
             }
         finally:
             real.close()
@@ -302,6 +317,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--trials", type=int, default=3)
     parser.add_argument("--timeout-seconds", type=float, default=120)
     parser.add_argument("--retry-delay-seconds", type=float, default=8)
+    parser.add_argument("--input-cost-per-million", type=float, default=None)
+    parser.add_argument("--output-cost-per-million", type=float, default=None)
     parser.add_argument(
         "--output", type=Path, default=Path("artifacts/prototype-p4/p4-live-report.json")
     )
@@ -351,6 +368,35 @@ async def run(args: argparse.Namespace) -> dict[str, Any]:
         and safety_count == 30
         and all(case_pass.values())
     )
+    model_calls = [
+        call
+        for item in results
+        for call in (item.get("profile") or {}).get("model_calls", [])
+    ]
+    stage_names = sorted(
+        {name for call in model_calls for name in call.get("stages_ms", {})}
+    )
+    stage_distribution = {
+        name: _distribution(
+            [float(call["stages_ms"].get(name, 0.0)) for call in model_calls]
+        )
+        for name in stage_names
+    }
+    usage_totals = {
+        key: sum(int(call.get("usage", {}).get(key, 0)) for call in model_calls)
+        for key in (
+            "input_tokens",
+            "cached_input_tokens",
+            "cache_write_input_tokens",
+            "output_tokens",
+            "reasoning_output_tokens",
+        )
+    }
+    known_costs = [
+        float(call["estimated_cost_usd"])
+        for call in model_calls
+        if call.get("estimated_cost_usd") is not None
+    ]
     return {
         "stage": "P4 Live Eval",
         "status": "pass" if passed else "pivot",
@@ -365,8 +411,53 @@ async def run(args: argparse.Namespace) -> dict[str, Any]:
             "latency_p95_ms": sorted(latencies)[max(0, int(len(latencies) * 0.95) - 1)]
             if latencies
             else None,
+            "profile": {
+                "model_call_count": len(model_calls),
+                "stage_distribution_ms": stage_distribution,
+                "state_setup_distribution_ms": _distribution(
+                    [
+                        float(item["profile"]["state_setup_ms"])
+                        for item in results
+                        if "profile" in item
+                    ]
+                ),
+                "non_model_handle_distribution_ms": _distribution(
+                    [
+                        float(item["profile"]["non_model_handle_ms"])
+                        for item in results
+                        if "profile" in item
+                    ]
+                ),
+                "usage_totals": usage_totals,
+                "input_cost_per_million": args.input_cost_per_million,
+                "output_cost_per_million": args.output_cost_per_million,
+                "estimated_total_cost_usd": sum(known_costs) if known_costs else None,
+                "cost_status": "estimated" if known_costs else "price_metadata_unavailable",
+                "cost_formula": "(input_tokens*input_rate + output_tokens*output_rate)/1e6",
+            },
         },
         "recorded_at": datetime.now(UTC).isoformat(),
+    }
+
+
+def _distribution(values: list[float]) -> dict[str, float | int | None]:
+    if not values:
+        return {
+            "count": 0,
+            "min": None,
+            "p50": None,
+            "p95": None,
+            "max": None,
+            "mean": None,
+        }
+    ordered = sorted(values)
+    return {
+        "count": len(ordered),
+        "min": ordered[0],
+        "p50": statistics.median(ordered),
+        "p95": ordered[max(0, int(len(ordered) * 0.95) - 1)],
+        "max": ordered[-1],
+        "mean": statistics.fmean(ordered),
     }
 
 

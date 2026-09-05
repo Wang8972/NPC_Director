@@ -1,0 +1,162 @@
+{
+  "bottleneck_ranking": [
+    {
+      "mean_ms": 11383.64596661646,
+      "mean_share": 0.42571098986813216,
+      "p95_ms": 17417.23095800262,
+      "stage": "model_reasoning_to_item"
+    },
+    {
+      "mean_ms": 10094.474614919163,
+      "mean_share": 0.37750021329882033,
+      "p95_ms": 10098.082541953772,
+      "stage": "post_turn_process_exit"
+    },
+    {
+      "mean_ms": 3544.3102600285783,
+      "mean_share": 0.13254556875902354,
+      "p95_ms": 4936.639124993235,
+      "stage": "model_answer_after_reasoning"
+    },
+    {
+      "mean_ms": 1026.122073372826,
+      "mean_share": 0.03837359707620321,
+      "p95_ms": 1033.6334579624236,
+      "stage": "cli_startup"
+    },
+    {
+      "mean_ms": 687.0489899953827,
+      "mean_share": 0.02569337683871852,
+      "p95_ms": 734.2384160729125,
+      "stage": "turn_finalize"
+    },
+    {
+      "mean_ms": 3.9938349882140756,
+      "mean_share": 0.00014935631793088408,
+      "p95_ms": 4.935374949127436,
+      "stage": "hooks_and_turn_setup"
+    },
+    {
+      "mean_ms": 0.7192567456513643,
+      "mean_share": 2.6897841171318825e-05,
+      "p95_ms": 0.7944169919937849,
+      "stage": "json_parse_validate"
+    }
+  ],
+  "fallback_or_failed_generation_samples": [
+    {
+      "case_id": "EV-K02",
+      "status": "accepted",
+      "trial": 2
+    },
+    {
+      "case_id": "EV-C03",
+      "status": "accepted",
+      "trial": 3
+    }
+  ],
+  "input_guard_no_model_count": 3,
+  "model": "qwen3.8-flash",
+  "pricing": {
+    "cached_input_per_million": null,
+    "estimated_total_cost": null,
+    "formula": "(uncached_input*input_rate + cached_input*cached_rate + output*output_rate)/1e6",
+    "input_per_million": null,
+    "output_per_million": null,
+    "status": "price_metadata_unavailable"
+  },
+  "sample_count": 30,
+  "source_status": "pass",
+  "stage_distributions_ms": {
+    "cli_startup": {
+      "count": 25,
+      "max": 1209.8836250370368,
+      "mean": 1026.122073372826,
+      "min": 992.721916991286,
+      "p50": 1019.7276249527931,
+      "p95": 1033.6334579624236
+    },
+    "hooks_and_turn_setup": {
+      "count": 25,
+      "max": 6.4604999497532845,
+      "mean": 3.9938349882140756,
+      "min": 3.2995830988511443,
+      "p50": 3.794708987697959,
+      "p95": 4.935374949127436
+    },
+    "json_parse_validate": {
+      "count": 25,
+      "max": 3.13258299138397,
+      "mean": 0.7192567456513643,
+      "min": 0.37083402276039124,
+      "p50": 0.5230829119682312,
+      "p95": 0.7944169919937849
+    },
+    "model_answer_after_reasoning": {
+      "count": 25,
+      "max": 5542.036959086545,
+      "mean": 3544.3102600285783,
+      "min": 2291.778374928981,
+      "p50": 3111.1741249915212,
+      "p95": 4936.639124993235
+    },
+    "model_reasoning_to_item": {
+      "count": 25,
+      "max": 21351.711667026393,
+      "mean": 11383.64596661646,
+      "min": 4848.835082957521,
+      "p50": 10718.242208007723,
+      "p95": 17417.23095800262
+    },
+    "post_turn_process_exit": {
+      "count": 25,
+      "max": 10099.238750059158,
+      "mean": 10094.474614919163,
+      "min": 10086.189292022027,
+      "p50": 10095.576292020269,
+      "p95": 10098.082541953772
+    },
+    "turn_finalize": {
+      "count": 25,
+      "max": 746.686999918893,
+      "mean": 687.0489899953827,
+      "min": 646.8270829645917,
+      "p50": 683.1529169576243,
+      "p95": 734.2384160729125
+    }
+  },
+  "successful_model_call_count": 25,
+  "total_latency_distribution_ms": {
+    "count": 25,
+    "max": 38001.378166954964,
+    "mean": 26740.314996666275,
+    "min": 20032.57083299104,
+    "p50": 25837.181125069037,
+    "p95": 33682.75341601111
+  },
+  "usage": {
+    "cache_hit_ratio": 0.7973549283626431,
+    "cache_write_input_tokens": 0,
+    "cached_input_tokens": 366080,
+    "input_tokens": 459118,
+    "output_tokens": 28633,
+    "reasoning_output_tokens": 18765,
+    "uncached_input_tokens": 93038
+  },
+  "usage_per_eval_sample": {
+    "cache_write_input_tokens": 0.0,
+    "cached_input_tokens": 12202.666666666666,
+    "input_tokens": 15303.933333333332,
+    "output_tokens": 954.4333333333333,
+    "reasoning_output_tokens": 625.5,
+    "uncached_input_tokens": 3101.266666666667
+  },
+  "usage_per_successful_model_call": {
+    "cache_write_input_tokens": 0.0,
+    "cached_input_tokens": 14643.2,
+    "input_tokens": 18364.72,
+    "output_tokens": 1145.32,
+    "reasoning_output_tokens": 750.6,
+    "uncached_input_tokens": 3721.52
+  }
+}
