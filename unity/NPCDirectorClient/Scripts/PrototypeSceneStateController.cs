@@ -22,6 +22,8 @@ namespace NPCDirector
             new Dictionary<string, string>(StringComparer.Ordinal);
         private readonly Dictionary<string, Renderer> renderers =
             new Dictionary<string, Renderer>(StringComparer.Ordinal);
+        private readonly Dictionary<string, VerticalSliceObjectView> objectViews =
+            new Dictionary<string, VerticalSliceObjectView>(StringComparer.Ordinal);
 
         private string currentSessionId;
         private int lastWorldVersion = -1;
@@ -120,6 +122,12 @@ namespace NPCDirector
             {
                 string state = incoming[objectId];
                 appliedStates[objectId] = state;
+                if (objectViews.TryGetValue(objectId, out VerticalSliceObjectView view) &&
+                    view != null && view.ApplyState(state))
+                {
+                    MappingApplicationCount += 1;
+                    continue;
+                }
                 TryGetRenderer(objectId, out Renderer targetRenderer);
                 targetRenderer.material.color = ColorForState(state);
                 MappingApplicationCount += 1;
@@ -164,6 +172,7 @@ namespace NPCDirector
         private void BuildRendererLookup()
         {
             renderers.Clear();
+            objectViews.Clear();
             foreach (string objectId in CanonicalObjectIds)
             {
                 GameObject target = GameObject.Find(objectId);
@@ -171,6 +180,12 @@ namespace NPCDirector
                 if (targetRenderer != null)
                 {
                     renderers[objectId] = targetRenderer;
+                }
+                VerticalSliceObjectView view =
+                    target != null ? target.GetComponent<VerticalSliceObjectView>() : null;
+                if (view != null)
+                {
+                    objectViews[objectId] = view;
                 }
             }
         }

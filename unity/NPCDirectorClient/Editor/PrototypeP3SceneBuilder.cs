@@ -27,6 +27,11 @@ namespace NPCDirector.Editor
                 return;
             }
 
+            BuildBaseScene();
+        }
+
+        internal static GameObject BuildBaseScene()
+        {
             GameObject root = PrototypeP2SceneBuilder.BuildBaseScene();
             root.name = "P3PrototypeRoot";
             PrototypeP2Client client = root.GetComponent<PrototypeP2Client>();
@@ -50,6 +55,7 @@ namespace NPCDirector.Editor
             Debug.Log(
                 $"[P3_SCENE_BUILDER] created scene={ScenePath} npcs=3 hotspots=6 " +
                 "session_clients=1 text_inputs=1 mode=real");
+            return root;
         }
 
         [MenuItem("NPC Director/P3/Validate Open Real Director Scene")]

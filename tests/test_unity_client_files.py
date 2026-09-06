@@ -262,3 +262,26 @@ def test_vertical_slice_uses_mode_neutral_runtime_and_build_catalog_gate() -> No
     assert "IPreprocessBuildWithReport" in validator
     assert "BuildFailedException" in validator
     assert "[VS1_CATALOG] PASS" in validator
+
+
+def test_vs2_art_sample_is_modular_state_driven_and_scope_frozen() -> None:
+    builder = (ROOT / "Editor" / "VerticalSliceSceneBuilder.cs").read_text(
+        encoding="utf-8"
+    )
+    view = read("VerticalSliceObjectView.cs")
+    scene_state = read("PrototypeSceneStateController.cs")
+
+    assert 'ScenePath = "Assets/Scenes/GreyHarborVerticalSlice.unity"' in builder
+    assert "PrototypeP3SceneBuilder.BuildBaseScene()" in builder
+    assert 'MenuItem("NPC Director/Vertical Slice/VS2/Create Art Sample Scene")' in builder
+    assert '"WallModule"' in builder
+    assert '"CargoRack"' in builder
+    assert '"HarborLamp"' in builder
+    assert "CreateObjectViews" in builder
+    assert "CreateCharacterSilhouettes" in builder
+    assert "CreateStormLighting" in builder
+    assert '"[VS2_SCENE_VALIDATE]' in builder
+    assert '"object_views=6 characters=3 lights=5 prefabs=3 gameplay_scope_added=0"' in builder
+    assert "public bool ApplyState" in view
+    assert "Dictionary<string, VerticalSliceObjectView>" in scene_state
+    assert "view.ApplyState(state)" in scene_state
