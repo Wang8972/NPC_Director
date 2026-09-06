@@ -1,0 +1,41 @@
+# Unity generated folders
+/Library/
+/Temp/
+/Obj/
+/Logs/
+/UserSettings/
+/MemoryCaptures/
+/Recordings/
+
+# Local builds and caches
+/Build/
+/Builds/
+/.vs/
+/.idea/
+/.vscode/
+
+# Generated IDE files
+*.csproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.tmp
+*.bak
+*.swp
+
+# Local credentials and Perforce connection state
+.env
+.env.*
+.p4config.local
+.p4tickets
+
+# Unity package-manager transient files
+/Packages/packages-lock.json.tmp

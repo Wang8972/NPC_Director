@@ -1,0 +1,28 @@
+Stream: //GreyHarbor/main
+
+Owner: __P4USER__
+
+Name: main
+
+Parent: none
+
+Type: mainline
+
+Description:
+	Mainline for the Grey Harbor learning vertical slice.
+
+Options: allsubmit unlocked toparent fromparent mergedown
+
+ParentView: inherit
+
+Paths:
+	share ...
+
+Ignored:
+	Library/...
+	Temp/...
+	Obj/...
+	Logs/...
+	UserSettings/...
+	Build/...
+	Builds/...

@@ -1,0 +1,47 @@
+{
+  "version": "1.0",
+  "git": {
+    "workspace_example": "D:/Work/npc-director",
+    "authoritative_paths": [
+      "src/**",
+      "tests/**",
+      "scripts/**",
+      "data/prototype/**",
+      "unity/NPCDirectorClient/**"
+    ]
+  },
+  "perforce": {
+    "workspace_example": "D:/P4Workspaces/GreyHarborVS",
+    "stream": "//GreyHarbor/main",
+    "authoritative_paths": [
+      "Assets/Art/**",
+      "Assets/ArtSource/**",
+      "Assets/Audio/**",
+      "Assets/Animations/**",
+      "Assets/Materials/**",
+      "Assets/Prefabs/**",
+      "Assets/Scenes/**",
+      "Assets/VerticalSlice/**",
+      "Packages/**",
+      "ProjectSettings/**",
+      "*.meta"
+    ],
+    "synced_read_only_paths": [
+      "Assets/NPCDirectorClient/**"
+    ],
+    "generated_ignored_paths": [
+      "Library/**",
+      "Temp/**",
+      "Obj/**",
+      "Logs/**",
+      "UserSettings/**",
+      "Builds/**"
+    ]
+  },
+  "rules": [
+    "Never initialize Git inside the Perforce workspace.",
+    "Never edit Assets/NPCDirectorClient in Perforce; edit Git source and resync.",
+    "Always submit a Unity asset together with its .meta file.",
+    "One changelist must represent one reviewable art or integration intent."
+  ]
+}

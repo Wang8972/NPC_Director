@@ -1,0 +1,10 @@
+Depot: GreyHarbor
+
+Owner: __P4USER__
+
+Description:
+	Grey Harbor vertical-slice Unity and art depot.
+
+Type: stream
+
+Map: GreyHarbor/...

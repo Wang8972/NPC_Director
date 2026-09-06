@@ -1,0 +1,18 @@
+Client: __P4CLIENT__
+
+Owner: __P4USER__
+
+Host: __P4HOST__
+
+Description:
+	Windows workspace for Grey Harbor vertical-slice art production.
+
+Root: __P4ROOT__
+
+Options: noallwrite noclobber nocompress unlocked nomodtime rmdir
+
+SubmitOptions: submitunchanged
+
+LineEnd: local
+
+Stream: //GreyHarbor/main

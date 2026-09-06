@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.0",
+  "manifest_version": "vs-art-v1",
+  "unity_project": {
+    "render_pipeline": "URP_or_BuiltIn_compatible",
+    "unit_scale_meters": 1.0,
+    "texture_color_space": "sRGB_except_data_maps",
+    "serialization_mode": "ForceText",
+    "meta_files": "VisibleMetaFiles"
+  },
+  "asset_groups": [
+    {
+      "group_id": "environment_warehouse",
+      "category": "environment",
+      "status": "planned",
+      "target_path": "Assets/Art/Environment/Warehouse",
+      "required_assets": ["floor", "wall", "beam", "gate", "pipe", "cargo_rack", "work_light"],
+      "source_formats": ["fbx", "blend", "psd"],
+      "license_status": "pending"
+    },
+    {
+      "group_id": "characters_three_npcs",
+      "category": "characters",
+      "status": "planned",
+      "target_path": "Assets/Art/Characters",
+      "required_assets": ["guard_captain_maren", "mechanic_lia", "porter_finn"],
+      "source_formats": ["fbx", "blend", "psd"],
+      "license_status": "pending"
+    },
+    {
+      "group_id": "canonical_interactables",
+      "category": "props",
+      "status": "planned",
+      "target_path": "Assets/Art/Props/Interactables",
+      "required_assets": ["gate_console", "generator", "control_cabinet", "cargo_crate_c12", "manifest_board", "alarm_lamp"],
+      "source_formats": ["fbx", "blend", "psd"],
+      "license_status": "pending"
+    },
+    {
+      "group_id": "character_and_action_animation",
+      "category": "animation",
+      "status": "planned",
+      "target_path": "Assets/Animations",
+      "required_assets": ["idle", "nod", "shake_head", "point", "reach_out", "carry", "install", "authorize", "operate"],
+      "source_formats": ["fbx", "anim", "controller"],
+      "license_status": "pending"
+    },
+    {
+      "group_id": "vertical_slice_audio",
+      "category": "audio",
+      "status": "planned",
+      "target_path": "Assets/Audio",
+      "required_assets": ["warehouse_ambience", "storm_loop", "alarm_loop", "ui_confirm", "ui_reject", "fuse_handover", "fuse_install", "gate_restart", "success_stinger"],
+      "source_formats": ["wav", "aiff"],
+      "license_status": "pending"
+    },
+    {
+      "group_id": "vertical_slice_vfx",
+      "category": "vfx",
+      "status": "planned",
+      "target_path": "Assets/Art/VFX",
+      "required_assets": ["rain_window", "steam_vent", "generator_sparks", "success_light_pulse"],
+      "source_formats": ["png", "tga", "prefab"],
+      "license_status": "pending"
+    }
+  ],
+  "source_register_required_fields": [
+    "asset_id",
+    "creator_or_vendor",
+    "source_url_or_contract",
+    "license",
+    "allowed_use",
+    "modification_allowed",
+    "redistribution_allowed",
+    "attribution",
+    "acquired_at",
+    "local_source_path",
+    "unity_target_path"
+  ]
+}
