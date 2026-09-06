@@ -241,3 +241,24 @@ def test_p3_scene_reuses_p2_protocol_and_adds_real_text_input() -> None:
     assert "UnityEngine.Object.FindObjectOfType<Canvas>()" in editor
     assert " Object.FindObject" not in editor
     assert " Object.FindObjects" not in editor
+
+
+def test_vertical_slice_uses_mode_neutral_runtime_and_build_catalog_gate() -> None:
+    client = read("PrototypeDirectorClient.cs")
+    controller = read("PrototypeRuntimeController.cs")
+    catalog = read("PrototypeContentCatalog.cs")
+    p2_builder = (ROOT / "Editor" / "PrototypeP2SceneBuilder.cs").read_text(
+        encoding="utf-8"
+    )
+    validator = (ROOT / "Editor" / "VerticalSliceContentValidator.cs").read_text(
+        encoding="utf-8"
+    )
+
+    assert "PrototypeDirectorClient : PrototypeP2Client" in client
+    assert "PrototypeRuntimeController : PrototypeP2GameController" in controller
+    assert "AddComponent<PrototypeDirectorClient>()" in p2_builder
+    assert "AddComponent<PrototypeRuntimeController>()" in p2_builder
+    assert 'Resources.Load<TextAsset>("VerticalSliceContentCatalog")' in catalog
+    assert "IPreprocessBuildWithReport" in validator
+    assert "BuildFailedException" in validator
+    assert "[VS1_CATALOG] PASS" in validator

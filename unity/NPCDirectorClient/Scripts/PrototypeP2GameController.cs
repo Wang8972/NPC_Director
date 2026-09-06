@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace NPCDirector
 {
-    public sealed class PrototypeP2GameController : MonoBehaviour
+    public class PrototypeP2GameController : MonoBehaviour
     {
         [SerializeField] private PrototypeP2Client client;
         [SerializeField] private PrototypeSceneStateController sceneStateController;

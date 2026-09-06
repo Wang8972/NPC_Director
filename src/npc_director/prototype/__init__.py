@@ -45,6 +45,7 @@ __all__ = [
     "PrototypeFakeDirectorSession",
     "InjectedCommitFailure",
     "PrototypeConversationOrchestrator",
+    "PrototypeContentCatalog",
     "PrototypeNpcState",
     "PrototypeKnowledgeProjector",
     "PrototypeRealDirectorSession",
@@ -62,4 +63,9 @@ __all__ = [
     "PrototypeTrustedContext",
     "normalized_success_projection",
     "semantic_state_payload",
+    "load_prototype_content_catalog",
 ]
+from npc_director.prototype.content_catalog import (
+    PrototypeContentCatalog,
+    load_prototype_content_catalog,
+)

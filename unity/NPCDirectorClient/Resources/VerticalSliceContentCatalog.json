@@ -1,0 +1,138 @@
+{
+  "schema_version": "1.0",
+  "catalog_version": "vertical-slice-v1",
+  "scene_id": "prototype_gate_repair",
+  "npc_profiles": [
+    {
+      "npc_id": "guard_captain_maren",
+      "display_name": "玛伦",
+      "role": "守卫队长；负责程序、证据、授权与追责",
+      "stance": "坚持程序和责任链，但在证据齐全时允许紧急维修继续。",
+      "style": "克制、简洁、明确引用自己已知的证据，不替他人承认动机。",
+      "allowed_action_types": [
+        "authorize_object",
+        "operate_object",
+        "tell_npc",
+        "tell_player"
+      ]
+    },
+    {
+      "npc_id": "mechanic_lia",
+      "display_name": "莉娅",
+      "role": "机械师；负责检查、技术判断和安装",
+      "stance": "优先现场安全和恢复供电，但没有货箱或最终重启授权。",
+      "style": "直接、务实、用技术事实说话，不猜测物品位置。",
+      "allowed_action_types": [
+        "inspect_object",
+        "install_item",
+        "tell_npc",
+        "tell_player"
+      ]
+    },
+    {
+      "npc_id": "porter_finn",
+      "display_name": "费恩",
+      "role": "搬运工；掌握现场搬运和备件位置信息",
+      "stance": "关心现场安全，也担心自己被追责；合作不等于公开全部私事。",
+      "style": "谨慎、防备，在合理请求或程序授权下配合，不替别人做技术判断。",
+      "allowed_action_types": [
+        "give_item",
+        "tell_npc",
+        "tell_player"
+      ]
+    }
+  ],
+  "object_ids": [
+    "gate_console",
+    "generator",
+    "control_cabinet",
+    "cargo_crate_c12",
+    "manifest_board",
+    "alarm_lamp"
+  ],
+  "item_ids": [
+    "spare_fuse"
+  ],
+  "route_ids": [
+    "cooperation",
+    "procedure"
+  ],
+  "operation_ids": [
+    "restart_gate_power"
+  ],
+  "facts": [
+    {
+      "fact_id": "fact_restart_requires_authority",
+      "text": "控制柜最终重启必须由守卫队长玛伦授权并执行。",
+      "sensitive_surfaces": []
+    },
+    {
+      "fact_id": "fact_console_e17",
+      "text": "闸门控制台离线并显示错误码 E-17。",
+      "sensitive_surfaces": []
+    },
+    {
+      "fact_id": "fact_generator_missing_fuse",
+      "text": "莉娅检查后确认发电机缺少备用保险丝。",
+      "sensitive_surfaces": [
+        "发电机缺少备用保险丝",
+        "发电机缺保险丝",
+        "generator is missing a fuse"
+      ]
+    },
+    {
+      "fact_id": "fact_manifest_finn_moved_c12",
+      "text": "公开搬运记录显示费恩最近移动过 C-12。",
+      "sensitive_surfaces": [
+        "费恩最近移动过 C-12",
+        "费恩移动过 C-12"
+      ]
+    },
+    {
+      "fact_id": "fact_fuse_moved_to_c12",
+      "text": "费恩知道备用保险丝被移动到 C-12。",
+      "sensitive_surfaces": [
+        "保险丝被移动到 C-12",
+        "把保险丝移到 C-12"
+      ]
+    },
+    {
+      "fact_id": "fact_crate_c12_seal_anomaly",
+      "text": "C-12 封条异常，但仅凭封条不能确认箱内物品。",
+      "sensitive_surfaces": []
+    },
+    {
+      "fact_id": "fact_crate_c12_contains_fuse",
+      "text": "费恩知道 C-12 内有备用保险丝。",
+      "sensitive_surfaces": [
+        "C-12 内有备用保险丝",
+        "C-12里有保险丝",
+        "保险丝在 C-12"
+      ]
+    },
+    {
+      "fact_id": "fact_fuse_installed",
+      "text": "备用保险丝已经安装到发电机。",
+      "sensitive_surfaces": []
+    },
+    {
+      "fact_id": "fact_gate_restarted",
+      "text": "闸门供电已经恢复。",
+      "sensitive_surfaces": []
+    },
+    {
+      "fact_id": "fact_fuse_matches_generator",
+      "text": "莉娅知道该型号备用保险丝与发电机匹配。",
+      "sensitive_surfaces": []
+    },
+    {
+      "fact_id": "fact_finn_unauthorized_move",
+      "text": "费恩知道自己此前未经授权移动过相关货物。",
+      "sensitive_surfaces": [
+        "未经授权移动",
+        "私自搬运",
+        "擅自移动 C-12"
+      ]
+    }
+  ]
+}

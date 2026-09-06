@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace NPCDirector
 {
-    public sealed class PrototypeP2Client : MonoBehaviour
+    public class PrototypeP2Client : MonoBehaviour
     {
         [SerializeField] private string endpoint = "ws://127.0.0.1:8766";
         [SerializeField] private string sessionId = "p2-fake-001";
@@ -49,13 +49,13 @@ namespace NPCDirector
             gameController = controller;
         }
 
-        private async void Start()
+        protected virtual async void Start()
         {
             cancellation = new CancellationTokenSource();
             await ConnectLoopAsync(cancellation.Token);
         }
 
-        private async void OnDisable()
+        protected virtual async void OnDisable()
         {
             cancellation?.Cancel();
             if (socket == null)
@@ -76,7 +76,7 @@ namespace NPCDirector
             socket = null;
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             while (mainThreadActions.TryDequeue(out Action action))
             {

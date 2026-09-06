@@ -53,11 +53,11 @@ namespace NPCDirector.Editor
             PrototypeSceneStateController sceneState =
                 root.AddComponent<PrototypeSceneStateController>();
             PrototypeP2GameController controller =
-                root.AddComponent<PrototypeP2GameController>();
+                root.AddComponent<PrototypeRuntimeController>();
             NpcRegistry registry = root.AddComponent<NpcRegistry>();
             PrototypeSceneActionExecutor actionExecutor =
                 root.AddComponent<PrototypeSceneActionExecutor>();
-            PrototypeP2Client client = root.AddComponent<PrototypeP2Client>();
+            PrototypeP2Client client = root.AddComponent<PrototypeDirectorClient>();
 
             CreateEnvironment(controller);
             UiRefs ui = CreateUi(controller);

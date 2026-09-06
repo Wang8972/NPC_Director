@@ -26,25 +26,15 @@ from npc_director.contracts import (
 from npc_director.governance import check_input
 from npc_director.model_profile import get_active_profile
 from npc_director.model_provider import build_run_config
+from npc_director.prototype.content_catalog import load_prototype_content_catalog
 from npc_director.prototype.fake_director import PrototypeFakeDirectorSession
 from npc_director.prototype.models import (
-    FACT_CONSOLE_E17,
     FACT_CRATE_CONTAINS_FUSE,
-    FACT_CRATE_SEAL_ANOMALY,
-    FACT_FINN_UNAUTHORIZED_MOVE,
-    FACT_FUSE_INSTALLED,
-    FACT_FUSE_MATCHES_GENERATOR,
-    FACT_FUSE_MOVED_TO_C12,
-    FACT_GATE_RESTARTED,
-    FACT_GENERATOR_MISSING_FUSE,
-    FACT_MANIFEST_FINN_MOVED_C12,
-    FACT_RESTART_REQUIRES_AUTHORITY,
     NPC_IDS,
     OBJECT_IDS,
     SceneActionCandidate,
 )
 from npc_director.prototype.real_models import (
-    PrototypeCharacterView,
     PrototypeFactView,
     PrototypeGenerationResult,
     PrototypeGovernanceResult,
@@ -53,71 +43,11 @@ from npc_director.prototype.real_models import (
 )
 
 P3_PROMPT_VERSION = "prototype-p3-real-v1"
-
-FACT_TEXTS = {
-    FACT_RESTART_REQUIRES_AUTHORITY: "控制柜最终重启必须由守卫队长玛伦授权并执行。",
-    FACT_CONSOLE_E17: "闸门控制台离线并显示错误码 E-17。",
-    FACT_GENERATOR_MISSING_FUSE: "莉娅检查后确认发电机缺少备用保险丝。",
-    FACT_MANIFEST_FINN_MOVED_C12: "公开搬运记录显示费恩最近移动过 C-12。",
-    FACT_FUSE_MOVED_TO_C12: "费恩知道备用保险丝被移动到 C-12。",
-    FACT_CRATE_SEAL_ANOMALY: "C-12 封条异常，但仅凭封条不能确认箱内物品。",
-    FACT_CRATE_CONTAINS_FUSE: "费恩知道 C-12 内有备用保险丝。",
-    FACT_FUSE_INSTALLED: "备用保险丝已经安装到发电机。",
-    FACT_GATE_RESTARTED: "闸门供电已经恢复。",
-    FACT_FUSE_MATCHES_GENERATOR: "莉娅知道该型号备用保险丝与发电机匹配。",
-    FACT_FINN_UNAUTHORIZED_MOVE: "费恩知道自己此前未经授权移动过相关货物。",
-}
-
-SENSITIVE_FACT_SURFACES = {
-    FACT_GENERATOR_MISSING_FUSE: (
-        "发电机缺少备用保险丝",
-        "发电机缺保险丝",
-        "generator is missing a fuse",
-    ),
-    FACT_MANIFEST_FINN_MOVED_C12: ("费恩最近移动过 C-12", "费恩移动过 C-12"),
-    FACT_FUSE_MOVED_TO_C12: ("保险丝被移动到 C-12", "把保险丝移到 C-12"),
-    FACT_CRATE_CONTAINS_FUSE: (
-        "C-12 内有备用保险丝",
-        "C-12里有保险丝",
-        "保险丝在 C-12",
-    ),
-    FACT_FINN_UNAUTHORIZED_MOVE: ("未经授权移动", "私自搬运", "擅自移动 C-12"),
-}
-
-CHARACTERS = {
-    "guard_captain_maren": PrototypeCharacterView(
-        npc_id="guard_captain_maren",
-        display_name="玛伦",
-        role="守卫队长；负责程序、证据、授权与追责",
-        stance="坚持程序和责任链，但在证据齐全时允许紧急维修继续。",
-        style="克制、简洁、明确引用自己已知的证据，不替他人承认动机。",
-    ),
-    "mechanic_lia": PrototypeCharacterView(
-        npc_id="mechanic_lia",
-        display_name="莉娅",
-        role="机械师；负责检查、技术判断和安装",
-        stance="优先现场安全和恢复供电，但没有货箱或最终重启授权。",
-        style="直接、务实、用技术事实说话，不猜测物品位置。",
-    ),
-    "porter_finn": PrototypeCharacterView(
-        npc_id="porter_finn",
-        display_name="费恩",
-        role="搬运工；掌握现场搬运和备件位置信息",
-        stance="关心现场安全，也担心自己被追责；合作不等于公开全部私事。",
-        style="谨慎、防备，在合理请求或程序授权下配合，不替别人做技术判断。",
-    ),
-}
-
-ALLOWED_ACTIONS_BY_NPC = {
-    "guard_captain_maren": (
-        "authorize_object",
-        "operate_object",
-        "tell_npc",
-        "tell_player",
-    ),
-    "mechanic_lia": ("inspect_object", "install_item", "tell_npc", "tell_player"),
-    "porter_finn": ("give_item", "tell_npc", "tell_player"),
-}
+_CONTENT_CATALOG = load_prototype_content_catalog()
+FACT_TEXTS = _CONTENT_CATALOG.fact_texts
+SENSITIVE_FACT_SURFACES = _CONTENT_CATALOG.sensitive_surfaces
+CHARACTERS = _CONTENT_CATALOG.character_views
+ALLOWED_ACTIONS_BY_NPC = _CONTENT_CATALOG.actions_by_npc
 
 PROTOTYPE_REAL_INSTRUCTIONS = """
 你是《灰港：封锁线》单场景原型中的 NPC Director。你只为上下文中 selected_npc 生成
