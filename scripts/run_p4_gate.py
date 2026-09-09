@@ -75,6 +75,7 @@ def run_node(node: str, artifact: dict) -> dict:
         route = node.rsplit(":", maxsplit=1)[1]
         passed = (
             artifact.get("status") == "pass"
+            and artifact.get("session_report", {}).get("production_orchestration") is True
             and artifact.get("session_report", {}).get("route_success_counts", {}).get(route, 0)
             >= 1
         )

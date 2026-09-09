@@ -17,7 +17,10 @@ from npc_director.contracts import (
     StateChangeProposal,
     TurnProposal,
 )
-from npc_director.orchestration.bounded_executor import BoundedDirectorExecutor
+from npc_director.orchestration.bounded_executor import (
+    BoundedDirectorExecutor,
+    TypedModelCall,
+)
 from npc_director.orchestration.executor import (
     OpenAIDirectorExecutor,
     ResilientDirectorExecutor,
@@ -179,6 +182,50 @@ def test_resilient_executor_defaults_to_bounded_and_keeps_react_ablation() -> No
 
     assert isinstance(bounded.primary, BoundedDirectorExecutor)
     assert isinstance(react.primary, OpenAIDirectorExecutor)
+
+
+@pytest.mark.asyncio
+async def test_bounded_executor_supports_provider_neutral_typed_runner() -> None:
+    outputs = {
+        ROUTER: RouteDecision.model_validate(
+            {
+                "intent": "greeting",
+                "objective": "回应问候",
+                "confidence": 1.0,
+            }
+        ),
+        WRITER: dialogue(),
+        PERFORMANCE: performance(),
+    }
+    calls: list[object] = []
+
+    async def typed_runner(agent, _run_input, _output_type):
+        calls.append(agent)
+        return TypedModelCall(
+            output=outputs[agent],
+            input_tokens=7,
+            output_tokens=3,
+            total_tokens=10,
+            last_response_id=f"typed-{len(calls)}",
+        )
+
+    executor = BoundedDirectorExecutor(
+        Settings(model="test-model"),
+        router_factory=lambda _settings: ROUTER,
+        narrative_factory=lambda _settings: NARRATIVE,
+        screenwriter_factory=lambda _settings: WRITER,
+        performance_factory=lambda _settings: PERFORMANCE,
+        negotiator_factory=lambda _settings: NEGOTIATOR,
+        typed_runner=typed_runner,
+    )
+
+    result = await executor.generate(director_input())
+
+    assert calls == [ROUTER, WRITER, PERFORMANCE]
+    assert result.metrics.input_tokens == 21
+    assert result.metrics.output_tokens == 9
+    assert result.metrics.total_tokens == 30
+    assert result.response_id == "typed-3"
 
 
 def test_orchestration_mode_rejects_unknown_value() -> None:

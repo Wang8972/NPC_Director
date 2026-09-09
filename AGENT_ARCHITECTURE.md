@@ -97,3 +97,27 @@ flowchart TB
 这仍然是 main-sub agents，只是从“Main Agent 自由执行所有控制流”转为“Main Agent 提出动态
 语义需求，Runtime 在可信边界内执行”。它描述的是架构约束，不要求必须使用 LangGraph；
 普通代码、Agents SDK 或 LangGraph 都可以实现。
+
+## 垂直切片 Real 入口
+
+P3/垂直切片的 Real 模式不得把“调用了真实模型”当成“调用了生产编排”。默认路径固定为：
+
+```text
+Unity / Mock Unity
+  → PrototypeRealDirectorSession
+  → Scene Action Planner（只拥有游戏域动作候选）
+  → ResilientDirectorExecutor
+  → BoundedDirectorExecutor
+  → Semantic Router / Specialists / Deterministic Assembler
+  → PrototypeRealGovernance
+  → PrototypePuzzleRules
+  → Unity scene action + completed 后提交
+```
+
+Scene Action Planner 是原型域适配器，只能填写 `PrototypeSceneActionProposal`；它不能生成最终
+台词、演出或状态补丁。最终 `PerformanceDraft` 必须来自受约束生产编排，场景动作仍须通过
+知识治理与确定性谜题规则。运行报告必须记录 `executor_chain`、`specialists_called` 和
+`routing_trace`；P3/P4 阶段门只有在 `production_orchestration=true` 时才接受 Real 证据。
+
+`OpenAIPrototypeTurnGenerator` 和对应 Codex 单调用适配仅为历史报告复现保留，不再作为 P3
+默认路径，也不能单独产生新的 P3/P4 通过证据。

@@ -1,5 +1,5 @@
 from scripts.analyze_pivot_performance import analyze
-from scripts.run_p4_gate import FAULTS, FUNCTIONAL, RECORDED
+from scripts.run_p4_gate import FAULTS, FUNCTIONAL, RECORDED, run_node
 from scripts.run_p4_live_eval import CASES, _distribution
 
 
@@ -41,6 +41,23 @@ def test_p4_live_matrix_is_ten_cases_with_three_trials_at_runtime() -> None:
         "EV-C04",
         "EV-S01",
     ]
+
+
+def test_p4_route_artifacts_require_production_bounded_chain() -> None:
+    legacy = {
+        "status": "pass",
+        "session_report": {"route_success_counts": {"cooperation": 1}},
+    }
+    bounded = {
+        "status": "pass",
+        "session_report": {
+            "route_success_counts": {"cooperation": 1},
+            "production_orchestration": True,
+        },
+    }
+
+    assert run_node("artifact:p3_mock:cooperation", legacy)["status"] == "fail"
+    assert run_node("artifact:p3_mock:cooperation", bounded)["status"] == "pass"
 
 
 def test_latency_distribution_uses_tail_percentile() -> None:

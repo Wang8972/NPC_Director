@@ -1,4 +1,8 @@
-from npc_director.orchestration.bounded_executor import BoundedDirectorExecutor
+from npc_director.orchestration.bounded_executor import (
+    BoundedDirectorExecutor,
+    TypedModelCall,
+    TypedModelRunner,
+)
 from npc_director.orchestration.executor import (
     DelegationHooks,
     DirectorExecutor,
@@ -18,6 +22,8 @@ __all__ = [
     "OpenAIDirectorExecutor",
     "NPCDirectorService",
     "ResilientDirectorExecutor",
+    "TypedModelCall",
+    "TypedModelRunner",
     "SpecialistBudgetExceeded",
     "build_agent_input",
     "build_default_service",

@@ -86,6 +86,11 @@ async def run_server(args: argparse.Namespace) -> None:
         settings=settings,
         reset_on_start=not args.keep_state,
     )
+    startup_report = session.report()
+    if not startup_report["production_orchestration"]:
+        raise RuntimeError(
+            "P3 Real must use ResilientDirectorExecutor -> BoundedDirectorExecutor"
+        )
     connection_lock = asyncio.Lock()
 
     async def handler(websocket: ServerConnection) -> None:
@@ -161,7 +166,8 @@ async def run_server(args: argparse.Namespace) -> None:
             model = settings.model_for("director") or "agents-sdk-default"
             print(
                 f"[P3_SERVER] waiting at ws://{args.host}:{args.port} "
-                f"session={args.session_id} mode=real model={model}"
+                f"session={args.session_id} mode=real model={model} "
+                f"executor_chain={' -> '.join(startup_report['executor_chain'])}"
             )
             await asyncio.Future()
     finally:

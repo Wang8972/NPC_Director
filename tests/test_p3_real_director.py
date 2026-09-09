@@ -2,19 +2,26 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 
 import pytest
 
+import npc_director.orchestration.bounded_executor as bounded_module
 from npc_director.config import Settings
 from npc_director.contracts import (
+    DialogueDraft,
+    PerformanceOutput,
     PerformancePlanMessage,
+    RouteDecision,
     SceneActionEventMessage,
     SceneActionPlanMessage,
     SceneObserveRequestMessage,
     TurnRequestMessage,
     WorldEventMessage,
 )
+from npc_director.orchestration.bounded_executor import BoundedDirectorExecutor
+from npc_director.orchestration.executor import ResilientDirectorExecutor
 from npc_director.prototype.models import (
     FACT_CRATE_CONTAINS_FUSE,
     FACT_FINN_UNAUTHORIZED_MOVE,
@@ -22,11 +29,13 @@ from npc_director.prototype.models import (
     FACT_GENERATOR_MISSING_FUSE,
 )
 from npc_director.prototype.real_director import (
+    OrchestratedPrototypeTurnGenerator,
     PrototypeKnowledgeProjector,
     PrototypeRealDirectorSession,
     PrototypeRealGovernance,
 )
 from npc_director.prototype.real_models import (
+    PrototypeActionDecision,
     PrototypeGenerationResult,
     PrototypeTrustedContext,
 )
@@ -50,6 +59,20 @@ class FakeRealGenerator:
         if isinstance(output, Exception):
             raise output
         return output
+
+
+class FakeRunResult:
+    def __init__(self, output: Any, response_id: str):
+        self.final_output = output
+        self.last_response_id = response_id
+        self.context_wrapper = SimpleNamespace(
+            usage=SimpleNamespace(input_tokens=10, output_tokens=5, total_tokens=15)
+        )
+
+    def final_output_as(self, output_type, raise_if_incorrect_type=False):
+        if raise_if_incorrect_type and not isinstance(self.final_output, output_type):
+            raise TypeError(f"output is not {output_type.__name__}")
+        return self.final_output
 
 
 def generation(
@@ -153,6 +176,98 @@ async def complete_action(
             )
         )
     return responses
+
+
+@pytest.mark.asyncio
+async def test_default_real_session_runs_resilient_bounded_chain_before_scene_rules(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    calls: list[tuple[str, str]] = []
+    outputs = {
+        PrototypeActionDecision: PrototypeActionDecision.model_validate(
+            {
+                "action": {
+                    "actor_id": "mechanic_lia",
+                    "action_type": "inspect_object",
+                    "object_id": "generator",
+                }
+            }
+        ),
+        RouteDecision: RouteDecision.model_validate(
+            {
+                "intent": "other",
+                "objective": "回应玩家并准备检查发电机",
+                "confidence": 1.0,
+            }
+        ),
+        DialogueDraft: DialogueDraft.model_validate(
+            {
+                "dialogue": {"text": "我先检查发电机。"},
+                "coarse_emotion": "neutral",
+                "primary_emotion": "calm",
+            }
+        ),
+        PerformanceOutput: PerformanceOutput.model_validate(
+            {
+                "performance": {
+                    "dialogue": {"text": "不得覆盖 Screenwriter 台词。"},
+                    "emotion": {"coarse": "neutral", "primary": "calm"},
+                    "face_cues": [{"preset": "neutral"}],
+                    "body_cues": [{"action": "point"}],
+                    "confidence": 1.0,
+                }
+            }
+        ),
+    }
+
+    async def fake_run(agent, run_input, **_kwargs):
+        output_type = agent.output_type
+        calls.append((agent.name, run_input))
+        return FakeRunResult(outputs[output_type], f"response-{len(calls)}")
+
+    monkeypatch.setattr(bounded_module.Runner, "run", staticmethod(fake_run))
+    session = PrototypeRealDirectorSession(
+        tmp_path / "production-chain.sqlite3",
+        settings=Settings(model="test-model", max_repair_attempts=0),
+        reset_on_start=True,
+    )
+    try:
+        assert isinstance(session.generator, OrchestratedPrototypeTurnGenerator)
+        assert isinstance(session.generator.executor, ResilientDirectorExecutor)
+        assert isinstance(session.generator.executor.primary, BoundedDirectorExecutor)
+        observe_console(session)
+
+        messages = await session.handle_async(
+            request(session.session_id, 1, "mechanic_lia", "请检查发电机。")
+        )
+
+        assert [name for name, _ in calls] == [
+            "NPC Director Prototype Scene Action Planner",
+            "NPC Semantic Router",
+            "Screenwriter",
+            "Performance Specialist",
+        ]
+        plan = next(item for item in messages if isinstance(item, SceneActionPlanMessage))
+        directive = plan.payload.pre_commit_directive
+        assert directive.dialogue.text == "我先检查发电机。"
+        assert [item.value for item in directive.runtime_meta.specialists_called] == [
+            "screenwriter",
+            "performance",
+        ]
+        report = session.report()
+        assert report["production_orchestration"] is True
+        assert report["executor_chain"] == [
+            "ResilientDirectorExecutor",
+            "BoundedDirectorExecutor",
+        ]
+        assert report["model_call_count"] == 4
+        assert report["turn_audit"][0]["routing_trace"]["final_intent"] == "other"
+
+        await complete_action(session, messages)
+        assert session.repository.get_world(session.session_id).objective_state == "find_fuse"
+    finally:
+        session.close()
 
 
 def test_trusted_projection_isolates_npc_private_facts(tmp_path: Path) -> None:

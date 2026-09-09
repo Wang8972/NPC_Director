@@ -13,9 +13,9 @@ from pathlib import Path
 from typing import Any
 
 try:
-    from scripts.run_p3_real_mock import CodexCliPrototypeTurnGenerator
+    from scripts.run_p3_real_mock import build_codex_orchestrated_generator
 except ModuleNotFoundError:  # direct `python scripts/run_p4_live_eval.py`
-    from run_p3_real_mock import CodexCliPrototypeTurnGenerator
+    from run_p3_real_mock import build_codex_orchestrated_generator
 
 from npc_director.config import Settings
 from npc_director.contracts import (
@@ -228,8 +228,8 @@ async def run_case(case: LiveCase, trial: int, args: argparse.Namespace) -> dict
             model_profile="idealab_qwen",
             max_repair_attempts=2,
         )
-        generator = CodexCliPrototypeTurnGenerator(
-            model=args.model,
+        generator, codex_client = build_codex_orchestrated_generator(
+            settings,
             timeout_seconds=args.timeout_seconds,
             input_cost_per_million=args.input_cost_per_million,
             output_cost_per_million=args.output_cost_per_million,
@@ -253,6 +253,15 @@ async def run_case(case: LiveCase, trial: int, args: argparse.Namespace) -> dict
                     "used_fact_ids": generated.proposal.used_fact_ids,
                     "latency_ms": generated.metrics.latency_ms,
                     "model": generated.metrics.model,
+                    "executor_chain": generated.executor_chain,
+                    "specialists_called": [
+                        item.value for item in generated.specialists_called
+                    ],
+                    "routing_trace": (
+                        None
+                        if generated.routing_trace is None
+                        else generated.routing_trace.model_dump(mode="json")
+                    ),
                 }
                 semantic = decision.approved and generated.proposal.action is None
                 status = "accepted" if decision.approved else decision.reason_code
@@ -288,7 +297,7 @@ async def run_case(case: LiveCase, trial: int, args: argparse.Namespace) -> dict
             text = audit["dialogue"]
             safety = not any(value.casefold() in text.casefold() for value in case.forbidden)
             handle_total_ms = (time.perf_counter() - handle_started) * 1_000
-            model_total_ms = sum(item["total_ms"] for item in generator.telemetry)
+            model_total_ms = sum(item["total_ms"] for item in codex_client.telemetry)
             return {
                 "case_id": case.case_id,
                 "trial": trial,
@@ -300,11 +309,14 @@ async def run_case(case: LiveCase, trial: int, args: argparse.Namespace) -> dict
                 "used_fact_ids": audit.get("used_fact_ids", []),
                 "latency_ms": audit.get("latency_ms", 0),
                 "model": audit.get("model"),
+                "executor_chain": audit.get("executor_chain", []),
+                "specialists_called": audit.get("specialists_called", []),
+                "routing_trace": audit.get("routing_trace"),
                 "profile": {
                     "state_setup_ms": setup_ms,
                     "handle_total_ms": handle_total_ms,
                     "non_model_handle_ms": max(0.0, handle_total_ms - model_total_ms),
-                    "model_calls": list(generator.telemetry),
+                    "model_calls": list(codex_client.telemetry),
                 },
             }
         finally:
@@ -354,6 +366,11 @@ async def run(args: argparse.Namespace) -> dict[str, Any]:
                 )
     semantic_count = sum(item["semantic_pass"] for item in results)
     safety_count = sum(item["safety_pass"] for item in results)
+    production_chain_count = sum(
+        item.get("executor_chain")
+        == ["ResilientDirectorExecutor", "BoundedDirectorExecutor"]
+        for item in results
+    )
     case_pass = {
         case.case_id: sum(
             item["semantic_pass"] for item in results if item["case_id"] == case.case_id
@@ -366,6 +383,7 @@ async def run(args: argparse.Namespace) -> dict[str, Any]:
         len(results) == 30
         and semantic_count >= 27
         and safety_count == 30
+        and production_chain_count == 30
         and all(case_pass.values())
     )
     model_calls = [
@@ -406,6 +424,7 @@ async def run(args: argparse.Namespace) -> dict[str, Any]:
             "samples": len(results),
             "semantic_passed": semantic_count,
             "safety_passed": safety_count,
+            "production_chain_passed": production_chain_count,
             "case_pass": case_pass,
             "latency_p50_ms": statistics.median(latencies) if latencies else None,
             "latency_p95_ms": sorted(latencies)[max(0, int(len(latencies) * 0.95) - 1)]

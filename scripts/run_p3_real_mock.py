@@ -12,6 +12,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from pydantic import BaseModel
+
 from npc_director.config import Settings
 from npc_director.contracts import (
     PerformanceEventMessage,
@@ -22,23 +24,39 @@ from npc_director.contracts import (
     SceneObserveRequestMessage,
     TurnRequestMessage,
 )
+from npc_director.orchestration.bounded_executor import (
+    BoundedDirectorExecutor,
+    TypedModelCall,
+)
+from npc_director.orchestration.executor import ResilientDirectorExecutor
 from npc_director.prototype.models import (
     FACT_GENERATOR_MISSING_FUSE,
     FACT_MANIFEST_FINN_MOVED_C12,
 )
 from npc_director.prototype.real_director import (
+    PROTOTYPE_ACTION_INSTRUCTIONS,
     PROTOTYPE_REAL_INSTRUCTIONS,
+    OrchestratedPrototypeTurnGenerator,
     PrototypeRealDirectorSession,
+    ResilientPrototypeActionGenerator,
 )
 from npc_director.prototype.real_models import (
+    PrototypeActionDecision,
+    PrototypeActionGenerationResult,
     PrototypeGenerationResult,
     PrototypeRealTurnProposal,
     PrototypeTrustedContext,
 )
 
 
-class CodexCliPrototypeTurnGenerator:
-    """Use the current Codex provider/auth without copying its credential."""
+@dataclass(frozen=True, slots=True)
+class CodexStructuredResult:
+    output: BaseModel
+    telemetry: dict[str, Any]
+
+
+class CodexCliStructuredClient:
+    """Run typed model nodes through the current Codex provider/auth."""
 
     def __init__(
         self,
@@ -58,37 +76,32 @@ class CodexCliPrototypeTurnGenerator:
 
     async def generate(
         self,
-        context: PrototypeTrustedContext,
         *,
-        repair_feedback: str | None = None,
-    ) -> PrototypeGenerationResult:
+        instructions: str,
+        run_input: str,
+        output_type: type[BaseModel],
+        node_name: str,
+    ) -> CodexStructuredResult:
         sections = [
-            PROTOTYPE_REAL_INSTRUCTIONS,
+            instructions,
             "这是纯 JSON 结构化生成任务，不要分析代码，不要调用工具。",
-            "严格使用 JSON Schema 中的字段名；禁止输出 npc_id、reply、actions 等替代字段。",
+            "严格使用 JSON Schema 中的字段名，只输出符合 schema 的 JSON。",
             "以下是必须遵守的完整 JSON Schema：",
             json.dumps(
-                PrototypeRealTurnProposal.model_json_schema(),
+                output_type.model_json_schema(),
                 ensure_ascii=False,
                 separators=(",", ":"),
             ),
-            "以下 JSON 是本回合可信上下文。只输出符合上述 schema 的 JSON：",
-            context.model_dump_json(),
+            "以下是本节点输入：",
+            run_input,
         ]
-        if repair_feedback:
-            sections.extend(
-                [
-                    "上一候选被确定性治理拒绝，只修正以下问题：",
-                    repair_feedback,
-                ]
-            )
         started = time.perf_counter()
         with tempfile.TemporaryDirectory(prefix="npc-p3-codex-") as temp_dir:
             temp_root = Path(temp_dir)
-            schema_path = temp_root / "proposal.schema.json"
-            output_path = temp_root / "proposal.json"
+            schema_path = temp_root / "output.schema.json"
+            output_path = temp_root / "output.json"
             schema_path.write_text(
-                json.dumps(PrototypeRealTurnProposal.model_json_schema(), ensure_ascii=False),
+                json.dumps(output_type.model_json_schema(), ensure_ascii=False),
                 encoding="utf-8",
             )
             process = await asyncio.create_subprocess_exec(
@@ -137,15 +150,17 @@ class CodexCliPrototypeTurnGenerator:
             except TimeoutError:
                 process.kill()
                 await process.wait()
-                raise TimeoutError("codex CLI model call timed out") from None
+                raise TimeoutError(f"codex CLI {node_name} call timed out") from None
             output = "\n".join(output_lines)
             if process.returncode != 0:
                 tail = "\n".join(output.splitlines()[-12:])
-                raise RuntimeError(f"codex CLI failed ({process.returncode}): {tail}")
+                raise RuntimeError(
+                    f"codex CLI {node_name} failed ({process.returncode}): {tail}"
+                )
             if not output_path.exists():
-                raise RuntimeError("codex CLI did not write the structured output file")
+                raise RuntimeError(f"codex CLI {node_name} did not write structured output")
             parse_started = time.perf_counter()
-            proposal = PrototypeRealTurnProposal.model_validate_json(
+            parsed = output_type.model_validate_json(
                 _extract_json_object(output_path.read_text(encoding="utf-8"))
             )
             parsed_at = time.perf_counter()
@@ -176,22 +191,156 @@ class CodexCliPrototypeTurnGenerator:
                 usage,
                 estimated_cost,
             )
+            telemetry["node"] = node_name
             self.telemetry.append(telemetry)
-        return PrototypeGenerationResult.model_validate(
-            {
-                "proposal": proposal.model_dump(mode="json"),
-                "metrics": {
-                    "model": self.model,
-                    "latency_ms": (time.perf_counter() - started) * 1_000,
-                    "input_tokens": input_tokens,
-                    "output_tokens": output_tokens,
-                    "total_tokens": input_tokens + output_tokens,
-                    "estimated_cost_usd": estimated_cost,
-                },
-                "trace_id": None,
-                "response_id": None,
-            }
+            return CodexStructuredResult(output=parsed, telemetry=telemetry)
+
+
+class CodexCliBoundedRunner:
+    def __init__(self, client: CodexCliStructuredClient) -> None:
+        self.client = client
+
+    async def __call__(
+        self,
+        agent: object,
+        run_input: str,
+        output_type: type[BaseModel],
+    ) -> TypedModelCall:
+        instructions = getattr(agent, "instructions", None)
+        if not isinstance(instructions, str):
+            raise TypeError("Codex CLI bounded runner requires static string instructions")
+        call = await self.client.generate(
+            instructions=instructions,
+            run_input=run_input,
+            output_type=output_type,
+            node_name=str(getattr(agent, "name", output_type.__name__)),
         )
+        usage = call.telemetry["usage"]
+        return TypedModelCall(
+            output=call.output,
+            input_tokens=int(usage["input_tokens"]),
+            output_tokens=int(usage["output_tokens"]),
+            total_tokens=int(usage["input_tokens"]) + int(usage["output_tokens"]),
+        )
+
+
+class CodexCliPrototypeActionGenerator:
+    def __init__(self, client: CodexCliStructuredClient) -> None:
+        self.client = client
+
+    async def generate(
+        self,
+        context: PrototypeTrustedContext,
+        *,
+        repair_feedback: str | None = None,
+    ) -> PrototypeActionGenerationResult:
+        sections = [
+            "以下 JSON 是本回合可信上下文：",
+            context.model_dump_json(),
+        ]
+        if repair_feedback:
+            sections.extend(
+                [
+                    "上一版组合候选被治理拒绝，只修正动作决策中的相关问题：",
+                    repair_feedback,
+                ]
+            )
+        call = await self.client.generate(
+            instructions=PROTOTYPE_ACTION_INSTRUCTIONS,
+            run_input="\n".join(sections),
+            output_type=PrototypeActionDecision,
+            node_name="Prototype Scene Action Planner",
+        )
+        usage = call.telemetry["usage"]
+        return PrototypeActionGenerationResult(
+            decision=PrototypeActionDecision.model_validate(call.output),
+            metrics={
+                "model": self.client.model,
+                "latency_ms": call.telemetry["total_ms"],
+                "input_tokens": int(usage["input_tokens"]),
+                "output_tokens": int(usage["output_tokens"]),
+                "total_tokens": int(usage["input_tokens"]) + int(usage["output_tokens"]),
+                "estimated_cost_usd": call.telemetry["estimated_cost_usd"],
+            },
+        )
+
+
+class CodexCliPrototypeTurnGenerator:
+    """Legacy one-call P3 generator retained for reproducing historical reports."""
+
+    def __init__(
+        self,
+        *,
+        model: str,
+        timeout_seconds: float,
+        input_cost_per_million: float | None = None,
+        output_cost_per_million: float | None = None,
+    ) -> None:
+        self.client = CodexCliStructuredClient(
+            model=model,
+            timeout_seconds=timeout_seconds,
+            input_cost_per_million=input_cost_per_million,
+            output_cost_per_million=output_cost_per_million,
+        )
+        self.model = model
+        self.telemetry = self.client.telemetry
+
+    async def generate(
+        self,
+        context: PrototypeTrustedContext,
+        *,
+        repair_feedback: str | None = None,
+    ) -> PrototypeGenerationResult:
+        sections = ["以下 JSON 是本回合可信上下文：", context.model_dump_json()]
+        if repair_feedback:
+            sections.extend(["上一候选被确定性治理拒绝，只修正以下问题：", repair_feedback])
+        call = await self.client.generate(
+            instructions=PROTOTYPE_REAL_INSTRUCTIONS,
+            run_input="\n".join(sections),
+            output_type=PrototypeRealTurnProposal,
+            node_name="Legacy Prototype Turn",
+        )
+        usage = call.telemetry["usage"]
+        return PrototypeGenerationResult(
+            proposal=PrototypeRealTurnProposal.model_validate(call.output),
+            metrics={
+                "model": self.model,
+                "latency_ms": call.telemetry["total_ms"],
+                "input_tokens": int(usage["input_tokens"]),
+                "output_tokens": int(usage["output_tokens"]),
+                "total_tokens": int(usage["input_tokens"]) + int(usage["output_tokens"]),
+                "estimated_cost_usd": call.telemetry["estimated_cost_usd"],
+            },
+        )
+
+
+def build_codex_orchestrated_generator(
+    settings: Settings,
+    *,
+    timeout_seconds: float,
+    input_cost_per_million: float | None = None,
+    output_cost_per_million: float | None = None,
+) -> tuple[OrchestratedPrototypeTurnGenerator, CodexCliStructuredClient]:
+    client = CodexCliStructuredClient(
+        model=settings.model_for("director") or "qwen3.8-flash",
+        timeout_seconds=timeout_seconds,
+        input_cost_per_million=input_cost_per_million,
+        output_cost_per_million=output_cost_per_million,
+    )
+    bounded = BoundedDirectorExecutor(
+        settings,
+        typed_runner=CodexCliBoundedRunner(client),
+    )
+    generator = OrchestratedPrototypeTurnGenerator(
+        settings,
+        executor=ResilientDirectorExecutor(settings, primary=bounded),
+        action_generator=ResilientPrototypeActionGenerator(
+            settings,
+            primary=CodexCliPrototypeActionGenerator(client),
+        ),
+    )
+    generator.transport = "codex-cli"
+    return generator, client
 
 
 def _build_codex_telemetry(
@@ -265,13 +414,46 @@ class P3MockUnityRunner:
             and report["route_success_counts"]["cooperation"] >= 1
             and report["route_success_counts"]["procedure"] >= 1
             and report["illegal_scene_plan_count"] == 0
+            and report["production_orchestration"]
         )
         return {
             "status": "pass" if passed else "fail",
             "mode": "real-model-mock-unity",
-            "transport": "codex-cli" if isinstance(
-                self.session.generator, CodexCliPrototypeTurnGenerator
-            ) else "agents-sdk",
+            "transport": getattr(self.session.generator, "transport", "agents-sdk"),
+            "model": self.session.settings.model_for("director"),
+            "step_attempts": self.step_attempts,
+            "steps": self.step_records,
+            "session_report": report,
+            "recorded_at": datetime.now(UTC).isoformat(),
+        }
+
+    async def run_smoke(self) -> dict[str, Any]:
+        """Exercise one state-changing turn through the real bounded chain."""
+        await self._observe("gate_console", "smoke:observe_console")
+        await self._action(
+            "smoke:inspect_generator",
+            "mechanic_lia",
+            [
+                "控制台显示 E-17。请检查 generator 的实际故障并开始检查动作。",
+                "请你亲自检查发电机 generator，确认 E-17 对应的故障。",
+            ],
+            ExpectedAction("inspect_object", "mechanic_lia", object_id="generator"),
+        )
+        report = self.session.report()
+        passed = (
+            report["current_objective_state"] == "find_fuse"
+            and report["production_orchestration"]
+            and report["illegal_scene_plan_count"] == 0
+            and any(
+                audit.get("executor_chain")
+                == ["ResilientDirectorExecutor", "BoundedDirectorExecutor"]
+                for audit in report["turn_audit"]
+            )
+        )
+        return {
+            "status": "pass" if passed else "fail",
+            "mode": "real-model-mock-unity-bounded-smoke",
+            "transport": getattr(self.session.generator, "transport", "agents-sdk"),
             "model": self.session.settings.model_for("director"),
             "step_attempts": self.step_attempts,
             "steps": self.step_records,
@@ -643,6 +825,11 @@ def parse_args() -> argparse.Namespace:
         default="codex-cli",
     )
     parser.add_argument("--session-id", default="p3-local-qwen38")
+    parser.add_argument(
+        "--smoke-only",
+        action="store_true",
+        help="Run one state-changing turn through the production bounded chain.",
+    )
     parser.add_argument("--step-attempts", type=int, default=5)
     parser.add_argument("--model-retry-attempts", type=int, default=5)
     parser.add_argument("--retry-delay-seconds", type=float, default=8.0)
@@ -672,18 +859,18 @@ async def run(args: argparse.Namespace) -> dict[str, Any]:
     )
     settings.validate()
     args.database.parent.mkdir(parents=True, exist_ok=True)
+    generator = None
+    codex_client = None
+    if args.transport == "codex-cli":
+        generator, codex_client = build_codex_orchestrated_generator(
+            settings,
+            timeout_seconds=args.timeout_seconds,
+        )
     session = PrototypeRealDirectorSession(
         args.database,
         args.session_id,
         settings=settings,
-        generator=(
-            CodexCliPrototypeTurnGenerator(
-                model=args.model,
-                timeout_seconds=args.timeout_seconds,
-            )
-            if args.transport == "codex-cli"
-            else None
-        ),
+        generator=generator,
         reset_on_start=True,
     )
     try:
@@ -694,9 +881,9 @@ async def run(args: argparse.Namespace) -> dict[str, Any]:
             inter_turn_delay_seconds=args.inter_turn_delay_seconds,
         )
         try:
-            return await runner.run()
+            report = await (runner.run_smoke() if args.smoke_only else runner.run())
         except Exception as error:
-            return {
+            report = {
                 "status": "fail",
                 "mode": "real-model-mock-unity",
                 "model": args.model,
@@ -706,6 +893,9 @@ async def run(args: argparse.Namespace) -> dict[str, Any]:
                 "session_report": session.report(),
                 "recorded_at": datetime.now(UTC).isoformat(),
             }
+        if codex_client is not None:
+            report["model_calls"] = list(codex_client.telemetry)
+        return report
     finally:
         session.close()
 

@@ -4,7 +4,12 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
-from npc_director.contracts import GenerationMetrics, PerformanceDraft
+from npc_director.contracts import (
+    GenerationMetrics,
+    PerformanceDraft,
+    RoutingTrace,
+    SpecialistName,
+)
 
 
 class PrototypeRealModel(BaseModel):
@@ -84,12 +89,31 @@ class PrototypeRealTurnProposal(PrototypeRealModel):
         return normalized
 
 
+class PrototypeActionDecision(PrototypeRealModel):
+    """Game-domain action proposed before the production dialogue pipeline runs."""
+
+    action: PrototypeSceneActionProposal | None = None
+
+
+class PrototypeActionGenerationResult(PrototypeRealModel):
+    decision: PrototypeActionDecision
+    metrics: GenerationMetrics
+    trace_id: str | None = None
+    response_id: str | None = None
+    fallback_reason: str | None = None
+
+
 class PrototypeGenerationResult(PrototypeRealModel):
     proposal: PrototypeRealTurnProposal
     metrics: GenerationMetrics
     trace_id: str | None = None
     response_id: str | None = None
     fallback_reason: str | None = None
+    model_call_count: int = Field(default=1, ge=0)
+    executor_chain: list[str] = Field(default_factory=list, max_length=8)
+    specialists_called: list[SpecialistName] = Field(default_factory=list, max_length=4)
+    handoffs: list[str] = Field(default_factory=list, max_length=2)
+    routing_trace: RoutingTrace | None = None
 
 
 class PrototypeGovernanceResult(PrototypeRealModel):

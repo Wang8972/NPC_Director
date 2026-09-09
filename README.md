@@ -708,6 +708,20 @@ make eval-live
 make eval-live-main-sub
 ```
 
+验证垂直切片 Real 入口本身也经过生产受约束编排，可运行一个会提交场景状态的最小冒烟：
+
+```bash
+python -m scripts.run_p3_real_mock \
+  --transport codex-cli \
+  --model qwen3.8-flash \
+  --smoke-only \
+  --output artifacts/prototype-p3/p3-bounded-smoke-report.json
+```
+
+通过报告必须同时满足 `status=pass`、`production_orchestration=true`，并记录
+`executor_chain=["ResilientDirectorExecutor", "BoundedDirectorExecutor"]`。单独调用旧的
+`OpenAIPrototypeTurnGenerator` 不构成该链路的验收证据。
+
 Live eval 使用 v2 报告格式，保留每例原始 candidate 与 `routing_trace`。运行期间每完成一例
 都会原子更新同名 `_partial.json`；只有全部完成后才提升为最终报告。若网关返回
 `Throttling.AllocationQuota`，评测会立即停止、保留 partial，并以退出码 75 返回，避免重试

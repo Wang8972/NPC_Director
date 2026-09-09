@@ -4,7 +4,7 @@ import asyncio
 import dataclasses
 import time
 from collections import OrderedDict
-from collections.abc import Callable, Sequence
+from collections.abc import Awaitable, Callable, Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from hashlib import sha256
@@ -52,11 +52,26 @@ from npc_director.orchestration.turn_policy import (
 )
 from npc_director.rag import LoreRetriever
 
-__all__ = ["BoundedDirectorExecutor"]
+__all__ = ["BoundedDirectorExecutor", "TypedModelCall", "TypedModelRunner"]
 
 
 OutputT = TypeVar("OutputT", bound=BaseModel)
 AgentFactory = Callable[[Settings], object]
+TypedModelRunner = Callable[
+    [object, str, type[BaseModel]],
+    Awaitable["TypedModelCall"],
+]
+
+
+@dataclass(frozen=True, slots=True)
+class TypedModelCall:
+    """Provider-neutral result used by bounded orchestration test transports."""
+
+    output: BaseModel
+    input_tokens: int = 0
+    output_tokens: int = 0
+    total_tokens: int = 0
+    last_response_id: str | None = None
 
 
 @dataclass(slots=True)
@@ -70,6 +85,11 @@ class _UsageTotals:
         self.input_tokens += usage.input_tokens
         self.output_tokens += usage.output_tokens
         self.total_tokens += usage.total_tokens
+
+    def add_typed(self, result: TypedModelCall) -> None:
+        self.input_tokens += result.input_tokens
+        self.output_tokens += result.output_tokens
+        self.total_tokens += result.total_tokens
 
 
 @dataclass(slots=True)
@@ -106,6 +126,7 @@ class BoundedDirectorExecutor:
         screenwriter_factory: AgentFactory = build_screenwriter_agent,
         performance_factory: AgentFactory = build_performance_specialist_agent,
         negotiator_factory: AgentFactory = build_quest_negotiator_agent,
+        typed_runner: TypedModelRunner | None = None,
     ) -> None:
         self.settings = settings
         self._lore_retriever = lore_retriever
@@ -114,6 +135,7 @@ class BoundedDirectorExecutor:
         self._screenwriter_factory = screenwriter_factory
         self._performance_factory = performance_factory
         self._negotiator_factory = negotiator_factory
+        self._typed_runner = typed_runner
         self._semaphore = asyncio.Semaphore(settings.max_concurrent_model_calls)
         self._prefix_cache: OrderedDict[str, _CachedPrefix] = OrderedDict()
         self._prefix_cache_limit = 256
@@ -481,6 +503,12 @@ class BoundedDirectorExecutor:
         usage: _UsageTotals,
     ) -> tuple[OutputT, object]:
         async with self._semaphore:
+            if self._typed_runner is not None:
+                typed_result = await self._typed_runner(agent, run_input, output_type)
+                if not isinstance(typed_result.output, output_type):
+                    raise TypeError(f"output is not {output_type.__name__}")
+                usage.add_typed(typed_result)
+                return typed_result.output, typed_result
             result = await Runner.run(
                 agent,  # type: ignore[arg-type]
                 run_input,

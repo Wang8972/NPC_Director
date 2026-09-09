@@ -18,13 +18,18 @@ from npc_director.prototype.orchestrator import (
     RecordingPrototypeAdapter,
 )
 from npc_director.prototype.real_director import (
+    OpenAIPrototypeActionGenerator,
     OpenAIPrototypeTurnGenerator,
+    OrchestratedPrototypeTurnGenerator,
     PrototypeKnowledgeProjector,
     PrototypeRealDirectorSession,
     PrototypeRealGovernance,
+    ResilientPrototypeActionGenerator,
     ResilientPrototypeTurnGenerator,
 )
 from npc_director.prototype.real_models import (
+    PrototypeActionDecision,
+    PrototypeActionGenerationResult,
     PrototypeRealTurnProposal,
     PrototypeTrustedContext,
 )
@@ -58,7 +63,12 @@ __all__ = [
     "RecordingPrototypeAdapter",
     "RejectedAction",
     "SceneActionCandidate",
+    "OpenAIPrototypeActionGenerator",
     "OpenAIPrototypeTurnGenerator",
+    "OrchestratedPrototypeTurnGenerator",
+    "PrototypeActionDecision",
+    "PrototypeActionGenerationResult",
+    "ResilientPrototypeActionGenerator",
     "ResilientPrototypeTurnGenerator",
     "PrototypeTrustedContext",
     "normalized_success_projection",

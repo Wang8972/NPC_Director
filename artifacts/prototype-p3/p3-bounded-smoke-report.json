@@ -1,0 +1,278 @@
+{
+  "mode": "real-model-mock-unity-bounded-smoke",
+  "model": "qwen3.8-flash",
+  "model_calls": [
+    {
+      "estimated_cost_usd": null,
+      "node": "Prototype Scene Action Planner",
+      "stages_ms": {
+        "cli_startup": 1268.299833056517,
+        "hooks_and_turn_setup": 5.924624972976744,
+        "json_parse_validate": 0.14091702178120613,
+        "model_answer_after_reasoning": 179.00987504981458,
+        "model_reasoning_to_item": 4116.588791948743,
+        "post_turn_process_exit": 173.380707972683,
+        "turn_finalize": 636.4862499758601
+      },
+      "total_ms": 6379.830999998376,
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 14336,
+        "input_tokens": 16161,
+        "output_tokens": 72,
+        "reasoning_output_tokens": 41
+      }
+    },
+    {
+      "estimated_cost_usd": null,
+      "node": "NPC Semantic Router",
+      "stages_ms": {
+        "cli_startup": 1037.1280839899555,
+        "hooks_and_turn_setup": 4.030082956887782,
+        "json_parse_validate": 0.35091699101030827,
+        "model_answer_after_reasoning": 3930.5167499696836,
+        "model_reasoning_to_item": 18517.809792072512,
+        "post_turn_process_exit": 213.4057079674676,
+        "turn_finalize": 711.9343329686671
+      },
+      "total_ms": 24415.175666916184,
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 14336,
+        "input_tokens": 16576,
+        "output_tokens": 1058,
+        "reasoning_output_tokens": 818
+      }
+    },
+    {
+      "estimated_cost_usd": null,
+      "node": "Narrative Planner",
+      "stages_ms": {
+        "cli_startup": 957.5190420728177,
+        "hooks_and_turn_setup": 3.675999934785068,
+        "json_parse_validate": 0.1609589671716094,
+        "model_answer_after_reasoning": 9466.08466701582,
+        "model_reasoning_to_item": 4880.391207989305,
+        "post_turn_process_exit": 123.99533297866583,
+        "turn_finalize": 594.1243750276044
+      },
+      "total_ms": 16025.95158398617,
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 14336,
+        "input_tokens": 15870,
+        "output_tokens": 675,
+        "reasoning_output_tokens": 99
+      }
+    },
+    {
+      "estimated_cost_usd": null,
+      "node": "Screenwriter",
+      "stages_ms": {
+        "cli_startup": 1057.6397499535233,
+        "hooks_and_turn_setup": 4.340999992564321,
+        "json_parse_validate": 0.356250093318522,
+        "model_answer_after_reasoning": 6156.099791987799,
+        "model_reasoning_to_item": 16223.653041059151,
+        "post_turn_process_exit": 208.15858291462064,
+        "turn_finalize": 732.7205420006067
+      },
+      "total_ms": 24382.968958001584,
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 14336,
+        "input_tokens": 16026,
+        "output_tokens": 937,
+        "reasoning_output_tokens": 613
+      }
+    },
+    {
+      "estimated_cost_usd": null,
+      "node": "Performance Specialist",
+      "stages_ms": {
+        "cli_startup": 1015.3090840904042,
+        "hooks_and_turn_setup": 3.870749962516129,
+        "json_parse_validate": 0.647959066554904,
+        "model_answer_after_reasoning": 10726.540541974828,
+        "model_reasoning_to_item": 34889.963416033424,
+        "post_turn_process_exit": 462.400707998313,
+        "turn_finalize": 664.4548749318346
+      },
+      "total_ms": 47763.187334057875,
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 14336,
+        "input_tokens": 16699,
+        "output_tokens": 3044,
+        "reasoning_output_tokens": 2082
+      }
+    }
+  ],
+  "recorded_at": "2026-09-09T03:21:09.255598+00:00",
+  "session_report": {
+    "action_type_counts": {
+      "inspect_object": 2
+    },
+    "current_objective_state": "find_fuse",
+    "current_semantic_state_hash": "beb7a2a6eb631dda5f21e3fb150b2b5f2147b9c05a78c4225c9650845ae545a7",
+    "executor_chain": [
+      "ResilientDirectorExecutor",
+      "BoundedDirectorExecutor"
+    ],
+    "illegal_scene_plan_count": 0,
+    "initial_semantic_state_hash": "f8bcd6d3d989a8d0f0dbf1a1bf54dea9ba06a1af1da7d76e54853450ccdde86a",
+    "interaction_types_seen": [
+      "npc_scene",
+      "player_npc",
+      "player_scene"
+    ],
+    "mode": "real",
+    "model_call_count": 5,
+    "model_error_fallback_count": 0,
+    "models": [
+      "qwen3.8-flash"
+    ],
+    "no_api_key_required": false,
+    "npc_response_counts": {
+      "guard_captain_maren": 0,
+      "mechanic_lia": 1,
+      "porter_finn": 0
+    },
+    "orchestration_prompt_version": "prototype-p3-bounded-v1",
+    "performance_plan_count": 0,
+    "production_orchestration": true,
+    "prompt_injection_block_count": 0,
+    "prompt_version": "prototype-p3-real-v1",
+    "rejection_counts": {},
+    "reset_count": 0,
+    "route_hashes_stable": {
+      "cooperation": false,
+      "procedure": false
+    },
+    "route_runs_required": 1,
+    "route_semantic_hashes": {
+      "cooperation": [],
+      "procedure": []
+    },
+    "route_success_counts": {
+      "cooperation": 0,
+      "procedure": 0
+    },
+    "scene_action_plan_count": 1,
+    "scripted_route_runs_required": 10,
+    "session_id": "p3-local-qwen38",
+    "stage": "P3 Real NPC Director",
+    "status": "in_progress",
+    "total_latency_ms": 119004.8970830394,
+    "total_tokens": 87118,
+    "turn_audit": [
+      {
+        "action": {
+          "action_type": "inspect_object",
+          "actor_id": "mechanic_lia",
+          "fact_id": null,
+          "gameplay_intent": null,
+          "item_id": null,
+          "object_id": "generator",
+          "operation": null,
+          "target_id": null,
+          "target_npc_id": null
+        },
+        "dialogue": "E-17，收到。控制台能告诉我的只有这些：发电机已经停机，保险丝槽是空的。停机原因我不会靠猜，我现在就去查发电机本体，得亲手看过才有结论——注意，是「现在去查」，不是「已经查完」。\n还有两件事先讲清楚，免得白跑：第一，恢复供电得有备用保险丝，而这个东西现在在什么位置我不知道，我也不会给你编一个地方；第二，控制柜的最终重启不归我，我没有货箱也没有重启授权，那一票在守卫队长玛伦手上，得由你去跟她谈，我不会自己把人叫过来。\n所以顺序很清楚：先弄明白备用保险丝的下落，再拿到玛伦那边的授权，最后才轮到重启。你先决定从哪头查。",
+        "executor_chain": [
+          "ResilientDirectorExecutor",
+          "BoundedDirectorExecutor"
+        ],
+        "fallback_reason": null,
+        "grounded_claims": [],
+        "handoffs": [],
+        "latency_ms": 119004.8970830394,
+        "model": "qwen3.8-flash",
+        "model_call_count": 5,
+        "npc_id": "mechanic_lia",
+        "player_input": "控制台显示 E-17。请检查 generator 的实际故障并开始检查动作。",
+        "reason": null,
+        "routing_trace": {
+          "advisory_only": false,
+          "clarification_fallback": false,
+          "decision": {
+            "confidence": 0.82,
+            "constraints": [
+              "只使用角色与场景已知事实，缺少事实或前置动作时明确说明",
+              "不得猜测备用保险丝位置或创造新物品事实",
+              "不得声称拥有控制柜最终重启授权，也不得自动召集玛伦或其他 NPC",
+              "候选动作 inspect_object(generator) 只能表达即将执行，不得宣称已完成",
+              "台词与表演须落在允许的 action/face 集合内"
+            ],
+            "intent": "quest_acceptance",
+            "lore_queries": [],
+            "needs_lore": false,
+            "needs_narrative": true,
+            "negotiation": false,
+            "objective": "接受当前调查故障目标，推进对发电机真实故障的检查，并说明缺失的备用保险丝与重启授权条件",
+            "requires_replan": false,
+            "response_obligations": [
+              "承认识别到的已知故障线索：发电机停机且保险丝槽为空",
+              "说明检查尚未完成，只表示现在着手检查发电机",
+              "指出恢复供电仍需备用保险丝，而该物品位置目前未知",
+              "说明最终重启必须由守卫队长玛伦授权执行，莉娅无此权限",
+              "提示玩家可通过转述其掌握的事实或去获取授权与保险丝来推进"
+            ],
+            "uncertainty_kind": "none"
+          },
+          "fallback_reason": null,
+          "final_intent": "quest_acceptance",
+          "uncertainty_kind": "none",
+          "use_lore": false,
+          "use_narrative": true,
+          "use_negotiator": false
+        },
+        "specialists_called": [
+          "narrative_planner",
+          "screenwriter",
+          "performance"
+        ],
+        "status": "accepted",
+        "total_tokens": 87118,
+        "turn_id": "p3-local-qwen38:mock:2",
+        "used_fact_ids": []
+      }
+    ],
+    "unsafe_output_block_count": 0
+  },
+  "status": "pass",
+  "step_attempts": 3,
+  "steps": [
+    {
+      "attempt": 1,
+      "detail": {
+        "object_id": "gate_console"
+      },
+      "status": "pass",
+      "step": "smoke:observe_console"
+    },
+    {
+      "attempt": 1,
+      "detail": {
+        "action_id": "p3-local-qwen38:mock:2:a1",
+        "action_type": "inspect_object",
+        "actor_id": "mechanic_lia",
+        "basis_npc_versions": {
+          "mechanic_lia": 0
+        },
+        "basis_world_version": 1,
+        "item_id": null,
+        "object_id": "generator",
+        "operation": null,
+        "schema_version": "1.0",
+        "session_id": "p3-local-qwen38",
+        "target_id": null,
+        "target_npc_id": null,
+        "turn_id": "p3-local-qwen38:mock:2"
+      },
+      "status": "pass",
+      "step": "smoke:inspect_generator"
+    }
+  ],
+  "transport": "codex-cli"
+}
