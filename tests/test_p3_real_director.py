@@ -302,6 +302,14 @@ def test_trusted_projection_isolates_npc_private_facts(tmp_path: Path) -> None:
         assert FACT_CRATE_CONTAINS_FUSE not in maren_facts | lia_facts
         assert contexts["guard_captain_maren"].visible_item_locations["spare_fuse"] == "unknown"
         assert contexts["porter_finn"].visible_item_locations["spare_fuse"] == "cargo_crate_c12"
+        assert all(
+            context.object_states["generator"] == "not_inspected"
+            for context in contexts.values()
+        )
+        assert all(
+            context.object_states["cargo_crate_c12"] == "sealed"
+            for context in contexts.values()
+        )
     finally:
         session.close()
 
@@ -418,6 +426,8 @@ async def test_real_model_candidate_uses_existing_rules_and_completed_commit(
         world = session.repository.get_world(session.session_id)
         assert world.objective_state == "find_fuse"
         assert FACT_GENERATOR_MISSING_FUSE in world.discovered_fact_ids
+        context = session._context("turn-after", "mechanic_lia", "检查结果是什么？")
+        assert context.object_states["generator"] == "stopped_fuse_slot_empty"
     finally:
         session.close()
 

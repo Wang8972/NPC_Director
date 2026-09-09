@@ -37,6 +37,8 @@ from npc_director.prototype.content_catalog import load_prototype_content_catalo
 from npc_director.prototype.fake_director import PrototypeFakeDirectorSession
 from npc_director.prototype.models import (
     FACT_CRATE_CONTAINS_FUSE,
+    FACT_CRATE_SEAL_ANOMALY,
+    FACT_GENERATOR_MISSING_FUSE,
     NPC_IDS,
     OBJECT_IDS,
     SceneActionCandidate,
@@ -157,6 +159,19 @@ class PrototypeKnowledgeProjector:
     ) -> PrototypeTrustedContext:
         player_facts = sorted(world.discovered_fact_ids)
         npc_facts = sorted(npc_state.known_fact_ids)
+        visible_object_states = dict(sorted(world.object_states.items()))
+        if (
+            visible_object_states.get("cargo_crate_c12") == "sealed_anomaly"
+            and FACT_CRATE_SEAL_ANOMALY not in npc_facts
+        ):
+            # The container is visible; the unobserved seal anomaly is not knowledge.
+            visible_object_states["cargo_crate_c12"] = "sealed"
+        if (
+            visible_object_states.get("generator") == "stopped_fuse_slot_empty"
+            and FACT_GENERATOR_MISSING_FUSE not in npc_facts
+        ):
+            # Repository state is authoritative truth, not automatically NPC knowledge.
+            visible_object_states["generator"] = "not_inspected"
         can_see_item_location = (
             world.item_locations["spare_fuse"] != "cargo_crate_c12"
             or FACT_CRATE_CONTAINS_FUSE in world.discovered_fact_ids
@@ -180,7 +195,7 @@ class PrototypeKnowledgeProjector:
             player_input=player_input,
             objective_state=world.objective_state,
             world_version=world.version,
-            object_states=dict(sorted(world.object_states.items())),
+            object_states=visible_object_states,
             visible_item_locations={"spare_fuse": item_location},
             player_known_facts=[
                 PrototypeFactView(fact_id=fact_id, text=FACT_TEXTS[fact_id])
@@ -524,9 +539,6 @@ class OrchestratedPrototypeTurnGenerator:
             "world_version": context.world_version,
             "object_states": context.object_states,
             "visible_item_locations": context.visible_item_locations,
-            "player_known_facts": [
-                item.model_dump(mode="json") for item in context.player_known_facts
-            ],
         }
         action_payload = (
             None
