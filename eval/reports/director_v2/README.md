@@ -15,6 +15,9 @@ gzip -dc eval/reports/director_v2/episodes-live-sol-release-34x3.json.gz > /tmp/
 | 可读报告摘要（完整报告为同名 `.gz`） | 用途与结果 |
 |---|---|
 | [episodes-live-sol-release-34x3.json](episodes-live-sol-release-34x3.json) | 完整 102 次真实运行；97 次成功；自然度 4.59、人设 4.91 |
+| [episodes-live-luna-commercial-34x3.json](episodes-live-luna-commercial-34x3.json) | Luna 商业化全量评测；72/102，自然度 4.10、人设 4.51 |
+| [qwen38-flash-pilot.json](qwen38-flash-pilot.json) | Qwen Flash 60 秒超时兼容性试点；0/2 |
+| [qwen38-flash-pilot-180s.json](qwen38-flash-pilot-180s.json) | Qwen Flash 180 秒超时兼容性试点；0/2，仍有协议失败 |
 | [episodes-live-sol-final-content-regressions.json](episodes-live-sol-final-content-regressions.json) | 最后修正后九类内容场景各三次；结构 27/27，质量 26/27 |
 | [episodes-recorded-final.json](episodes-recorded-final.json) | 最终代码的 102 次脚本运行，结构全部通过；没有模型质量分数 |
 | [live-sol-objective-version-regression.json](live-sol-objective-version-regression.json) | 版本修正复测；版本错误 0/3，整体 2/3，含一次预算降级 |

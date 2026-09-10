@@ -132,6 +132,36 @@
       "compressed_bytes": 78835,
       "compressed_sha256": "72232a64fb5d4c78bb4ad956b1cc6c5c449b3f9ea33e62d50562bdbc608db4eb",
       "completed": true
+    },
+    {
+      "original_path": "artifacts/director-v2/episodes-live-luna-commercial-34x3.json",
+      "uncompressed_sha256": "1723585f149ca68995c7b00b97c76ebc41f66fea061a33ea48592ba7288d4ec2",
+      "uncompressed_bytes": 9568718,
+      "full_report": "episodes-live-luna-commercial-34x3.json.gz",
+      "review_summary": "episodes-live-luna-commercial-34x3.json",
+      "compressed_bytes": 962740,
+      "compressed_sha256": "622bd3955d3aa58529ec99ec3925821e538f85518e664535cbaf2b6b2c93c71e",
+      "completed": true
+    },
+    {
+      "original_path": "artifacts/director-v2/qwen38-flash-pilot.json",
+      "uncompressed_sha256": "152fc2ca814f23bbcdac7e822008e007413539b3479bcd8140bcfddf15a8adb4",
+      "uncompressed_bytes": 86202,
+      "full_report": "qwen38-flash-pilot.json.gz",
+      "review_summary": "qwen38-flash-pilot.json",
+      "compressed_bytes": 11307,
+      "compressed_sha256": "26a118ae6e3332d78b118d3cbb3da58994daba323c8967f26758f6c88bdaf3bd",
+      "completed": false
+    },
+    {
+      "original_path": "artifacts/director-v2/qwen38-flash-pilot-180s.json",
+      "uncompressed_sha256": "0ff496b37f56445144d2b7c44e59684315ef35ea23241461be2b6743e3ecdd27",
+      "uncompressed_bytes": 80272,
+      "full_report": "qwen38-flash-pilot-180s.json.gz",
+      "review_summary": "qwen38-flash-pilot-180s.json",
+      "compressed_bytes": 9926,
+      "compressed_sha256": "c6c15cee12314f97774f4ac3803be6ff3b886232dd959d1998fc7074a37cd358",
+      "completed": false
     }
   ]
 }

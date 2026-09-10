@@ -8,6 +8,8 @@
 解决方案见 [统一问题与复盘记录](ISSUE_LOG.md)。报告的关键证据已保存到
 [版本化归档](eval/reports/director_v2/README.md)：JSON 摘要便于审阅，同名 `.json.gz` 保留完整轨迹，
 解压后与原文件逐字节一致，原始 artifacts 保持不变。
+商业化低成本模型的后续评测见 [Qwen/Luna 对比](COMMERCIAL_MODEL_EVALUATION.md)。该报告不改写
+本页的 Sol 架构验收结果，并明确排除共享 API 限流延迟作为生产结论。
 
 ## 验收结果
 

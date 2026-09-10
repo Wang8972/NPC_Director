@@ -1,0 +1,294 @@
+{
+  "schema_version": "director-episodes-v1",
+  "mode": "live",
+  "started_at": "2026-09-10T09:27:58.416765+00:00",
+  "repeats": 1,
+  "case_count": 4,
+  "concurrency": 2,
+  "model": "qwen3.8-flash",
+  "transport": "sdk",
+  "node_reasoning_effort": "low",
+  "dataset_sha256": "414ecbad97dc0ec71d9eb16b14cea8826ec5f6c4ae9e98729f000e35e32f81f4",
+  "source_sha256": "68803cdc8136a8fcafca02dcf83fa195859b539c3bab796ce497cfeb92ec34d1",
+  "summary": {
+    "runs": 2,
+    "structural_passes": 0,
+    "live_runs": 2,
+    "live_goal_passes": 0,
+    "live_goal_success_rate": 0.0,
+    "fallback_runs": 2,
+    "naturalness_mean": 1.5,
+    "persona_mean": 2,
+    "generation_tokens": 19477,
+    "generation_latency_ms": 406723.3451659995,
+    "unknown_usage_calls": 4,
+    "meets_live_acceptance": false,
+    "quality_claim": "live independent model judgment"
+  },
+  "archive_representation": "Review summary; full original report is in the gzip archive.",
+  "full_report": "qwen38-flash-pilot-180s.json.gz",
+  "original_sha256": "0ff496b37f56445144d2b7c44e59684315ef35ea23241461be2b6743e3ecdd27",
+  "results": [
+    {
+      "case_id": "composite_request",
+      "repeat": 1,
+      "title": "复合请求逐项回应",
+      "tags": [
+        "compound",
+        "conditional",
+        "coverage"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 1,
+        "continuity": 1,
+        "persona": 2,
+        "naturalness": 2,
+        "performance_alignment": 2,
+        "passed": false,
+        "reasons": [
+          "未按要求逐项回应复合请求：值守信息、护送条件和路线安全均没有实质回应。",
+          "忽略已知且可分享的事实验证内容，包括艾伦值守村口、巡逻记录确认旧路安全、伊奥娜的同行条件。",
+          "玩家第二句明确要求“先核实路线，别替她答应”，但NPC仍输出完全相同的泛化拒绝，未承接新指令。",
+          "未保留并说明未完成事项，例如需要伊奥娜本人确认、出发前备好草药袋等。",
+          "玛伦的人设强调责任、证据和承诺，此处无依据地拒绝可确认事项，偏离人设动机。",
+          "对话呈现重复模板化语句，自然度不足，且没有体现对场景目标的处理。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 2,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "先告诉我谁值守，再确认护送条件；如果路线安全，就请伊欧娜同行。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:composite_request:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "那先核实路线，别替她答应。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:composite_request:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 201882.46033299947,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "qwen3.8-flash"
+        ],
+        "model_calls": 2,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 2,
+        "budget_charged_tokens": 40572
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "qwen3.8-flash",
+          "latency_ms": 31855.099416003213,
+          "input_tokens": 2067,
+          "output_tokens": 1230,
+          "total_tokens": 3297,
+          "reasoning_effort": null
+        }
+      ]
+    },
+    {
+      "case_id": "sarcastic_greeting",
+      "repeat": 1,
+      "title": "讽刺问候保留戒备",
+      "tags": [
+        "sarcasm",
+        "emotion",
+        "persona"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 1,
+        "continuity": 1,
+        "persona": 2,
+        "naturalness": 1,
+        "performance_alignment": 2,
+        "passed": false,
+        "reasons": [
+          "未接住玩家的讽刺问候与“空头支票”指向，没有体现玛伦因玩家失信而产生的戒心与关系张力。",
+          "面对“会不会再让我等”的新玩家输入，NPC逐字重复前一句，未承接、未解释、未回应具体诉求。",
+          "“这件事我暂时办不到”等语句更像通用暂停模板，不符合玛伦针对承诺与事实的克制、敏锐人设。",
+          "两句NPC输出没有语义推进，破坏多轮对话连续性和自然度。",
+          "情感标注为guarded，但文本没有任何语气变化或人物判断，演出一致性不足。",
+          "场景目标要求处理表面问候背后的情绪，而不是仅给出笼统拒绝；实际响应偏离目标。",
+          "checks中no_fallback为false，结合完全重复文本可视为非有效角色化响应。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 2,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "哟，大英雄，又忙着给大家开空头支票呢？",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:sarcastic_greeting:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "我只是想知道你会不会再让我等。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:sarcastic_greeting:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 204840.88483300002,
+        "input_tokens": 14343,
+        "output_tokens": 5134,
+        "total_tokens": 19477,
+        "actual_models": [
+          "qwen3.8-flash"
+        ],
+        "model_calls": 5,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 2,
+        "budget_charged_tokens": 35374
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "qwen3.8-flash",
+          "latency_ms": 42072.59850000264,
+          "input_tokens": 1902,
+          "output_tokens": 1401,
+          "total_tokens": 3303,
+          "reasoning_effort": null
+        }
+      ]
+    }
+  ]
+}

@@ -8,6 +8,8 @@
 包含真实 102 次运行、最后 27 次内容回归、最终 recorded 报告及原始用例快照。
 自然度/人设评分采用整场景模型评审，具体门槛和标定限制见根目录
 [EVALUATION_STANDARDS.md](../../EVALUATION_STANDARDS.md)。下文保留旧 36 条 golden 评测说明。
+低成本模型对比包括 Qwen Flash 兼容性试点及 Luna 102 次完整评测，结论见
+[COMMERCIAL_MODEL_EVALUATION.md](../../COMMERCIAL_MODEL_EVALUATION.md)。
 
 ## 离线报告（`make verify` 系列产出，可随时重跑）
 
