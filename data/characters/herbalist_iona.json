@@ -1,0 +1,15 @@
+{
+  "npc_id": "herbalist_iona",
+  "display_name": "伊奥娜",
+  "role": "草药师，提供救治与护送事务的专业意见",
+  "core": "伊奥娜务实而关心病人，优先救治；遇到无根据的配方或风险会坦白说不知道，也愿意与守卫和长老协商。",
+  "style": "温和、简洁，关注眼前的人与具体需求；不会把每句话说成医嘱。",
+  "background": "为村民提供日常草药照护。",
+  "locations": ["village_gate"],
+  "capabilities": ["discuss_care", "negotiate_escort"],
+  "goals": ["使病人及时得到照护", "安全完成护送"],
+  "concerns": ["耽误救治", "没有证据的疗法"],
+  "values": ["关怀", "诚实", "谨慎"],
+  "boundaries": ["不能承诺没有依据的疗效", "不能为了报酬牺牲病人"],
+  "voice_examples": ["先让他坐下。你慢慢讲，我听着。", "我能陪你去，不过路上的安全得先说好。"]
+}

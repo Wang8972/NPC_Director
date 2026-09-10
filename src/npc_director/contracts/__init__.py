@@ -1,3 +1,15 @@
+from npc_director.contracts.content import (
+    ContentCandidate,
+    ContentNeed,
+    ContentPolicy,
+    ContentReview,
+    NarrativeScopeDecision,
+    ObjectiveEvent,
+    ObjectiveRef,
+    ObjectiveStep,
+    ReviewedContent,
+    StagedContent,
+)
 from npc_director.contracts.enums import (
     ApprovalStatus,
     BodyAction,
@@ -18,6 +30,16 @@ from npc_director.contracts.enums import (
     UncertaintyKind,
     VoiceStyle,
 )
+from npc_director.contracts.episodes import (
+    DialogueEvent,
+    DialogueState,
+    EpisodeBudget,
+    EpisodeJob,
+    EpisodeRecord,
+    EpisodeRequest,
+    KnowledgeClaim,
+    NpcMessage,
+)
 from npc_director.contracts.performance import (
     BodyCue,
     Dialogue,
@@ -37,6 +59,16 @@ from npc_director.contracts.plan import (
     StateChangeProposal,
     TurnPlan,
     extract_state_change_paths,
+)
+from npc_director.contracts.planning import (
+    CollaborationRequest,
+    DialogueStateDelta,
+    ExecutionPlan,
+    ExecutionTrace,
+    NegotiationOutcome,
+    PlanNode,
+    QualityVerdict,
+    TurnAnalysis,
 )
 from npc_director.contracts.protocol import (
     UNITY_MESSAGE_ADAPTER,
@@ -180,4 +212,30 @@ __all__ = [
     "WorldEventMessage",
     "WorldEventPayload",
     "extract_state_change_paths",
+    "ContentNeed",
+    "ContentPolicy",
+    "ContentCandidate",
+    "ContentReview",
+    "NarrativeScopeDecision",
+    "ObjectiveRef",
+    "ObjectiveStep",
+    "ObjectiveEvent",
+    "ReviewedContent",
+    "StagedContent",
+    "EpisodeRequest",
+    "EpisodeRecord",
+    "EpisodeBudget",
+    "EpisodeJob",
+    "DialogueState",
+    "DialogueEvent",
+    "KnowledgeClaim",
+    "NpcMessage",
+    "TurnAnalysis",
+    "ExecutionPlan",
+    "PlanNode",
+    "ExecutionTrace",
+    "NegotiationOutcome",
+    "DialogueStateDelta",
+    "QualityVerdict",
+    "CollaborationRequest",
 ]

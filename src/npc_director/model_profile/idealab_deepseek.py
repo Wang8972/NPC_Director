@@ -34,10 +34,8 @@ C. 任务接受、关键选择等需要状态变化的回合，必须先调用 n
 """.strip()
 
 _EMOTION_CONVENTIONS = """
-情绪标注约定（项目统一口径，选最贴近的组合）：友好问候用 joy/warm；纯事实回答用
-neutral/calm；接受任务用 joy/hopeful；和解重逢用 joy/relieved；被冒犯用 anger/stern 或
-anger/irritated；被威胁保持克制，用 anger/stern 或 fear/wary；证据不足或涉密用
-neutral/guarded。
+情绪根据当前角色、关系、记忆和本句具体语气决定；intent只是功能摘要，不决定情绪。
+允许隐忍、混合情绪以及同一意图在不同人物上的不同表达，仅使用契约已有枚举。
 """.strip()
 
 _DIALOGUE_GROUNDING = """

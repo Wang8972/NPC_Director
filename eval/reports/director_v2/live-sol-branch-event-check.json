@@ -1,0 +1,291 @@
+{
+  "schema_version": "director-episodes-v1",
+  "mode": "live",
+  "started_at": "2026-09-09T19:28:35.872748+00:00",
+  "completed_at": "2026-09-09T19:30:34.598740+00:00",
+  "repeats": 1,
+  "case_count": 2,
+  "concurrency": 1,
+  "model": "gpt-5.6-sol",
+  "transport": "sdk",
+  "node_reasoning_effort": "low",
+  "dataset_sha256": "db6da3ec88dd1efa6853450f2fd41050784fc19c60814ce413304aa76125e8cc",
+  "source_sha256": "6f6539d72b61d30bb081b5768e794d8ebea22706f24642cda220ad07bae2e94d",
+  "summary": {
+    "runs": 2,
+    "structural_passes": 2,
+    "live_runs": 2,
+    "live_goal_passes": 2,
+    "live_goal_success_rate": 1.0,
+    "fallback_runs": 0,
+    "naturalness_mean": 4,
+    "persona_mean": 5,
+    "generation_tokens": 89159,
+    "generation_latency_ms": 111777.44700100084,
+    "unknown_usage_calls": 0,
+    "meets_live_acceptance": true,
+    "quality_claim": "live independent model judgment"
+  },
+  "archive_representation": "Review summary; full original report is in the gzip archive.",
+  "full_report": "live-sol-branch-event-check.json.gz",
+  "original_sha256": "879d1750a9a772c6a093a4299baca30dacc8a407c1fc889fcd1b6cb02fa40ac2",
+  "results": [
+    {
+      "case_id": "world_event",
+      "repeat": 1,
+      "title": "可信世界事件保留来源",
+      "tags": [
+        "world_event",
+        "priority"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "world_event_preserves_origin": true,
+        "no_fallback": true
+      },
+      "structural_passed": true,
+      "goal_passed": true,
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 4,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "火情正确保留为世界事件，未伪装成玩家台词，并对随后玩家提问作出回应。",
+          "守卫只陈述已见冒烟，明确火势与起因未知，未把推测当事实。",
+          "优先核查处置并坚持无替岗不擅离，符合职责、人设和能力边界。",
+          "两次回复略有重复，但在紧急场景及新玩家回合下合理。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "world_event",
+          "npc_id": "village_guard",
+          "text": "村口传来火警，守卫看见仓棚冒烟。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "village_guard",
+          "text": "我亲眼看见仓棚在冒烟。火势多大、起因是什么，现在都还不能确认；附近的人应立即去核查处置，我留守村口，没有替岗不能擅离。",
+          "emotion": {
+            "coarse": "fear",
+            "primary": "afraid",
+            "secondary": "stern",
+            "intensity": 0.72,
+            "valence": -0.58,
+            "arousal": 0.82
+          },
+          "status": "completed",
+          "turn_id": "turn:5c2198d8d8bb5e28840f992f8903e653f0a20372"
+        },
+        {
+          "role": "player",
+          "npc_id": "village_guard",
+          "text": "现在优先做什么？",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "village_guard",
+          "text": "先让仓棚附近能行动的人立即去核查，确认情况后再作必要处置。目前只能确定仓棚冒烟，火势和起因都不清楚；我继续守村口，没有替岗不能离开。",
+          "emotion": {
+            "coarse": "fear",
+            "primary": "stern",
+            "secondary": "afraid",
+            "intensity": 0.72,
+            "valence": -0.5,
+            "arousal": 0.78
+          },
+          "status": "completed",
+          "turn_id": "eval:world_event:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "waiting_for_completion"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 62732.426792001206,
+        "input_tokens": 46562,
+        "output_tokens": 3849,
+        "total_tokens": 50411,
+        "actual_models": [
+          "gpt-5.6-sol"
+        ],
+        "model_calls": 12,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 50411
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-sol",
+          "latency_ms": 3538.163125002029,
+          "input_tokens": 1980,
+          "output_tokens": 142,
+          "total_tokens": 2122,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "existing_branch",
+      "repeat": 1,
+      "title": "既有潜入与谈判路线是任务内分支",
+      "tags": [
+        "granularity",
+        "task_branch",
+        "reuse"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "narrative_scope": true,
+        "structured_events": true,
+        "no_fallback": true
+      },
+      "structural_passed": true,
+      "goal_passed": true,
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 4,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "准确复用了既有的谈判与隐蔽小路两条路线，并按玩家改口确定“谈判优先、绕行备选”。",
+          "未调用作者、未虚构路线结果，也未声称护送或谈判已实际执行。",
+          "玛伦表达简短沉稳，重视安全与承诺，符合人设；仅安全目标略有重复。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "潜行绕过岗哨，或者谈通行条件，都能继续护送吗？",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "都能。沿既有隐蔽小路潜行，或与岗哨协商通行条件，都可继续护送；但最终必须让伊奥娜安全出村。选吧——潜行，还是协商？",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "stern",
+            "secondary": "guarded",
+            "intensity": 0.38,
+            "valence": 0.02,
+            "arousal": 0.28
+          },
+          "status": "completed",
+          "turn_id": "eval:existing_branch:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "先考虑谈判，保留绕行作备选。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "明白。先与岗哨谈判；若谈不成，再走既有的隐蔽小路。无论走哪条路，都要让伊奥娜安全出村。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "stern",
+            "secondary": "guarded",
+            "intensity": 0.32,
+            "valence": 0.05,
+            "arousal": 0.24
+          },
+          "status": "completed",
+          "turn_id": "eval:existing_branch:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 49045.02020899963,
+        "input_tokens": 35717,
+        "output_tokens": 3031,
+        "total_tokens": 38748,
+        "actual_models": [
+          "gpt-5.6-sol"
+        ],
+        "model_calls": 10,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 38748
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-sol",
+          "latency_ms": 3302.52879100226,
+          "input_tokens": 2009,
+          "output_tokens": 126,
+          "total_tokens": 2135,
+          "reasoning_effort": "none"
+        }
+      ]
+    }
+  ]
+}

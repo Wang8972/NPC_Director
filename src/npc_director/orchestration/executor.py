@@ -343,10 +343,22 @@ class ResilientDirectorExecutor:
         *,
         lore_retriever: LoreRetriever | None = None,
         primary: DirectorExecutor | None = None,
+        budget_provider: object | None = None,
+        content_store: object | None = None,
+        review_context_provider: object | None = None,
     ) -> None:
         self.settings = settings
         self.lore_retriever = lore_retriever
-        self.primary = primary or _build_primary_executor(settings, lore_retriever)
+        self.budget_provider = budget_provider
+        self.content_store = content_store
+        self.review_context_provider = review_context_provider
+        self.primary = primary or _build_primary_executor(
+            settings,
+            lore_retriever,
+            budget_provider=budget_provider,
+            content_store=content_store,
+            review_context_provider=review_context_provider,
+        )
 
     async def generate(
         self,
@@ -382,10 +394,21 @@ class ResilientDirectorExecutor:
                     lore_model=self.settings.fallback_model,
                     screenwriter_model=self.settings.fallback_model,
                     performance_model=self.settings.fallback_model,
+                    judge_model=self.settings.fallback_model,
                 )
+                dependencies = {
+                    key: value
+                    for key, value in {
+                        "budget_provider": self.budget_provider,
+                        "content_store": self.content_store,
+                        "review_context_provider": self.review_context_provider,
+                    }.items()
+                    if value is not None
+                }
                 return await _build_primary_executor(
                     fallback_settings,
                     self.lore_retriever,
+                    **dependencies,
                 ).generate(
                     director_input,
                     repair_feedback=repair_feedback,
@@ -397,6 +420,10 @@ class ResilientDirectorExecutor:
 def _build_primary_executor(
     settings: Settings,
     lore_retriever: LoreRetriever | None,
+    *,
+    budget_provider: object | None = None,
+    content_store: object | None = None,
+    review_context_provider: object | None = None,
 ) -> DirectorExecutor:
     if settings.orchestration_mode == "react":
         return OpenAIDirectorExecutor(settings, lore_retriever=lore_retriever)
@@ -405,7 +432,13 @@ def _build_primary_executor(
     # DirectorExecutor contract without creating an executor import cycle.
     from npc_director.orchestration.bounded_executor import BoundedDirectorExecutor
 
-    return BoundedDirectorExecutor(settings, lore_retriever=lore_retriever)
+    return BoundedDirectorExecutor(
+        settings,
+        lore_retriever=lore_retriever,
+        budget_provider=budget_provider,
+        content_store=content_store,
+        review_context_provider=review_context_provider,
+    )
 
 
 def _safe_degraded_result(director_input: DirectorInput) -> DirectorRunResult:

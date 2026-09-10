@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+from typing import Any, Literal
+
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
+from npc_director.contracts.content import NarrativeScopeDecision, ObjectiveEvent, ObjectiveStep
 from npc_director.contracts.enums import (
     BodyAction,
     CoarseEmotion,
@@ -40,6 +43,13 @@ class DirectorInput(SpecialistContract):
     max_tool_calls: int = Field(default=4, ge=0, le=8)
     max_specialist_calls: int = Field(default=4, ge=0, le=8)
     max_handoffs: int = Field(default=1, ge=0, le=2)
+    episode_id: str | None = None
+    stimulus: dict[str, Any] = Field(default_factory=dict)
+    conversation_state: dict[str, Any] = Field(default_factory=dict)
+    actor_context: dict[str, Any] = Field(default_factory=dict)
+    actor_registry: list[dict[str, Any]] = Field(default_factory=list, max_length=32)
+    content_policy: dict[str, Any] = Field(default_factory=dict)
+    execution_budget: dict[str, Any] = Field(default_factory=dict)
 
 
 class NarrativeInput(SpecialistContract):
@@ -49,6 +59,14 @@ class NarrativeInput(SpecialistContract):
     relationship_summary: str = Field(default="", max_length=800)
     relevant_flags: list[str] = Field(default_factory=list, max_length=20)
     allowed_state_paths: list[str] = Field(default_factory=list, max_length=24)
+    player_input: str = Field(default="", max_length=2000)
+    objective: str = Field(default="", max_length=500)
+    history_summary: str = Field(default="", max_length=3000)
+    character_core: str = Field(default="", max_length=2000)
+    analysis: dict[str, Any] = Field(default_factory=dict)
+    evidence: list[dict[str, Any]] = Field(default_factory=list, max_length=16)
+    conversation_state: dict[str, Any] = Field(default_factory=dict)
+    actor_context: dict[str, Any] = Field(default_factory=dict)
 
 
 class NarrativeBeat(SpecialistContract):
@@ -62,6 +80,9 @@ class NarrativePlan(SpecialistContract):
     beats: list[NarrativeBeat] = Field(min_length=1, max_length=8)
     constraints: list[str] = Field(default_factory=list, max_length=8)
     proposed_state_changes: StateChangeProposal = Field(default_factory=StateChangeProposal)
+    scope_decision: NarrativeScopeDecision | None = None
+    steps: list[ObjectiveStep] = Field(default_factory=list, max_length=16)
+    events: list[ObjectiveEvent] = Field(default_factory=list, max_length=8)
 
     @field_validator("beats")
     @classmethod
@@ -100,6 +121,13 @@ class ScreenwriterInput(SpecialistContract):
     recent_history: list[str] = Field(default_factory=list, max_length=12)
     player_input: str = Field(min_length=1, max_length=2_000)
     response_obligations: list[str] = Field(default_factory=list, max_length=8)
+    analysis: dict[str, Any] = Field(default_factory=dict)
+    narrative_beats: list[NarrativeBeat] = Field(default_factory=list, max_length=8)
+    negotiation: dict[str, Any] = Field(default_factory=dict)
+    conversation_state: dict[str, Any] = Field(default_factory=dict)
+    actor_context: dict[str, Any] = Field(default_factory=dict)
+    pending_collaborations: list[dict[str, Any]] = Field(default_factory=list, max_length=3)
+    repair_feedback: list[str] = Field(default_factory=list, max_length=12)
 
 
 class DialogueDraft(SpecialistContract):
@@ -107,6 +135,13 @@ class DialogueDraft(SpecialistContract):
     coarse_emotion: CoarseEmotion
     primary_emotion: PrimaryEmotion
     secondary_emotion: PrimaryEmotion | None = None
+    intensity: float = Field(default=0.5, ge=0, le=1)
+    valence: float = Field(default=0, ge=-1, le=1)
+    arousal: float = Field(default=0.4, ge=0, le=1)
+    used_lore_refs: list[str] = Field(default_factory=list, max_length=8)
+    used_fact_refs: list[str] = Field(default_factory=list, max_length=16)
+    commitments: list[str] = Field(default_factory=list, max_length=8)
+    reply_outcome: Literal["resolved", "partial", "pending", "refused"] = "partial"
     rationale: str = Field(default="", max_length=500)
 
 
@@ -115,6 +150,9 @@ class PerformanceInput(SpecialistContract):
     coarse_emotion: CoarseEmotion
     primary_emotion: PrimaryEmotion
     secondary_emotion: PrimaryEmotion | None = None
+    intensity: float = Field(default=0.5, ge=0, le=1)
+    valence: float = Field(default=0, ge=-1, le=1)
+    arousal: float = Field(default=0.4, ge=0, le=1)
     scene_summary: str = Field(default="", max_length=1_500)
     allowed_actions: list[BodyAction] = Field(default_factory=list)
     allowed_faces: list[FacePreset] = Field(default_factory=list)

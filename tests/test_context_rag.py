@@ -220,8 +220,9 @@ def test_context_builder_slices_specialist_fields_and_records_snapshots() -> Non
     )
 
     assert "player_input" in director.model_fields_set
-    assert "player_input" not in narrative.model_dump()
-    assert "history_summary" not in narrative.model_dump()
+    # Legacy callers supply no text; dynamic planning passes this context explicitly.
+    assert narrative.player_input == ""
+    assert narrative.history_summary == ""
     assert "character_core" not in lore.model_dump()
     assert "allowed_scopes" not in screenwriter.model_dump()
     assert "player_input" not in performance.model_dump()

@@ -18,6 +18,7 @@ from npc_director.contracts import (
     TurnProposal,
     UncertaintyKind,
 )
+from npc_director.contracts.planning import ExecutionPlan, PlanNode, TurnAnalysis
 from npc_director.orchestration.turn_policy import TurnPolicy
 
 SAFE_CLARIFICATION_OBJECTIVE = (
@@ -32,6 +33,135 @@ class RouteBudgetError(ValueError):
 
 class SpecialistLedgerError(ValueError):
     """Raised when completed runtime work cannot support the assembled proposal."""
+
+
+def compile_execution_plan(
+    analysis: TurnAnalysis,
+    *,
+    max_nodes: int = 32,
+    revision: int = 0,
+    statement_only: bool = False,
+) -> ExecutionPlan:
+    """Compile requested operations into a closed graph with runtime-owned output nodes."""
+    operations = list(analysis.operations)
+    nodes = [PlanNode.model_validate(item.model_dump()) for item in operations]
+    if any(node.id.startswith("__") for node in nodes):
+        raise ValueError("reserved runtime node id")
+    kinds = {node.kind for node in nodes}
+
+    def add(kind: str, needed: bool) -> None:
+        if needed and kind not in kinds:
+            nodes.append(PlanNode(id=f"auto:{kind}", kind=kind, objective=analysis.objective))
+            kinds.add(kind)
+
+    add(
+        "lore",
+        analysis.needs_lore
+        or bool(analysis.lore_queries)
+        or any(
+            item.kind in {"fact_unknown", "evidence_conflict"} for item in analysis.knowledge_needs
+        ),
+    )
+    add(
+        "narrative",
+        analysis.needs_narrative
+        or analysis.requires_replan
+        or bool(analysis.content_need and analysis.content_need.requires_author)
+        or (
+            len(analysis.goals) > 1
+            and any(goal.kind != "respond" for goal in analysis.goals)
+            and not analysis.collaboration_requests
+        ),
+    )
+    add(
+        "negotiate",
+        (analysis.negotiation or analysis.intent is Intent.NEGOTIATION)
+        and not analysis.collaboration_requests
+        and not statement_only,
+    )
+    add("consult_npc", bool(analysis.collaboration_requests))
+    add("author_content", analysis.content_need is not None)
+    lore_ids = [node.id for node in nodes if node.kind == "lore"]
+    narrative_ids = [node.id for node in nodes if node.kind == "narrative"]
+    for node in nodes:
+        if node.kind in {"narrative", "negotiate", "author_content"}:
+            node.depends_on = list(dict.fromkeys([*node.depends_on, *lore_ids]))
+        if node.kind == "author_content":
+            node.depends_on = list(dict.fromkeys([*node.depends_on, *narrative_ids]))
+    # A consult operation only prepares a message. Its answer arrives after an
+    # actual delivered beat, so dependent decisions belong to the resumed turn.
+    # Validate the entire requested graph before extracting the executable part.
+    ExecutionPlan(revision=revision, primary_intent=analysis.intent, nodes=nodes)
+    waiting = {node.id for node in nodes if node.kind == "consult_npc"}
+    deferred_ids: set[str] = set()
+    while True:
+        blocked = {
+            node.id for node in nodes
+            if set(node.depends_on) & (waiting | deferred_ids)
+        }
+        if blocked <= deferred_ids:
+            break
+        deferred_ids.update(blocked)
+    deferred = [node for node in nodes if node.id in deferred_ids]
+    nodes = [node for node in nodes if node.id not in deferred_ids]
+    nonterminal = [node.id for node in nodes]
+    nodes.extend(
+        [
+            PlanNode(id="__write", kind="screenwriter", depends_on=nonterminal),
+            PlanNode(id="__perform", kind="performance", depends_on=["__write"]),
+            PlanNode(id="__quality", kind="quality", depends_on=["__perform"]),
+        ]
+    )
+    if len(nodes) > max_nodes:
+        raise RouteBudgetError("execution node budget exceeded")
+    return ExecutionPlan(
+        revision=revision, primary_intent=analysis.intent, nodes=nodes, deferred_nodes=deferred
+    )
+
+
+def assemble_planned_proposal(
+    analysis: TurnAnalysis,
+    dialogue: DialogueDraft,
+    performance: PerformanceOutput,
+    *,
+    policy: TurnPolicy,
+    ledger: Iterable[DelegationEvent],
+    narrative: NarrativePlan | None,
+    lore_refs: list[str],
+    advisory_only: bool = False,
+) -> TurnProposal:
+    """Project internal planning onto the unchanged per-speaker legacy proposal."""
+    events = list(ledger)
+    specialists = _completed_specialists(events)
+    route = CompiledRoute(
+        decision=analysis.legacy_route(),
+        intent=analysis.intent,
+        objective=analysis.objective,
+        use_lore=SpecialistName.LORE in specialists,
+        use_narrative=narrative is not None,
+        use_negotiator=False,
+        advisory_only=advisory_only,
+        clarification_fallback=False,
+        fallback_reason=None,
+        required_specialists=tuple(specialists),
+        response_obligations=tuple(analysis.response_obligations),
+    )
+    if set(dialogue.used_lore_refs) - set(lore_refs):
+        raise ValueError("dialogue cites evidence that was not retrieved")
+    proposal = assemble_turn_proposal(
+        route,
+        dialogue,
+        performance,
+        policy=policy,
+        ledger=events,
+        narrative=narrative,
+        lore_refs=dialogue.used_lore_refs,
+    )
+    # The complete search log lives in ExecutionTrace. Legacy projection fields
+    # describe evidence used by this utterance, not every lexical search hit.
+    if not dialogue.used_lore_refs:
+        proposal.plan.lore_queries = []
+    return proposal
 
 
 @dataclass(frozen=True, slots=True)
@@ -65,22 +195,23 @@ def compile_route(
     evidence_uncertainty = decision.uncertainty_kind is UncertaintyKind.EVIDENCE_UNCERTAINTY
     final_intent = Intent.CRITICAL_CHOICE if decision.requires_replan else decision.intent
     wants_lore = (
-        decision.needs_lore
-        or decision.intent is Intent.LORE_QUESTION
-        or evidence_uncertainty
+        decision.needs_lore or decision.intent is Intent.LORE_QUESTION or evidence_uncertainty
     )
-    wants_narrative = decision.needs_narrative or decision.requires_replan or final_intent in {
-        Intent.QUEST_ACCEPTANCE,
-        Intent.CRITICAL_CHOICE,
-    }
+    wants_narrative = (
+        decision.needs_narrative
+        or decision.requires_replan
+        or final_intent
+        in {
+            Intent.QUEST_ACCEPTANCE,
+            Intent.CRITICAL_CHOICE,
+        }
+    )
     wants_negotiation = not decision.requires_replan and (
         decision.negotiation or decision.intent is Intent.NEGOTIATION
     )
     clarification = request_ambiguity
     advisory_only = (
-        request_ambiguity
-        or evidence_uncertainty
-        or decision.confidence < low_confidence_threshold
+        request_ambiguity or evidence_uncertainty or decision.confidence < low_confidence_threshold
     )
     fallback_reason: str | None = None
     if request_ambiguity:
@@ -230,6 +361,9 @@ def assemble_turn_proposal(
                 coarse=dialogue.coarse_emotion,
                 primary=dialogue.primary_emotion,
                 secondary=dialogue.secondary_emotion,
+                intensity=dialogue.intensity,
+                valence=dialogue.valence,
+                arousal=dialogue.arousal,
             ),
             "body_cues": body_cues,
             "face_cues": face_cues,

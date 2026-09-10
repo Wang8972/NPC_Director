@@ -1,0 +1,641 @@
+{
+  "schema_version": "director-episodes-v1",
+  "mode": "live",
+  "started_at": "2026-09-09T17:42:12.059879+00:00",
+  "completed_at": "2026-09-09T17:45:11.227319+00:00",
+  "repeats": 1,
+  "case_count": 4,
+  "concurrency": 3,
+  "model": "gpt-5.6-luna",
+  "transport": "sdk",
+  "node_reasoning_effort": "low",
+  "summary": {
+    "runs": 4,
+    "structural_passes": 0,
+    "live_runs": 4,
+    "live_goal_passes": 0,
+    "live_goal_success_rate": 0.0,
+    "fallback_runs": 2,
+    "naturalness_mean": 3,
+    "persona_mean": 3.5,
+    "generation_tokens": 379411,
+    "generation_latency_ms": 430902.8327909982,
+    "meets_live_acceptance": false,
+    "quality_claim": "live independent model judgment"
+  },
+  "archive_representation": "Review summary; full original report is in the gzip archive.",
+  "full_report": "live-luna-compiled-candidates.json.gz",
+  "original_sha256": "15d16bb4e0b67d57bb6b0bb5b14991c56c3c9c4bc19d55124b997a75ce43158f",
+  "results": [
+    {
+      "case_id": "authored_encounter",
+      "repeat": 1,
+      "title": "新遭遇经审核附着父任务",
+      "tags": [
+        "granularity",
+        "content_review",
+        "task_event"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "published_granularity": false,
+        "no_fallback": true
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 3,
+        "continuity": 4,
+        "persona": 4,
+        "naturalness": 4,
+        "performance_alignment": 2,
+        "passed": false,
+        "reasons": [
+          "两轮都正确承接了“纳入护送、不另开委托”的要求，也未虚构已执行的遭遇。",
+          "但始终停留在“待审核后再定”，没有实际补充可继续的问路对话遭遇或具体小选择；且检查结果明确发布粒度未通过，published_content为空。",
+          "玛伦的克制、简短风格和对承诺边界的表达基本一致。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "为这段护送新增一个以后还能继续的问路交谈事件，让我面对一个符合村庄处境的小选择。仍然围绕送人，别另开任务。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "话记下了。护送伊奥娜途中，可以向村里的人核实方向，再在两条原有出村路中择一；只改路线，不另起任务。具体安排，待审核后再定。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "wary",
+            "intensity": 0.35,
+            "valence": 0.2,
+            "arousal": 0.25
+          },
+          "status": "completed",
+          "turn_id": "eval:authored_encounter:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "就把它算在护送里，别另开委托。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "就算在护送伊奥娜里，不另开委托。问路交谈和两条原有出村路线的选择，先留待审核后再定。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "wary",
+            "intensity": 0.35,
+            "valence": 0.2,
+            "arousal": 0.25
+          },
+          "status": "completed",
+          "turn_id": "eval:authored_encounter:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 111756.69308299985,
+        "input_tokens": 67100,
+        "output_tokens": 8687,
+        "total_tokens": 75787,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 19,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 2830.569875000947,
+          "input_tokens": 1979,
+          "output_tokens": 139,
+          "total_tokens": 2118,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "three_npc_negotiation",
+      "repeat": 1,
+      "title": "三个NPC分别表达条件",
+      "tags": [
+        "multi_npc",
+        "negotiation",
+        "authority"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 3,
+        "continuity": 4,
+        "persona": 3,
+        "naturalness": 2,
+        "performance_alignment": 3,
+        "passed": false,
+        "reasons": [
+          "守卫和伊奥娜已分别表达能力与条件，玛伦也暂缓定方案，核心协商部分完成。",
+          "但随后出现伊奥娜和玛伦无依据的重复拒绝式台词，像回退或串台，破坏对话自然度与角色归属。",
+          "伊奥娜的条件基本符合已知事实；艾伦把旧路记录说成当前安全，随后玛伦又正确强调需核实，前后略显不稳。",
+          "玩家第二句得到了承接，但整体尚未真正决定护送方案，且要求的各方条件虽已说出，协调结果仍停留在暂缓。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "请守卫和伊欧娜各自说条件，再决定怎么护送。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "艾伦，请说明你能为这次护送承担的条件与能力。伊奥娜，请说明你必要的护送条件。双方说清之前，不定方案。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "stern",
+            "secondary": "wary",
+            "intensity": 0.45,
+            "valence": 0.1,
+            "arousal": 0.3
+          },
+          "status": "completed",
+          "turn_id": "eval:three_npc_negotiation:1:main:turn:0"
+        },
+        {
+          "role": "npc",
+          "npc_id": "village_guard",
+          "text": "我能在值守职责内确认村口情况、说明巡逻记录，并核对沿途动静。最新记录确认旧路目前安全通行，但我不能替伊奥娜或玛伦承诺条件、报酬或权限。伊奥娜，请说明你认为不可缺少的专业需求和不能接受的风险；你说清之前，我们不定护送方案。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "wary",
+            "intensity": 0.45,
+            "valence": 0.2,
+            "arousal": 0.3
+          },
+          "status": "completed",
+          "turn_id": "npc:5c1fbd545db1095bf3f5addf17b97e934b2b30b2"
+        },
+        {
+          "role": "npc",
+          "npc_id": "herbalist_iona",
+          "text": "我愿意同行，但需要你全程护送，出发前也要备好草药袋。任何会耽误病人救治，或要我承诺没有依据的疗法，我都不能接受。艾伦，请说明你能承担的条件与能力；在此之前，我们先不定护送方案。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "wary",
+            "secondary": "calm",
+            "intensity": 0.45,
+            "valence": 0.25,
+            "arousal": 0.3
+          },
+          "status": "completed",
+          "turn_id": "npc:64e584ead47d2d9e291fff1e02346d82566440d5"
+        },
+        {
+          "role": "npc",
+          "npc_id": "herbalist_iona",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "npc:67313063a4e538ae148c9165c8d618e1820cbc10"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "npc:90bb8265cabfdcea17d03bc4d55fe065c51b50b9"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "好，没核实的路况不要当成已经安全。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "记住了。未经艾伦核实的路况，不算安全。护送方案暂缓，等双方条件说清、信息核实后再定。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": "calm",
+            "intensity": 0.45,
+            "valence": 0.05,
+            "arousal": 0.3
+          },
+          "status": "completed",
+          "turn_id": "eval:three_npc_negotiation:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 127477.93599999932,
+        "input_tokens": 92042,
+        "output_tokens": 7665,
+        "total_tokens": 99707,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 25,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 3366.5128339998773,
+          "input_tokens": 2679,
+          "output_tokens": 184,
+          "total_tokens": 2863,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "composite_request",
+      "repeat": 1,
+      "title": "复合请求逐项回应",
+      "tags": [
+        "compound",
+        "conditional",
+        "coverage"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 1,
+        "continuity": 2,
+        "persona": 2,
+        "naturalness": 1,
+        "performance_alignment": 1,
+        "passed": false,
+        "reasons": [
+          "已核实路线和值守，但未完整确认伊奥娜的具体护送条件，也没有处理她已有的同行条件与备药要求。",
+          "玩家改口要求“先核实路线，别替她答应”后，玛伦只重复无关的拒绝语，忽略了明确指令和已知事实。",
+          "让伊奥娜被邀请后以“这件事暂时办不到”回应，既未说明具体原因，也未体现其已知愿意同行的条件；随后同样的拒绝被玛伦重复，承接和自然度很差。",
+          "表现出未替她答应，但同时没有推进可完成事项或保留清晰的未完成事项。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 2,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "先告诉我谁值守，再确认护送条件；如果路线安全，就请伊欧娜同行。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "艾伦，请说明当前由谁值守村口，并核对巡逻记录：护送路线是否安全？确认这些后，我再说明护送条件；若路线安全，再请伊奥娜同行。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "wary",
+            "secondary": "calm",
+            "intensity": 0.45,
+            "valence": 0.05,
+            "arousal": 0.35
+          },
+          "status": "completed",
+          "turn_id": "eval:composite_request:1:main:turn:0"
+        },
+        {
+          "role": "npc",
+          "npc_id": "village_guard",
+          "text": "玛伦，当前由我值守村口。最新巡逻记录确认旧路安全通行；你可以在此基础上再提出邀请伊奥娜同行。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "relieved",
+            "intensity": 0.35,
+            "valence": 0.45,
+            "arousal": 0.25
+          },
+          "status": "completed",
+          "turn_id": "npc:739a52733c32376bcaae10376e35c8142012a771"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "艾伦仍值守村口，巡逻记录也确认旧路安全通行。伊奥娜，护送条件还需由你说明；你愿意随我们同行吗？",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "wary",
+            "secondary": "calm",
+            "intensity": 0.45,
+            "valence": 0.1,
+            "arousal": 0.35
+          },
+          "status": "completed",
+          "turn_id": "npc:24a50be0114007c6e0db3ef51036356b1a17c1fb"
+        },
+        {
+          "role": "npc",
+          "npc_id": "herbalist_iona",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "npc:d11cde44484fade42f504bf3dbc88591f108cb51"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "那先核实路线，别替她答应。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:composite_request:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 129652.83179199832,
+        "input_tokens": 122496,
+        "output_tokens": 13303,
+        "total_tokens": 135799,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 29,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 3299.9279579998984,
+          "input_tokens": 2458,
+          "output_tokens": 195,
+          "total_tokens": 2653,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "meaningful_short_quest",
+      "repeat": 1,
+      "title": "同房间有独立价值的短支线",
+      "tags": [
+        "granularity",
+        "short_quest",
+        "offer_not_accept"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": false,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "published_granularity": false,
+        "no_fallback": true
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 5,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "完整回应了可选委托并明确拒绝时不再打扰。",
+          "正确承接玩家改口，未将委托视为已接受，并保持与护送事务独立。",
+          "玛伦的克制、简短语气和重视承诺的人设一致。",
+          "没有无依据承诺、传闻冒充事实或内部信息泄漏。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "我想帮家属处理那封旧信。你能给我一项可选的委托吗？如果他们不愿收，我就不打扰。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "可以。你只需问家属是否愿意接过这封旧信。若他们拒绝，此事就到此为止，不要再打扰。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": "warm",
+            "intensity": 0.45,
+            "valence": 0.25,
+            "arousal": 0.3
+          },
+          "status": "completed",
+          "turn_id": "eval:meaningful_short_quest:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "先别当作我已经接受，让我想一想。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "好。旧信之事仍等你决定，尚未算你接受。护送草药师的事也不受影响。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": "warm",
+            "intensity": 0.35,
+            "valence": 0.25,
+            "arousal": 0.2
+          },
+          "status": "completed",
+          "turn_id": "eval:meaningful_short_quest:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 62015.37191600073,
+        "input_tokens": 62493,
+        "output_tokens": 5625,
+        "total_tokens": 68118,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 18,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 2431.8317500001285,
+          "input_tokens": 1957,
+          "output_tokens": 122,
+          "total_tokens": 2079,
+          "reasoning_effort": "none"
+        }
+      ]
+    }
+  ]
+}

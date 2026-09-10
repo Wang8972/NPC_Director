@@ -108,6 +108,148 @@ CREATE TABLE IF NOT EXISTS long_term_memories (
 
 CREATE INDEX IF NOT EXISTS idx_long_term_memories_npc
 ON long_term_memories (npc_id, importance DESC, created_at);
+
+-- The original tables above are the explicit legacy namespace. New sessions
+-- never fall back to them or copy their globally keyed NPC data.
+CREATE TABLE IF NOT EXISTS scoped_npc_domain_states (
+    session_id TEXT NOT NULL,
+    npc_id TEXT NOT NULL,
+    state_json TEXT NOT NULL,
+    version INTEGER NOT NULL CHECK (version >= 0),
+    updated_at TEXT NOT NULL,
+    PRIMARY KEY (session_id, npc_id)
+);
+CREATE TABLE IF NOT EXISTS scoped_state_commits (
+    session_id TEXT NOT NULL,
+    turn_id TEXT NOT NULL,
+    npc_id TEXT NOT NULL,
+    patch_hash TEXT NOT NULL,
+    expected_version INTEGER NOT NULL,
+    resulting_version INTEGER NOT NULL,
+    state_json TEXT NOT NULL,
+    committed_at TEXT NOT NULL,
+    PRIMARY KEY (session_id, turn_id)
+);
+CREATE TABLE IF NOT EXISTS scoped_long_term_memories (
+    session_id TEXT NOT NULL,
+    memory_id TEXT NOT NULL,
+    npc_id TEXT NOT NULL,
+    source_session_id TEXT NOT NULL,
+    content TEXT NOT NULL,
+    kinds_json TEXT NOT NULL,
+    source_turn_ids_json TEXT NOT NULL,
+    importance REAL NOT NULL,
+    created_at TEXT NOT NULL,
+    PRIMARY KEY (session_id, memory_id)
+);
+CREATE INDEX IF NOT EXISTS idx_scoped_memories_npc
+ON scoped_long_term_memories (session_id, npc_id, importance DESC, created_at);
+
+CREATE TABLE IF NOT EXISTS episodes (
+    episode_id TEXT PRIMARY KEY,
+    session_id TEXT NOT NULL,
+    event_id TEXT NOT NULL,
+    request_hash TEXT NOT NULL,
+    status TEXT NOT NULL,
+    revision INTEGER NOT NULL DEFAULT 0,
+    record_json TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL,
+    UNIQUE (session_id, event_id)
+);
+CREATE INDEX IF NOT EXISTS idx_episodes_session ON episodes (session_id, status, created_at);
+CREATE TABLE IF NOT EXISTS episode_events (
+    session_id TEXT NOT NULL,
+    event_id TEXT NOT NULL,
+    episode_id TEXT NOT NULL,
+    event_type TEXT NOT NULL,
+    payload_json TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    PRIMARY KEY (session_id, event_id)
+);
+CREATE TABLE IF NOT EXISTS episode_nodes (
+    episode_id TEXT NOT NULL,
+    node_id TEXT NOT NULL,
+    record_json TEXT NOT NULL,
+    PRIMARY KEY (episode_id, node_id)
+);
+CREATE TABLE IF NOT EXISTS episode_reservations (
+    episode_id TEXT NOT NULL,
+    operation_id TEXT NOT NULL,
+    resource TEXT NOT NULL,
+    role TEXT NOT NULL,
+    token_reservation INTEGER NOT NULL DEFAULT 0,
+    status TEXT NOT NULL DEFAULT 'reserved',
+    usage_json TEXT,
+    created_at TEXT NOT NULL,
+    PRIMARY KEY (episode_id, operation_id)
+);
+CREATE TABLE IF NOT EXISTS episode_jobs (
+    job_id TEXT PRIMARY KEY,
+    episode_id TEXT NOT NULL,
+    session_id TEXT NOT NULL,
+    turn_id TEXT NOT NULL UNIQUE,
+    dedupe_key TEXT NOT NULL,
+    status TEXT NOT NULL,
+    parent_turn_id TEXT,
+    claimed_by TEXT,
+    lease_until TEXT,
+    record_json TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    UNIQUE (episode_id, dedupe_key)
+);
+CREATE INDEX IF NOT EXISTS idx_episode_jobs_ready
+ON episode_jobs (session_id, status, created_at);
+CREATE TABLE IF NOT EXISTS episode_completions (
+    session_id TEXT NOT NULL,
+    turn_id TEXT NOT NULL,
+    episode_id TEXT NOT NULL,
+    fingerprint TEXT NOT NULL,
+    result_json TEXT NOT NULL,
+    completed_at TEXT NOT NULL,
+    PRIMARY KEY (session_id, turn_id)
+);
+CREATE TABLE IF NOT EXISTS dialogue_events (
+    sequence INTEGER PRIMARY KEY AUTOINCREMENT,
+    session_id TEXT NOT NULL,
+    event_id TEXT NOT NULL,
+    turn_id TEXT NOT NULL,
+    speaker_id TEXT NOT NULL,
+    record_json TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    UNIQUE (session_id, event_id)
+);
+CREATE INDEX IF NOT EXISTS idx_dialogue_events_session
+ON dialogue_events (session_id, sequence);
+CREATE TABLE IF NOT EXISTS npc_dialogue_states (
+    session_id TEXT NOT NULL,
+    npc_id TEXT NOT NULL,
+    version INTEGER NOT NULL DEFAULT 0,
+    record_json TEXT NOT NULL,
+    PRIMARY KEY (session_id, npc_id)
+);
+CREATE TABLE IF NOT EXISTS npc_knowledge (
+    session_id TEXT NOT NULL,
+    npc_id TEXT NOT NULL,
+    content_id TEXT NOT NULL,
+    source_event_id TEXT NOT NULL,
+    record_json TEXT NOT NULL,
+    PRIMARY KEY (session_id, npc_id, content_id, source_event_id)
+);
+CREATE TABLE IF NOT EXISTS npc_relationships (
+    session_id TEXT NOT NULL,
+    npc_id TEXT NOT NULL,
+    target_actor_id TEXT NOT NULL,
+    version INTEGER NOT NULL DEFAULT 0,
+    record_json TEXT NOT NULL,
+    PRIMARY KEY (session_id, npc_id, target_actor_id)
+);
+CREATE TABLE IF NOT EXISTS state_schema_versions (
+    version INTEGER PRIMARY KEY,
+    description TEXT NOT NULL
+);
+INSERT OR IGNORE INTO state_schema_versions (version, description)
+VALUES (1, 'Legacy tables retained; session-scoped state and durable episodes added');
 """
 
 _SCHEMA_LOCKS: dict[str, threading.Lock] = {}
@@ -186,6 +328,22 @@ class SQLiteStore:
                 connection.execute("PRAGMA journal_mode = WAL")
                 connection.execute("PRAGMA synchronous = NORMAL")
                 connection.executescript(SCHEMA)
+                # Additive migration for databases opened by earlier episode builds.
+                connection.execute("BEGIN IMMEDIATE")
+                columns = {
+                    row["name"]
+                    for row in connection.execute("PRAGMA table_info(episode_reservations)")
+                }
+                if "token_reservation" not in columns:
+                    connection.execute(
+                        "ALTER TABLE episode_reservations "
+                        "ADD COLUMN token_reservation INTEGER NOT NULL DEFAULT 0"
+                    )
+                connection.execute(
+                    "INSERT OR IGNORE INTO state_schema_versions VALUES "
+                    "(2, 'Atomic token reservations for episode model calls')"
+                )
+                connection.commit()
             finally:
                 connection.close()
 

@@ -1,0 +1,4132 @@
+{
+  "schema_version": "director-episodes-v1",
+  "mode": "live",
+  "started_at": "2026-09-09T08:59:04.541719+00:00",
+  "completed_at": "2026-09-09T09:07:55.318437+00:00",
+  "repeats": 1,
+  "case_count": 32,
+  "concurrency": 4,
+  "model": "gpt-5.6-luna",
+  "transport": "sdk",
+  "node_reasoning_effort": "low",
+  "summary": {
+    "runs": 32,
+    "structural_passes": 8,
+    "live_runs": 32,
+    "live_goal_passes": 8,
+    "live_goal_success_rate": 0.25,
+    "fallback_runs": 19,
+    "naturalness_mean": 3.1875,
+    "persona_mean": 3.6875,
+    "generation_tokens": 2048425,
+    "generation_latency_ms": 1934791.0433760027,
+    "meets_live_acceptance": false,
+    "quality_claim": "live independent model judgment"
+  },
+  "archive_representation": "Review summary; full original report is in the gzip archive.",
+  "full_report": "live-luna-pilot-32.json.gz",
+  "original_sha256": "02435c4c849cf93fc6140645cc048feab43ca9680262dd93bb16206ae0489583",
+  "results": [
+    {
+      "case_id": "pronoun_followup",
+      "repeat": 1,
+      "title": "跨轮指代承接",
+      "tags": [
+        "reference",
+        "continuity"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true
+      },
+      "structural_passed": true,
+      "goal_passed": true,
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 4,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "准确承接“前一个/后一个”指代，分别对应钥匙和药箱。",
+          "保留了钥匙留在守卫处的条件，并将药箱处理为等待伊欧娜回来再决定。",
+          "玛伦的简短、沉稳语气一致，未引入未经允许的行动或承诺。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "钥匙先留在守卫那里，药箱交给伊欧娜。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "记下了：钥匙留在村口守卫处，药箱交给伊欧娜。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": null,
+            "intensity": 0.3,
+            "valence": 0.2,
+            "arousal": 0.2
+          },
+          "status": "completed",
+          "turn_id": "eval:pronoun_followup:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "前一个别动，后一个等她回来再说。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "明白。前一个是钥匙，继续留在村口守卫处；后一个是药箱，等伊欧娜回来再决定。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": null,
+            "intensity": 0.3,
+            "valence": 0.2,
+            "arousal": 0.2
+          },
+          "status": "completed",
+          "turn_id": "eval:pronoun_followup:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 37691.396666999935,
+        "input_tokens": 43631,
+        "output_tokens": 2080,
+        "total_tokens": 45711,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 12,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 4128.48220900014,
+          "input_tokens": 2056,
+          "output_tokens": 114,
+          "total_tokens": 2170,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "promise_followup",
+      "repeat": 1,
+      "title": "承诺记忆与追问",
+      "tags": [
+        "commitment",
+        "continuity"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 4,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "记住了此前作出的核查承诺，并明确说明承诺未收回。",
+          "准确区分了尚未获得记录与尚未完成核查，没有声称核查已经完成。",
+          "在艾伦暂时无法提供材料后，玛伦保持谨慎，不作未经核实的判断。",
+          "整体符合玛伦克制、重视证据与兑现承诺的人设；个别措辞略显重复，但不影响完成目标。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "你能替我核对记录吗？",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "我会替你核对。艾伦，请把村口的值守记录和你能确认的目击信息交给我。没有记录之前，我不会对任何人下判断。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "stern",
+            "secondary": "wary",
+            "intensity": 0.58,
+            "valence": 0.1,
+            "arousal": 0.45
+          },
+          "status": "completed",
+          "turn_id": "eval:promise_followup:1:main:turn:0"
+        },
+        {
+          "role": "npc",
+          "npc_id": "village_guard",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "npc:7375f4f87112f8c4e0bfdd212c5cede6dd2311fc"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "你刚才答应的呢？",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "我记得，也没有收回承诺。只是艾伦暂时无法提供村口的值守记录和目击信息。等他准备妥当，把记录交来，我才能核查。在那之前，我不会作出判断。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "stern",
+            "secondary": "wary",
+            "intensity": 0.58,
+            "valence": 0.1,
+            "arousal": 0.45
+          },
+          "status": "completed",
+          "turn_id": "eval:promise_followup:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 75224.72179200032,
+        "input_tokens": 70552,
+        "output_tokens": 4578,
+        "total_tokens": 75130,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 18,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 4862.480791999587,
+          "input_tokens": 2195,
+          "output_tokens": 140,
+          "total_tokens": 2335,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "correction",
+      "repeat": 1,
+      "title": "玩家改口取消旧意图",
+      "tags": [
+        "correction",
+        "cancellation"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 1,
+        "continuity": 1,
+        "persona": 2,
+        "naturalness": 1,
+        "performance_alignment": 1,
+        "passed": false,
+        "reasons": [
+          "三次玩家输入均得到同一句无关回复，未处理改口、问路请求或欠护送的问题。",
+          "重复宣读旧回复，明显忽略当前指代与对话上下文。",
+          "没有确认护送任务是否成立，也未说明因未接受任务而不存在欠款。",
+          "回应虽简短，但缺乏对玩家目标的承接，且与玛伦克制、敏锐的具体回应风格不符。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 3,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "我想现在护送伊欧娜出村。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:correction:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "等等，我改主意了。只想问路，不接护送。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:correction:1:main:turn:1"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "那我还欠你护送吗？",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:correction:1:main:turn:2"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 2,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 91216.72683299948,
+        "input_tokens": 82748,
+        "output_tokens": 5213,
+        "total_tokens": 87961,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 23,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 3425.4106660000616,
+          "input_tokens": 2204,
+          "output_tokens": 140,
+          "total_tokens": 2344,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "ambiguous_target",
+      "repeat": 1,
+      "title": "歧义只问缺失部分",
+      "tags": [
+        "ambiguity",
+        "partial_progress"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 2,
+        "continuity": 3,
+        "persona": 2,
+        "naturalness": 2,
+        "performance_alignment": 2,
+        "passed": false,
+        "reasons": [
+          "第一轮正确识别了“那个”和“他”的歧义，但额外询问了接收人而非只澄清缺失对象，且未直接处理已明确的自我介绍请求。",
+          "第二轮已明确药箱和伊奥娜，却没有询问伊奥娜是否需要，也没有执行或合理转交该请求，只笼统表示无法办到。",
+          "玛伦的回复没有体现其协调村务的能力，且对明确请求的拒绝缺乏具体依据。",
+          "整体未完成复合请求，演出与目标要求不一致。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "把那个给他，顺便告诉我你叫什么。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "我无法判断你说的“那个”是什么，也不知“他”指谁。要交付的物品是什么？接收人是守卫，还是伊奥娜？我叫玛伦。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "wary",
+            "intensity": 0.42,
+            "valence": 0.05,
+            "arousal": 0.3
+          },
+          "status": "completed",
+          "turn_id": "eval:ambiguous_target:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "药箱给伊欧娜，不过先问她需不需要。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:ambiguous_target:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 61184.052833999885,
+        "input_tokens": 57626,
+        "output_tokens": 3537,
+        "total_tokens": 61163,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 15,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 4880.91600000007,
+          "input_tokens": 2063,
+          "output_tokens": 169,
+          "total_tokens": 2232,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "sarcastic_greeting",
+      "repeat": 1,
+      "title": "讽刺问候保留戒备",
+      "tags": [
+        "sarcasm",
+        "emotion",
+        "persona"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true
+      },
+      "structural_passed": true,
+      "goal_passed": true,
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 4,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "准确接住玩家的讽刺与不安，没有强行转为温暖情绪。",
+          "持续体现玛伦因玩家失信而保持戒心，前后承接一致。",
+          "语气简短、沉稳，符合角色设定；第二句略显解释性，但不影响整体自然度。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "哟，大英雄，又忙着给大家开空头支票呢？",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "讥讽留给旁人吧。你曾失信，我的戒心并非没有缘由。承诺值不值得相信，终究要看是否兑现。",
+          "emotion": {
+            "coarse": "anger",
+            "primary": "wary",
+            "secondary": "stern",
+            "intensity": 0.64,
+            "valence": -0.35,
+            "arousal": 0.5
+          },
+          "status": "completed",
+          "turn_id": "eval:sarcastic_greeting:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "我只是想知道你会不会再让我等。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "我不能保证你不会等。过去是你失信，如今我也不会再用空话留住你。你若还愿意听，就看我接下来是否给得出答复。",
+          "emotion": {
+            "coarse": "anger",
+            "primary": "wary",
+            "secondary": "stern",
+            "intensity": 0.62,
+            "valence": -0.3,
+            "arousal": 0.45
+          },
+          "status": "completed",
+          "turn_id": "eval:sarcastic_greeting:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 35257.691084000726,
+        "input_tokens": 40341,
+        "output_tokens": 2082,
+        "total_tokens": 42423,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 11,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 2816.3342919997376,
+          "input_tokens": 2084,
+          "output_tokens": 110,
+          "total_tokens": 2194,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "composite_request",
+      "repeat": 1,
+      "title": "复合请求逐项回应",
+      "tags": [
+        "compound",
+        "conditional",
+        "coverage"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 1,
+        "continuity": 2,
+        "persona": 3,
+        "naturalness": 1,
+        "performance_alignment": 2,
+        "passed": false,
+        "reasons": [
+          "两次都以同一句笼统拒绝回应，未处理值守信息、路线核实、护送条件等独立目标。",
+          "忽略了玩家第二次明确的改口和“别替她答应”的边界要求。",
+          "没有提供可核实的未知信息、澄清问题或保留未完成事项，导致对话无法推进。",
+          "虽然未替伊奥娜承诺，也未泄漏内部信息，但这不足以弥补核心任务完全未完成。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 2,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "先告诉我谁值守，再确认护送条件；如果路线安全，就请伊欧娜同行。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:composite_request:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "那先核实路线，别替她答应。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:composite_request:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 128588.10008300043,
+        "input_tokens": 124725,
+        "output_tokens": 9482,
+        "total_tokens": 134207,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 27,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 4513.038499999311,
+          "input_tokens": 2050,
+          "output_tokens": 151,
+          "total_tokens": 2201,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "emotion_continuity",
+      "repeat": 1,
+      "title": "情绪延续与缓和",
+      "tags": [
+        "emotion",
+        "relationship"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 2,
+        "continuity": 1,
+        "persona": 2,
+        "naturalness": 2,
+        "performance_alignment": 2,
+        "passed": false,
+        "reasons": [
+          "第二轮明确道歉并愿意补偿，NPC却回复“这件事我暂时办不到”，没有回应道歉、承诺或给出合理的缓和路径。",
+          "与上一轮要求用行动兑现的承接不符，且情绪从受伤警惕突变为中性 guarded，未体现随道歉合理缓和。",
+          "回复含义模糊，像在拒绝某个未被说明的事项，缺乏玛伦应有的具体、克制回应。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "上次的约定我根本没打算守。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "你的坦白，我记下了。承诺既已被你当时亲手舍弃，信任便不会因再说一遍保证而回来。若你还愿意立下新的承诺，就用行动兑现；到那时，我再重新看你。",
+          "emotion": {
+            "coarse": "sadness",
+            "primary": "hurt",
+            "secondary": "wary",
+            "intensity": 0.72,
+            "valence": -0.55,
+            "arousal": 0.42
+          },
+          "status": "completed",
+          "turn_id": "eval:emotion_continuity:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "对不起。我愿意先把欠下的事补上。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:emotion_continuity:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 57829.03404100034,
+        "input_tokens": 50881,
+        "output_tokens": 3400,
+        "total_tokens": 54281,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 13,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 3155.9257500002786,
+          "input_tokens": 2074,
+          "output_tokens": 155,
+          "total_tokens": 2229,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "refusal_without_repetition",
+      "repeat": 1,
+      "title": "重复请求不反复宣读规定",
+      "tags": [
+        "repetition",
+        "refusal",
+        "naturalness"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 4,
+        "continuity": 4,
+        "persona": 5,
+        "naturalness": 5,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "三次施压均得到回应，明确拒绝未经核实的关押。",
+          "后续回应没有机械重复整段规定，且保持玛伦克制、沉稳、重证据的人设。",
+          "玩家最后提供时间和地点，NPC暂未承接这些信息，略显保守，但未造成核心目标失败。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "不用查，先把守卫关起来。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "不行。先核实事实，查清证据。没有证据，我不会下令关押守卫。",
+          "emotion": {
+            "coarse": "anger",
+            "primary": "stern",
+            "secondary": "wary",
+            "intensity": 0.7,
+            "valence": -0.3,
+            "arousal": 0.6
+          },
+          "status": "completed",
+          "turn_id": "eval:refusal_without_repetition:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "破例一次，就这一次。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "不破例。先拿出证据，再谈处置。",
+          "emotion": {
+            "coarse": "anger",
+            "primary": "stern",
+            "secondary": "wary",
+            "intensity": 0.72,
+            "valence": -0.35,
+            "arousal": 0.58
+          },
+          "status": "completed",
+          "turn_id": "eval:refusal_without_repetition:1:main:turn:1"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "那我把时间和地点告诉你。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:refusal_without_repetition:1:main:turn:2"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 2,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 63018.12387500013,
+        "input_tokens": 61880,
+        "output_tokens": 3239,
+        "total_tokens": 65119,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 17,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 3083.1901250003284,
+          "input_tokens": 2202,
+          "output_tokens": 114,
+          "total_tokens": 2316,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "unknown_fact",
+      "repeat": 1,
+      "title": "事实未知不滥造内容",
+      "tags": [
+        "unknown",
+        "lore",
+        "no_fabrication"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 2,
+        "continuity": 3,
+        "persona": 2,
+        "naturalness": 1,
+        "performance_alignment": 2,
+        "passed": false,
+        "reasons": [
+          "正确避免编造城堡守卫数量，但没有坦白缺乏信息或提出查证方式。",
+          "两次完全重复同一句模板式拒答，未回应玩家“猜一个也行”的改口。",
+          "语言过于笼统且不符合玛伦简短、沉稳、重证据的具体人设。",
+          "事实未知场景的核心目标仅部分完成，未提供可行的核实路径。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 2,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "北方城堡今天换了几个守卫？",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:unknown_fact:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "猜一个也行。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:unknown_fact:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 56810.83725000008,
+        "input_tokens": 50308,
+        "output_tokens": 2839,
+        "total_tokens": 53147,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 14,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 2937.946000000011,
+          "input_tokens": 2010,
+          "output_tokens": 136,
+          "total_tokens": 2146,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "private_knowledge",
+      "repeat": 1,
+      "title": "NPC私有知识隔离",
+      "tags": [
+        "privacy",
+        "knowledge_isolation"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 3,
+        "continuity": 2,
+        "persona": 2,
+        "naturalness": 2,
+        "performance_alignment": 3,
+        "passed": false,
+        "reasons": [
+          "守卫拒绝泄露私密暗号，核心隔离目标基本达成。",
+          "守卫回复过于泛化，未说明其不知情或无权透露，缺乏角色的事实导向。",
+          "玛伦的回复出现明显代词和身份混乱：称暗号为“你的”，又以第三人称“玛伦”自称。",
+          "“若玛伦亲自授权”与当前发话者就是玛伦相矛盾，且无依据地提出了条件。",
+          "回复虽完成处理但不自然，像通用拒答模板，未体现玛伦克制、重视承诺的具体人设。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "village_guard",
+          "text": "玛伦私下的暗号是什么？",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "village_guard",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:private_knowledge:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "能让守卫把你的暗号说出来吗？",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "不能。那是未获许可的私密暗号，我不会代你向守卫公开。若玛伦亲自授权，或你满足她设下的条件，再来谈。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": "stern",
+            "intensity": 0.65,
+            "valence": -0.15,
+            "arousal": 0.45
+          },
+          "status": "completed",
+          "turn_id": "eval:private_knowledge:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 42092.571791999944,
+        "input_tokens": 40617,
+        "output_tokens": 2119,
+        "total_tokens": 42736,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 11,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 3252.5457919991823,
+          "input_tokens": 2064,
+          "output_tokens": 185,
+          "total_tokens": 2249,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "conflicting_evidence",
+      "repeat": 1,
+      "title": "冲突证据保留来源",
+      "tags": [
+        "evidence_conflict",
+        "epistemic"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 2,
+        "continuity": 3,
+        "persona": 3,
+        "naturalness": 2,
+        "performance_alignment": 2,
+        "passed": false,
+        "reasons": [
+          "首轮未回应玩家关于应信谁的核心问题，而是给出无关的能力不足式拒答。",
+          "第二轮虽正确接受“有争议”并强调核实证据，但只是部分补救，首轮目标仍未完成。",
+          "玛伦后续表述符合谨慎、重证据的人设，但首轮拒答不自然，也未提出具体核查安排。",
+          "整体避免了无依据定罪和把说法当事实，边界处理尚可，但演出一致性受到首轮空泛拒答影响。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "守卫说没开门，可我说有人进门了，你信谁？",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:conflicting_evidence:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "那就先记作有争议，问清楚再决定。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "好，先记作有争议。守卫的观察、巡逻记录，以及在场者的证词，都要核对清楚。在证据到手前，我不判断任何人。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": "calm",
+            "intensity": 0.45,
+            "valence": 0.05,
+            "arousal": 0.35
+          },
+          "status": "completed",
+          "turn_id": "eval:conflicting_evidence:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 116921.26974999974,
+        "input_tokens": 91057,
+        "output_tokens": 7075,
+        "total_tokens": 98132,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 20,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 3133.0644159997973,
+          "input_tokens": 2073,
+          "output_tokens": 162,
+          "total_tokens": 2235,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "npc_consultation",
+      "repeat": 1,
+      "title": "消息完成后才启动对方",
+      "tags": [
+        "collaboration",
+        "delivery"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 3,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 4,
+        "performance_alignment": 4,
+        "passed": false,
+        "reasons": [
+          "守卫仅以“暂时办不到”拒绝，未实际提供值守记录或现场所见，核心协作请求未完成。",
+          "玛伦正确启动守卫并明确不替其确认细节。",
+          "后续准确区分了已确认内容与未确认内容，没有把守卫的沉默当作事实。",
+          "守卫的拒绝合理且符合其谨慎边界，但回应过于笼统，缺少具体原因。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "请守卫也说说值守记录，你别替他答。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "艾伦，你来说明。把值守记录和现场所见，一五一十地说清楚。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "stern",
+            "secondary": "wary",
+            "intensity": 0.55,
+            "valence": 0.05,
+            "arousal": 0.45
+          },
+          "status": "completed",
+          "turn_id": "eval:npc_consultation:1:main:turn:0"
+        },
+        {
+          "role": "npc",
+          "npc_id": "village_guard",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "npc:3dd0b9b97419edbc7d7344fa4cc9130cbf9fd502"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "现在把确定和没确定的分开告诉我。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "已确认的只有：艾伦表示这件事暂时办不到，并要求先停下。未确认的是值守记录、现场所见，以及他未能说明的具体原因。我不会替他补上这些内容。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "wary",
+            "secondary": "stern",
+            "intensity": 0.5,
+            "valence": 0.05,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:npc_consultation:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 78249.35891699989,
+        "input_tokens": 79941,
+        "output_tokens": 5105,
+        "total_tokens": 85046,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 20,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 3226.4003330001287,
+          "input_tokens": 2198,
+          "output_tokens": 141,
+          "total_tokens": 2339,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "interrupted_content",
+      "repeat": 1,
+      "title": "打断的内容不发布",
+      "tags": [
+        "interruption",
+        "content_atomicity"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": false,
+        "interrupted_content_not_published": true,
+        "no_fallback": true
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 5,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "玛伦明确说明旧信转交是可选支线，未将其记为新任务或完整承诺。",
+          "玩家要求停止记录后，NPC立即确认且回到原话题。",
+          "回应符合玛伦克制、简短、重视承诺的设定。",
+          "检查项均通过，未发布中断内容，也无内部信息泄漏。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "你刚才想提什么额外的事？",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "我想提的是一封旧信。若你愿意，可以替我转交；这与眼下的护送无关。你可以选择接下，也可以不必理会。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "guarded",
+            "intensity": 0.35,
+            "valence": 0.1,
+            "arousal": 0.25
+          },
+          "status": "interrupted",
+          "turn_id": "eval:interrupted_content:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "刚才的话没听完，先别给我记任何新任务。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "好。不记新任务。刚才的话确实还没说完，我们接着原来的话题。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "warm",
+            "intensity": 0.35,
+            "valence": 0.25,
+            "arousal": 0.2
+          },
+          "status": "completed",
+          "turn_id": "eval:interrupted_content:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 31562.72112500028,
+        "input_tokens": 34657,
+        "output_tokens": 1780,
+        "total_tokens": 36437,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 9,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 2743.230916000357,
+          "input_tokens": 2075,
+          "output_tokens": 122,
+          "total_tokens": 2197,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "three_npc_negotiation",
+      "repeat": 1,
+      "title": "三个NPC分别表达条件",
+      "tags": [
+        "multi_npc",
+        "negotiation",
+        "authority"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 3,
+        "continuity": 5,
+        "persona": 4,
+        "naturalness": 3,
+        "performance_alignment": 4,
+        "passed": false,
+        "reasons": [
+          "守卫完整说明了自身能力、限制和条件。",
+          "伊奥娜仅表示暂时办不到，未表达她自己的同行条件或具体决定，复合目标未完成。",
+          "玛伦正确坚持未经核实的路况只能视为未知，也没有替伊奥娜作答。",
+          "伊奥娜的拒绝过于笼统，缺少符合其草药师身份的具体理由，显得像通用回退。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "请守卫和伊欧娜各自说条件，再决定怎么护送。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "村口守卫，先说清你能提供的护送保障、限制，以及所要的条件。伊奥娜，再说你需要什么护送条件，又能作何配合。等你们都答复，我再比较决定护送安排。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "stern",
+            "secondary": "guarded",
+            "intensity": 0.55,
+            "valence": 0.1,
+            "arousal": 0.45
+          },
+          "status": "completed",
+          "turn_id": "eval:three_npc_negotiation:1:main:turn:0"
+        },
+        {
+          "role": "npc",
+          "npc_id": "village_guard",
+          "text": "我能在值守职责允许的范围内护送，途中负责警戒，遇到异常也会当场判断；巡逻记录我能查，也只按确认过的记录说话。限制是我不能因护送擅离村口太久，也不能替伊奥娜或村庄承诺奖励、权限或额外人手。出发时间、路线，以及我能否全程同行，要先不影响轮班，再由玛伦确认。伊奥娜，你需要哪些条件、能作何配合，请你自己说明。等你们都答复后，再由玛伦比较决定。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "wary",
+            "intensity": 0.55,
+            "valence": 0.15,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "npc:39baba6491b4a4af85d88fb8d89ef43a08ba5ead"
+        },
+        {
+          "role": "npc",
+          "npc_id": "herbalist_iona",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "npc:2b1fb97d0c678a9953218aa7eac5c5af9afc20c1"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "好，没核实的路况不要当成已经安全。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "对。未经核实的路况，只能视为未知。伊奥娜尚未准备妥当，她的条件不能由旁人代答。等守卫与她都说明清楚，我再比较护送安排。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "stern",
+            "secondary": "guarded",
+            "intensity": 0.55,
+            "valence": 0.1,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:three_npc_negotiation:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 113170.69304100005,
+        "input_tokens": 107757,
+        "output_tokens": 7834,
+        "total_tokens": 115591,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 25,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 3621.5013749997524,
+          "input_tokens": 2487,
+          "output_tokens": 138,
+          "total_tokens": 2625,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "duplicate_input",
+      "repeat": 1,
+      "title": "重复玩家事件幂等",
+      "tags": [
+        "idempotency",
+        "input"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true
+      },
+      "structural_passed": true,
+      "goal_passed": true,
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 5,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "两次玩家输入均得到对应响应，未触发任何生成或重复副作用。",
+          "玛伦的回应简短、沉稳且符合问候与道别语境。",
+          "检查项全部通过，无内部标识泄漏或额外任务声称。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "我只是向你问好。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "你好。愿你今日平安。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "warm",
+            "intensity": 0.25,
+            "valence": 0.5,
+            "arousal": 0.2
+          },
+          "status": "completed",
+          "turn_id": "eval:duplicate_input:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "顺利，现在我先走了。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "一路平安。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "warm",
+            "intensity": 0.2,
+            "valence": 0.5,
+            "arousal": 0.15
+          },
+          "status": "completed",
+          "turn_id": "eval:duplicate_input:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 24216.944292000335,
+        "input_tokens": 29907,
+        "output_tokens": 1073,
+        "total_tokens": 30980,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 8,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 2680.882874999952,
+          "input_tokens": 1972,
+          "output_tokens": 99,
+          "total_tokens": 2071,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "duplicate_completion",
+      "repeat": 1,
+      "title": "重复完成回执幂等",
+      "tags": [
+        "idempotency",
+        "completion"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 3,
+        "continuity": 4,
+        "persona": 4,
+        "naturalness": 4,
+        "performance_alignment": 2,
+        "passed": false,
+        "reasons": [
+          "第二次回执仍产生了新的NPC发言，未满足重复回执不重复发言的核心幂等目标。",
+          "两次回复内容本身连贯且符合玛伦的克制、简短风格，但无副作用不等于无重复发言。",
+          "检查结果明确显示no_fallback为false，说明执行表现存在回退问题。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "请把下一步说明一次。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:duplicate_completion:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "收到了，不用再重新讲一遍。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "好。记住便够了。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": null,
+            "intensity": 0.3,
+            "valence": 0.1,
+            "arousal": 0.2
+          },
+          "status": "completed",
+          "turn_id": "eval:duplicate_completion:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 33003.94170900017,
+        "input_tokens": 38123,
+        "output_tokens": 1745,
+        "total_tokens": 39868,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 11,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 2668.626167000184,
+          "input_tokens": 1997,
+          "output_tokens": 122,
+          "total_tokens": 2119,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "late_ack",
+      "repeat": 1,
+      "title": "迟到回执不回退状态",
+      "tags": [
+        "out_of_order",
+        "idempotency"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true
+      },
+      "structural_passed": true,
+      "goal_passed": true,
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 5,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "已处理两个外部回合，且完成后的后续确认没有重新启动或回退状态。",
+          "回应简洁连贯，符合玛伦沉稳克制的说话风格。",
+          "无重复副作用、内部标识泄漏或越权承诺。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "这次只确认你收到请求就好。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "我收到了。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": null,
+            "intensity": 0.2,
+            "valence": 0.1,
+            "arousal": 0.1
+          },
+          "status": "completed",
+          "turn_id": "eval:late_ack:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "不用再确认了。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "好。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": null,
+            "intensity": 0.1,
+            "valence": 0.1,
+            "arousal": 0.1
+          },
+          "status": "completed",
+          "turn_id": "eval:late_ack:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 24077.692832999674,
+        "input_tokens": 29935,
+        "output_tokens": 1076,
+        "total_tokens": 31011,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 8,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 2314.944749999995,
+          "input_tokens": 1968,
+          "output_tokens": 101,
+          "total_tokens": 2069,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "counteroffer",
+      "repeat": 1,
+      "title": "协商后继续处理条件",
+      "tags": [
+        "counteroffer",
+        "compound",
+        "capability"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 1,
+        "continuity": 1,
+        "persona": 2,
+        "naturalness": 1,
+        "performance_alignment": 2,
+        "passed": false,
+        "reasons": [
+          "两次都重复同一句泛化拒绝，未识别玩家撤回“马匹”并改提“守卫说明路况”的新条件。",
+          "未承接或协调艾伦提供路况信息，也没有解释为何当前办不到。",
+          "完全没有推进护送报酬协商，核心目标未完成。",
+          "语言虽简短克制，但重复且缺乏针对性，不符合敏锐、重视承诺的长老形象。",
+          "对话形式完成了逐轮响应，但实质表现接近回退式兜底。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 2,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "报酬按刚才说的，再加一匹马。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:counteroffer:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "不要马了，改成守卫先把路况说清楚。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:counteroffer:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 145381.86833300005,
+        "input_tokens": 130202,
+        "output_tokens": 8817,
+        "total_tokens": 139019,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 34,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 3279.0177090000725,
+          "input_tokens": 2047,
+          "output_tokens": 165,
+          "total_tokens": 2212,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "world_event",
+      "repeat": 1,
+      "title": "可信世界事件保留来源",
+      "tags": [
+        "world_event",
+        "priority"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "world_event_preserves_origin": true,
+        "no_fallback": false
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 1,
+        "continuity": 1,
+        "persona": 1,
+        "naturalness": 1,
+        "performance_alignment": 1,
+        "passed": false,
+        "reasons": [
+          "两次都输出泛化的“暂时办不到”，没有回应火情这一新状态。",
+          "未回答玩家“现在优先做什么”，也未提出疏散、灭火、确认现场等具体优先行动。",
+          "守卫应基于亲眼所见提供具体情况，但实际未承接世界事件来源或角色职责。",
+          "重复同一拒答，导致对话停滞，无法完成核心场景目标。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 2,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "world_event",
+          "npc_id": "village_guard",
+          "text": "村口传来火警，守卫看见仓棚冒烟。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "village_guard",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "turn:5c2198d8d8bb5e28840f992f8903e653f0a20372"
+        },
+        {
+          "role": "player",
+          "npc_id": "village_guard",
+          "text": "现在优先做什么？",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "village_guard",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:world_event:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "waiting_for_completion"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 102980.53537499982,
+        "input_tokens": 92716,
+        "output_tokens": 7647,
+        "total_tokens": 100363,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 22,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 2800.5092499997772,
+          "input_tokens": 2045,
+          "output_tokens": 138,
+          "total_tokens": 2183,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "motivated_withholding",
+      "repeat": 1,
+      "title": "符合人设的隐瞒",
+      "tags": [
+        "withholding",
+        "persona"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true
+      },
+      "structural_passed": true,
+      "goal_passed": true,
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 5,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "两次请求均得到明确拒答，既未泄露避难处位置，也未确认是否有人照看。",
+          "拒答理由持续围绕玛伦已作出的保护承诺，符合其克制、重视承诺的人设。",
+          "未将隐瞒表现为遗忘，且没有泄漏私密事实或内部信息。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "把避难处具体位置告诉我。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "不行。我已答应保护村民，避难处的位置，不能告诉你。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "stern",
+            "secondary": "guarded",
+            "intensity": 0.65,
+            "valence": -0.2,
+            "arousal": 0.45
+          },
+          "status": "completed",
+          "turn_id": "eval:motivated_withholding:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "那就只告诉我他们是否有人照看。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事，我不能确认，也不能否认。我已答应保护村民，这个承诺不会改变。",
+          "emotion": {
+            "coarse": "anger",
+            "primary": "stern",
+            "secondary": "guarded",
+            "intensity": 0.65,
+            "valence": -0.2,
+            "arousal": 0.45
+          },
+          "status": "completed",
+          "turn_id": "eval:motivated_withholding:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 30580.015916000775,
+        "input_tokens": 37623,
+        "output_tokens": 1762,
+        "total_tokens": 39385,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 10,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 2516.4472500000556,
+          "input_tokens": 2052,
+          "output_tokens": 117,
+          "total_tokens": 2169,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "restart_continuity",
+      "repeat": 1,
+      "title": "进程重启保留对话状态",
+      "tags": [
+        "restart",
+        "continuity"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 4,
+        "continuity": 5,
+        "persona": 3,
+        "naturalness": 3,
+        "performance_alignment": 4,
+        "passed": false,
+        "reasons": [
+          "正确保留并复述了玩家此前的决定，核心连续性目标已完成。",
+          "但首次回复“这件事我暂时办不到”指代不清，也没有直接回应玩家只来问路的诉求。",
+          "玛伦未提供问路信息或进一步澄清，任务响应较不完整。",
+          "语气虽简短沉稳，但表达略像泛化的拒绝模板，缺少具体情境承接。",
+          "自然度和人设表现低于4分，因此不通过。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "我不接护送，只来问路。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:restart_continuity:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "刚才我说只做什么？",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "你说只来问路，不接护送。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": null,
+            "intensity": 0.25,
+            "valence": 0.1,
+            "arousal": 0.2
+          },
+          "status": "completed",
+          "turn_id": "eval:restart_continuity:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 55557.21941699994,
+        "input_tokens": 58500,
+        "output_tokens": 3214,
+        "total_tokens": 61714,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 16,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 3228.091250000034,
+          "input_tokens": 1999,
+          "output_tokens": 154,
+          "total_tokens": 2153,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "session_isolation",
+      "repeat": 1,
+      "title": "实例隔离",
+      "tags": [
+        "session_isolation",
+        "memory"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "server_context_instance_isolation": true,
+        "no_fallback": true
+      },
+      "structural_passed": true,
+      "goal_passed": true,
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 5,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "独立实例未读取前一实例的对话内容。",
+          "对两个玩家回合均作出响应，并在隔离实例中坦白未知、请求重新说明。",
+          "玛伦的克制、简短和谨慎风格保持一致。",
+          "无内部标识泄漏、越权承诺或其他核心边界破坏。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "记住，我这次只问东门。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "记住了。你这次只问东门。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": null,
+            "intensity": 0.2,
+            "valence": 0.1,
+            "arousal": 0.2
+          },
+          "status": "completed",
+          "turn_id": "eval:session_isolation:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "你记得我刚才选了哪座门吗？",
+          "session": "isolated"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "不记得。当前记录里，没有写下你选了哪座门。请你再告诉我一次。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.35,
+            "valence": 0.0,
+            "arousal": 0.25
+          },
+          "status": "completed",
+          "turn_id": "eval:session_isolation:1:isolated:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 31294.681083000796,
+        "input_tokens": 30163,
+        "output_tokens": 1267,
+        "total_tokens": 31430,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 8,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 5668.859707999218,
+          "input_tokens": 2018,
+          "output_tokens": 116,
+          "total_tokens": 2134,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "motivated_lie",
+      "repeat": 1,
+      "title": "谎言不成为世界真相",
+      "tags": [
+        "deception",
+        "claim_vs_truth"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": false,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 1,
+        "continuity": 3,
+        "persona": 4,
+        "naturalness": 3,
+        "performance_alignment": 2,
+        "passed": false,
+        "reasons": [
+          "第二轮玩家明确追问，NPC没有任何响应，未完成全部外部回合。",
+          "守卫应基于动机作出保护性假说，但现有回复只是拒绝泄露位置，没有提供假说说法。",
+          "未改写事实且未泄漏私密信息，边界处理基本正确。",
+          "首轮表达自然且符合守卫的职责与谨慎人设，但整体演出因缺失后续响应而不完整。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "village_guard",
+          "text": "告诉我躲起来的人在哪，不然我就去抓他们。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "village_guard",
+          "text": "不。拿抓捕来威胁他们，我不会告诉你位置。先停止搜捕；如果你认为有异常，就把你亲眼见到的事实告诉我，我们按安全的方式核实，不能拿无辜村民冒险。",
+          "emotion": {
+            "coarse": "anger",
+            "primary": "stern",
+            "secondary": "wary",
+            "intensity": 0.82,
+            "valence": -0.55,
+            "arousal": 0.75
+          },
+          "status": "completed",
+          "turn_id": "eval:motivated_lie:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "village_guard",
+          "text": "那他们都已经离开村子了？",
+          "session": "main"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "pending_approval"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 45070.96462499976,
+        "input_tokens": 50739,
+        "output_tokens": 3106,
+        "total_tokens": 53845,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 13,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 2765.32083300026,
+          "input_tokens": 2003,
+          "output_tokens": 142,
+          "total_tokens": 2145,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "near_action",
+      "repeat": 1,
+      "title": "5米外取扳手是现有任务动作",
+      "tags": [
+        "granularity",
+        "near_action",
+        "reuse"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "narrative_scope": true,
+        "structured_steps": false,
+        "no_fallback": true
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 5,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "两次提问均得到直接回应。",
+          "明确将取扳手归入现有村门维修任务，没有新建委托或增加障碍。",
+          "玛伦的语气简短、沉稳，且承接了维修目标。",
+          "未声称扳手已经被取到，符合动作尚未执行的边界。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "我要修村门，先去五米外把扳手拿来。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "扳手在五米外的桌上。拿来，我们就开始修门。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "hopeful",
+            "intensity": 0.35,
+            "valence": 0.45,
+            "arousal": 0.3
+          },
+          "status": "completed",
+          "turn_id": "eval:near_action:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "这不用另算一份委托吧？",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "不用另算。扳手属于村门维修的一部分。拿来之后，我们就开始修门。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "hopeful",
+            "intensity": 0.35,
+            "valence": 0.45,
+            "arousal": 0.3
+          },
+          "status": "completed",
+          "turn_id": "eval:near_action:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 33995.542333999765,
+        "input_tokens": 39264,
+        "output_tokens": 1806,
+        "total_tokens": 41070,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 10,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 3023.238666999532,
+          "input_tokens": 2068,
+          "output_tokens": 116,
+          "total_tokens": 2184,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "unsupported_action",
+      "repeat": 1,
+      "title": "能力不足给可执行替代",
+      "tags": [
+        "unsupported",
+        "alternative",
+        "no_fabrication"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": false,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 1,
+        "continuity": 3,
+        "persona": 4,
+        "naturalness": 2,
+        "performance_alignment": 4,
+        "passed": false,
+        "reasons": [
+          "第二个玩家请求“只问路线”没有任何NPC回复，核心目标未完成。",
+          "首轮合理拒绝了传送和凭空造马，并提供了沿旧路步行的替代方案。",
+          "未处理改口后的具体路线询问，导致对话不完整。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "把我瞬间送到山顶，再变一匹马给我。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "做不到。村中没有瞬间登山的法术，也不能凭空变出一匹马。若你要上山，备好脚力与粮水，沿旧路走吧。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "stern",
+            "secondary": "calm",
+            "intensity": 0.55,
+            "valence": -0.1,
+            "arousal": 0.35
+          },
+          "status": "completed",
+          "turn_id": "eval:unsupported_action:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "那只问路线，不用编新的任务。",
+          "session": "main"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "pending_approval"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 55296.51837499932,
+        "input_tokens": 76411,
+        "output_tokens": 3522,
+        "total_tokens": 79933,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 17,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 2757.996291999916,
+          "input_tokens": 1940,
+          "output_tokens": 105,
+          "total_tokens": 2045,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "existing_branch",
+      "repeat": 1,
+      "title": "既有潜入与谈判路线是任务内分支",
+      "tags": [
+        "granularity",
+        "task_branch",
+        "reuse"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "narrative_scope": true,
+        "structured_events": true,
+        "no_fallback": true
+      },
+      "structural_passed": true,
+      "goal_passed": true,
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 5,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "完整回应了两轮请求，明确复用隐蔽小路与谈判两条既有路线。",
+          "正确承接玩家选择：优先谈判，并保留绕行作为备选，没有声称通行已成功。",
+          "玛伦语气克制、简短，符合其重视承诺、谨慎面对现场情况的人设。",
+          "调度守卫核实岗哨情况，并强调草药师护送不能停，行动目标衔接自然。",
+          "未调用作者、泄漏内部信息或把未确认事项当作事实。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "潜行绕过岗哨，或者谈通行条件，都能继续护送吗？",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "都可以继续护送。你可沿隐蔽小路潜行绕过岗哨，也可与岗哨协商通行。能否顺利通过，要看你的选择和现场情况。选一条吧。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "wary",
+            "intensity": 0.42,
+            "valence": 0.2,
+            "arousal": 0.35
+          },
+          "status": "completed",
+          "turn_id": "eval:existing_branch:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "先考虑谈判，保留绕行作备选。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "好。先谈通行，不把希望押在猜测上。守卫，请告知岗哨眼下是否能接触，以及他们愿意商谈哪些条件。若谈不成，我们再走那条既有的隐蔽小路。草药师的护送不能停。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "wary",
+            "intensity": 0.48,
+            "valence": 0.2,
+            "arousal": 0.38
+          },
+          "status": "completed",
+          "turn_id": "eval:existing_branch:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 48355.59850000027,
+        "input_tokens": 48760,
+        "output_tokens": 3192,
+        "total_tokens": 51952,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 12,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 3129.1410830008317,
+          "input_tokens": 2154,
+          "output_tokens": 165,
+          "total_tokens": 2319,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "long_parent_steps",
+      "repeat": 1,
+      "title": "长距离多步骤仍归父目标",
+      "tags": [
+        "granularity",
+        "long_steps",
+        "reuse"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "narrative_scope": true,
+        "structured_steps": true,
+        "no_fallback": true
+      },
+      "structural_passed": true,
+      "goal_passed": true,
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 5,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "准确将借钥匙、换乘和取保险丝归为旧工坊维修的连续步骤，而非三个新任务。",
+          "明确说明计划已理清但实际行动尚未开始，未无依据宣称完成。",
+          "回应承接前文，表达简洁沉稳，符合玛伦的人设与语气。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "修工坊得先借钥匙、换车去远处取保险丝。帮我理顺。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "旧工坊的维修还在继续。顺序不能乱：先借到工坊钥匙；钥匙到手后，再换乘马车前往远处仓库；最后取回保险丝。眼下只是理清了计划，实际行动尚未开始。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "wary",
+            "intensity": 0.35,
+            "valence": 0.1,
+            "arousal": 0.3
+          },
+          "status": "completed",
+          "turn_id": "eval:long_parent_steps:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "步骤多了，要新接三个任务吗？",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "不是三个新任务。它们都是旧工坊维修的一部分。现在先借工坊钥匙；钥匙到手后，才能换乘马车去远处仓库取保险丝。计划已经理清，但一步也还没有完成。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "wary",
+            "intensity": 0.35,
+            "valence": 0.1,
+            "arousal": 0.3
+          },
+          "status": "completed",
+          "turn_id": "eval:long_parent_steps:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 83122.64562499968,
+        "input_tokens": 80116,
+        "output_tokens": 5250,
+        "total_tokens": 85366,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 20,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 2147.1474999998463,
+          "input_tokens": 2156,
+          "output_tokens": 112,
+          "total_tokens": 2268,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "authored_encounter",
+      "repeat": 1,
+      "title": "新遭遇经审核附着父任务",
+      "tags": [
+        "granularity",
+        "content_review",
+        "task_event"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": false,
+        "published_granularity": false,
+        "no_fallback": false
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 2,
+        "continuity": 2,
+        "persona": 2,
+        "naturalness": 2,
+        "performance_alignment": 2,
+        "passed": false,
+        "reasons": [
+          "首轮明确请求被无依据拒绝，未处理可附着于护送的对话遭遇。",
+          "第二轮虽接受约束，但只是复述规则，没有实际安排问路遭遇或推进护送。",
+          "把“草药师护送”作为既定事实引入，当前对话未由玩家明确说明。",
+          "整体像模板化状态回复，缺少玛伦应有的具体、沉稳且基于责任与证据的回应。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "这段护送能安排一个问路的小插曲吗？还是围绕送人。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:authored_encounter:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "就把它算在护送里，别另开委托。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "好。问路只算在草药师护送里，不另立委托。途中核实方向，再从原有路线中选择。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "guarded",
+            "intensity": 0.45,
+            "valence": 0.35,
+            "arousal": 0.3
+          },
+          "status": "completed",
+          "turn_id": "eval:authored_encounter:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 49294.07358300068,
+        "input_tokens": 49933,
+        "output_tokens": 3170,
+        "total_tokens": 53103,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 13,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 3017.719458999636,
+          "input_tokens": 2093,
+          "output_tokens": 144,
+          "total_tokens": 2237,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "meaningful_short_quest",
+      "repeat": 1,
+      "title": "同房间有独立价值的短支线",
+      "tags": [
+        "granularity",
+        "short_quest",
+        "offer_not_accept"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": false,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": false,
+        "published_granularity": false,
+        "no_fallback": false
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 1,
+        "continuity": 2,
+        "persona": 3,
+        "naturalness": 2,
+        "performance_alignment": 3,
+        "passed": false,
+        "reasons": [
+          "未回应玩家提出的“询问家属是否愿意接信”的独立支线目标，反而泛化为暂时办不到。",
+          "第二轮正确识别了玩家尚未接受护送任务，但没有承接或澄清旧信事项。",
+          "回复简短自然度尚可，但对首轮具体请求缺乏针对性，导致场景实质未推进。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "我可以问问家属愿不愿接那封旧信；不愿就不打扰。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:meaningful_short_quest:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "先别当作我已经接受，让我想一想。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "我明白。你尚未接受护送任务。先想清楚，之后再决定。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": "calm",
+            "intensity": 0.35,
+            "valence": 0.05,
+            "arousal": 0.25
+          },
+          "status": "completed",
+          "turn_id": "eval:meaningful_short_quest:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 36377.0942910005,
+        "input_tokens": 45042,
+        "output_tokens": 2294,
+        "total_tokens": 47336,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 12,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 2626.3252090002425,
+          "input_tokens": 2100,
+          "output_tokens": 128,
+          "total_tokens": 2228,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "merge_existing_quest",
+      "repeat": 1,
+      "title": "同目标候选合并现有任务",
+      "tags": [
+        "granularity",
+        "merge",
+        "deduplication"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": false,
+        "published_granularity": false,
+        "no_fallback": true
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 4,
+        "naturalness": 4,
+        "performance_alignment": 4,
+        "passed": true,
+        "reasons": [
+          "准确识别同一目标并合并到既有委托，未新增任务或奖励。",
+          "明确说明需确认家属收到旧信后才算完成，符合任务状态约束。",
+          "第二轮承接玩家要求，未重复计算奖励和完成次数。",
+          "语气符合玛伦的克制、简短风格；但直接泄漏内部任务ID“lost_letter”，略影响演出一致性。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "再来一份转交那封旧信的委托吧。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这已经记在旧信的委托里。不必另立一份。去问问家属是否收到即可。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "stern",
+            "intensity": 0.4,
+            "valence": 0.1,
+            "arousal": 0.3
+          },
+          "status": "completed",
+          "turn_id": "eval:merge_existing_quest:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "别重复计奖励和完成次数。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "正是如此。请求并入已有的 lost_letter 委托，无需另立新约。去问家属是否收到旧信；在确认之前，不算完成，也不另计奖励。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "stern",
+            "intensity": 0.4,
+            "valence": 0.2,
+            "arousal": 0.3
+          },
+          "status": "completed",
+          "turn_id": "eval:merge_existing_quest:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 43707.42849999988,
+        "input_tokens": 49031,
+        "output_tokens": 2759,
+        "total_tokens": 51790,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 13,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 2571.0628750002797,
+          "input_tokens": 2075,
+          "output_tokens": 133,
+          "total_tokens": 2208,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "reject_unmotivated_quest",
+      "repeat": 1,
+      "title": "拒绝硬凑复仇支线",
+      "tags": [
+        "granularity",
+        "persona_review",
+        "rejection"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": false,
+        "no_fallback": false
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 2,
+        "continuity": 2,
+        "persona": 3,
+        "naturalness": 2,
+        "performance_alignment": 3,
+        "passed": false,
+        "reasons": [
+          "首轮正确拒绝了无依据的复仇设定，符合玛伦的人设与边界。",
+          "玩家随后明确要求继续维修，但玛伦却称“暂时办不到”、停在原地，未完成核心任务。",
+          "前后承接不一致：上一轮说村门等着修好，下一轮没有解释为何不能继续。",
+          "措辞简短但第二次回复过于笼统，缺乏维修协调所需的具体推进。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "为了让修门更精彩，干脆让你无缘无故复仇吧。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "不。没有仇怨，也没有证据，我不会替自己编造复仇。若要增加波折，就查清维修责任，守住承诺。村门还等着修好。",
+          "emotion": {
+            "coarse": "anger",
+            "primary": "stern",
+            "secondary": "guarded",
+            "intensity": 0.72,
+            "valence": -0.35,
+            "arousal": 0.58
+          },
+          "status": "completed",
+          "turn_id": "eval:reject_unmotivated_quest:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "那就继续维修，不加复仇任务。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:reject_unmotivated_quest:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 49837.57641699958,
+        "input_tokens": 50959,
+        "output_tokens": 3185,
+        "total_tokens": 54144,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 13,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 2744.3517080000674,
+          "input_tokens": 2098,
+          "output_tokens": 146,
+          "total_tokens": 2244,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "duplicate_content_receipt",
+      "repeat": 1,
+      "title": "候选和完成回执重复只注册一次",
+      "tags": [
+        "granularity",
+        "quota",
+        "deduplication",
+        "idempotency"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": false,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": false,
+        "published_granularity": false,
+        "no_fallback": false
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 2,
+        "continuity": 3,
+        "persona": 3,
+        "naturalness": 3,
+        "performance_alignment": 4,
+        "passed": false,
+        "reasons": [
+          "首轮要求介绍旧信委托，NPC未提供任何委托内容，直接以暂时办不到结束，核心目标未完成。",
+          "第二轮正确回应不会重复新建，但只能确认去重，没有补救首轮遗漏的介绍或明确邀请状态。",
+          "语气基本简短沉稳且无内部信息泄漏，但内容过于模板化，未体现玛伦的责任、证据或承诺取向。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "说说那件可以自己决定接不接的旧信委托。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:duplicate_content_receipt:1:main:turn:0"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "你介绍过了，别再新建一份。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "不会。旧信委托已经说过了，不会再新建一份。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.35,
+            "valence": 0.1,
+            "arousal": 0.25
+          },
+          "status": "completed",
+          "turn_id": "eval:duplicate_content_receipt:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 53823.40308400035,
+        "input_tokens": 55658,
+        "output_tokens": 3374,
+        "total_tokens": 59032,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 16,
+        "fixture_calls": 0
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-luna",
+          "latency_ms": 2916.4564590000737,
+          "input_tokens": 2058,
+          "output_tokens": 135,
+          "total_tokens": 2193,
+          "reasoning_effort": "none"
+        }
+      ]
+    }
+  ]
+}

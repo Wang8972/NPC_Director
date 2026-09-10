@@ -1,4 +1,5 @@
 .PHONY: install format lint test demo catalog eval eval-live eval-live-main-sub ablations judge-calibration api load-test verify
+.PHONY: episode-eval episode-eval-live episode-demo
 
 install:
 	python3 -m pip install -e ".[dev]"
@@ -27,6 +28,15 @@ eval-live:
 eval-live-main-sub:
 	python3 -m eval.runner --mode live --architecture main_sub \
 		--output eval/reports/live_main_sub.json
+
+episode-eval:
+	python3 -m scripts.run_episode_eval --mode recorded --repeats 3
+
+episode-eval-live:
+	python3 -m scripts.run_episode_eval --mode live --transport sdk --repeats 3
+
+episode-demo:
+	python3 -m scripts.run_episode_demo --mode recorded
 
 ablations:
 	python3 -m eval.ablations --cases eval/cases/golden.jsonl \

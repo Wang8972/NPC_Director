@@ -59,13 +59,8 @@ def test_unrelated_model_resolves_default_profile() -> None:
 
 
 def test_qwen_model_infers_idealab_qwen_profile() -> None:
-    assert (
-        resolve_profile_name(Settings(model="qwen3.7-max")) == IDEALAB_QWEN_PROFILE_NAME
-    )
-    assert (
-        resolve_profile_name(Settings(director_model="qwen3.7-max"))
-        == IDEALAB_QWEN_PROFILE_NAME
-    )
+    assert resolve_profile_name(Settings(model="qwen3.7-max")) == IDEALAB_QWEN_PROFILE_NAME
+    assert resolve_profile_name(Settings(director_model="qwen3.7-max")) == IDEALAB_QWEN_PROFILE_NAME
 
 
 def test_idealab_qwen_profile_reuses_gateway_without_prompt_patches() -> None:
@@ -106,8 +101,10 @@ def test_idealab_prompts_extend_base_and_tag_versions() -> None:
     assert "强制路由纪律" in director
     baseline = prompts.baseline_instructions(BASELINE_INSTRUCTIONS)
     assert baseline.startswith(BASELINE_INSTRUCTIONS)
-    assert "情绪标注约定" in baseline
-    assert "情绪标注约定" in prompts.specialist_instructions("screenwriter", "base")
+    assert "intent只是功能摘要，不决定情绪" in baseline
+    assert "intent只是功能摘要，不决定情绪" in prompts.specialist_instructions(
+        "screenwriter", "base"
+    )
     # Only the screenwriter prompt is customized; other specialists stay untouched.
     assert prompts.specialist_instructions("lore", "base") == "base"
 

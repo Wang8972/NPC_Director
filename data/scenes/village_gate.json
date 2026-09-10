@@ -5,6 +5,21 @@
   "animator_state": "idle",
   "active_actions": [],
   "catalog_version": "m0-v1",
+  "quest_definitions": {
+    "herbalist_escort": {"title": "护送草药师", "issuer": "elder_maren", "assignee": "player", "objective": "护送伊奥娜安全出村"},
+    "lost_letter": {"title": "转交旧信", "issuer": "elder_maren", "assignee": "player", "objective": "将旧信交给家属并核实收到"},
+    "repair": {"title": "维修村门", "issuer": "elder_maren", "assignee": "player", "objective": "修好村门"}
+  },
+  "content_policy": {
+    "allowed_kinds": ["quest", "event", "background", "fact"],
+    "allowed_actions": ["dialogue", "npc_message", "quest_transition"],
+    "allowed_reward_types": ["relationship"],
+    "hard_constraints": [
+      "新增内容不能覆盖灰烬战争等已有固定历史。",
+      "不能宣称未发生的移动、交付、受伤或战斗已经完成。",
+      "新支线只能使用对话、NPC消息与已支持的任务状态转移。"
+    ]
+  },
   "capabilities": {
     "available_actions": [
       "idle",

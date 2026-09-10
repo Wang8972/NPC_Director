@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
+import sqlite3
 from collections.abc import Collection
 from dataclasses import dataclass
 from datetime import datetime
@@ -37,6 +38,7 @@ class StateCommitResult:
     state: NPCDomainState
     applied: bool
     committed_at: datetime
+    session_id: str | None = None
 
     @property
     def version(self) -> int:
@@ -56,18 +58,15 @@ class StateCommitResult:
 
 
 def _patch_hash(patch: StateChangeProposal) -> str:
-    payload = patch.model_dump(mode="json", exclude_none=True)
-    return hashlib.sha256(json_dumps(payload).encode()).hexdigest()
+    return hashlib.sha256(
+        json_dumps(patch.model_dump(mode="json", exclude_none=True)).encode()
+    ).hexdigest()
 
 
-def _unauthorized_paths(
-    patch: StateChangeProposal,
-    allowed_paths: Collection[str],
-) -> set[str]:
-    proposed_paths = extract_state_change_paths(patch)
+def _unauthorized_paths(patch: StateChangeProposal, allowed_paths: Collection[str]) -> set[str]:
     return {
         path
-        for path in proposed_paths
+        for path in extract_state_change_paths(patch)
         if not any(fnmatchcase(path, pattern) for pattern in allowed_paths)
     }
 
@@ -83,68 +82,64 @@ def _apply_patch(state: NPCDomainState, patch: StateChangeProposal) -> NPCDomain
                 relationship.get("affinity", 0) + patch.relationship.affinity_delta
             )
         updated.relationship = relationship
-
-    world_flags = updated.world_flags.copy()
-    for flag in patch.flags:
-        world_flags[flag.name] = flag.value
-    updated.world_flags = world_flags
-
-    quests = updated.quests.copy()
-    for quest in patch.quests:
-        quests[quest.quest_id] = quest.status
-    updated.quests = quests
+    updated.world_flags.update({flag.name: flag.value for flag in patch.flags})
+    updated.quests.update({quest.quest_id: quest.status for quest in patch.quests})
     return updated
 
 
+def _scope(session_id: str | None) -> tuple[str, str, str, tuple[str, ...]]:
+    if session_id is None:
+        return "npc_domain_states", "state_commits", "", ()
+    if not session_id.strip():
+        raise ValueError("session_id must not be blank")
+    return "scoped_npc_domain_states", "scoped_state_commits", "session_id = ? AND ", (session_id,)
+
+
 class DomainStateStore(SQLiteStore):
-    """SQLite source of truth for NPC state with optimistic, idempotent commits."""
+    """Scoped NPC truth with optimistic commits; session_id=None is legacy only."""
 
     def __init__(self, database: str | Path) -> None:
         super().__init__(database)
 
-    def get(self, npc_id: str) -> NPCDomainState | None:
+    def get(self, npc_id: str, *, session_id: str | None = None) -> NPCDomainState | None:
+        table, _, clause, scope = _scope(session_id)
         with self.connection() as connection:
             row = connection.execute(
-                "SELECT state_json FROM npc_domain_states WHERE npc_id = ?",
-                (npc_id,),
+                f"SELECT state_json FROM {table} WHERE {clause}npc_id = ?", (*scope, npc_id)
             ).fetchone()
-        if row is None:
-            return None
-        return NPCDomainState.model_validate_json(row["state_json"])
+        return None if row is None else NPCDomainState.model_validate_json(row["state_json"])
 
-    def get_or_create(self, npc_id: str) -> NPCDomainState:
-        initial = NPCDomainState(npc_id=npc_id)
-        serialized = initial.model_dump_json()
+    @staticmethod
+    def _insert_state(
+        connection: sqlite3.Connection,
+        state: NPCDomainState,
+        session_id: str | None,
+        *,
+        ignore: bool = False,
+    ) -> None:
+        table, _, _, scope = _scope(session_id)
+        columns = "session_id, " if session_id is not None else ""
+        placeholders = "?, " if session_id is not None else ""
+        verb = "INSERT OR IGNORE" if ignore else "INSERT"
+        connection.execute(
+            f"{verb} INTO {table} ({columns}npc_id, state_json, version, updated_at) "
+            f"VALUES ({placeholders}?, ?, ?, ?)",
+            (*scope, state.npc_id, state.model_dump_json(), state.version, datetime_text()),
+        )
+
+    def get_or_create(self, npc_id: str, *, session_id: str | None = None) -> NPCDomainState:
+        table, _, clause, scope = _scope(session_id)
         with self.transaction() as connection:
-            connection.execute(
-                """
-                INSERT OR IGNORE INTO npc_domain_states
-                    (npc_id, state_json, version, updated_at)
-                VALUES (?, ?, ?, ?)
-                """,
-                (npc_id, serialized, initial.version, datetime_text()),
-            )
+            self._insert_state(connection, NPCDomainState(npc_id=npc_id), session_id, ignore=True)
             row = connection.execute(
-                "SELECT state_json FROM npc_domain_states WHERE npc_id = ?",
-                (npc_id,),
+                f"SELECT state_json FROM {table} WHERE {clause}npc_id = ?", (*scope, npc_id)
             ).fetchone()
         assert row is not None
         return NPCDomainState.model_validate_json(row["state_json"])
 
-    def create(self, state: NPCDomainState) -> NPCDomainState:
+    def create(self, state: NPCDomainState, *, session_id: str | None = None) -> NPCDomainState:
         with self.transaction() as connection:
-            connection.execute(
-                """
-                INSERT INTO npc_domain_states (npc_id, state_json, version, updated_at)
-                VALUES (?, ?, ?, ?)
-                """,
-                (
-                    state.npc_id,
-                    state.model_dump_json(),
-                    state.version,
-                    datetime_text(),
-                ),
-            )
+            self._insert_state(connection, state, session_id)
         return state
 
     def save(
@@ -152,32 +147,27 @@ class DomainStateStore(SQLiteStore):
         state: NPCDomainState,
         *,
         expected_version: int | None = None,
+        session_id: str | None = None,
     ) -> NPCDomainState:
+        table, _, clause, scope = _scope(session_id)
         expected = state.version if expected_version is None else expected_version
         updated = state.model_copy(update={"version": expected + 1}, deep=True)
         with self.transaction() as connection:
             cursor = connection.execute(
-                """
-                UPDATE npc_domain_states
-                SET state_json = ?, version = ?, updated_at = ?
-                WHERE npc_id = ? AND version = ?
-                """,
+                f"UPDATE {table} SET state_json = ?, version = ?, updated_at = ? "
+                f"WHERE {clause}npc_id = ? AND version = ?",
                 (
                     updated.model_dump_json(),
                     updated.version,
                     datetime_text(),
+                    *scope,
                     updated.npc_id,
                     expected,
                 ),
             )
             if cursor.rowcount != 1:
-                current = connection.execute(
-                    "SELECT version FROM npc_domain_states WHERE npc_id = ?",
-                    (updated.npc_id,),
-                ).fetchone()
-                actual = None if current is None else current["version"]
                 raise OptimisticLockError(
-                    f"NPC {updated.npc_id!r} expected version {expected}, found {actual}"
+                    f"NPC {(session_id, state.npc_id)!r} no longer has version {expected}"
                 )
         return updated
 
@@ -189,108 +179,113 @@ class DomainStateStore(SQLiteStore):
         *,
         expected_version: int,
         allowed_paths: Collection[str] = (),
+        session_id: str | None = None,
     ) -> StateCommitResult:
+        with self.transaction() as connection:
+            return self.commit_completed_in_connection(
+                connection,
+                turn_id,
+                npc_id,
+                patch,
+                expected_version=expected_version,
+                allowed_paths=allowed_paths,
+                session_id=session_id,
+            )
+
+    def commit_completed_in_connection(
+        self,
+        connection: sqlite3.Connection,
+        turn_id: str,
+        npc_id: str,
+        patch: StateChangeProposal,
+        *,
+        expected_version: int,
+        allowed_paths: Collection[str] = (),
+        session_id: str | None = None,
+    ) -> StateCommitResult:
+        """Participate in a caller-owned completion transaction; never commits it."""
+        if not connection.in_transaction:
+            raise ValueError("completion requires an active transaction")
         unauthorized = _unauthorized_paths(patch, allowed_paths)
         if unauthorized:
-            paths = ", ".join(sorted(unauthorized))
-            raise StatePatchPermissionError(f"State patch paths are not allowed: {paths}")
-
+            raise StatePatchPermissionError(
+                "State patch paths are not allowed: " + ", ".join(sorted(unauthorized))
+            )
+        table, commits, clause, scope = _scope(session_id)
         fingerprint = _patch_hash(patch)
-        with self.transaction() as connection:
-            existing = connection.execute(
-                """
-                SELECT npc_id, patch_hash, expected_version, state_json, committed_at
-                FROM state_commits
-                WHERE turn_id = ?
-                """,
-                (turn_id,),
-            ).fetchone()
-            if existing is not None:
-                if (
-                    existing["npc_id"] != npc_id
-                    or existing["patch_hash"] != fingerprint
-                    or existing["expected_version"] != expected_version
-                ):
-                    raise IdempotencyConflictError(
-                        f"Turn {turn_id!r} was already committed with different state data"
-                    )
-                return StateCommitResult(
-                    turn_id=turn_id,
-                    npc_id=npc_id,
-                    state=NPCDomainState.model_validate_json(existing["state_json"]),
-                    applied=False,
-                    committed_at=parse_datetime(existing["committed_at"]),
+        existing = connection.execute(
+            f"SELECT npc_id, patch_hash, expected_version, state_json, committed_at "
+            f"FROM {commits} WHERE {clause}turn_id = ?",
+            (*scope, turn_id),
+        ).fetchone()
+        if existing is not None:
+            if (
+                existing["npc_id"] != npc_id
+                or existing["patch_hash"] != fingerprint
+                or existing["expected_version"] != expected_version
+            ):
+                raise IdempotencyConflictError(
+                    f"Turn {(session_id, turn_id)!r} already has a different commit"
                 )
-
-            row = connection.execute(
-                "SELECT state_json, version FROM npc_domain_states WHERE npc_id = ?",
-                (npc_id,),
-            ).fetchone()
-            if row is None:
-                current = NPCDomainState(npc_id=npc_id)
-                connection.execute(
-                    """
-                    INSERT INTO npc_domain_states (npc_id, state_json, version, updated_at)
-                    VALUES (?, ?, ?, ?)
-                    """,
-                    (npc_id, current.model_dump_json(), current.version, datetime_text()),
-                )
-            else:
-                current = NPCDomainState.model_validate_json(row["state_json"])
-
-            has_changes = bool(extract_state_change_paths(patch))
-            if has_changes and current.version != expected_version:
-                raise OptimisticLockError(
-                    f"NPC {npc_id!r} expected version {expected_version}, found {current.version}"
-                )
-
-            updated = _apply_patch(current, patch)
-            if has_changes:
-                updated.version = current.version + 1
-                cursor = connection.execute(
-                    """
-                    UPDATE npc_domain_states
-                    SET state_json = ?, version = ?, updated_at = ?
-                    WHERE npc_id = ? AND version = ?
-                    """,
-                    (
-                        updated.model_dump_json(),
-                        updated.version,
-                        datetime_text(),
-                        npc_id,
-                        expected_version,
-                    ),
-                )
-                if cursor.rowcount != 1:
-                    raise OptimisticLockError(
-                        f"NPC {npc_id!r} changed while committing turn {turn_id!r}"
-                    )
-
-            committed_at = utc_now()
-            connection.execute(
-                """
-                INSERT INTO state_commits
-                    (turn_id, npc_id, patch_hash, expected_version, resulting_version,
-                     state_json, committed_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-                """,
+            return StateCommitResult(
+                turn_id,
+                npc_id,
+                NPCDomainState.model_validate_json(existing["state_json"]),
+                False,
+                parse_datetime(existing["committed_at"]),
+                session_id,
+            )
+        row = connection.execute(
+            f"SELECT state_json, version FROM {table} WHERE {clause}npc_id = ?",
+            (*scope, npc_id),
+        ).fetchone()
+        if row is None:
+            current = NPCDomainState(npc_id=npc_id)
+            self._insert_state(connection, current, session_id)
+        else:
+            current = NPCDomainState.model_validate_json(row["state_json"])
+        has_changes = bool(extract_state_change_paths(patch))
+        if has_changes and current.version != expected_version:
+            raise OptimisticLockError(
+                f"NPC {(session_id, npc_id)!r} expected version {expected_version}, "
+                f"found {current.version}"
+            )
+        updated = _apply_patch(current, patch)
+        if has_changes:
+            updated.version = current.version + 1
+            cursor = connection.execute(
+                f"UPDATE {table} SET state_json = ?, version = ?, updated_at = ? "
+                f"WHERE {clause}npc_id = ? AND version = ?",
                 (
-                    turn_id,
-                    npc_id,
-                    fingerprint,
-                    expected_version,
-                    updated.version,
                     updated.model_dump_json(),
-                    datetime_text(committed_at),
+                    updated.version,
+                    datetime_text(),
+                    *scope,
+                    npc_id,
+                    expected_version,
                 ),
             )
-        return StateCommitResult(
-            turn_id=turn_id,
-            npc_id=npc_id,
-            state=updated,
-            applied=True,
-            committed_at=committed_at,
+            if cursor.rowcount != 1:
+                raise OptimisticLockError(f"NPC {npc_id!r} changed during commit")
+        committed_at = utc_now()
+        columns = "session_id, " if session_id is not None else ""
+        placeholders = "?, " if session_id is not None else ""
+        connection.execute(
+            f"INSERT INTO {commits} ({columns}turn_id, npc_id, patch_hash, expected_version, "
+            f"resulting_version, state_json, committed_at) "
+            f"VALUES ({placeholders}?, ?, ?, ?, ?, ?, ?)",
+            (
+                *scope,
+                turn_id,
+                npc_id,
+                fingerprint,
+                expected_version,
+                updated.version,
+                updated.model_dump_json(),
+                datetime_text(committed_at),
+            ),
         )
+        return StateCommitResult(turn_id, npc_id, updated, True, committed_at, session_id)
 
     def commit_completed_event(
         self,
@@ -300,15 +295,19 @@ class DomainStateStore(SQLiteStore):
         *,
         expected_version: int,
         allowed_paths: Collection[str] = (),
+        session_id: str | None = None,
     ) -> StateCommitResult:
         if EngineEventType(event.event_type) is not EngineEventType.COMPLETED:
             raise ValueError("Domain state can only be committed after a completed event")
+        if session_id is not None and event.session_id != session_id:
+            raise ValueError("completed event belongs to a different session")
         return self.commit_completed(
             event.turn_id,
             npc_id,
             patch,
             expected_version=expected_version,
             allowed_paths=allowed_paths,
+            session_id=session_id,
         )
 
     def apply_patch(
@@ -319,6 +318,7 @@ class DomainStateStore(SQLiteStore):
         turn_id: str,
         expected_version: int,
         allowed_paths: Collection[str] = (),
+        session_id: str | None = None,
     ) -> StateCommitResult:
         return self.commit_completed(
             turn_id,
@@ -326,13 +326,15 @@ class DomainStateStore(SQLiteStore):
             patch,
             expected_version=expected_version,
             allowed_paths=allowed_paths,
+            session_id=session_id,
         )
 
-    def has_commit(self, turn_id: str) -> bool:
+    def has_commit(self, turn_id: str, *, session_id: str | None = None) -> bool:
+        _, table, clause, scope = _scope(session_id)
         with self.connection() as connection:
             row = connection.execute(
-                "SELECT 1 FROM state_commits WHERE turn_id = ?",
-                (turn_id,),
+                f"SELECT 1 FROM {table} WHERE {clause}turn_id = ?",
+                (*scope, turn_id),
             ).fetchone()
         return row is not None
 
@@ -341,11 +343,11 @@ class DomainStateStore(SQLiteStore):
     apply_completed_event = commit_completed_event
     commit_on_completed = commit_completed_event
 
-    async def aget(self, npc_id: str) -> NPCDomainState | None:
-        return await asyncio.to_thread(self.get, npc_id)
+    async def aget(self, npc_id: str, *, session_id: str | None = None) -> NPCDomainState | None:
+        return await asyncio.to_thread(self.get, npc_id, session_id=session_id)
 
-    async def aget_or_create(self, npc_id: str) -> NPCDomainState:
-        return await asyncio.to_thread(self.get_or_create, npc_id)
+    async def aget_or_create(self, npc_id: str, *, session_id: str | None = None) -> NPCDomainState:
+        return await asyncio.to_thread(self.get_or_create, npc_id, session_id=session_id)
 
     async def acommit_completed(
         self,
@@ -355,6 +357,7 @@ class DomainStateStore(SQLiteStore):
         *,
         expected_version: int,
         allowed_paths: Collection[str] = (),
+        session_id: str | None = None,
     ) -> StateCommitResult:
         operation = partial(
             self.commit_completed,
@@ -363,5 +366,6 @@ class DomainStateStore(SQLiteStore):
             patch,
             expected_version=expected_version,
             allowed_paths=allowed_paths,
+            session_id=session_id,
         )
         return await asyncio.to_thread(operation)

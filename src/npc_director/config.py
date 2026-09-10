@@ -32,6 +32,20 @@ class Settings:
     max_specialist_calls: int = 4
     max_handoffs: int = 1
     max_repair_attempts: int = 2
+    max_model_calls: int = 32
+    max_execution_nodes: int = 32
+    max_plan_revisions: int = 2
+    max_output_tokens: int = 4096
+    max_episode_participants: int = 4
+    max_autonomous_turns: int = 6
+    max_new_quests: int = 1
+    max_total_tokens: int = 96_000
+    max_node_repairs: int = 1
+    planning_timeout_seconds: float = 180.0
+    quality_review_enabled: bool = True
+    inline_output_schema: bool | None = None
+    prompt_json_schemas: tuple[str, ...] = ("NarrativePlan",)
+    node_reasoning_effort: str = "low"
     max_concurrent_model_calls: int = 4
     model_retry_attempts: int = 3
     low_confidence_threshold: float = 0.55
@@ -74,6 +88,34 @@ class Settings:
             max_specialist_calls=int(os.getenv("NPC_DIRECTOR_MAX_SPECIALIST_CALLS", "4")),
             max_handoffs=int(os.getenv("NPC_DIRECTOR_MAX_HANDOFFS", "1")),
             max_repair_attempts=int(os.getenv("NPC_DIRECTOR_MAX_REPAIR_ATTEMPTS", "2")),
+            max_model_calls=int(os.getenv("NPC_DIRECTOR_MAX_MODEL_CALLS", "32")),
+            max_execution_nodes=int(os.getenv("NPC_DIRECTOR_MAX_EXECUTION_NODES", "32")),
+            max_plan_revisions=int(os.getenv("NPC_DIRECTOR_MAX_PLAN_REVISIONS", "2")),
+            max_output_tokens=int(os.getenv("NPC_DIRECTOR_MAX_OUTPUT_TOKENS", "4096")),
+            max_episode_participants=int(os.getenv("NPC_DIRECTOR_MAX_EPISODE_PARTICIPANTS", "4")),
+            max_autonomous_turns=int(os.getenv("NPC_DIRECTOR_MAX_AUTONOMOUS_TURNS", "6")),
+            max_new_quests=int(os.getenv("NPC_DIRECTOR_MAX_NEW_QUESTS", "1")),
+            max_total_tokens=int(os.getenv("NPC_DIRECTOR_MAX_TOTAL_TOKENS", "96000")),
+            max_node_repairs=int(os.getenv("NPC_DIRECTOR_MAX_NODE_REPAIRS", "1")),
+            planning_timeout_seconds=float(
+                os.getenv("NPC_DIRECTOR_PLANNING_TIMEOUT_SECONDS", "180")
+            ),
+            quality_review_enabled=os.getenv("NPC_DIRECTOR_QUALITY_REVIEW", "true").lower()
+            not in {"0", "false", "no"},
+            inline_output_schema=(
+                None
+                if os.getenv("NPC_DIRECTOR_INLINE_OUTPUT_SCHEMA", "auto").lower() == "auto"
+                else os.getenv("NPC_DIRECTOR_INLINE_OUTPUT_SCHEMA", "true").lower()
+                not in {"0", "false", "no"}
+            ),
+            prompt_json_schemas=tuple(
+                name.strip()
+                for name in os.getenv("NPC_DIRECTOR_PROMPT_JSON_SCHEMAS", "NarrativePlan").split(
+                    ","
+                )
+                if name.strip()
+            ),
+            node_reasoning_effort=os.getenv("NPC_DIRECTOR_NODE_REASONING_EFFORT", "low"),
             max_concurrent_model_calls=int(
                 os.getenv("NPC_DIRECTOR_MAX_CONCURRENT_MODEL_CALLS", "4")
             ),
@@ -97,6 +139,24 @@ class Settings:
         return settings
 
     def validate(self) -> None:
+        if self.node_reasoning_effort not in {"low", "medium", "high"}:
+            raise ValueError("node reasoning effort must be low, medium or high")
+        if not 1 <= self.max_episode_participants <= 20:
+            raise ValueError("episode participants must be between 1 and 20")
+        if not 0 <= self.max_autonomous_turns <= 20 or not 0 <= self.max_new_quests <= 10:
+            raise ValueError("invalid autonomous turn or new quest budget")
+        if self.max_total_tokens < 0 or not 0 <= self.max_node_repairs <= 10:
+            raise ValueError("invalid token or node repair budget")
+        if not 1 <= self.max_model_calls <= 64:
+            raise ValueError("NPC_DIRECTOR_MAX_MODEL_CALLS must be between 1 and 64")
+        if not 4 <= self.max_execution_nodes <= 32:
+            raise ValueError("NPC_DIRECTOR_MAX_EXECUTION_NODES must be between 4 and 32")
+        if not 0 <= self.max_plan_revisions <= 4:
+            raise ValueError("NPC_DIRECTOR_MAX_PLAN_REVISIONS must be between 0 and 4")
+        if self.planning_timeout_seconds <= 0:
+            raise ValueError("NPC_DIRECTOR_PLANNING_TIMEOUT_SECONDS must be positive")
+        if not 256 <= self.max_output_tokens <= 16384:
+            raise ValueError("NPC_DIRECTOR_MAX_OUTPUT_TOKENS must be between 256 and 16384")
         if self.orchestration_mode not in {"bounded", "react"}:
             raise ValueError("NPC_DIRECTOR_ORCHESTRATION_MODE must be 'bounded' or 'react'")
         if self.model_profile is not None:
@@ -136,6 +196,11 @@ class Settings:
         if role not in role_models:
             raise ValueError(f"unknown model role: {role}")
         return role_models[role] or self.model
+
+    def requires_inline_schema(self, model: object) -> bool:
+        if self.inline_output_schema is not None:
+            return self.inline_output_schema
+        return not isinstance(model, str) or not model.startswith("gpt-")
 
     def estimate_cost(self, input_tokens: int, output_tokens: int) -> float | None:
         if self.input_cost_per_million is None or self.output_cost_per_million is None:

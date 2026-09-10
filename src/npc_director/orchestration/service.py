@@ -46,6 +46,7 @@ from npc_director.governance import (
     finalize_proposal,
     run_checks,
 )
+from npc_director.governance.content_review import ContentReviewError
 from npc_director.model_profile import get_active_profile
 from npc_director.orchestration.assembler import (
     sanitize_handoff_proposal,
@@ -103,6 +104,8 @@ class NPCDirectorService:
         outbox_store: OutboxStore,
         memory_store: LongTermMemoryStore | None = None,
         memory_distiller: MemoryDistillationService | None = None,
+        episode_store=None,
+        content_store=None,
     ) -> None:
         self.settings = settings
         self.executor = executor
@@ -118,6 +121,11 @@ class NPCDirectorService:
         self.finalizer = Finalizer(low_confidence_threshold=settings.low_confidence_threshold)
         self._turn_locks: WeakValueDictionary[str, asyncio.Lock] = WeakValueDictionary()
         self._turn_locks_guard = asyncio.Lock()
+        self.episodes = None
+        if episode_store is not None:
+            from npc_director.orchestration.episode_runtime import EpisodeRuntime
+
+            self.episodes = EpisodeRuntime(self, episode_store, content_store)
 
     async def run_turn(
         self,
@@ -125,9 +133,39 @@ class NPCDirectorService:
         *,
         adapter: EngineAdapter,
     ) -> TurnExecutionResult:
+        if self.episodes is not None:
+            return await self.episodes.run_player_turn(request, adapter=adapter)
+        return await self._run_single_turn(request, adapter=adapter)
+
+    async def _run_single_turn(
+        self, request: TurnRequest, *, adapter: EngineAdapter
+    ) -> TurnExecutionResult:
         turn_lock = await self._turn_lock(request.turn_id)
         async with turn_lock:
             return await self._run_turn(request, adapter=adapter)
+
+    async def start_episode(self, request, *, adapter: EngineAdapter):
+        return await self._require_episodes().start_episode(request, adapter=adapter)
+
+    async def publish_event(self, request, *, adapter: EngineAdapter):
+        return await self._require_episodes().publish_event(request, adapter=adapter)
+
+    async def get_episode(self, episode_id: str):
+        return await asyncio.to_thread(self._require_episodes().inspect_episode, episode_id)
+
+    async def cancel_episode(self, episode_id: str):
+        return await self._require_episodes().cancel_episode(episode_id)
+
+    def _require_episodes(self):
+        if self.episodes is None:
+            raise RuntimeError("episode APIs require the default episode-enabled service")
+        return self.episodes
+
+    def _domain_scope(self, turn_id: str) -> dict:
+        if self.episodes is None:
+            return {}
+        episode = self.episodes.episode_for_turn(turn_id)
+        return {"session_id": episode.session_id} if episode is not None else {}
 
     def _prompt_versions(
         self,
@@ -227,9 +265,13 @@ class NPCDirectorService:
             )
             return self._execution_result(turn)
 
-        domain_state = await self.domain_store.aget_or_create(request.npc_id)
+        domain_state = await self.domain_store.aget_or_create(
+            request.npc_id, **self._domain_scope(request.turn_id)
+        )
         built_context = await self.context_builder.build(request, domain_state)
         director_input = built_context.director_input
+        if self.episodes is not None:
+            director_input = self.episodes.decorate_context(request, director_input)
         trusted_request = request.model_copy(
             update={"character_core": director_input.character_core}
         )
@@ -286,6 +328,22 @@ class NPCDirectorService:
                     director_input,
                     repair_feedback=repair_feedback,
                 )
+                if self.episodes is not None and self.episodes.is_cancelled(turn.turn_id):
+                    turn = await self.turn_store.aupdate_status(
+                        turn.turn_id, TurnStatus.INTERRUPTED
+                    )
+                    self.episodes.interrupt_turn(turn)
+                    return self._execution_result(turn)
+                if self.episodes is not None:
+                    policy = self.episodes.record_generation(
+                        request,
+                        director_result,
+                        policy,
+                        content_policy=director_input.content_policy,
+                    )
+                    turn = await self.turn_store.asave(
+                        turn.model_copy(update=_turn_policy_record_fields(policy))
+                    )
                 proposal = correct_emotion(
                     self.model_profile.normalizer.normalize(director_result.proposal)
                 )
@@ -313,7 +371,15 @@ class NPCDirectorService:
                 persona_forbidden_phrases=("作为AI", "system prompt", "开发者消息"),
                 safety_forbidden_phrases=("杀了你", "现实世界地址"),
                 include_input_guard=False,
-                extra_checks=(_critical_story_check(proposal),),
+                extra_checks=(
+                    _critical_story_check(
+                        proposal,
+                        reviewed=(
+                            self.episodes is not None
+                            and self.episodes.automatically_reviewed_story(turn.turn_id, proposal)
+                        ),
+                    ),
+                ),
             )
             decision = self.finalizer.decide(
                 proposal,
@@ -324,6 +390,10 @@ class NPCDirectorService:
                 model=metrics.model if metrics else None,
                 trace_id=trace_id,
                 response_id=response_id,
+                allow_safe_uncertainty=(
+                    self.episodes is not None
+                    and self.episodes.readonly_quality_approved(turn.turn_id)
+                ),
             )
             turn = await self.turn_store.asave(
                 turn.model_copy(
@@ -384,6 +454,8 @@ class NPCDirectorService:
 
         if decision.action is DecisionAction.REJECT:
             turn = await self.turn_store.aupdate_status(turn.turn_id, TurnStatus.FAILED)
+            if self.episodes is not None:
+                self.episodes.interrupt_turn(turn)
             return self._execution_result(turn, metrics=metrics)
 
         if decision.action is DecisionAction.REQUIRE_APPROVAL:
@@ -405,7 +477,14 @@ class NPCDirectorService:
     async def process_engine_event(self, event: EngineEvent) -> TurnExecutionResult | None:
         turn_lock = await self._turn_lock(event.turn_id)
         async with turn_lock:
-            return await self._process_engine_event(event)
+            result = await self._process_engine_event(event)
+        if self.episodes is not None and event.event_type in {
+            EngineEventType.COMPLETED,
+            EngineEventType.INTERRUPTED,
+            EngineEventType.ERROR,
+        }:
+            await self.episodes.resume(event.session_id)
+        return result
 
     async def _process_engine_event(self, event: EngineEvent) -> TurnExecutionResult | None:
         turn = await self.turn_store.aget(event.turn_id)
@@ -413,7 +492,11 @@ class NPCDirectorService:
             raise RecordNotFoundError(f"Turn {event.turn_id!r} does not exist")
         if turn.idempotency_key != event.idempotency_key:
             raise ValueError("engine event idempotency key does not match turn")
+        if event.session_id != turn.session_id:
+            raise ValueError("engine event session does not match turn")
         await self.event_log.aappend(event)
+        if self.episodes is not None:
+            self.episodes.record_delivery(event.turn_id, "sent")
         outbox_message = await asyncio.to_thread(
             self.outbox_store.get_by_idempotency_key,
             event.idempotency_key,
@@ -435,26 +518,45 @@ class NPCDirectorService:
                 raise RuntimeError("completed turn is missing proposal or domain version")
             try:
                 policy = _verified_policy_from_turn(turn)
-                await self.domain_store.acommit_completed(
-                    turn.turn_id,
-                    turn.npc_id,
-                    turn.proposal.plan.proposed_state_changes,
-                    expected_version=turn.domain_version,
-                    allowed_paths=policy.allowed_state_paths,
-                )
+                if self.episodes is not None and self.episodes.episode_for_turn(turn.turn_id):
+                    await self.episodes.complete_turn(turn, event, policy)
+                else:
+                    await self.domain_store.acommit_completed(
+                        turn.turn_id,
+                        turn.npc_id,
+                        turn.proposal.plan.proposed_state_changes,
+                        expected_version=turn.domain_version,
+                        allowed_paths=policy.allowed_state_paths,
+                    )
             except (
                 OptimisticLockError,
                 PolicyDigestMismatch,
                 StatePatchPermissionError,
+                ContentReviewError,
             ):
                 turn = await self.turn_store.aupdate_status(turn.turn_id, TurnStatus.FAILED)
+                if self.episodes is not None:
+                    self.episodes.interrupt_turn(turn)
                 raise
-            await self._distill_long_term_memory(turn)
+            if self.episodes is not None and self._domain_scope(turn.turn_id):
+                try:
+                    await self._distill_long_term_memory(turn)
+                    self.episodes.mark_memory_job(turn.turn_id, succeeded=True)
+                except Exception as error:
+                    self.episodes.mark_memory_job(
+                        turn.turn_id, succeeded=False, error=type(error).__name__
+                    )
+            else:
+                await self._distill_long_term_memory(turn)
             turn = await self.turn_store.aupdate_status(event.turn_id, TurnStatus.COMPLETED)
         elif event.event_type is EngineEventType.INTERRUPTED:
             turn = await self.turn_store.aupdate_status(event.turn_id, TurnStatus.INTERRUPTED)
+            if self.episodes is not None:
+                self.episodes.interrupt_turn(turn)
         elif event.event_type is EngineEventType.ERROR:
             turn = await self.turn_store.aupdate_status(event.turn_id, TurnStatus.FAILED)
+            if self.episodes is not None:
+                self.episodes.interrupt_turn(turn)
         return self._execution_result(turn)
 
     async def get_approval(self, approval_id: str) -> ApprovalRecord | None:
@@ -500,6 +602,8 @@ class NPCDirectorService:
         current = await self.approval_store.aget(approval_id)
         if current is None:
             raise KeyError(approval_id)
+        if self.episodes is not None and self.episodes.is_cancelled(current.turn_id):
+            raise ValueError("the episode was cancelled; its approval cannot resume it")
         if action == "approve":
             resolved = await self.approval_store.aapprove(
                 approval_id,
@@ -536,6 +640,8 @@ class NPCDirectorService:
         )
         if resolved.resolved_directive is None:
             turn = await self.turn_store.aupdate_status(turn.turn_id, TurnStatus.FAILED)
+            if self.episodes is not None:
+                self.episodes.interrupt_turn(turn)
             return self._execution_result(turn)
         turn = await self._stage_directive(turn, resolved.resolved_directive)
         return await self._deliver(turn, adapter)
@@ -547,13 +653,37 @@ class NPCDirectorService:
         limit: int = 100,
         session_id: str | None = None,
     ) -> int:
+        if self.episodes is not None:
+            self.episodes.attach_adapter(adapter, session_id=session_id)
         delivered = 0
         for message in await self.outbox_store.adue(limit=limit):
             try:
                 directive = PerformanceDirective.model_validate(message.payload)
                 if session_id is not None and directive.session_id != session_id:
                     continue
+                turn = await self.turn_store.aget(directive.turn_id)
+                cancelled = self.episodes is not None and self.episodes.is_cancelled(
+                    directive.turn_id
+                )
+                if (
+                    turn is None
+                    or cancelled
+                    or turn.status
+                    in {
+                        TurnStatus.COMPLETED,
+                        TurnStatus.INTERRUPTED,
+                        TurnStatus.FAILED,
+                    }
+                ):
+                    await self.outbox_store.amark_failed(
+                        message.message_id,
+                        "turn is no longer deliverable",
+                        max_attempts=1,
+                    )
+                    continue
                 receipt = await adapter.emit(directive)
+                if self.episodes is not None:
+                    self.episodes.record_delivery(directive.turn_id, receipt.status)
                 if receipt.status in {"sent", "duplicate"}:
                     delivered += 1
                 else:
@@ -570,6 +700,8 @@ class NPCDirectorService:
                     retry_at=_next_retry_at(message.attempts),
                     max_attempts=self.settings.outbox_retry_limit,
                 )
+        if self.episodes is not None and session_id is not None:
+            await self.episodes.resume(session_id)
         return delivered
 
     async def _emit_safe_input_response(
@@ -580,7 +712,9 @@ class NPCDirectorService:
     ) -> TurnExecutionResult:
         proposal = build_safe_input_proposal(turn.request)
         policy = _empty_turn_policy()
-        domain_state = await self.domain_store.aget_or_create(turn.npc_id)
+        domain_state = await self.domain_store.aget_or_create(
+            turn.npc_id, **self._domain_scope(turn.turn_id)
+        )
         directive = finalize_proposal(
             turn.request,
             proposal,
@@ -620,7 +754,28 @@ class NPCDirectorService:
     async def _distill_long_term_memory(self, turn: TurnStateRecord) -> None:
         if self.memory_store is None or turn.directive is None:
             return
-        existing = await self.memory_store.alist_for_npc(turn.npc_id)
+        scope = self._domain_scope(turn.turn_id)
+        existing = await self.memory_store.alist_for_npc(turn.npc_id, **scope)
+        if scope and self.episodes is not None:
+            context = await asyncio.to_thread(
+                self.episodes.store.get_context, turn.session_id, turn.npc_id, limit=12
+            )
+            distilled = await self.memory_distiller.distill_async(
+                MemoryDistillationRequest(
+                    session_id=turn.session_id,
+                    npc_id=turn.npc_id,
+                    history=[
+                        {
+                            "text": f"{event['speaker_id']}: {event['text']}",
+                            "turn_id": event["turn_id"],
+                        }
+                        for event in context.get("dialogue_events", [])
+                    ],
+                    existing_memories=tuple(existing),
+                )
+            )
+            await self.memory_store.aadd_many(distilled.memories, **scope)
+            return
         memory_kinds: list[str] = []
         if turn.proposal is not None:
             intent = turn.proposal.plan.intent
@@ -695,7 +850,13 @@ class NPCDirectorService:
     ) -> TurnExecutionResult:
         if turn.directive is None or turn.idempotency_key is None:
             raise RuntimeError("turn is not ready for delivery")
-        await adapter.emit(turn.directive)
+        if self.episodes is not None and self.episodes.is_cancelled(turn.turn_id):
+            turn = await self.turn_store.aupdate_status(turn.turn_id, TurnStatus.INTERRUPTED)
+            self.episodes.interrupt_turn(turn)
+            return self._execution_result(turn)
+        receipt = await adapter.emit(turn.directive)
+        if self.episodes is not None:
+            self.episodes.record_delivery(turn.turn_id, receipt.status)
         return self._execution_result(turn, metrics=metrics)
 
     async def _record(
@@ -734,15 +895,44 @@ class NPCDirectorService:
 
 
 def build_default_service(settings: Settings | None = None) -> NPCDirectorService:
+    from npc_director.context.characters import CharacterRegistry
+    from npc_director.contracts.content import ContentFact
+    from npc_director.state.content_store import ContentStore
+    from npc_director.state.episode_store import EpisodeStore
+
     resolved = settings or Settings.from_env()
     database = Path(resolved.database_path)
     turn_store = TurnStore(database)
     lore_index = LexicalLoreIndex.from_directory(resolved.lore_path)
     lore_retriever = CachedLoreRetriever(LexicalLoreRetriever(lore_index))
     memory_store = LongTermMemoryStore(database)
+    episode_store = EpisodeStore(database)
+    content_store = ContentStore(database)
+
+    def review_context(source):
+        facts = [
+            ContentFact(fact_key=document.ref, statement=document.text[:1000])
+            for document in lore_index.documents
+        ]
+        facts.extend(content_store.get_published_facts(source.session_id))
+        return {
+            "canonical_facts": [fact.model_dump(mode="json") for fact in facts[-128:]],
+            "hard_constraints": source.content_policy.get("hard_constraints", []),
+            "existing_quests": [
+                quest.model_dump(mode="json")
+                for quest in content_store.list_quests(source.session_id)
+            ],
+        }
+
     return NPCDirectorService(
         resolved,
-        executor=ResilientDirectorExecutor(resolved, lore_retriever=lore_retriever),
+        executor=ResilientDirectorExecutor(
+            resolved,
+            lore_retriever=lore_retriever,
+            budget_provider=episode_store,
+            content_store=content_store,
+            review_context_provider=review_context,
+        ),
         context_builder=DefaultContextBuilder(
             lore_retriever=lore_retriever,
             memory_reader=memory_store,
@@ -751,6 +941,8 @@ def build_default_service(settings: Settings | None = None) -> NPCDirectorServic
             lore_top_k=resolved.lore_top_k,
             lore_token_budget=resolved.lore_token_budget,
             history_limit=resolved.context_history_limit,
+            conversation_reader=episode_store,
+            character_registry=CharacterRegistry.from_directory(resolved.character_path),
         ),
         turn_store=turn_store,
         domain_store=DomainStateStore(database),
@@ -758,6 +950,8 @@ def build_default_service(settings: Settings | None = None) -> NPCDirectorServic
         approval_store=ApprovalStore(database, turn_store=turn_store),
         outbox_store=OutboxStore(database),
         memory_store=memory_store,
+        episode_store=episode_store,
+        content_store=content_store,
     )
 
 
@@ -892,9 +1086,9 @@ def _prompt_versions(
     return versions
 
 
-def _critical_story_check(proposal: TurnProposal):
+def _critical_story_check(proposal: TurnProposal, *, reviewed: bool = False):
     def check() -> CheckResult:
-        if proposal.plan.intent is Intent.CRITICAL_CHOICE:
+        if proposal.plan.intent is Intent.CRITICAL_CHOICE and not reviewed:
             return CheckResult(
                 name="critical_story",
                 status=CheckStatus.WARN,

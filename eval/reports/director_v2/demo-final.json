@@ -1,0 +1,218 @@
+{
+  "schema_version": "director-episodes-v1",
+  "mode": "recorded",
+  "started_at": "2026-09-09T21:12:28.486835+00:00",
+  "completed_at": "2026-09-09T21:12:29.011935+00:00",
+  "repeats": 1,
+  "case_count": 1,
+  "concurrency": 1,
+  "model": null,
+  "transport": "sdk",
+  "node_reasoning_effort": "low",
+  "dataset_sha256": "10a0fd5f5c7cdc4cbf85e7014d0e0919db372fe9f5b63caa5de43e83277a50e1",
+  "source_sha256": "c51d8095c11aab35e0f0a2b6505c77ddff352f0c8f7f9a7fb298041a680dc61d",
+  "summary": {
+    "runs": 1,
+    "structural_passes": 1,
+    "live_runs": 0,
+    "live_goal_passes": 0,
+    "live_goal_success_rate": null,
+    "fallback_runs": 0,
+    "naturalness_mean": null,
+    "persona_mean": null,
+    "generation_tokens": 0,
+    "generation_latency_ms": 498.6255420008092,
+    "unknown_usage_calls": 0,
+    "meets_live_acceptance": false,
+    "quality_claim": "No live quality claim: fixtures test orchestration and state invariants only."
+  },
+  "archive_representation": "Review summary; full original report is in the gzip archive.",
+  "full_report": "demo-final.json.gz",
+  "original_sha256": "87944ef5ab903a7d449d872498d3173ddba037424462dc830c12ff839bb13634",
+  "results": [
+    {
+      "case_id": "cooperation_review_demo",
+      "repeat": 1,
+      "title": "核实护送条件并提出可拒绝的旧信支线",
+      "tags": [
+        "demo",
+        "multi_npc",
+        "content_review",
+        "continuity"
+      ],
+      "mode": "recorded",
+      "source": "scripted_fixture",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "published_granularity": true,
+        "no_fallback": true
+      },
+      "structural_passed": true,
+      "goal_passed": null,
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "请大家分别说说护送条件。玛伦，你那封旧信的事也先说说，我还没决定。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "守卫先核实路况，伊欧娜说说自己的准备。另有一封旧信，想托你问家属是否愿接；这事你可以不接。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:cooperation_review_demo:1:main:turn:0"
+        },
+        {
+          "role": "npc",
+          "npc_id": "village_guard",
+          "text": "我能确认值守记录，没亲眼见到的部分得再查。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "npc:fb6b2c70b0e95a10fc1efacc9fd277cf69770d62"
+        },
+        {
+          "role": "npc",
+          "npc_id": "herbalist_iona",
+          "text": "我可以同行。先确认路上的安全，病人等不了太久。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "npc:db56485f2a7853d3b064547ff3ae0c2eac5fc37c"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "路况仍待守卫核实；伊奥娜的同行条件也保留着。旧信委托等你决定。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "npc:9badbc91b57ded33d8778e8b1fc3b49525c320db"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "旧信先让我想想。现在护送条件里，哪些还没确认？",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "旧信的事等你决定。护送路况还需核实，不能先当作安全。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:cooperation_review_demo:1:main:turn:1"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "对，记住我只是听了旧信委托，还没接受。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "记着，你还没有接受那件委托。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "eval:cooperation_review_demo:1:main:turn:2"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 2,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [
+        {
+          "quest_id": "generated_64d2e8e93736df3095f8bfd1",
+          "session_id": "eval:cooperation_review_demo:1:main",
+          "objective_key": "cooperation_review_demo",
+          "content_id": "content_32fcfeb94a5676608ff8101e264c7b32",
+          "status": "offered",
+          "version": 0
+        }
+      ],
+      "generation_metrics": {
+        "latency_ms": 498.6255420008092,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 32,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      }
+    }
+  ]
+}

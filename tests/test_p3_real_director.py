@@ -13,13 +13,13 @@ from npc_director.contracts import (
     DialogueDraft,
     PerformanceOutput,
     PerformancePlanMessage,
-    RouteDecision,
     SceneActionEventMessage,
     SceneActionPlanMessage,
     SceneObserveRequestMessage,
     TurnRequestMessage,
     WorldEventMessage,
 )
+from npc_director.contracts.planning import QualityVerdict, TurnAnalysis
 from npc_director.orchestration.bounded_executor import BoundedDirectorExecutor
 from npc_director.orchestration.executor import ResilientDirectorExecutor
 from npc_director.prototype.models import (
@@ -99,8 +99,7 @@ def generation(
                 "action": action,
                 "used_fact_ids": list(fact_map),
                 "grounded_claims": [
-                    {"fact_id": fact_id, "claim": claim}
-                    for fact_id, claim in fact_map.items()
+                    {"fact_id": fact_id, "claim": claim} for fact_id, claim in fact_map.items()
                 ],
             },
             "metrics": {
@@ -194,7 +193,7 @@ async def test_default_real_session_runs_resilient_bounded_chain_before_scene_ru
                 }
             }
         ),
-        RouteDecision: RouteDecision.model_validate(
+        TurnAnalysis: TurnAnalysis.model_validate(
             {
                 "intent": "other",
                 "objective": "回应玩家并准备检查发电机",
@@ -218,6 +217,9 @@ async def test_default_real_session_runs_resilient_bounded_chain_before_scene_ru
                     "confidence": 1.0,
                 }
             }
+        ),
+        QualityVerdict: QualityVerdict(
+            passed=True, naturalness=4, persona_consistency=4, response_coverage=4
         ),
     }
 
@@ -247,6 +249,7 @@ async def test_default_real_session_runs_resilient_bounded_chain_before_scene_ru
             "NPC Semantic Router",
             "Screenwriter",
             "Performance Specialist",
+            "Dialogue Quality Reviewer",
         ]
         plan = next(item for item in messages if isinstance(item, SceneActionPlanMessage))
         directive = plan.payload.pre_commit_directive
@@ -261,6 +264,8 @@ async def test_default_real_session_runs_resilient_bounded_chain_before_scene_ru
             "ResilientDirectorExecutor",
             "BoundedDirectorExecutor",
         ]
+        # The unchanged prototype report retains its legacy specialist summary;
+        # the actual invocation assertion above also includes the v2 quality node.
         assert report["model_call_count"] == 4
         assert report["turn_audit"][0]["routing_trace"]["final_intent"] == "other"
 
@@ -303,12 +308,10 @@ def test_trusted_projection_isolates_npc_private_facts(tmp_path: Path) -> None:
         assert contexts["guard_captain_maren"].visible_item_locations["spare_fuse"] == "unknown"
         assert contexts["porter_finn"].visible_item_locations["spare_fuse"] == "cargo_crate_c12"
         assert all(
-            context.object_states["generator"] == "not_inspected"
-            for context in contexts.values()
+            context.object_states["generator"] == "not_inspected" for context in contexts.values()
         )
         assert all(
-            context.object_states["cargo_crate_c12"] == "sealed"
-            for context in contexts.values()
+            context.object_states["cargo_crate_c12"] == "sealed" for context in contexts.values()
         )
     finally:
         session.close()
@@ -523,12 +526,14 @@ async def test_player_fact_transfer_updates_only_selected_npc(tmp_path: Path) ->
             )
         )
         assert any(isinstance(item, PerformancePlanMessage) for item in messages)
-        assert FACT_GENERATOR_MISSING_FUSE in session.repository.get_npc(
-            session.session_id, "guard_captain_maren"
-        ).known_fact_ids
-        assert FACT_GENERATOR_MISSING_FUSE not in session.repository.get_npc(
-            session.session_id, "porter_finn"
-        ).known_fact_ids
+        assert (
+            FACT_GENERATOR_MISSING_FUSE
+            in session.repository.get_npc(session.session_id, "guard_captain_maren").known_fact_ids
+        )
+        assert (
+            FACT_GENERATOR_MISSING_FUSE
+            not in session.repository.get_npc(session.session_id, "porter_finn").known_fact_ids
+        )
     finally:
         session.close()
 

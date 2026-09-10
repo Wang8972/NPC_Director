@@ -7,10 +7,8 @@ __all__ = ["INTENT_EMOTION_COMBOS", "correct_emotion"]
 
 _Combo = tuple[CoarseEmotion, PrimaryEmotion]
 
-# Legal coarse/primary combos per intent, aligned with the project emotion
-# conventions (see idealab_deepseek._EMOTION_CONVENTIONS). The first combo is
-# the deterministic correction target when the model picks an illegal one.
-# Intents absent from the table (e.g. OTHER) pass through untouched.
+# Legacy advisory examples retained for import compatibility only.
+# These examples do not constrain or rewrite contextual character emotion.
 INTENT_EMOTION_COMBOS: dict[Intent, tuple[_Combo, ...]] = {
     Intent.GREETING: (
         (CoarseEmotion.JOY, PrimaryEmotion.WARM),
@@ -84,23 +82,9 @@ INTENT_EMOTION_COMBOS: dict[Intent, tuple[_Combo, ...]] = {
 
 
 def correct_emotion(proposal: TurnProposal) -> TurnProposal:
-    """Deterministic pre-governance correction: replace an illegal coarse/primary
-    combo with the intent's default one; legal combos and unknown intents pass."""
-    combos = INTENT_EMOTION_COMBOS.get(proposal.plan.intent)
-    if not combos:
-        return proposal
-    emotion = proposal.performance.emotion
-    if (emotion.coarse, emotion.primary) in combos:
-        return proposal
-    coarse, primary = combos[0]
-    return proposal.model_copy(
-        update={
-            "performance": proposal.performance.model_copy(
-                update={
-                    "emotion": emotion.model_copy(
-                        update={"coarse": coarse, "primary": primary}
-                    )
-                }
-            )
-        }
-    )
+    """Compatibility hook: semantic emotion belongs to the character and dialogue.
+
+    Contracts already validate enum/range shape. A quality reviewer can request
+    a contextual revision; an intent label must never overwrite valid emotion.
+    """
+    return proposal

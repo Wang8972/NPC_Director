@@ -4,6 +4,7 @@ import json
 
 from agents import Agent
 from agents.agent_tool_input import StructuredToolInputBuilderOptions
+from pydantic import ConfigDict, create_model
 
 from npc_director.agents.handoffs import build_quest_negotiator_agent
 from npc_director.agents.specialists import (
@@ -28,6 +29,47 @@ NARRATIVE_TOOL_NAME = "narrative_planner"
 LORE_TOOL_NAME = "lore_specialist"
 SCREENWRITER_TOOL_NAME = "screenwriter"
 PERFORMANCE_TOOL_NAME = "performance_specialist"
+
+# The retained ReAct experiment uses strict function parameters. V2 context
+# bundles are server-built JSON, not arguments that a tool-calling model may
+# freely manufacture, so keep the original explicit tool input projection here.
+_LEGACY_NARRATIVE_FIELDS = {
+    "player_intent",
+    "scene_summary",
+    "current_quest_summary",
+    "relationship_summary",
+    "relevant_flags",
+    "allowed_state_paths",
+    "player_input",
+    "objective",
+    "history_summary",
+    "character_core",
+}
+_LEGACY_WRITER_FIELDS = {
+    "character_core",
+    "character_style",
+    "narrative_objective",
+    "narrative_constraints",
+    "lore_evidence",
+    "recent_history",
+    "player_input",
+    "response_obligations",
+    "narrative_beats",
+    "repair_feedback",
+}
+
+
+def _legacy_tool_parameters(contract, fields):
+    return create_model(
+        contract.__name__,
+        __config__=ConfigDict(extra="forbid"),
+        **{
+            name: (field.annotation, field)
+            for name, field in contract.model_fields.items()
+            if name in fields
+        },
+    )
+
 
 SPECIALIST_TOOL_NAMES = (
     NARRATIVE_TOOL_NAME,
@@ -150,7 +192,7 @@ def build_director_agent(
         narrative_planner.as_tool(
             tool_name=NARRATIVE_TOOL_NAME,
             tool_description=TOOL_DESCRIPTIONS[NARRATIVE_TOOL_NAME],
-            parameters=NarrativeInput,
+            parameters=_legacy_tool_parameters(NarrativeInput, _LEGACY_NARRATIVE_FIELDS),
             input_builder=build_minimal_specialist_input,
             include_input_schema=False,
             max_turns=resolved.max_turns,
@@ -166,7 +208,7 @@ def build_director_agent(
         screenwriter.as_tool(
             tool_name=SCREENWRITER_TOOL_NAME,
             tool_description=TOOL_DESCRIPTIONS[SCREENWRITER_TOOL_NAME],
-            parameters=ScreenwriterInput,
+            parameters=_legacy_tool_parameters(ScreenwriterInput, _LEGACY_WRITER_FIELDS),
             input_builder=build_minimal_specialist_input,
             include_input_schema=False,
             max_turns=resolved.max_turns,

@@ -14,6 +14,7 @@ from npc_director.contracts import (
     TurnProposal,
     TurnRequest,
     TurnStateRecord,
+    extract_state_change_paths,
 )
 
 FINALIZER_PROMPT_VERSION = "finalizer-v1"
@@ -109,6 +110,7 @@ class Finalizer:
         model: str | None = None,
         trace_id: str | None = None,
         response_id: str | None = None,
+        allow_safe_uncertainty: bool = False,
     ) -> FinalizationDecision:
         request = turn.request if isinstance(turn, TurnStateRecord) else turn
         failed = [check for check in checks if check.status is CheckStatus.FAIL]
@@ -119,7 +121,10 @@ class Finalizer:
                 reasons=[_check_reason(check) for check in hard_rejections[:12]],
             )
 
-        if proposal.performance.confidence < self.low_confidence_threshold:
+        if proposal.performance.confidence < self.low_confidence_threshold and not (
+            allow_safe_uncertainty
+            and not extract_state_change_paths(proposal.plan.proposed_state_changes)
+        ):
             reasons = [
                 "confidence: "
                 f"{proposal.performance.confidence:.3f} is below "

@@ -171,6 +171,14 @@ class DirectorContextBuilder:
         relationship_summary: str = "",
         relevant_flags: Sequence[str] = (),
         allowed_state_paths: Sequence[str] = (),
+        player_input: str = "",
+        objective: str = "",
+        history_summary: str = "",
+        character_core: str = "",
+        analysis: Mapping[str, Any] | None = None,
+        evidence: Sequence[Mapping[str, Any]] = (),
+        conversation_state: Mapping[str, Any] | None = None,
+        actor_context: Mapping[str, Any] | None = None,
         turn_id: str = "unbound",
     ) -> NarrativeInput:
         model = NarrativeInput(
@@ -180,6 +188,14 @@ class DirectorContextBuilder:
             relationship_summary=relationship_summary,
             relevant_flags=list(relevant_flags),
             allowed_state_paths=list(allowed_state_paths),
+            player_input=player_input,
+            objective=objective,
+            history_summary=history_summary,
+            character_core=character_core,
+            analysis=dict(analysis or {}),
+            evidence=[dict(item) for item in evidence],
+            conversation_state=dict(conversation_state or {}),
+            actor_context=dict(actor_context or {}),
         )
         return self._record(turn_id, ContextAudience.NARRATIVE_PLANNER, model)
 
@@ -211,6 +227,13 @@ class DirectorContextBuilder:
         lore_evidence: LoreRetrievalResult | LoreEvidence | Sequence[LoreEvidenceItem] = (),
         recent_history: Sequence[str] = (),
         response_obligations: Sequence[str] = (),
+        analysis: Mapping[str, Any] | None = None,
+        narrative_beats: Sequence[Any] = (),
+        negotiation: Mapping[str, Any] | None = None,
+        conversation_state: Mapping[str, Any] | None = None,
+        actor_context: Mapping[str, Any] | None = None,
+        pending_collaborations: Sequence[Mapping[str, Any]] = (),
+        repair_feedback: Sequence[str] = (),
         turn_id: str = "unbound",
     ) -> ScreenwriterInput:
         model = ScreenwriterInput(
@@ -222,6 +245,13 @@ class DirectorContextBuilder:
             recent_history=list(recent_history),
             player_input=player_input,
             response_obligations=list(response_obligations),
+            analysis=dict(analysis or {}),
+            narrative_beats=list(narrative_beats),
+            negotiation=dict(negotiation or {}),
+            conversation_state=dict(conversation_state or {}),
+            actor_context=dict(actor_context or {}),
+            pending_collaborations=[dict(item) for item in pending_collaborations],
+            repair_feedback=list(repair_feedback),
         )
         return self._record(turn_id, ContextAudience.SCREENWRITER, model)
 
@@ -250,6 +280,9 @@ class DirectorContextBuilder:
             coarse_emotion=coarse_emotion,
             primary_emotion=primary_emotion,
             secondary_emotion=secondary_emotion,
+            intensity=draft.intensity if draft else 0.5,
+            valence=draft.valence if draft else 0,
+            arousal=draft.arousal if draft else 0.4,
             scene_summary=scene_summary,
             allowed_actions=list(allowed_actions),
             allowed_faces=list(allowed_faces),

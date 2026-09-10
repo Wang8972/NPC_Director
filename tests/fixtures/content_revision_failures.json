@@ -1,0 +1,339 @@
+{
+  "source_report": "artifacts/director-v2/live-luna-compiled-candidates.json",
+  "captured_at": "2026-09-09T17:45:11.227319+00:00",
+  "note": "Original live outputs before structured revision_edits; tests add proposed v2 edit codes explicitly.",
+  "cases": {
+    "authored_encounter": {
+      "candidate": {
+        "candidate_id": "candidate_need_escort_directions_choice_event",
+        "content_kind": "event",
+        "events": [
+          {
+            "choices": [
+              "相信问路结果，继续原定路线。",
+              "根据问路结果，改走另一条既有路线。"
+            ],
+            "consequences": [
+              "护送路线在既有选项中确定。",
+              "不新增任务目标、人物或奖励。"
+            ],
+            "description": "路人指向两条既有路线，但只愿说明方向，不替护送者作决定。玩家可以相信这条信息继续原路，也可以据此改走另一条既有路线。",
+            "event_id": "escort_directions_encounter",
+            "objective": {
+              "objective_id": "herbalist_escort",
+              "quest_id": "herbalist_escort",
+              "version": 0
+            }
+          }
+        ],
+        "expires_at": null,
+        "facts": [],
+        "need_id": "need_escort_directions_choice_event",
+        "objective_key": "herbalist_escort_directions_choice",
+        "required_actions": [
+          "dialogue",
+          "quest_transition"
+        ],
+        "reward_types": [],
+        "scope": {
+          "can_decline": false,
+          "character_motivation": "玛伦希望以可靠信息降低伊奥娜出村途中的风险。",
+          "completion_condition": "玩家与路人核实方向后，将信息用于选择一条既有护送路线。",
+          "independent_goal": "在护送途中核实方向并选择原有路线。",
+          "meaningful_outcomes": [
+            "继续原定路线。",
+            "根据问路结果改走另一条既有路线。"
+          ],
+          "merge_insufficient_reason": "护送任务定义未包含可复用的问路交谈与路线选择遭遇。",
+          "necessary_for_parent": false,
+          "parent_objective": {
+            "objective_id": "herbalist_escort",
+            "quest_id": "herbalist_escort",
+            "version": 0
+          },
+          "reason": "这是护送任务中的一次问路交谈与既有路线选择，不产生独立目标。",
+          "scope": "task_event"
+        },
+        "source_refs": [],
+        "steps": [
+          {
+            "action": "dialogue",
+            "completion_condition": "获得路人对既有路线方向的回答。",
+            "depends_on": [],
+            "description": "在路口向路人询问两条既有路线的方向，并判断其说法是否足以作为路线参考。",
+            "objective": {
+              "objective_id": "herbalist_escort",
+              "quest_id": "herbalist_escort",
+              "version": 0
+            },
+            "step_id": "ask_traveler_direction"
+          },
+          {
+            "action": "quest_transition",
+            "completion_condition": "完成一条既有护送路线的选择，护送目标保持不变。",
+            "depends_on": [
+              "ask_traveler_direction"
+            ],
+            "description": "根据核实到的方向，在原定路线与另一条既有路线之间作出选择，继续护送伊奥娜。",
+            "objective": {
+              "objective_id": "herbalist_escort",
+              "quest_id": "herbalist_escort",
+              "version": 0
+            },
+            "step_id": "choose_existing_route"
+          }
+        ],
+        "summary": "护送途中，玩家可向路人核实两条既有路线的方向，再决定继续原路或调整路径。该选择只影响护送路线，不改变护送草药师安全出村的目标。",
+        "title": "路口问路",
+        "visibility": "public"
+      },
+      "review": {
+        "action": "revise",
+        "candidate_id": "candidate_need_escort_directions_choice_event",
+        "final_scope": null,
+        "meaningful": true,
+        "merge_into": null,
+        "persona_consistent": true,
+        "reasons": [
+          "内容层级与父任务事件一致，动机、结果和人设基本成立。",
+          "required_actions中的 dialogue 与 quest_transition 均为允许的能力ID。",
+          "候选步骤将实物或路线结果用 quest_transition 表示，符合能力约束。",
+          "但候选声称存在“两条既有路线”及“另一条既有路线”，现有上下文未确认这些路线；不能随意补完未知事实。",
+          "候选还将路线调整描述为可执行的任务状态转移，但未提供已登记的路线状态或有效转移目标。"
+        ],
+        "revision_instructions": "保留为 herbalist_escort 下的 task_event；删除或改为不依赖未确认事实的路线表述，并将 quest_transition 限定为已有且可执行的护送路线状态。若无法确认路线状态，则仅保留对话遭遇，不新增路线选择转移。",
+        "setting_consistent": true
+      },
+      "retry_candidate": {
+        "candidate_id": "candidate_need_escort_directions_choice_event",
+        "content_kind": "event",
+        "events": [
+          {
+            "choices": [
+              "相信问路结果，继续原定路线。",
+              "根据问路结果，改走另一条既有路线。"
+            ],
+            "consequences": [
+              "在既有选项中确定护送路线。",
+              "不新增任务目标、人物或奖励。"
+            ],
+            "description": "路人说明既有路线的方向，但不替护送者作决定。",
+            "event_id": "escort_directions_encounter",
+            "objective": {
+              "objective_id": "herbalist_escort",
+              "quest_id": "herbalist_escort",
+              "version": 0
+            }
+          }
+        ],
+        "expires_at": null,
+        "facts": [],
+        "need_id": "need_escort_directions_choice_event",
+        "objective_key": "herbalist_escort_directions_choice",
+        "required_actions": [
+          "dialogue",
+          "quest_transition"
+        ],
+        "reward_types": [],
+        "scope": {
+          "can_decline": false,
+          "character_motivation": "玛伦希望以可靠信息降低伊奥娜出村途中的风险。",
+          "completion_condition": "玩家与路人核实方向后，将信息用于选择一条既有护送路线。",
+          "independent_goal": "在护送途中核实方向并选择原有路线。",
+          "meaningful_outcomes": [
+            "继续原定路线。",
+            "根据问路结果改走另一条既有路线。"
+          ],
+          "merge_insufficient_reason": "护送任务定义未包含可复用的问路交谈与路线选择遭遇。",
+          "necessary_for_parent": false,
+          "parent_objective": {
+            "objective_id": "herbalist_escort",
+            "quest_id": "herbalist_escort",
+            "version": 0
+          },
+          "reason": "这是护送任务中的问路交谈与既有路线选择，不产生独立目标。",
+          "scope": "task_event"
+        },
+        "source_refs": [],
+        "steps": [
+          {
+            "action": "dialogue",
+            "completion_condition": "获得路人对既有路线方向的回答。",
+            "depends_on": [],
+            "description": "在路口向路人询问两条既有路线的方向。",
+            "objective": {
+              "objective_id": "herbalist_escort",
+              "quest_id": "herbalist_escort",
+              "version": 0
+            },
+            "step_id": "ask_traveler_direction"
+          },
+          {
+            "action": "quest_transition",
+            "completion_condition": "确定一条既有护送路线。",
+            "depends_on": [
+              "ask_traveler_direction"
+            ],
+            "description": "根据回答，在原定路线与另一条既有路线之间作出选择，继续护送伊奥娜。",
+            "objective": {
+              "objective_id": "herbalist_escort",
+              "quest_id": "herbalist_escort",
+              "version": 0
+            },
+            "step_id": "choose_existing_route"
+          }
+        ],
+        "summary": "护送途中，玩家向路人核实既有路线方向，并选择继续原路或调整路径；护送目标不变。",
+        "title": "路口问路",
+        "visibility": "public"
+      },
+      "retry_review": {
+        "action": "revise",
+        "candidate_id": "candidate_need_escort_directions_choice_event",
+        "final_scope": null,
+        "meaningful": true,
+        "merge_into": null,
+        "persona_consistent": true,
+        "reasons": [
+          "内容定位为护送任务内事件，范围判断正确，不应另立任务。",
+          "setting_consistent、persona_consistent、meaningful均成立：问路与路线选择符合护送目标和玛伦重视证据、降低风险的动机。",
+          "required_actions中的dialogue与quest_transition均属于允许的能力ID。",
+          "但候选步骤把“在原定路线与另一条既有路线之间选择”写成可执行的任务转移；现有上下文未登记这两条路线或对应状态，因此无法确认该转移可执行，也不能擅自补完未知路线事实。",
+          "请仅修正为已登记的护送路线选择状态，或删去未定义的路线转移，保留问路事件对原任务路线选择的影响；不得新增路线、事实、奖励或任务目标。"
+        ],
+        "revision_instructions": "定向修正候选：将choose_existing_route的描述、完成条件和事件后果改为引用现有且已登记的护送路线选择/任务状态；若没有可引用的状态，则只保留dialogue问路事件，并移除quest_transition。",
+        "setting_consistent": true
+      }
+    },
+    "meaningful_short_quest": {
+      "candidate": {
+        "candidate_id": "candidate_optional_letter_delivery",
+        "content_kind": "quest",
+        "events": [],
+        "expires_at": null,
+        "facts": [],
+        "need_id": "need_optional_letter_delivery",
+        "objective_key": "deliver_old_letter_with_recipient_consent",
+        "required_actions": [
+          "dialogue",
+          "quest_transition"
+        ],
+        "reward_types": [
+          "relationship"
+        ],
+        "scope": {
+          "can_decline": true,
+          "character_motivation": "玩家希望帮助家属；玛伦希望兑现对故人的承诺。",
+          "completion_condition": "家属明确接受旧信，或明确拒绝且玩家停止打扰。",
+          "independent_goal": "询问家属是否愿意接过玛伦保管的旧信，并尊重其决定。",
+          "meaningful_outcomes": [
+            "家属接受旧信，玛伦兑现承诺。",
+            "家属拒绝，玩家尊重其边界，委托结束。"
+          ],
+          "merge_insufficient_reason": "护送草药师与旧信递交目标不同，不能合并。",
+          "necessary_for_parent": false,
+          "parent_objective": null,
+          "reason": "该目标与现有护送草药师任务独立，玩家可接受或拒绝，且有独立完成条件。",
+          "scope": "side_quest"
+        },
+        "source_refs": [],
+        "steps": [
+          {
+            "action": "dialogue",
+            "completion_condition": "家属明确接受或明确拒绝旧信。",
+            "depends_on": [],
+            "description": "向家属询问是否愿意接过玛伦保管的旧信；若对方拒绝，立即停止，不再劝说。",
+            "objective": {
+              "objective_id": "candidate_optional_letter_delivery",
+              "quest_id": null,
+              "version": 0
+            },
+            "step_id": "step_ask_family_consent"
+          }
+        ],
+        "summary": "玛伦请求玩家询问家属是否愿意接过一封由他保管的旧信；家属拒绝时立即停止。",
+        "title": "旧信的去处",
+        "visibility": "public"
+      },
+      "review": {
+        "action": "revise",
+        "candidate_id": "candidate_optional_letter_delivery",
+        "final_scope": null,
+        "meaningful": true,
+        "merge_into": null,
+        "persona_consistent": true,
+        "reasons": [
+          "目标具备独立性、可拒绝性和有意义结果，且与护送任务不重复。",
+          "但步骤和required_actions使用了不在policy.allowed_actions中的action ID“quest_transition”之外？required_actions中的“dialogue”合法，“quest_transition”也合法；实际问题是将实物旧信的交付隐含在仅支持对话的步骤中，未提供可执行的交付能力。",
+          "候选宣称询问并让家属接过旧信，但当前能力仅支持对话、NPC消息和任务状态转移，不能执行或确认实物交付。"
+        ],
+        "revision_instructions": "将目标与完成条件改为仅确认家属是否愿意接收旧信，并明确由玛伦后续亲自交付；不要宣称玩家已交付或家属已实际接过旧信。保持可拒绝性与接受/拒绝两种结果。",
+        "setting_consistent": true
+      },
+      "retry_candidate": {
+        "candidate_id": "candidate_optional_letter_delivery",
+        "content_kind": "quest",
+        "events": [],
+        "expires_at": null,
+        "facts": [],
+        "need_id": "need_optional_letter_delivery",
+        "objective_key": "deliver_old_letter_with_recipient_consent",
+        "required_actions": [
+          "dialogue",
+          "quest_transition"
+        ],
+        "reward_types": [
+          "relationship"
+        ],
+        "scope": {
+          "can_decline": true,
+          "character_motivation": "玩家希望帮助家属；玛伦希望兑现对故人的承诺。",
+          "completion_condition": "家属明确接受旧信，或明确拒绝且玩家停止打扰。",
+          "independent_goal": "询问家属是否愿意接过玛伦保管的旧信，并尊重其决定。",
+          "meaningful_outcomes": [
+            "家属接受旧信，承诺得到兑现。",
+            "家属拒绝，玩家尊重其边界，委托结束。"
+          ],
+          "merge_insufficient_reason": "护送草药师与旧信递交目标不同，不能合并。",
+          "necessary_for_parent": false,
+          "parent_objective": null,
+          "reason": "该目标与现有护送草药师任务独立，玩家可接受或拒绝，并有独立完成条件。",
+          "scope": "side_quest"
+        },
+        "source_refs": [],
+        "steps": [
+          {
+            "action": "dialogue",
+            "completion_condition": "家属明确接受或明确拒绝旧信。",
+            "depends_on": [],
+            "description": "向家属询问是否愿意接过玛伦保管的旧信；若对方拒绝，立即停止，不再劝说。",
+            "objective": {
+              "objective_id": "candidate_optional_letter_delivery",
+              "quest_id": null,
+              "version": 0
+            },
+            "step_id": "step_ask_family_consent"
+          }
+        ],
+        "summary": "玛伦请求玩家询问家属是否愿意接过一封由他保管的旧信；家属拒绝时立即停止。",
+        "title": "旧信的去处",
+        "visibility": "public"
+      },
+      "retry_review": {
+        "action": "revise",
+        "candidate_id": "candidate_optional_letter_delivery",
+        "final_scope": null,
+        "meaningful": true,
+        "merge_into": null,
+        "persona_consistent": true,
+        "reasons": [
+          "目标具备独立、可拒绝的关系选择，且与护送任务实质不同；但候选使用了不在 policy.allowed_actions 中的 required_actions 值“quest_transition”以外的程序动作？实际步骤 action 为 dialogue，合法。",
+          "当前唯一实质问题是步骤只支持对话，却将“接过旧信”写成可完成结果；候选未提供实物交付能力，不能把实体信件交付标为仅对话即可完成。",
+          "玛伦保管旧信、家属关系与接受结果均未在已发布事实中确认；候选将其作为任务前提，但这些内容来自当前世界上下文，需避免声称未经确认的交付事实。"
+        ],
+        "revision_instructions": "保留为独立可拒绝短支线，但将完成条件限定为家属明确表达接受或拒绝；若接受，仅记录意愿，不宣称信件已实际交付，除非运行时另有合法交付能力。确认候选中的 dialogue 与 quest_transition 均为允许的程序能力ID，并移除任何将实物交付视为已完成的表述。",
+        "setting_consistent": true
+      }
+    }
+  }
+}

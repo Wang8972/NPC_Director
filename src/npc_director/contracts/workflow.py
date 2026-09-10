@@ -5,6 +5,7 @@ from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
+from npc_director.contracts.content import ObjectiveEvent, ObjectiveStep
 from npc_director.contracts.enums import (
     ApprovalStatus,
     BodyAction,
@@ -19,6 +20,11 @@ from npc_director.contracts.enums import (
     UncertaintyKind,
 )
 from npc_director.contracts.performance import PerformanceDirective, TurnProposal
+from npc_director.contracts.planning import (
+    CollaborationRequest,
+    DialogueStateDelta,
+    ExecutionTrace,
+)
 from npc_director.contracts.routing import RouteDecision
 from npc_director.contracts.state import GenerationMetrics, TurnRequest
 
@@ -78,6 +84,12 @@ class DirectorRunResult(WorkflowContract):
     routing_trace: RoutingTrace | None = None
     trace_id: str | None = None
     response_id: str | None = None
+    execution_trace: ExecutionTrace | None = None
+    collaboration_messages: list[CollaborationRequest] = Field(default_factory=list, max_length=3)
+    dialogue_state_delta: DialogueStateDelta = Field(default_factory=DialogueStateDelta)
+    content_candidates: list[dict[str, Any]] = Field(default_factory=list, max_length=8)
+    objective_steps: list[ObjectiveStep] = Field(default_factory=list, max_length=16)
+    objective_events: list[ObjectiveEvent] = Field(default_factory=list, max_length=8)
 
 
 class TurnStateRecord(WorkflowContract):

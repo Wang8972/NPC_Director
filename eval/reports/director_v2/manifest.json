@@ -1,0 +1,137 @@
+{
+  "description": "Full JSON reports archived with deterministic gzip; decompressed bytes match original artifacts. Readable JSON summaries retain scores, checks and transcripts.",
+  "files": [
+    {
+      "original_path": "artifacts/director-v2/episodes-live-sol-release-34x3.json",
+      "uncompressed_sha256": "4023a7a4ecdf9958c36a3a77dfa6d1e860dadaa982029632dbc7f8783527652a",
+      "uncompressed_bytes": 10578990,
+      "full_report": "episodes-live-sol-release-34x3.json.gz",
+      "review_summary": "episodes-live-sol-release-34x3.json",
+      "compressed_bytes": 1051206,
+      "compressed_sha256": "cc849e43ec43713f8fc6d0b9e4fd5e30c7ddc41077b0a468c9f11660afd1aa22",
+      "completed": true
+    },
+    {
+      "original_path": "artifacts/director-v2/episodes-live-sol-final-content-regressions.json",
+      "uncompressed_sha256": "30ec4e9b4efe7a879ac6ec316de02a00d1434a9a6ce7e28e6490f898699b621e",
+      "uncompressed_bytes": 2560776,
+      "full_report": "episodes-live-sol-final-content-regressions.json.gz",
+      "review_summary": "episodes-live-sol-final-content-regressions.json",
+      "compressed_bytes": 281212,
+      "compressed_sha256": "d779429306a79093f7017875ee5da0f28bc57254ce39016a2830b50cda4e1810",
+      "completed": true
+    },
+    {
+      "original_path": "artifacts/director-v2/episodes-recorded-final.json",
+      "uncompressed_sha256": "89da042ace99eff3cebbe0429bcb3387285e3c3facbf5ac0e1353aec98114d03",
+      "uncompressed_bytes": 6839228,
+      "full_report": "episodes-recorded-final.json.gz",
+      "review_summary": "episodes-recorded-final.json",
+      "compressed_bytes": 603787,
+      "compressed_sha256": "b0c50987ef6af2735948a25f53bac1bd76c2dd35d387f5cc5f69d8c9a910ee66",
+      "completed": true
+    },
+    {
+      "original_path": "artifacts/director-v2/live-sol-objective-version-regression.json",
+      "uncompressed_sha256": "9f414cea1c3c63fe056bf5e80821fa4768ecec2b0913e7177ffdfafefce8bab2",
+      "uncompressed_bytes": 855457,
+      "full_report": "live-sol-objective-version-regression.json.gz",
+      "review_summary": "live-sol-objective-version-regression.json",
+      "compressed_bytes": 73132,
+      "compressed_sha256": "c109e754ad2239a3ac0f6e20e5167d46096a465d86daa3ba7acba6708b62d06f",
+      "completed": true
+    },
+    {
+      "original_path": "artifacts/director-v2/demo-final.json",
+      "uncompressed_sha256": "87944ef5ab903a7d449d872498d3173ddba037424462dc830c12ff839bb13634",
+      "uncompressed_bytes": 206430,
+      "full_report": "demo-final.json.gz",
+      "review_summary": "demo-final.json",
+      "compressed_bytes": 15617,
+      "compressed_sha256": "9be4d3cf9ddcf023a6bcb633c3231b6fa68987cd223690454121873714151a7d",
+      "completed": true
+    },
+    {
+      "original_path": "artifacts/director-v2/pytest-final.log",
+      "uncompressed_sha256": "68c075dc7e87469856dad5b30bde54fdfe722fd9911b7569839798c7c9da996e",
+      "uncompressed_bytes": 581,
+      "file": "pytest-final.log"
+    },
+    {
+      "original_path": "artifacts/director-v2/cases-before-final-calibration.jsonl",
+      "uncompressed_sha256": "719d35847a005283963cbc421ed5cceca5cfad5cd85fb95fb655b8d1b0cfdf81",
+      "uncompressed_bytes": 23026,
+      "file": "cases-before-final-calibration.jsonl"
+    },
+    {
+      "original_path": "artifacts/director-v2/episodes-live-sol-34x3.json",
+      "uncompressed_sha256": "de3c44d217844e1edc68777e1bf0476abc14dcfb4fc72c81b650bf4c66e47a50",
+      "uncompressed_bytes": 10289126,
+      "full_report": "episodes-live-sol-34x3.json.gz",
+      "review_summary": "episodes-live-sol-34x3.json",
+      "compressed_bytes": 1030821,
+      "compressed_sha256": "6f487919f0d1e09a551f8487bf0a148a2d224793cb67e6d3fedf2a4436de4100",
+      "completed": true
+    },
+    {
+      "original_path": "artifacts/director-v2/live-sol-shared-conversation.json",
+      "uncompressed_sha256": "bc1f1e58cb2113fc51279ad936b977bd528624388919c1af239fc9a9c52ae072",
+      "uncompressed_bytes": 446123,
+      "full_report": "live-sol-shared-conversation.json.gz",
+      "review_summary": "live-sol-shared-conversation.json",
+      "compressed_bytes": 38124,
+      "compressed_sha256": "6053b555733591cfbacba7b0efd965b2de2fb2801b3e4d471fb791d44371e4a9",
+      "completed": true
+    },
+    {
+      "original_path": "artifacts/director-v2/live-sol-branch-event-check.json",
+      "uncompressed_sha256": "879d1750a9a772c6a093a4299baca30dacc8a407c1fc889fcd1b6cb02fa40ac2",
+      "uncompressed_bytes": 197863,
+      "full_report": "live-sol-branch-event-check.json.gz",
+      "review_summary": "live-sol-branch-event-check.json",
+      "compressed_bytes": 21093,
+      "compressed_sha256": "6339f75ac60ee42d6bf957b93e0aeb4a0a32f44d1f5f7392e7375077840cda3b",
+      "completed": true
+    },
+    {
+      "original_path": "artifacts/director-v2/demo-reviewed-cooperation-final.json",
+      "uncompressed_sha256": "84ad55b6adda5cc7c2aaeae25075c250eae98bc0336e3babd8b0c6349dbfb1ab",
+      "uncompressed_bytes": 201880,
+      "full_report": "demo-reviewed-cooperation-final.json.gz",
+      "review_summary": "demo-reviewed-cooperation-final.json",
+      "compressed_bytes": 15295,
+      "compressed_sha256": "0778e7d2f43dbd4ff5beed5838258a829da3761625b163b4ccb2b75288e20956",
+      "completed": true
+    },
+    {
+      "original_path": "artifacts/director-v2/episodes-live-sol-34x3-final.json",
+      "uncompressed_sha256": "a1ff0ccb3c5f848c330f02c5cf6e4206c5d129ebb7e4600ec7b211e54388986a",
+      "uncompressed_bytes": 4412303,
+      "full_report": "episodes-live-sol-34x3-final.json.gz",
+      "review_summary": "episodes-live-sol-34x3-final.json",
+      "compressed_bytes": 429746,
+      "compressed_sha256": "a3773d09e497edbe19b2b6bcb25421372c46d365545f5fa878a108c344fda60d",
+      "completed": false
+    },
+    {
+      "original_path": "artifacts/director-v2/live-luna-pilot-32.json",
+      "uncompressed_sha256": "02435c4c849cf93fc6140645cc048feab43ca9680262dd93bb16206ae0489583",
+      "uncompressed_bytes": 3351779,
+      "full_report": "live-luna-pilot-32.json.gz",
+      "review_summary": "live-luna-pilot-32.json",
+      "compressed_bytes": 339233,
+      "compressed_sha256": "63e743378bdc6eceaec30f413236d50a5a52d074d65a8dbde33907c360c9078b",
+      "completed": true
+    },
+    {
+      "original_path": "artifacts/director-v2/live-luna-compiled-candidates.json",
+      "uncompressed_sha256": "15d16bb4e0b67d57bb6b0bb5b14991c56c3c9c4bc19d55124b997a75ce43158f",
+      "uncompressed_bytes": 796796,
+      "full_report": "live-luna-compiled-candidates.json.gz",
+      "review_summary": "live-luna-compiled-candidates.json",
+      "compressed_bytes": 78835,
+      "compressed_sha256": "72232a64fb5d4c78bb4ad956b1cc6c5c449b3f9ea33e62d50562bdbc608db4eb",
+      "completed": true
+    }
+  ]
+}

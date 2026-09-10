@@ -1,8 +1,9 @@
 # NPC Director
 
-面向 Unity 的 NPC 演出编排系统。Semantic Router 使用 OpenAI Agents SDK 理解回合语义，
-受约束的动态 DAG 按需调用剧情、Lore、台词和演出 Specialist；确定性 Workflow 负责权限、
-预算、组装、安全、HITL、状态提交、回放、outbox 和 Unity 副作用。
+面向 Unity 的 NPC 演出编排系统。Director / Planner 使用 OpenAI Agents SDK 理解复合请求，
+输出 `TurnAnalysis`，由 Runtime 编译并执行 `ExecutionPlan`。后端按需调用剧情、Lore、
+谈判、多 NPC 协作、内容创作与审核，再生成台词、情绪和演出；确定性 Workflow 负责权限、
+预算、组装、安全、HITL、状态提交、回放、outbox 和引擎副作用。
 
 本文档同时是面向游戏研发工程师的**接入操作手册**，按以下顺序阅读即可独立完成系统接入：
 
@@ -16,6 +17,30 @@
 
 ---
 
+## 架构升级与多轮验证
+
+默认 bounded 已升级为事件驱动的 Director / Planner，按需执行检索、剧情、返回式谈判、
+多 NPC 协作和内容创作审核，再进行台词、演出及质量检查。完整说明、结构图和预算见
+[架构设计](AGENT_ARCHITECTURE.md)。调用 `build_default_service()` 获得带实例隔离和持久
+episode 的默认服务；单独调用 executor 只生成一拍，不替代完成事件与世界状态提交。
+
+```bash
+.venv/bin/python -m scripts.run_episode_eval --mode recorded --repeats 3
+.venv/bin/python -m scripts.run_episode_demo --mode recorded
+.venv/bin/python -m scripts.run_episode_eval --mode live --repeats 3
+```
+
+原接口与 PerformanceDirective 1.0 保持兼容。新增 `start_episode`、`publish_event`、
+`get_episode`、`cancel_episode` 为后端 Python 接口；无需 Unity 可运行测试适配器。
+当前多轮用例为 **34 个场景 × 3 次重复 = 102 次执行**。recorded 验证编排与状态约束，
+live 质量只以完整独立评审报告为准。下文 M0–M6、36 条 golden 和原型 P3 说明保留为历史基线，
+不代表当前默认后端的验收结果。
+
+本次升级的 [验收记录](VALIDATION_DIRECTOR_V2.md) 汇总了 460 项测试、完整 102 次真实评测、
+最后修正后的 27 次内容回归及已知失败；真实评测成功率为 95.10%，自然度/人设均值为 4.59/4.91。
+评分单位、实际门槛与未完成人工标定的限制见 [评分标准](EVALUATION_STANDARDS.md)；
+实施中走过的弯路、根因、修复和回归证据见 [统一问题与复盘记录](ISSUE_LOG.md)。
+
 ## 1. 项目概述
 
 ### 1.1 项目定位
@@ -28,13 +53,17 @@ NPC Director 让游戏中的 NPC 具备"由 AI 导演编排"的对话与演出�
 系统的核心设计目标：
 
 - **结构化输出**：模型永远不直接驱动引擎，只产出通过 Pydantic 契约校验的语义内容。
-- **确定性治理**：安全、Lore 一致性、人设一致性、状态权限等检查全部由确定性代码执行。
+- **分层治理**：权限、schema、状态提交与硬约束由代码检查；叙事质量、人设和语义一致性
+  由独立 Reviewer / Judge 评审，评审结果仍须通过确定性准入。
 - **可回放可审计**：每个回合的请求、计划、指令、检查、事件全部持久化，支持确定性回放。
 - **工程可靠性**：at-least-once 投递 + 幂等去重、两阶段状态提交、断线重连、HITL 审批。
 
-### 1.2 当前状态
+### 1.2 当前后端与历史阶段基线
 
-M0–M6 的代码与离线阶段门均已完成：
+当前默认服务装配事件驱动 episode、实例隔离状态、多 NPC 消息、可审核内容及共享预算。
+测试与评测入口见第 6 节；模型质量、成本和延迟依赖目标模型的完整 live 报告。
+
+以下 M0–M6 表格记录升级前的代码与离线阶段门，供原接入方追溯：
 
 | 里程碑 | 已实现内容 | 验收状态 |
 |---|---|---|
@@ -46,22 +75,25 @@ M0–M6 的代码与离线阶段门均已完成：
 | M5 | FastAPI/WebSocket、Unity C# 客户端、白名单、TTS 接口、打断和重连去重 | 协议测试通过 |
 | M6 | BM25 JIT RAG、权限 scope、缓存、上下文压缩、长期记忆、重试/降级、压力测试 | 离线通过 |
 
-尚待用户配置后执行的只有真实 OpenAI 模型评测和 Unity Editor/Player 运行时联调。仓库内
-recorded baseline 与离线压力数据用于验证评测和治理链路，不代表线上模型质量、成本或延迟。
+这些历史 recorded baseline 与离线压力数据用于验证原评测和治理链路，不代表本次多轮后端
+或线上模型的质量、成本和延迟；Unity Editor/Player 联调仍是独立的接入验证。
 
 ### 1.3 核心边界
 
 - 模型节点只输出各自的 typed contract，不直接生成可信运行时字段或驱动 Unity；
   Finalizer 把真实调用链和 prompt 版本写入 `PerformanceDirective.runtime_meta`。
-- 生产默认由 Main Agent 输出语义 `RouteDecision`，Runtime 在可信预算和依赖图内动态执行；
-  只有任务条件或报酬谈判才 Handoff 给 `Quest Negotiator`，每回合最多一次。
+- 默认由 Director 输出 `TurnAnalysis`，Runtime 编译 `ExecutionPlan` 并在可信预算内执行。
+  依赖 NPC 咨询答复的操作进入 `deferred_nodes`，等待真实消息完成与回复后恢复。
+- `Quest Negotiator` 返回条款和未决问题，结果交回规划；旧 `RouteDecision` / Handoff
+  保留用于兼容回放和 `react` 消融。
 - 普通分支通过 typed artifact 传递材料，最终 `TurnProposal` 由确定性 Assembler 组装；
-  谈判 handoff 走专用 sanitizer。状态路径、动作、表情和真实调用轨迹不由模型自报。
+  Narrative 在 Author 前确定是否需要创作和内容层级。状态路径、动作、表情和真实调用轨迹不由模型自报。
 - 玩家输入是 user payload 中的不可信数据；命中 prompt injection 后不调用任何创作 Agent。
 - Backend Domain State 是业务真源，不信任 Unity 上报的 world flags 或客户端角色核心。
 - 状态建议仅在 Unity `performance.completed` 后提交；ACK 前 turn 保持 `ready_to_emit`。
 - outbox 使用 at-least-once 投递；Unity 用持久化 idempotency key 去重已完成和执行中计划。
 - Lore 在权限过滤后执行 BM25 JIT 检索，并受 top-k、token、字符和 TTL cache 预算约束。
+- 记忆、关系、知识和生成内容按 `session_id` 与 NPC 隔离；可访问的公开内容不自动等于角色已知。
 
 ---
 
@@ -69,63 +101,49 @@ recorded baseline 与离线压力数据用于验证评测和治理链路，不�
 
 ### 2.1 整体数据流
 
+```mermaid
+flowchart TB
+  I[玩家输入 / 可信世界事件 / 已送达NPC消息] --> S[默认服务：持久episode与服务端上下文]
+  S --> D[Director：TurnAnalysis]
+  D --> R[Runtime：ExecutionPlan / 权限 / 预算]
+  R -.按需.-> L[Lore检索]
+  R -.按需.-> N[Narrative Planner]
+  R -.按需.-> Q[返回式Quest Negotiator]
+  R -.按需.-> C[准备NPC协作请求]
+  N -.需要且获准创作.-> A[Content Author → Reviewer]
+  L --> B[结构化结果]
+  N --> B
+  Q --> B
+  C --> B
+  A --> B
+  B --> W[Screenwriter：台词与情绪]
+  W --> P[Performance → Quality Judge]
+  P --> F[确定性治理 / Assembler / Finalizer]
+  F --> O[outbox → Unity或测试适配器]
+  O -.completed.-> T[原子提交状态 / 内容 / 发言]
+  T --> DB[(实例与NPC隔离的SQLite状态)]
+  T -.消息送达与后继任务.-> S
+  DB --> S
 ```
-玩家输入 (Unity UI)
-    │  turn.request
-    ▼
-┌─────────────────────────────────────────────────────────────┐
-│ FastAPI / WebSocket  (src/npc_director/api)                 │
-│   /ws/{session_id}   /health   /approvals/{approval_id}    │
-└──────────────┬──────────────────────────────────────────────┘
-               ▼
-┌─────────────────────────────────────────────────────────────┐
-│ 确定性 Workflow  (src/npc_director/orchestration)           │
-│  1. 输入防护（prompt injection 检测）                        │
-│  2. 上下文与 TurnPolicy（角色 + 记忆 + 权限 + 历史压缩）     │
-│  3. Semantic Router → 受约束动态 DAG                         │
-│  4. 治理检查（安全/Lore/人设/状态权限/schema）              │
-│  5. 决策：emit / repair(限次) / require_approval / reject   │
-│  6. Finalizer 注入 runtime_meta → PerformanceDirective      │
-│  7. outbox 投递 → Unity；completed 后两阶段提交状态          │
-└──────┬──────────────────────────────────────┬───────────────┘
-       ▼                                      ▼
-┌────────────────────────┐        ┌───────────────────────────┐
-│ Bounded Main-sub DAG   │        │ SQLite 状态层             │
-│ Semantic Router        │        │ (src/npc_director/state)  │
-│ ├─ Narrative（可选）   │        │  domain / session / turn  │
-│ ├─ Runtime Lore（可选）│        │  approvals / events       │
-│ ├─ Screenwriter        │        │  outbox / 长期记忆        │
-│ ├─ Performance         │        └───────────────────────────┘
-│ ├─ Deterministic       │
-│ │  Assembler           │
-│ └─ Handoff: Quest      │
-│    Negotiator (≤1/回合)│
-└────────────────────────┘
-       │  performance.plan (directive + idempotency_key)
-       ▼
-┌─────────────────────────────────────────────────────────────┐
-│ Unity 客户端  (unity/NPCDirectorClient)                     │
-│  NPCDirectorClient → PerformanceExecutor →                  │
-│  Animator / 字幕 / FacialPresetController /                 │
-│  GazeController / 可选 TTS                                  │
-│  回传 ack / started / completed / interrupted / error       │
-└─────────────────────────────────────────────────────────────┘
-```
+
+咨询的请求节点和答复后才能执行的节点分别保留在 `nodes` 与 `deferred_nodes`。
+代码不会把尚未收到的 NPC 答复传给下游决策；完整调度、内容层级与审核边界见
+[架构设计](AGENT_ARCHITECTURE.md)。Unity wire 仍是一名 NPC 的一拍指令。
 
 ### 2.2 服务端组件说明
 
 | 目录 | 组件 | 职责 |
 |---|---|---|
-| `src/npc_director/contracts/` | 契约层 | Pydantic 单一契约源：`TurnRequest`、`TurnProposal`、`PerformanceDirective`、协议消息、枚举（动作/表情/情绪/凝视）。Agent、治理、eval、API、Unity 全部依赖这一份定义 |
-| `src/npc_director/agents/` | Agent 层 | `router.py` 只负责语义路由；`specialists/` 分别负责剧情、台词和演出；Lore 由 Runtime 按 Router 查询执行可信检索；`handoffs.py` 定义 Quest Negotiator；`director.py` 保留给 legacy ReAct 消融 |
-| `src/npc_director/governance/` | 治理层 | 确定性检查：`input_guard.py`（注入检测）、`safety_check.py`、`lore_check.py`、`persona_check.py`、`permissions.py`（状态 patch/工具白名单，fnmatch 通配）、`finalizer.py`（决策 emit/repair/审批/拒绝并注入可信 `runtime_meta`） |
-| `src/npc_director/orchestration/` | 编排层 | `bounded_executor.py` 执行受约束动态 DAG；`turn_policy.py` 解析能力与预算；`assembler.py` 编译路由并确定性组装；`executor.py` 提供重试、降级和 legacy ReAct 开关；`service.py` 负责治理与状态生命周期 |
-| `src/npc_director/state/` | 状态层 | SQLite 持久化：`domain_store.py` 业务真源（关系/flag/任务）、`turn_store.py` 回合记录、`approvals.py` HITL 审批、`event_log.py` 事件、`outbox.py` at-least-once 投递、`memory_store.py` 长期记忆 |
-| `src/npc_director/context/` | 上下文层 | `builder.py` 组装 Agent 上下文；`compaction.py` 历史压缩；`memory.py` 记忆读写策略 |
+| `src/npc_director/contracts/` | 契约层 | Pydantic 单一契约源：内部 `TurnAnalysis`、`ExecutionPlan`、episode、内容候选/审核，以及兼容的 `TurnRequest`、`TurnProposal`、`PerformanceDirective` 和协议消息 |
+| `src/npc_director/agents/` | Agent 层 | `router.py` 输出复合请求分析；`specialists/` 负责剧情、台词和演出；`content_author.py` / `content_reviewer.py` 负责创作审核；`quality_judge.py` 检查完整一拍；Lore 为 Runtime 检索，谈判结果返回规划 |
+| `src/npc_director/governance/` | 治理层 | 输入、安全、Lore、人设规则与状态权限检查；`content_review.py` 校验内容准入并生成安全修订反馈；`finalizer.py` 决策 emit/repair/审批/拒绝并注入可信 `runtime_meta` |
+| `src/npc_director/orchestration/` | 编排层 | `bounded_executor.py` 执行计划与局部修复；`assembler.py` 编译依赖并组装；`episode_runtime.py` 处理消息、后继任务和完成事务；`turn_policy.py` 解析能力与预算；`executor.py` 保留重试、降级与 legacy ReAct 开关 |
+| `src/npc_director/state/` | 状态层 | SQLite 持久化：领域/回合、`episode_store.py` 的任务与认知、`content_store.py` 的内容/任务生命周期、HITL、事件、outbox 与长期记忆 |
+| `src/npc_director/context/` | 上下文层 | 角色注册与私有资料投影、历史压缩、记忆读写，以及 `token_budget.py` 的 token 预留 |
 | `src/npc_director/rag/` | 检索层 | `index.py` BM25 索引、`retriever.py` 权限过滤后的 JIT Lore 检索（受 top-k / token 预算 / TTL 缓存约束） |
 | `src/npc_director/api/` | 接入层 | FastAPI 应用（`app.py`）、Unity WebSocket 会话处理（`websocket.py`）、`python -m npc_director.api` 启动入口 |
 | `src/npc_director/unity_adapter/` | 引擎适配 | `websocket.py` 真实 Unity 通道；`console.py`/`html.py` 假引擎（离线演示与验收） |
-| `eval/` + `scripts/` | 评测工具 | 36 条 golden eval、消融、judge 校准、回放、压测、trace 转 regression |
+| `eval/` + `scripts/` | 评测工具 | 34 个多轮场景的 recorded/live 执行与独立整段 Judge；另保留历史 36 条 golden、消融、回放、压测与 trace 转 regression |
 
 ### 2.3 Unity 客户端组件
 
@@ -167,7 +185,7 @@ running ──► ready_to_emit ──► emitted ──► completed
 |---|---|
 | Python | 3.11+ |
 | Unity | 支持 .NET `ClientWebSocket` 的平台（WebGL 需替换 WebSocket 实现，见 3.2.5） |
-| 核心 Python 依赖 | fastapi、openai-agents、pydantic v2、uvicorn、websockets、tenacity（自动安装） |
+| 核心 Python 依赖 | fastapi、openai-agents、pydantic v2、uvicorn、websockets、tenacity、tiktoken（自动安装） |
 
 **安装步骤**
 
@@ -189,8 +207,10 @@ set -a && source .env && set +a
 **验证安装**（不需要 API Key）：
 
 ```bash
-make verify        # 一键执行全部离线阶段门
-make demo          # 生成 artifacts/demo-session_1.html 假引擎演出时间线
+python -m pytest
+python -m scripts.run_episode_eval --mode recorded --repeats 3
+make verify        # 兼容的历史离线阶段门
+make demo          # 历史单回合假引擎演示
 ```
 
 **启动后端服务**：
@@ -440,6 +460,51 @@ python -m scripts.run_turn data/examples/reunion_request.json --html
 | `GazeMode` | direct, soft_focus, avoidant, scanning |
 | `CoarseEmotion` | neutral, joy, sadness, anger, fear, surprise |
 
+### 3.6 后端 episode 接口（无需 Unity）
+
+配置模型后可以直接使用默认服务；以下入口与 Unity `run_turn` 共用同一后端：
+
+```python
+import asyncio
+
+from npc_director.config import Settings
+from npc_director.contracts.episodes import EpisodeRequest
+from npc_director.orchestration.service import build_default_service
+from npc_director.unity_adapter.console import ConsoleEngineAdapter
+
+
+async def main():
+    service = build_default_service(Settings.from_env())
+    episode = await service.start_episode(
+        EpisodeRequest(
+            event_id="demo:player:1",
+            session_id="demo-save",
+            npc_id="elder_maren",
+            text="先问问守卫路况，确认后再讨论护送条件。",
+            scene={"location": "village_gate", "catalog_version": "m0-v1"},
+        ),
+        adapter=ConsoleEngineAdapter(),
+    )
+    print(episode.id, episode.status)
+    print(await service.get_episode(episode.id))
+
+
+asyncio.run(main())
+```
+
+`ConsoleEngineAdapter` 打印演出并返回发送回执，不伪造 `completed`。真实适配器须在实际完成后
+通过 `process_engine_event` 回报，后端才提交状态并送达 NPC 消息。要查看自动驱动完成事件的
+离线演示，运行 `python -m scripts.run_episode_demo --mode recorded`；该演示使用脚本模型结果。
+
+| Python 方法 | 用途 |
+|---|---|
+| `start_episode(EpisodeRequest, adapter=...)` | 玩家输入启动持久 episode；事件 ID 保持幂等 |
+| `publish_event(EpisodeRequest, adapter=...)` | 发布 `origin="world_event"` 的可信服务端事件；不接受伪造 NPC 消息 |
+| `get_episode(episode_id)` | 查看状态、预算、节点、任务和回合记录 |
+| `cancel_episode(episode_id)` | 取消过时的后继任务；已发演出仍按真实生命周期回执处理 |
+
+这些是后端 Python 接口，不新增 HTTP/WebSocket 消息类型。角色与参与者仍来自服务端注册表和场景名册。
+
 ---
 
 ## 4. 配置说明
@@ -447,7 +512,7 @@ python -m scripts.run_turn data/examples/reunion_request.json --html
 ### 4.1 环境变量总表
 
 配置由 `Settings.from_env()`（`src/npc_director/config.py`）读取，全部有默认值，
-模板见 `.env.example`。项目不会自动加载 `.env`，需自行导出为环境变量。
+基础模板见 `.env.example`，完整选项以 `config.py` 为准。项目不会自动加载 `.env`，需自行导出。
 
 | 变量 | 默认值 | 合法范围 | 说明 |
 |---|---|---|---|
@@ -456,11 +521,25 @@ python -m scripts.run_turn data/examples/reunion_request.json --html
 | `NPC_DIRECTOR_MODEL_PROFILE` | 空 | `default` / `idealab_deepseek` / `idealab_qwen` | 模型定制 profile（见 4.3）；留空按模型名自动推断 |
 | `NPC_DIRECTOR_DIRECTOR_MODEL` 等 | 空 | — | 按角色覆盖模型（见 4.2） |
 | `NPC_DIRECTOR_ORCHESTRATION_MODE` | `bounded` | `bounded` / `react` | 生产默认使用受约束动态 DAG；`react` 仅用于 legacy 消融 |
-| `NPC_DIRECTOR_TIMEOUT_SECONDS` | 30 | >0 | 单次 executor 调用的总超时（bounded 为整张回合 DAG） |
+| `NPC_DIRECTOR_TIMEOUT_SECONDS` | 30 | >0 | legacy executor 与评测单次模型调用超时；新规划链另受主动计算预算限制 |
 | `NPC_DIRECTOR_MAX_TURNS` | 4 | ≥1 | legacy react Agent loop 最大轮次；bounded 模型节点固定单轮 |
-| `NPC_DIRECTOR_MAX_SPECIALIST_CALLS` | 4 | 1–8 | 每回合 Specialist 调用上限 |
-| `NPC_DIRECTOR_MAX_HANDOFFS` | 1 | 0–2 | 每回合 Handoff 上限 |
+| `NPC_DIRECTOR_MAX_SPECIALIST_CALLS` | 4 | 1–8 | 兼容路由预算；新计划调用总数由 `MAX_MODEL_CALLS` 控制 |
+| `NPC_DIRECTOR_MAX_HANDOFFS` | 1 | 0–2 | 历史 Handoff 路径上限；默认谈判返回规划 |
 | `NPC_DIRECTOR_MAX_REPAIR_ATTEMPTS` | 2 | 0–4 | 治理失败后限次修复次数 |
+| `NPC_DIRECTOR_MAX_MODEL_CALLS` | 32 | 1–64 | 计划与 episode 的模型调用上限，重试和审核也计入 |
+| `NPC_DIRECTOR_MAX_EXECUTION_NODES` | 32 | 4–32 | 执行节点上限 |
+| `NPC_DIRECTOR_MAX_PLAN_REVISIONS` | 2 | 0–4 | 重规划上限 |
+| `NPC_DIRECTOR_MAX_NODE_REPAIRS` | 1 | 0–10 | 每个修复作用域的限次预算 |
+| `NPC_DIRECTOR_MAX_EPISODE_PARTICIPANTS` | 4 | 1–20 | episode 参与 NPC 上限 |
+| `NPC_DIRECTOR_MAX_AUTONOMOUS_TURNS` | 6 | 0–20 | episode 自主 NPC 回合上限 |
+| `NPC_DIRECTOR_MAX_NEW_QUESTS` | 1 | 0–10 | episode 新支线额度，暂存和重试共享 |
+| `NPC_DIRECTOR_MAX_TOTAL_TOKENS` | 96000 | ≥0 | episode 总 token 预算，调用前预留 |
+| `NPC_DIRECTOR_PLANNING_TIMEOUT_SECONDS` | 180 | >0 | 规划主动计算预算；等待完成回执不计入 |
+| `NPC_DIRECTOR_MAX_OUTPUT_TOKENS` | 4096 | 256–16384 | 模型单次输出总上限，各契约还会取更小节点上限 |
+| `NPC_DIRECTOR_QUALITY_REVIEW` | `true` | 布尔 | 默认启用一拍独立质量审核 |
+| `NPC_DIRECTOR_NODE_REASONING_EFFORT` | `low` | `low` / `medium` / `high` | 原生 GPT 节点的默认 reasoning effort |
+| `NPC_DIRECTOR_INLINE_OUTPUT_SCHEMA` | `auto` | `auto` / 布尔 | 自动按模型决定是否在指令中重复 schema，见 4.5 |
+| `NPC_DIRECTOR_PROMPT_JSON_SCHEMAS` | `NarrativePlan` | 逗号分隔契约名或空 | 指定契约使用提示 JSON + 严格返回校验，见 4.5 |
 | `NPC_DIRECTOR_MAX_CONCURRENT_MODEL_CALLS` | 4 | ≥1 | 全局模型并发上限 |
 | `NPC_DIRECTOR_MODEL_RETRY_ATTEMPTS` | 3 | 1–5 | 模型调用重试次数 |
 | `NPC_DIRECTOR_LOW_CONFIDENCE_THRESHOLD` | 0.55 | 0–1 | 低置信度阈值，低于则触发保守策略 |
@@ -469,11 +548,10 @@ python -m scripts.run_turn data/examples/reunion_request.json --html
 | `NPC_DIRECTOR_CHARACTER_PATH` | `data/characters` | — | 角色卡目录 |
 | `NPC_DIRECTOR_LORE_TOP_K` | 4 | ≥1 | BM25 检索 top-k |
 | `NPC_DIRECTOR_LORE_TOKEN_BUDGET` | 1200 | ≥100 | Lore 注入 token 预算 |
-| `NPC_DIRECTOR_CONTEXT_HISTORY_LIMIT` | 8 | ≥1 | 上下文携带的历史回合数 |
+| `NPC_DIRECTOR_CONTEXT_HISTORY_LIMIT` | 8 | ≥1 | 兼容回合历史压缩窗口；episode 另维护最近 12 条可见对话 |
 | `NPC_DIRECTOR_OUTBOX_RETRY_LIMIT` | 5 | ≥1 | outbox 重发上限 |
 | `NPC_DIRECTOR_INPUT_COST_PER_MILLION` | 空 | ≥0 | 可选，仅用于 eval 成本估算 |
 | `NPC_DIRECTOR_OUTPUT_COST_PER_MILLION` | 空 | ≥0 | 可选，同上 |
-| `NPC_DIRECTOR_EVAL_SCORE_THRESHOLD` | 0.75 | 0–1 | eval 加权分通过阈值（见 6.3） |
 
 配置非法（超出合法范围）会在启动时抛出 `ValueError`，快速失败。
 
@@ -489,12 +567,12 @@ export NPC_DIRECTOR_MODEL="..."  # 留空则使用 Agents SDK 默认模型
 可按角色分别配置模型，未配置的角色回落到 `NPC_DIRECTOR_MODEL`：
 
 ```bash
-export NPC_DIRECTOR_DIRECTOR_MODEL="..."      # Semantic Router（react 模式下为 Director）
-export NPC_DIRECTOR_NARRATIVE_MODEL="..."     # 剧情规划 Specialist
+export NPC_DIRECTOR_DIRECTOR_MODEL="..."      # Director / Planner（TurnAnalysis）
+export NPC_DIRECTOR_NARRATIVE_MODEL="..."     # Narrative Planner 与 Content Author
 export NPC_DIRECTOR_LORE_MODEL="..."          # legacy react 模式的 Lore Specialist
 export NPC_DIRECTOR_SCREENWRITER_MODEL="..."  # 台词 Specialist
 export NPC_DIRECTOR_PERFORMANCE_MODEL="..."   # 演出 Specialist
-export NPC_DIRECTOR_JUDGE_MODEL="..."         # Eval judge
+export NPC_DIRECTOR_JUDGE_MODEL="..."         # Content Reviewer、Quality Judge 与评测 Judge
 export NPC_DIRECTOR_FALLBACK_MODEL="..."      # 主模型失败后的降级模型
 ```
 
@@ -519,17 +597,17 @@ export NPC_DIRECTOR_OUTPUT_COST_PER_MILLION="..."
 
 内置三个实现：
 
-- `default`：行为与未引入 profile 前完全一致；网关配置仍由
+- `default`：无模型专属 prompt 补丁；网关配置由
   `NPC_DIRECTOR_OPENAI_API` / `NPC_DIRECTOR_DISABLE_TRACING` 环境变量控制。
 - `idealab_deepseek`：面向 idealab 网关 + deepseek 系模型；自动切 chat/completions
   并关闭 tracing（无需手工设环境变量），识别以 HTTP 400 返回的 `MPE-429` 限流并重试，
-  追加路由强制与情绪标注约定的 prompt 补丁（prompt_versions 带 `+idealab-deepseek-v1` 后缀）。
+  保留 legacy 路由补丁；情绪按人物、关系和当前语气决定，不用 intent 强制映射。
 - `idealab_qwen`：面向 idealab 网关 + qwen 系模型；复用 idealab 网关适配与限流重试，
   暂无 prompt 补丁（version_tag `idealab-qwen-v1`）。
 
-两个 idealab profile 均声明 `supports_tools_with_structured_output=False`：实测该网关上模型在
-tools 与 structured output 同时启用时可能跳过工具。默认 `bounded` 模式把 Router、Narrative、
-Screenwriter、Performance 拆成独立的无工具结构化调用，Lore 由 Runtime 直接检索，因此不依赖
+两个 idealab profile 均声明 `supports_tools_with_structured_output=False`：历史网关探测中模型在
+tools 与 structured output 同时启用时可能跳过工具。默认 `bounded` 模式把 Planner、Narrative、
+Writer、Performance 及审核器拆成独立的无工具调用，Lore 由 Runtime 直接检索，因此不依赖
 这一组合能力，也不需要 Summary Agent 重写专家结果。若设置
 `NPC_DIRECTOR_ORCHESTRATION_MODE=react` 运行历史消融，旧 Director 会继续按 gateway capability
 选择单阶段或 two-phase 路径。
@@ -550,6 +628,19 @@ Screenwriter、Performance 拆成独立的无工具结构化调用，Lore 由 Ru
 
 状态 flag 使用 `[{"name": ..., "value": ...}]`，以满足 OpenAI strict structured output；
 治理层提交时再转换为领域状态 patch。
+
+### 4.5 输出契约与 token 预算
+
+默认 `NPC_DIRECTOR_INLINE_OUTPUT_SCHEMA=auto` 对原生 `gpt-` 模型使用原生结构化 schema，
+对其他模型在指令中额外携带紧凑 schema。显式 `true`/`false` 可覆盖自动选择。
+`NPC_DIRECTOR_PROMPT_JSON_SCHEMAS=NarrativePlan` 则单独让 NarrativePlan 使用提示 JSON：
+schema 写入指令，provider 不再启用该节点的原生约束解码，但返回值仍须通过完整 Pydantic 校验。
+指定列表可逗号分隔扩展，设为空可禁用；这一设置不会免除 schema 或权限检查。
+
+格式错误只修复当前节点，并计入修复和模型调用预算。输出额度同时用于发送请求与预留：
+在配置总上限内，台词最多 1536、演出 1024、质量判断/谈判 2048、Narrative/内容审核 3072 token。
+输入、指令和 schema 使用 `tiktoken` 估算并加余量；词表不可用时按保守 UTF-8 字节上界预留。
+提示 JSON 模式的 schema 不重复计数，报告中的真实 token 消耗仍以调用返回的 usage 为准。
 
 ---
 
@@ -636,16 +727,21 @@ JSON 文档格式：
 
 ### 5.5 对话逻辑与状态
 
-- **意图与路由**：Main Agent 输出包含 `Intent`、是否需要 Lore/Narrative、歧义与置信度的
-  `RouteDecision`；Runtime 在 TurnPolicy 预算内编译动态路径，而不是固定全调用。
-- **任务谈判**：仅 `negotiation` 类意图会触发唯一一次 Handoff 给 Quest Negotiator。
+- **意图与计划**：Director 输出包含言语行为、条件、目标、缺失信息和操作依赖的 `TurnAnalysis`；
+  Runtime 编译 `ExecutionPlan`。咨询答复前不能执行的操作进入 `deferred_nodes`，由后续事件恢复。
+- **任务谈判**：按实际目标调用 Quest Negotiator，得到条款和未决问题后继续规划。
+- **内容创作**：先复用已知事实，再由 Narrative 确认 ContentNeed 与 scope。Author 的候选经独立
+  Reviewer 和代码准入后暂存；固定编辑代码与候选字段路径用于限次修订，不转发私密审核文字。
+  支线仍需独立目标、动机、可拒绝性和有意义结果；介绍任务只发布 `offered`，不代表玩家已接受。
 - **状态变更**：模型只能"建议"状态变更（关系值、world flags、任务状态）。路径必须命中
   服务端场景目录解析出的精确 TurnPolicy，并随 turn 持久化；治理检查和 Unity 上报
   `performance.completed` 后的提交使用同一份权限快照，不接受按 intent 扩大的通配授权。
 - **高危剧情**：`critical_choice` 类回合会走 HITL 审批（见 3.3），可在治理层扩展
   自定义高危规则。
-- **长期记忆**：跨会话记忆写入 SQLite `memory_store`，随上下文按需注入；历史超过
-  `CONTEXT_HISTORY_LIMIT` 后自动压缩。
+- **长期记忆**：按游戏实例与 NPC 隔离保存，跨回合按需注入；episode 保留最近 12 条可见对话，
+  并维护指代、未答问题、承诺和情绪。客户端自报历史不进入权威事实或记忆蒸馏来源。
+- **事实与转述**：KnowledgeClaim 保留来源与认知状态，默认 `reported`。可信世界事件不会自动
+  把转述提升为真相；NPC 转述及发布内容摘要按 `reported` 保存，已审 `world_fact` 单独处理。
 
 ### 5.6 本地快速迭代
 
@@ -656,7 +752,8 @@ JSON 文档格式：
 python -m scripts.run_turn data/examples/reunion_request.json --html
 
 # 全量离线回归
-make verify
+python -m pytest
+python -m scripts.run_episode_eval --mode recorded --repeats 3
 ```
 
 ---
@@ -665,16 +762,23 @@ make verify
 
 ### 6.1 离线验收
 
-一键执行不需要 API Key 的阶段门：
+当前后端的完整测试与多轮 recorded 评测都不需要 API Key：
 
 ```bash
 source .venv/bin/activate
-make verify
+python -m pytest
+python -m scripts.run_episode_eval --mode recorded --repeats 3
+python -m scripts.run_episode_demo --mode recorded
 ```
 
-也可以单独执行：
+34 个场景各执行 3 次，共 102 次；recorded 仅替换模型 transport，继续经过生产服务、治理、
+事件、实例隔离、内容暂存及完成事务。它不提供模型质量证据，`quality` 与 `goal_passed` 保持空值。
+新报告写入 `artifacts/director-v2/` 的唯一文件名，包含逐例对话、调用与 trace、状态和用量。
+
+原 M0–M6 工具仍可用于历史兼容回归：
 
 ```bash
+make verify
 make lint
 make test
 make demo
@@ -685,7 +789,7 @@ make judge-calibration
 make load-test
 ```
 
-输出位置：
+历史工具的输出位置：
 
 - `artifacts/demo-session_1.html`：假引擎演出时间线。
 - `eval/reports/latest.json`：36 条 recorded golden eval。
@@ -693,14 +797,27 @@ make load-test
 - `eval/reports/judge_calibration.json`：judge 与人工标签校准结果。
 - `eval/reports/load_test.json`：确定性离线服务压力数据。
 
-当前 recorded 结果（分层计分口径，见 6.3）：single baseline 与动态 Main-sub 均为 36/36；
+保留的历史 recorded 结果（旧分层计分口径，见 6.3）：single baseline 与动态 Main-sub 均为 36/36；
 固定全调用 36/36 但 average_score 降至 ≈0.876（多余调用全部计入 regressions）；
 无记忆版本为 33/36（跨回合台词踩中 forbidden_text 门禁）；全量 Lore 保持质量但平均
-token 为动态 JIT RAG 的约 4.4 倍。Judge 校准为 9/10。具体数值以报告文件为准。
+token 为动态 JIT RAG 的约 4.4 倍。Judge 校准为 9/10。这些数字只描述对应历史报告。
 
 ### 6.2 真实模型评测
 
-配置好 API Key 与模型后（见 4.2），运行单 Agent baseline 与两种 live eval：
+配置好 API Key 与模型后（见 4.2），运行当前多轮 live 评测：
+
+```bash
+python -m scripts.run_episode_eval --mode live --repeats 3
+```
+
+可用 `--model`、`--judge-model`、`--concurrency` 调整运行配置，用重复的 `--case` 缩小诊断范围。
+完整套件是 34 × 3；局部调试结果不能替代完整验收。每例经过独立整段对话 Judge，失败、
+Judge 失败与 fallback 均保留在统计中，不以 schema 通过率替代任务成功率。
+验收条件为完整判分、目标成功率至少 90%、自然度及人设平均分均至少 4；是否达到只依据最终报告。
+
+**历史单回合与原型接入验证**
+
+以下命令保留原 baseline、旧 Main-sub 以及 P3 原型接入的验证流程，不是当前 episode 套件：
 
 ```bash
 python -m scripts.run_turn data/examples/reunion_request.json --html
@@ -722,14 +839,14 @@ python -m scripts.run_p3_real_mock \
 `executor_chain=["ResilientDirectorExecutor", "BoundedDirectorExecutor"]`。单独调用旧的
 `OpenAIPrototypeTurnGenerator` 不构成该链路的验收证据。
 
-Live eval 使用 v2 报告格式，保留每例原始 candidate 与 `routing_trace`。运行期间每完成一例
+上述历史单回合 live eval 使用 v2 报告格式，保留每例原始 candidate 与 `routing_trace`。运行期间每完成一例
 都会原子更新同名 `_partial.json`；只有全部完成后才提升为最终报告。若网关返回
 `Throttling.AllocationQuota`，评测会立即停止、保留 partial，并以退出码 75 返回，避免重试
 配额耗尽请求或把未执行用例计成模型失败。
 
-### 6.3 Eval 与回放
+### 6.3 历史单回合 Eval 与通用回放
 
-主要命令：
+下列 `eval.runner` 和加权分口径属于保留的 36 条单回合基线；持久化回放工具仍可用于排障。
 
 ```bash
 # 指定 recorded 变体
@@ -747,12 +864,12 @@ python -m scripts.trace_to_regression "session-1:1" \
   --output eval/cases/regressions.jsonl
 ```
 
-Eval 的路由判定只信运行时 hooks 记录的 Specialist/Handoff trace，不信模型在
+历史 Eval 的路由判定只信运行时 hooks 记录的 Specialist/Handoff trace，不信模型在
 `plan.required_specialists` 中的自报信息。Schema、动作、状态权限和路由使用确定性 diff；
 必需语义与禁止主张使用确定性的同义概念组（禁止主张额外识别否定语境）；主观质量才使用
 校准后的 judge。
 
-单条 case 的通过判定为分层计分：
+历史单回合 case 的通过判定为分层计分，不用于替代第 6.2 节的多轮目标验收：
 
 - **安全门禁**：`schema` 与 `forbidden_text` 必须全部通过，任一失败直接判挂；
 - **加权分**：其余检查按权重计分（intent 0.20、required_text 0.20、emotion 0.15、
@@ -863,8 +980,9 @@ WebSocket 会话与 outbox 状态都在实例本地，**同一 session 的所有
 5. **发布前检查**
 
    ```bash
-   make verify                     # 离线阶段门全绿
-   make eval-live-main-sub         # 目标模型上的 live eval 达标
+   python -m pytest
+   python -m scripts.run_episode_eval --mode recorded --repeats 3
+   python -m scripts.run_episode_eval --mode live --repeats 3
    curl https://<host>/health      # 部署后健康检查
    ```
 
@@ -872,8 +990,8 @@ WebSocket 会话与 outbox 状态都在实例本地，**同一 session 的所有
 
 ### 7.3 数据与运维
 
-- **数据备份**：`NPC_DIRECTOR_DATABASE_PATH` 指向的 SQLite 文件包含业务状态、回合、
-  审批、事件、outbox 与长期记忆，是唯一需要备份的运行时数据；建议定期快照。
+- **数据备份**：`NPC_DIRECTOR_DATABASE_PATH` 指向的 SQLite 文件包含业务状态、回合、episode、
+  知识、内容/任务、审批、事件、outbox 与长期记忆；建议定期快照，并保留对应角色和场景配置版本。
 - **崩溃恢复**：服务重启会自动恢复未完成事件并重发未确认 outbox；客户端幂等去重保证
   不会重复播放，无需人工干预。
 - **容量与限流**：通过 `MAX_CONCURRENT_MODEL_CALLS` 控制模型并发；上线前用

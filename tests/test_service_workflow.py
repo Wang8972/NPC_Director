@@ -854,7 +854,7 @@ async def test_handoff_prompt_version_comes_from_runtime_trace(tmp_path: Path) -
     assert result.directive is not None
     assert result.directive.runtime_meta.specialists_called == []
     assert result.directive.runtime_meta.prompt_versions == [
-        "semantic-router-v2",
+        "turn-planner-v3",
         "quest-negotiator-v2",
     ]
 

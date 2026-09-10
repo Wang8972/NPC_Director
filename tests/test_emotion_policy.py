@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from npc_director.contracts import TurnProposal
-from npc_director.contracts.enums import CoarseEmotion, Intent, PrimaryEmotion
+from npc_director.contracts.enums import CoarseEmotion, PrimaryEmotion
 from npc_director.orchestration.emotion_policy import INTENT_EMOTION_COMBOS, correct_emotion
 
 
@@ -37,15 +37,14 @@ def test_legal_combo_passes_through_unchanged() -> None:
     assert corrected is proposal
 
 
-def test_illegal_combo_is_replaced_with_intent_default() -> None:
+def test_contextual_anger_during_greeting_is_not_overwritten_by_intent() -> None:
     proposal = make_proposal("greeting", "anger", "stern")
 
     corrected = correct_emotion(proposal)
 
-    default_coarse, default_primary = INTENT_EMOTION_COMBOS[Intent.GREETING][0]
-    assert corrected.performance.emotion.coarse is default_coarse
-    assert corrected.performance.emotion.primary is default_primary
-    # Only coarse/primary are corrected; the rest of the emotion survives.
+    assert corrected is proposal
+    assert corrected.performance.emotion.coarse is CoarseEmotion.ANGER
+    assert corrected.performance.emotion.primary is PrimaryEmotion.STERN
     assert corrected.performance.emotion.secondary is PrimaryEmotion.CURIOUS
     assert corrected.performance.emotion.intensity == 0.7
     # The original proposal is untouched.

@@ -81,7 +81,7 @@ class DeterministicMemoryDistiller:
         existing_content = {
             _normalize(memory.content)
             for memory in request.existing_memories
-            if memory.npc_id == request.npc_id
+            if memory.npc_id == request.npc_id and memory.source_session_id == request.session_id
         }
         grouped: dict[str, list[HistoryRecord]] = {}
         for fact in compacted.retained_facts:
@@ -100,7 +100,9 @@ class DeterministicMemoryDistiller:
             source_turn_ids = tuple(dict.fromkeys(fact.turn_id for fact in facts if fact.turn_id))
             memories.append(
                 LongTermMemory(
-                    memory_id=_memory_id(request.npc_id, normalized_content),
+                    memory_id=_memory_id(
+                        request.npc_id, normalized_content, session_id=request.session_id
+                    ),
                     npc_id=request.npc_id,
                     content=first.text.strip(),
                     kinds=kinds,
@@ -203,8 +205,9 @@ def _importance(kind: HistoryKind) -> float:
     }.get(kind, 0.5)
 
 
-def _memory_id(npc_id: str, normalized_content: str) -> str:
-    digest = sha256(f"{npc_id}\0{normalized_content}".encode()).hexdigest()[:20]
+def _memory_id(npc_id: str, normalized_content: str, *, session_id: str | None = None) -> str:
+    namespace = "legacy" if session_id is None else f"session:{session_id}"
+    digest = sha256(f"{namespace}\0{npc_id}\0{normalized_content}".encode()).hexdigest()[:20]
     return f"memory:{digest}"
 
 

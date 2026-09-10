@@ -2,6 +2,13 @@
 
 报告文件随仓库入库，本索引记录每份报告对应的实验，便于对照复现。
 
+## NPC Director V2 多轮场景
+
+[director_v2 归档](director_v2/README.md) 收录本次升级的完整、定向与中间诊断报告，
+包含真实 102 次运行、最后 27 次内容回归、最终 recorded 报告及原始用例快照。
+自然度/人设评分采用整场景模型评审，具体门槛和标定限制见根目录
+[EVALUATION_STANDARDS.md](../../EVALUATION_STANDARDS.md)。下文保留旧 36 条 golden 评测说明。
+
 ## 离线报告（`make verify` 系列产出，可随时重跑）
 
 | 文件 | 实验 |

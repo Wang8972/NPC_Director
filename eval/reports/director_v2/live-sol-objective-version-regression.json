@@ -1,0 +1,583 @@
+{
+  "schema_version": "director-episodes-v1",
+  "mode": "live",
+  "started_at": "2026-09-09T20:23:18.966357+00:00",
+  "completed_at": "2026-09-09T20:30:23.285755+00:00",
+  "repeats": 3,
+  "case_count": 1,
+  "concurrency": 1,
+  "model": "gpt-5.6-sol",
+  "transport": "sdk",
+  "node_reasoning_effort": "low",
+  "dataset_sha256": "19c085942068c2b53df4a3ffe0d84378eeda949eb555194e5c8a6642ec74e6f1",
+  "source_sha256": "638d6d003737140c9770fa25af1343319ee90e1a6d2467dc71b137ec51ea0d8a",
+  "summary": {
+    "runs": 3,
+    "structural_passes": 2,
+    "live_runs": 3,
+    "live_goal_passes": 2,
+    "live_goal_success_rate": 0.6666666666666666,
+    "fallback_runs": 1,
+    "naturalness_mean": 4,
+    "persona_mean": 4.666666666666667,
+    "generation_tokens": 365369,
+    "generation_latency_ms": 412921.6916250007,
+    "unknown_usage_calls": 0,
+    "meets_live_acceptance": false,
+    "quality_claim": "live independent model judgment"
+  },
+  "archive_representation": "Review summary; full original report is in the gzip archive.",
+  "full_report": "live-sol-objective-version-regression.json.gz",
+  "original_sha256": "9f414cea1c3c63fe056bf5e80821fa4768ecec2b0913e7177ffdfafefce8bab2",
+  "results": [
+    {
+      "case_id": "composite_request",
+      "repeat": 1,
+      "title": "复合请求逐项回应",
+      "tags": [
+        "compound",
+        "conditional",
+        "coverage"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true
+      },
+      "structural_passed": true,
+      "goal_passed": true,
+      "quality": {
+        "task_completion": 4,
+        "continuity": 5,
+        "persona": 4,
+        "naturalness": 4,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "逐项确认了值守者、路线安全与护送条件，并保留玩家尚未接受的事项。",
+          "遵守玩家改口，没有替伊奥娜答应，也未把邀请误作接受。",
+          "信息来源区分清楚，角色衔接与人设基本一致。",
+          "末句要求立即二选一略显强硬，但不构成核心问题。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "先告诉我谁值守，再确认护送条件；如果路线安全，就请伊欧娜同行。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "艾伦，请说明现在由谁值守，并核对护送路线的巡逻记录是否安全。确认后，我再请伊奥娜亲自说明护送条件；若路线安全，是否同行，由她自己决定。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "stern",
+            "secondary": "wary",
+            "intensity": 0.42,
+            "valence": 0.02,
+            "arousal": 0.3
+          },
+          "status": "completed",
+          "turn_id": "eval:composite_request:1:main:turn:0"
+        },
+        {
+          "role": "npc",
+          "npc_id": "village_guard",
+          "text": "玛伦，本班由我值守村口。最新巡逻记录确认旧路可以安全通行。伊奥娜，请你亲自说明护送条件，也请你自己决定是否愿意同行。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": null,
+            "intensity": 0.25,
+            "valence": 0.1,
+            "arousal": 0.2
+          },
+          "status": "completed",
+          "turn_id": "npc:6ba0ac267bff456b8070dbc0aa3af9b9a816001c"
+        },
+        {
+          "role": "npc",
+          "npc_id": "herbalist_iona",
+          "text": "艾伦的最新巡逻记录确认旧路可以安全通行。我的条件是由你全程护送，并在出发前备好草药袋；你若接受这两项，我愿意同行。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": "hopeful",
+            "intensity": 0.35,
+            "valence": 0.25,
+            "arousal": 0.2
+          },
+          "status": "completed",
+          "turn_id": "npc:69300f4c7564e42d9ec9c48dbc2d5452288ef9ea"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "本班由艾伦值守村口；据他所查的最新巡逻记录，旧路可以安全通行。伊奥娜说得明白：你须全程护送，并在出发前备好草药袋；两项都接受，她才愿意同行。你接受吗？",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "stern",
+            "secondary": "wary",
+            "intensity": 0.42,
+            "valence": 0.02,
+            "arousal": 0.3
+          },
+          "status": "completed",
+          "turn_id": "npc:6bd027667e71e8ab2a965ccfc7aeaca8b685ef27"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "那先核实路线，别替她答应。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "路线已经核实：据艾伦的最新巡逻记录，旧路可以安全通行。我不会替伊奥娜答应；她亲口说，只有你承诺全程护送，并在出发前备好草药袋，她才愿意同行。现在，明确告诉我：这两项你接受，还是拒绝？",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "stern",
+            "secondary": "wary",
+            "intensity": 0.42,
+            "valence": 0.02,
+            "arousal": 0.3
+          },
+          "status": "completed",
+          "turn_id": "eval:composite_request:1:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 115545.5156249991,
+        "input_tokens": 90890,
+        "output_tokens": 7341,
+        "total_tokens": 98231,
+        "actual_models": [
+          "gpt-5.6-sol"
+        ],
+        "model_calls": 23,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 98231
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-sol",
+          "latency_ms": 2814.281832997949,
+          "input_tokens": 2745,
+          "output_tokens": 124,
+          "total_tokens": 2869,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "composite_request",
+      "repeat": 2,
+      "title": "复合请求逐项回应",
+      "tags": [
+        "compound",
+        "conditional",
+        "coverage"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true
+      },
+      "structural_passed": true,
+      "goal_passed": true,
+      "quality": {
+        "task_completion": 5,
+        "continuity": 4,
+        "persona": 5,
+        "naturalness": 4,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "逐项回应了值守、路线依据、护送条件与同行授权，且明确由伊奥娜本人决定。",
+          "后续正确区分巡逻记录与亲眼核实，并未把传闻当作目击。",
+          "对玩家改口有所承接；虽路线和条件信息略有重复，但未越权替伊奥娜表态。",
+          "三名角色的措辞与职责、人设边界基本一致。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "先告诉我谁值守，再确认护送条件；如果路线安全，就请伊欧娜同行。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "值守人选与路线安危，须由艾伦按现场和巡逻记录确认。艾伦，请说明当前由谁值守，并查明护送路线是否安全；若确认安全，我再询问伊奥娜的护送条件，并请她自行决定是否同行。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "stern",
+            "secondary": "wary",
+            "intensity": 0.45,
+            "valence": 0.02,
+            "arousal": 0.3
+          },
+          "status": "completed",
+          "turn_id": "eval:composite_request:2:main:turn:0"
+        },
+        {
+          "role": "npc",
+          "npc_id": "village_guard",
+          "text": "玛伦，这一班是我守村口。最新巡逻记录确认旧路可以安全通行；这是记录结论，不是我亲眼走完全程所见。伊奥娜，旧路已确认安全，请你说明护送条件，并由你自己决定是否同行。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "guarded",
+            "intensity": 0.35,
+            "valence": 0.1,
+            "arousal": 0.25
+          },
+          "status": "completed",
+          "turn_id": "npc:9f8b13391e61c6859bdec05cab34561e914142d0"
+        },
+        {
+          "role": "npc",
+          "npc_id": "herbalist_iona",
+          "text": "既然巡逻记录确认旧路安全，我愿意同行——但要由你全程护送，出发前也得备好草药袋。艾伦，我明白这是记录的结论，不是你亲眼走完全程所见。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "hopeful",
+            "intensity": 0.35,
+            "valence": 0.4,
+            "arousal": 0.2
+          },
+          "status": "completed",
+          "turn_id": "npc:31dde4a19d8bde417eb8f96d656e545c50a591a7"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这一班由艾伦值守。旧路可安全通行，是最新巡逻记录的结论，并非艾伦亲自走完全程所得。伊奥娜已自愿同行；护送草药师便按此办理：由你全程护送，出发前备好草药袋，否则暂缓出发。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "stern",
+            "secondary": "calm",
+            "intensity": 0.4,
+            "valence": 0.05,
+            "arousal": 0.3
+          },
+          "status": "completed",
+          "turn_id": "npc:4dfbfe3e60f66c98127dbacea8d51df267d7b857"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "那先核实路线，别替她答应。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "按这个顺序。旧路安全只由最新巡逻记录支持，并非艾伦亲眼走完全程核实。伊奥娜已亲口表示愿意同行，条件是你全程护送并在出发前备好草药袋；我不会替她答应。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "stern",
+            "secondary": "calm",
+            "intensity": 0.35,
+            "valence": 0.05,
+            "arousal": 0.25
+          },
+          "status": "completed",
+          "turn_id": "eval:composite_request:2:main:turn:1"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 123827.82208300341,
+        "input_tokens": 94015,
+        "output_tokens": 7894,
+        "total_tokens": 101909,
+        "actual_models": [
+          "gpt-5.6-sol"
+        ],
+        "model_calls": 23,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 101909
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-sol",
+          "latency_ms": 3375.1274999995076,
+          "input_tokens": 2781,
+          "output_tokens": 136,
+          "total_tokens": 2917,
+          "reasoning_effort": "none"
+        }
+      ]
+    },
+    {
+      "case_id": "composite_request",
+      "repeat": 3,
+      "title": "复合请求逐项回应",
+      "tags": [
+        "compound",
+        "conditional",
+        "coverage"
+      ],
+      "mode": "live",
+      "source": "live_model",
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false
+      },
+      "structural_passed": false,
+      "goal_passed": false,
+      "quality": {
+        "task_completion": 4,
+        "continuity": 4,
+        "persona": 5,
+        "naturalness": 4,
+        "performance_alignment": 4,
+        "passed": true,
+        "reasons": [
+          "逐项回应了值守、路线记录、护送条件与同行意愿；缺失的路段和更新时间也明确坦白未知，并保留后续核实事项。",
+          "第二回合正确承接玩家改口：停止继续推动出发，不再代伊奥娜作决定，同时区分了巡逻记录与亲眼核实。",
+          "角色均符合职责与边界：艾伦不把记录冒充目击，伊奥娜亲自表达意愿和条件，玛伦语气克制且重视证据。",
+          "小瑕疵是首回合在玩家条件式请求下直接推进到伊奥娜同意，随后改口只能部分回收；末句“准备妥当”略含糊，未明确指出需补充路线核实资料。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "transcript": [
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "先告诉我谁值守，再确认护送条件；如果路线安全，就请伊欧娜同行。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "艾伦，请说明现在由谁值守，并核实护送路线是否安全。等他确认安全，我再向伊奥娜确认护送条件，问她是否愿意同行；若不安全，便不能邀请她出发。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "stern",
+            "secondary": "wary",
+            "intensity": 0.38,
+            "valence": -0.05,
+            "arousal": 0.28
+          },
+          "status": "completed",
+          "turn_id": "eval:composite_request:3:main:turn:0"
+        },
+        {
+          "role": "npc",
+          "npc_id": "village_guard",
+          "text": "玛伦，本班是我守村口。最新巡逻记录确认旧路可以安全通行——这是记录结论，我没有亲自走完整条路。伊奥娜，旧路已确认安全；请告诉我你的护送条件，以及你是否愿意同行。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "guarded",
+            "intensity": 0.35,
+            "valence": 0.1,
+            "arousal": 0.25
+          },
+          "status": "completed",
+          "turn_id": "npc:59d5f5b3d941f3f8511918a51c9cb68c8087918c"
+        },
+        {
+          "role": "npc",
+          "npc_id": "herbalist_iona",
+          "text": "艾伦，我愿意同行。旧路的安全只是巡逻记录的结论；我的条件是由这位护送者全程陪同，并在出发前备好草药袋。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "calm",
+            "secondary": "warm",
+            "intensity": 0.3,
+            "valence": 0.35,
+            "arousal": 0.2
+          },
+          "status": "completed",
+          "turn_id": "npc:98de962e1c1d3f56da78e15d22136b0bf6c4809f"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "本班由艾伦值守。旧路可通行只是最新巡逻记录的结论，并非亲自走完全程所得。伊奥娜已同意同行；此事仍归原有护送任务，你须在出发前备好草药袋，并全程陪同她。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "stern",
+            "secondary": "wary",
+            "intensity": 0.38,
+            "valence": -0.03,
+            "arousal": 0.27
+          },
+          "status": "completed",
+          "turn_id": "npc:d1a4a0019649739eb88f1eab31559e494bd1b25f"
+        },
+        {
+          "role": "player",
+          "npc_id": "elder_maren",
+          "text": "那先核实路线，别替她答应。",
+          "session": "main"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "说得对。眼下只有巡逻记录，并非完整的现场核实；我不会代伊奥娜表态，她本人愿意同行的条件仍是你全程陪同，并在出发前备好草药袋。艾伦，请说明最新巡逻记录覆盖了旧路哪些路段、何时更新，还有哪里未被现场核实。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "stern",
+            "secondary": "wary",
+            "intensity": 0.4,
+            "valence": -0.02,
+            "arousal": 0.3
+          },
+          "status": "completed",
+          "turn_id": "eval:composite_request:3:main:turn:1"
+        },
+        {
+          "role": "npc",
+          "npc_id": "village_guard",
+          "text": "玛伦，现有资料只写明旧路可通行，没有具体覆盖路段、更新时间，也无法确认哪些区域尚未现场核实。我没有亲自走完整条旧路，不能把这项记录当成我的目击。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": "calm",
+            "intensity": 0.35,
+            "valence": 0.0,
+            "arousal": 0.3
+          },
+          "status": "completed",
+          "turn_id": "npc:fa61b2d978da87521527d6357a59db52dd95f3f6"
+        },
+        {
+          "role": "npc",
+          "npc_id": "elder_maren",
+          "text": "这件事我暂时办不到。先停在这里，等准备妥当再继续。",
+          "emotion": {
+            "coarse": "neutral",
+            "primary": "guarded",
+            "secondary": null,
+            "intensity": 0.5,
+            "valence": 0.0,
+            "arousal": 0.4
+          },
+          "status": "completed",
+          "turn_id": "npc:cc607c1fd06d3969e329b51e49bf44674894d1d3"
+        }
+      ],
+      "external_results": [
+        {
+          "index": 0,
+          "status": "ready_to_emit"
+        },
+        {
+          "index": 1,
+          "status": "ready_to_emit"
+        }
+      ],
+      "new_quests": [],
+      "generation_metrics": {
+        "latency_ms": 173548.35391699817,
+        "input_tokens": 153222,
+        "output_tokens": 12007,
+        "total_tokens": 165229,
+        "actual_models": [
+          "gpt-5.6-sol"
+        ],
+        "model_calls": 33,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 165229
+      },
+      "judge_calls": [
+        {
+          "node": "Independent Episode Quality Judge",
+          "schema": "EpisodeQualityVerdict",
+          "model": "gpt-5.6-sol",
+          "latency_ms": 5070.317082998372,
+          "input_tokens": 3058,
+          "output_tokens": 217,
+          "total_tokens": 3275,
+          "reasoning_effort": "none"
+        }
+      ]
+    }
+  ]
+}
