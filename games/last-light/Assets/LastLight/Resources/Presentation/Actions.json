@@ -1,0 +1,922 @@
+{
+  "schema_version": 1,
+  "clips": [
+    "idle_alert",
+    "inspect_stand",
+    "inspect_kneel",
+    "read_record",
+    "reach_item",
+    "lift_item",
+    "carry_item",
+    "offer_item",
+    "receive_item",
+    "connect_cable",
+    "disconnect_cable",
+    "switch_off",
+    "switch_on",
+    "repair_kneel",
+    "verify_meter",
+    "operate_door",
+    "brace_cart",
+    "push_cart",
+    "support_person",
+    "escort_walk",
+    "lift_stretcher",
+    "unfold_stretcher",
+    "use_phone",
+    "use_radio",
+    "announce",
+    "point_route",
+    "place_item",
+    "gather_signal",
+    "confirm_nod",
+    "stop_work",
+    "step_back",
+    "hold_position"
+  ],
+  "sockets": [
+    "hand_r",
+    "hand_l",
+    "carry_front",
+    "tool_rack_tools",
+    "tool_rack_lamp",
+    "tool_rack_spares",
+    "stretcher_rack_mount",
+    "radio_power",
+    "medical_power",
+    "aux_breaker",
+    "aux_joint",
+    "aux_test",
+    "phone_interface",
+    "door_handle",
+    "cart_grip_l",
+    "cart_grip_r",
+    "stretcher_front",
+    "stretcher_rear",
+    "support_l",
+    "support_r",
+    "refuge_lamp",
+    "document_hold",
+    "gather_point"
+  ],
+  "actions": [
+    {
+      "visual_kind": "pickup",
+      "preparation_clip": "reach_item",
+      "result_clip": "lift_item",
+      "failed_clip": "stop_work",
+      "resource_ids": [
+        "tools"
+      ],
+      "socket_ids": [
+        "tool_rack_tools",
+        "hand_r"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "collect_tools"
+    },
+    {
+      "visual_kind": "pickup",
+      "preparation_clip": "reach_item",
+      "result_clip": "lift_item",
+      "failed_clip": "stop_work",
+      "resource_ids": [
+        "lamp"
+      ],
+      "socket_ids": [
+        "tool_rack_lamp",
+        "hand_r"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "collect_lamp"
+    },
+    {
+      "visual_kind": "pickup",
+      "preparation_clip": "reach_item",
+      "result_clip": "lift_item",
+      "failed_clip": "stop_work",
+      "resource_ids": [
+        "spares"
+      ],
+      "socket_ids": [
+        "tool_rack_spares",
+        "hand_r"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "collect_spares"
+    },
+    {
+      "visual_kind": "pickup",
+      "preparation_clip": "reach_item",
+      "result_clip": "carry_item",
+      "failed_clip": "stop_work",
+      "resource_ids": [
+        "stretcher"
+      ],
+      "socket_ids": [
+        "stretcher_rack_mount",
+        "carry_front"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "collect_stretcher"
+    },
+    {
+      "visual_kind": "inspect",
+      "preparation_clip": "read_record",
+      "result_clip": "confirm_nod",
+      "failed_clip": "stop_work",
+      "resource_ids": [],
+      "socket_ids": [
+        "document_hold"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "examine_log"
+    },
+    {
+      "visual_kind": "inspect",
+      "preparation_clip": "inspect_kneel",
+      "result_clip": "verify_meter",
+      "failed_clip": "stop_work",
+      "resource_ids": [
+        "tools"
+      ],
+      "socket_ids": [
+        "hand_r",
+        "aux_joint"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "inspect_joint"
+    },
+    {
+      "visual_kind": "isolate",
+      "preparation_clip": "inspect_stand",
+      "result_clip": "switch_off",
+      "failed_clip": "stop_work",
+      "resource_ids": [],
+      "socket_ids": [
+        "hand_r",
+        "aux_breaker"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "isolate_aux"
+    },
+    {
+      "visual_kind": "retest",
+      "preparation_clip": "inspect_kneel",
+      "result_clip": "verify_meter",
+      "failed_clip": "stop_work",
+      "resource_ids": [
+        "tools"
+      ],
+      "socket_ids": [
+        "hand_r",
+        "aux_test"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "verify_isolation"
+    },
+    {
+      "visual_kind": "repair",
+      "preparation_clip": "inspect_kneel",
+      "result_clip": "repair_kneel",
+      "failed_clip": "stop_work",
+      "resource_ids": [
+        "tools",
+        "spares"
+      ],
+      "socket_ids": [
+        "hand_r",
+        "aux_joint"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "repair_joint"
+    },
+    {
+      "visual_kind": "retest",
+      "preparation_clip": "inspect_stand",
+      "result_clip": "verify_meter",
+      "failed_clip": "stop_work",
+      "resource_ids": [
+        "tools"
+      ],
+      "socket_ids": [
+        "hand_r",
+        "aux_test"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "retest_repair"
+    },
+    {
+      "visual_kind": "power_restore",
+      "preparation_clip": "inspect_stand",
+      "result_clip": "switch_on",
+      "failed_clip": "stop_work",
+      "resource_ids": [],
+      "socket_ids": [
+        "hand_r",
+        "aux_breaker"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "restore_aux"
+    },
+    {
+      "visual_kind": "isolate",
+      "preparation_clip": "inspect_stand",
+      "result_clip": "switch_off",
+      "failed_clip": "stop_work",
+      "resource_ids": [],
+      "socket_ids": [
+        "hand_r",
+        "aux_breaker"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "manual_cutoff"
+    },
+    {
+      "visual_kind": "repair",
+      "preparation_clip": "inspect_stand",
+      "result_clip": "connect_cable",
+      "failed_clip": "stop_work",
+      "resource_ids": [],
+      "socket_ids": [
+        "hand_r",
+        "phone_interface"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "restore_phone"
+    },
+    {
+      "visual_kind": "communication",
+      "preparation_clip": "use_phone",
+      "result_clip": "confirm_nod",
+      "failed_clip": "stop_work",
+      "resource_ids": [],
+      "socket_ids": [
+        "hand_r",
+        "phone_interface"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "call_control"
+    },
+    {
+      "visual_kind": "connect",
+      "preparation_clip": "reach_item",
+      "result_clip": "connect_cable",
+      "failed_clip": "stop_work",
+      "resource_ids": [
+        "backup"
+      ],
+      "socket_ids": [
+        "hand_r",
+        "radio_power"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "connect_radio"
+    },
+    {
+      "visual_kind": "communication",
+      "preparation_clip": "use_radio",
+      "result_clip": "confirm_nod",
+      "failed_clip": "stop_work",
+      "resource_ids": [
+        "backup"
+      ],
+      "socket_ids": [
+        "radio_power"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "radio_request"
+    },
+    {
+      "visual_kind": "disconnect",
+      "preparation_clip": "reach_item",
+      "result_clip": "disconnect_cable",
+      "failed_clip": "stop_work",
+      "resource_ids": [
+        "backup"
+      ],
+      "socket_ids": [
+        "radio_power",
+        "hand_r"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "disconnect_radio"
+    },
+    {
+      "visual_kind": "handoff",
+      "preparation_clip": "offer_item",
+      "result_clip": "receive_item",
+      "failed_clip": "stop_work",
+      "resource_ids": [
+        "backup"
+      ],
+      "socket_ids": [
+        "hand_r",
+        "hand_l"
+      ],
+      "participant_roles": [
+        "actor",
+        "item_holder"
+      ],
+      "action_id": "take_backup"
+    },
+    {
+      "visual_kind": "handoff",
+      "preparation_clip": "carry_item",
+      "result_clip": "offer_item",
+      "failed_clip": "stop_work",
+      "resource_ids": [
+        "backup"
+      ],
+      "socket_ids": [
+        "hand_r",
+        "hand_l"
+      ],
+      "participant_roles": [
+        "actor",
+        "recipient"
+      ],
+      "action_id": "return_backup"
+    },
+    {
+      "visual_kind": "connect",
+      "preparation_clip": "reach_item",
+      "result_clip": "connect_cable",
+      "failed_clip": "stop_work",
+      "resource_ids": [
+        "backup",
+        "medical"
+      ],
+      "socket_ids": [
+        "hand_r",
+        "medical_power"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers",
+        "patient"
+      ],
+      "action_id": "connect_medical"
+    },
+    {
+      "visual_kind": "disconnect",
+      "preparation_clip": "inspect_stand",
+      "result_clip": "disconnect_cable",
+      "failed_clip": "stop_work",
+      "resource_ids": [
+        "backup",
+        "medical"
+      ],
+      "socket_ids": [
+        "medical_power",
+        "hand_r"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers",
+        "patient"
+      ],
+      "action_id": "disconnect_medical"
+    },
+    {
+      "visual_kind": "isolate",
+      "preparation_clip": "reach_item",
+      "result_clip": "switch_off",
+      "failed_clip": "stop_work",
+      "resource_ids": [],
+      "socket_ids": [
+        "hand_r"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "close_vent"
+    },
+    {
+      "visual_kind": "escort",
+      "preparation_clip": "support_person",
+      "result_clip": "escort_walk",
+      "failed_clip": "hold_position",
+      "resource_ids": [
+        "medical",
+        "backup"
+      ],
+      "socket_ids": [
+        "support_l",
+        "support_r"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers",
+        "patient"
+      ],
+      "action_id": "move_mother"
+    },
+    {
+      "visual_kind": "care",
+      "preparation_clip": "inspect_kneel",
+      "result_clip": "confirm_nod",
+      "failed_clip": "stop_work",
+      "resource_ids": [
+        "medical"
+      ],
+      "socket_ids": [],
+      "participant_roles": [
+        "actor",
+        "patient"
+      ],
+      "action_id": "assess_mother"
+    },
+    {
+      "visual_kind": "stretcher",
+      "preparation_clip": "reach_item",
+      "result_clip": "unfold_stretcher",
+      "failed_clip": "stop_work",
+      "resource_ids": [
+        "stretcher"
+      ],
+      "socket_ids": [
+        "stretcher_front",
+        "stretcher_rear"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "prepare_stretcher"
+    },
+    {
+      "visual_kind": "clear",
+      "preparation_clip": "reach_item",
+      "result_clip": "place_item",
+      "failed_clip": "stop_work",
+      "resource_ids": [],
+      "socket_ids": [
+        "carry_front"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "clear_aisle"
+    },
+    {
+      "visual_kind": "communication",
+      "preparation_clip": "use_radio",
+      "result_clip": "announce",
+      "failed_clip": "stop_work",
+      "resource_ids": [],
+      "socket_ids": [
+        "hand_r"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "announce_facts"
+    },
+    {
+      "visual_kind": "inspect",
+      "preparation_clip": "read_record",
+      "result_clip": "confirm_nod",
+      "failed_clip": "stop_work",
+      "resource_ids": [],
+      "socket_ids": [
+        "document_hold"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers",
+        "passengers"
+      ],
+      "action_id": "count_passengers"
+    },
+    {
+      "visual_kind": "cart",
+      "preparation_clip": "brace_cart",
+      "result_clip": "push_cart",
+      "failed_clip": "hold_position",
+      "resource_ids": [],
+      "socket_ids": [
+        "cart_grip_l",
+        "cart_grip_r"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "clear_trolley"
+    },
+    {
+      "visual_kind": "door",
+      "preparation_clip": "reach_item",
+      "result_clip": "operate_door",
+      "failed_clip": "step_back",
+      "resource_ids": [],
+      "socket_ids": [
+        "hand_r",
+        "door_handle"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "free_internal_door"
+    },
+    {
+      "visual_kind": "communication",
+      "preparation_clip": "inspect_stand",
+      "result_clip": "announce",
+      "failed_clip": "stop_work",
+      "resource_ids": [],
+      "socket_ids": [
+        "door_handle"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "call_child"
+    },
+    {
+      "visual_kind": "door",
+      "preparation_clip": "inspect_stand",
+      "result_clip": "operate_door",
+      "failed_clip": "step_back",
+      "resource_ids": [],
+      "socket_ids": [
+        "hand_r",
+        "door_handle"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "open_external05"
+    },
+    {
+      "visual_kind": "care",
+      "preparation_clip": "inspect_kneel",
+      "result_clip": "confirm_nod",
+      "failed_clip": "stop_work",
+      "resource_ids": [],
+      "socket_ids": [],
+      "participant_roles": [
+        "actor",
+        "helpers",
+        "child"
+      ],
+      "action_id": "check_child"
+    },
+    {
+      "visual_kind": "escort",
+      "preparation_clip": "support_person",
+      "result_clip": "escort_walk",
+      "failed_clip": "hold_position",
+      "resource_ids": [],
+      "socket_ids": [
+        "hand_l",
+        "support_r"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers",
+        "child"
+      ],
+      "action_id": "reunite_child"
+    },
+    {
+      "visual_kind": "care",
+      "preparation_clip": "inspect_stand",
+      "result_clip": "confirm_nod",
+      "failed_clip": "stop_work",
+      "resource_ids": [],
+      "socket_ids": [],
+      "participant_roles": [
+        "actor",
+        "child",
+        "recipient"
+      ],
+      "action_id": "assign_child_care"
+    },
+    {
+      "visual_kind": "inspect",
+      "preparation_clip": "inspect_stand",
+      "result_clip": "point_route",
+      "failed_clip": "stop_work",
+      "resource_ids": [
+        "lamp"
+      ],
+      "socket_ids": [
+        "hand_r",
+        "door_handle"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "scout_walkway"
+    },
+    {
+      "visual_kind": "door",
+      "preparation_clip": "inspect_stand",
+      "result_clip": "operate_door",
+      "failed_clip": "step_back",
+      "resource_ids": [],
+      "socket_ids": [
+        "hand_r",
+        "door_handle"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "open_outer_door"
+    },
+    {
+      "visual_kind": "inspect",
+      "preparation_clip": "carry_item",
+      "result_clip": "point_route",
+      "failed_clip": "stop_work",
+      "resource_ids": [
+        "lamp"
+      ],
+      "socket_ids": [
+        "hand_r",
+        "refuge_lamp"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "light_walkway"
+    },
+    {
+      "visual_kind": "stretcher",
+      "preparation_clip": "lift_stretcher",
+      "result_clip": "escort_walk",
+      "failed_clip": "hold_position",
+      "resource_ids": [
+        "stretcher",
+        "medical",
+        "backup"
+      ],
+      "socket_ids": [
+        "stretcher_front",
+        "stretcher_rear"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers",
+        "patient"
+      ],
+      "action_id": "escort_mother"
+    },
+    {
+      "visual_kind": "escort",
+      "preparation_clip": "support_person",
+      "result_clip": "escort_walk",
+      "failed_clip": "hold_position",
+      "resource_ids": [],
+      "socket_ids": [
+        "hand_l",
+        "support_r"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers",
+        "child"
+      ],
+      "action_id": "escort_child"
+    },
+    {
+      "visual_kind": "gather",
+      "preparation_clip": "gather_signal",
+      "result_clip": "escort_walk",
+      "failed_clip": "hold_position",
+      "resource_ids": [],
+      "socket_ids": [
+        "gather_point"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers",
+        "passengers"
+      ],
+      "action_id": "escort_passengers"
+    },
+    {
+      "visual_kind": "inspect",
+      "preparation_clip": "read_record",
+      "result_clip": "confirm_nod",
+      "failed_clip": "stop_work",
+      "resource_ids": [],
+      "socket_ids": [
+        "document_hold"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "final_sweep"
+    },
+    {
+      "visual_kind": "gather",
+      "preparation_clip": "gather_signal",
+      "result_clip": "escort_walk",
+      "failed_clip": "hold_position",
+      "resource_ids": [],
+      "socket_ids": [
+        "gather_point"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers",
+        "passengers"
+      ],
+      "action_id": "shelter_group"
+    },
+    {
+      "visual_kind": "communication",
+      "preparation_clip": "use_radio",
+      "result_clip": "confirm_nod",
+      "failed_clip": "hold_position",
+      "resource_ids": [],
+      "socket_ids": [
+        "gather_point"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "await_rescue"
+    },
+    {
+      "visual_kind": "gather",
+      "preparation_clip": "gather_signal",
+      "result_clip": "confirm_nod",
+      "failed_clip": "hold_position",
+      "resource_ids": [],
+      "socket_ids": [
+        "gather_point"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "finish_evacuation"
+    },
+    {
+      "visual_kind": "wait",
+      "preparation_clip": "idle_alert",
+      "result_clip": "idle_alert",
+      "failed_clip": "hold_position",
+      "resource_ids": [],
+      "socket_ids": [],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "wait"
+    },
+    {
+      "visual_kind": "handoff",
+      "preparation_clip": "carry_item",
+      "result_clip": "offer_item",
+      "failed_clip": "stop_work",
+      "resource_ids": [
+        "tools"
+      ],
+      "socket_ids": [
+        "hand_r",
+        "hand_l"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers",
+        "recipient"
+      ],
+      "action_id": "give_tools"
+    },
+    {
+      "visual_kind": "handoff",
+      "preparation_clip": "carry_item",
+      "result_clip": "offer_item",
+      "failed_clip": "stop_work",
+      "resource_ids": [
+        "spares"
+      ],
+      "socket_ids": [
+        "hand_r",
+        "hand_l"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers",
+        "recipient"
+      ],
+      "action_id": "give_spares"
+    },
+    {
+      "visual_kind": "handoff",
+      "preparation_clip": "carry_item",
+      "result_clip": "offer_item",
+      "failed_clip": "stop_work",
+      "resource_ids": [
+        "lamp"
+      ],
+      "socket_ids": [
+        "hand_r",
+        "hand_l"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers",
+        "recipient"
+      ],
+      "action_id": "give_lamp"
+    },
+    {
+      "visual_kind": "gather",
+      "preparation_clip": "point_route",
+      "result_clip": "escort_walk",
+      "failed_clip": "hold_position",
+      "resource_ids": [],
+      "socket_ids": [
+        "gather_point"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "join_briefing"
+    },
+    {
+      "visual_kind": "gather",
+      "preparation_clip": "point_route",
+      "result_clip": "escort_walk",
+      "failed_clip": "hold_position",
+      "resource_ids": [],
+      "socket_ids": [
+        "gather_point"
+      ],
+      "participant_roles": [
+        "actor",
+        "helpers"
+      ],
+      "action_id": "move_to_refuge"
+    }
+  ]
+}

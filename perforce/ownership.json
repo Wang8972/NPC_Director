@@ -7,7 +7,8 @@
       "tests/**",
       "scripts/**",
       "data/prototype/**",
-      "unity/NPCDirectorClient/**"
+      "unity/NPCDirectorClient/**",
+      "games/last-light/**"
     ]
   },
   "perforce": {
@@ -43,5 +44,8 @@
     "Never edit Assets/NPCDirectorClient in Perforce; edit Git source and resync.",
     "Always submit a Unity asset together with its .meta file.",
     "One changelist must represent one reviewable art or integration intent."
-  ]
+  ],
+  "additional_projects": {
+    "last_light": "games/last-light/integration/ownership.json"
+  }
 }

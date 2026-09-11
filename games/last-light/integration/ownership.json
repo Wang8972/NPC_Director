@@ -1,0 +1,40 @@
+{
+  "project": "last-light",
+  "git_root": "games/last-light",
+  "p4_workspace": "User-selected independent workspace, outside Git",
+  "p4_stream": null,
+  "git_authority": [
+    "backend/**",
+    "tools/**",
+    "Docs/**",
+    "Assets/LastLight/Scripts/**",
+    "Assets/LastLight/Editor/**",
+    "Assets/LastLight/Resources/Presentation/Actions.json*",
+    "Assets/LastLight/Resources/Presentation/Sockets.json*",
+    "integration/**",
+    "README.md",
+    "pyproject.toml",
+    ".env.example"
+  ],
+  "p4_authority": [
+    "Art/Source/**",
+    "Assets/LastLight/Art/**",
+    "Assets/LastLight/Resources/Audio/**",
+    "Assets/LastLight/Resources/Fonts/**",
+    "Assets/Scenes/**",
+    "Packages/**",
+    "ProjectSettings/**",
+    "asset .meta files"
+  ],
+  "p4_read_only_git_snapshots": "Paths copied by materialize_workspace.py and recorded in .code-sync.json; edit upstream Git only. Source .meta IDs are synced with their source.",
+  "p4_generated_assets": [
+    "Assets/LastLight/Generated/Art/**",
+    "Assets/LastLight/Resources/Presentation/Assets.asset*"
+  ],
+  "rules": [
+    "Do not initialize Git in the P4 workspace.",
+    "Source and assets must keep their paired .meta files.",
+    "Do not overwrite locally modified assets during code sync.",
+    "No P4 server, depot, stream or changelist has been created or submitted by this import."
+  ]
+}

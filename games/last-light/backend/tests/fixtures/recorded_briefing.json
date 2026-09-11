@@ -1,0 +1,59 @@
+{
+  "source": "Recorded real Qwen outputs; replay fixture supplies the canonical fact as an authorized reference. This is NOT a new live result.",
+  "candidate": {
+    "candidate_id": "c_n_background",
+    "need_id": "n",
+    "content_kind": "background",
+    "scope": {
+      "scope": "action",
+      "parent_objective": null,
+      "reason": "仅为信息整理与背景描述，不涉及新任务或事件触发。",
+      "independent_goal": "",
+      "character_motivation": "",
+      "completion_condition": "",
+      "meaningful_outcomes": [],
+      "can_decline": false,
+      "necessary_for_parent": false,
+      "merge_insufficient_reason": ""
+    },
+    "title": "列车突发状况简报",
+    "summary": "基于已知事实，整理当前列车紧急状态的简要通报。",
+    "objective_key": "briefing_train_incident",
+    "facts": [
+      {
+        "fact_key": "f_status_report",
+        "statement": "当前列车已停车，主照明系统断电。",
+        "epistemic_status": "world_fact",
+        "source_npc_id": null,
+        "deceptive": false,
+        "persona_basis": "",
+        "motive": ""
+      }
+    ],
+    "steps": [],
+    "events": [],
+    "required_actions": [],
+    "reward_types": [],
+    "source_refs": [
+      "f"
+    ],
+    "visibility": "private",
+    "expires_at": null
+  },
+  "review": {
+    "candidate_id": "c_n_background",
+    "action": "approve",
+    "final_scope": null,
+    "merge_into": null,
+    "reasons": [
+      "内容严格基于canonical_facts，未增添新事实。",
+      "符合background类型定义，用于整理已知信息。",
+      "无任务注册需求，符合max_new_quests限制。"
+    ],
+    "revision_instructions": "",
+    "revision_edits": [],
+    "setting_consistent": true,
+    "persona_consistent": true,
+    "meaningful": true
+  }
+}

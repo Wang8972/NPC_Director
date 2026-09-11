@@ -1,0 +1,36 @@
+{
+  "kind": "local implementation evidence; Windows validation pending",
+  "windows": {
+    "editor_build": "not_run",
+    "player_build": "not_run",
+    "screenshots": "not_run",
+    "fps": "not_measured",
+    "playtime": "not_measured"
+  },
+  "warnings": [
+    "Live AI validation is incomplete. CPU previews are not Unity screenshots."
+  ],
+  "python_tests": {
+    "tests": 113,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "live_budget": {
+    "ceiling": 200000,
+    "charged_tokens": 191718,
+    "supplier_reported_tokens": 163005,
+    "unknown_usage_calls": 1,
+    "model_calls": 30,
+    "within_budget": true
+  },
+  "art_assets": {
+    "source": "Original Blender low-poly meshes, skinning, expressions and clips",
+    "blender": "4.5.0",
+    "characters": 9,
+    "props": 22,
+    "clips": 52,
+    "files_hash_valid": true
+  },
+  "presentation_live_calls": 0
+}

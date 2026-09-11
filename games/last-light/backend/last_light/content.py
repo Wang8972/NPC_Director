@@ -1,0 +1,193 @@
+"""Authored, stable world content. These facts are not a global NPC prompt.
+
+The engine projects only facts actually observed or delivered to each character.
+Game-specific procedures below are fictional abstractions, not rail instructions.
+"""
+
+SCHEMA_VERSION = 1
+NPC_IDS = ("lin", "zhou", "chen", "xu")
+ACTOR_IDS = ("player", "lin", "zhou", "chen", "xu", "mother", "xiaoman", "passenger05", "passenger07")
+ROOMS = {
+    "cabin07": ("07号车厢", "应急灯把过道染成琥珀色。广播停在半句，饮水点旁有人攥着没接满的水杯。06号车厢的内门仍能通行。"),
+    "cabin06": ("06号车厢", "便携呼吸支持设备发出均匀的低鸣。前方贯通门被侧翻的服务推车卡住，窄窗后看不到座位。"),
+    "cabin05": ("05号车厢", "座位间散落着急停时掉下的物品。乘客一直在互相照看；隔断另一侧的消息终于能够抵达这里。"),
+    "service": ("检修间", "窄小的工作间里有独立固定电话、应急工具与低压辅助控制箱。主照明熄灭，并不意味着这里的每条回路都断电。"),
+    "tunnel": ("避险横通道", "经过核实的同侧检修步道通向避险门。与邻线之间仍有清晰的边界，脚步和手电光把队伍连在一起。"),
+}
+NPCS = {
+    "lin": {"name": "林岚", "role": "乘务员", "goal": "确认线路和车厢风险，维持可执行的秩序，不能把不确定当成安全保证。"},
+    "zhou": {"name": "周屿", "role": "乘客", "goal": "接回独自在05号车厢的九岁女儿小满；可靠的人、路线和回报节点比安慰更重要。"},
+    "chen": {"name": "陈默", "role": "检修工程师", "goal": "救人并查明故障；必须先确认辅助回路隔离，不能为了尽快处理而跳过验证。"},
+    "xu": {"name": "许宁", "role": "乘客", "goal": "在母亲得到持续照护的前提下帮助别人；借电有用途、期限和保留电量，情况变了需重谈。"},
+}
+NAMES = {"player": "你", "mother": "许母", "xiaoman": "小满", "passenger05": "05号车厢乘客", "passenger07": "07号车厢乘客", **{k: v["name"] for k, v in NPCS.items()}}
+INITIAL_ACTORS = {
+    "player": ("cabin07", 0, -.3), "lin": ("cabin07", -4, -.3), "zhou": ("cabin07", 4, -.3),
+    "chen": ("service", -4, -.3), "xu": ("cabin06", 2, -.3), "mother": ("cabin06", 1, 1.45),
+    "xiaoman": ("cabin05", -1, 1.4), "passenger05": ("cabin05", 3, 1.45), "passenger07": ("cabin07", -1, 1.45),
+}
+# id: title, literal truth. Entries can exist here without anybody knowing them.
+FACTS = {
+    "train_stopped": ("异常停车", "列车已停车，主照明断电，应急照明仍工作。"),
+    "inner_route_open": ("仍可通行的内门", "06与07号车厢间可以安全步行；检修间入口在07号车厢。"),
+    "crew_report": ("司机最后的岗位消息", "司机报告电气异常、主电已切断，尚未收到邻线封锁确认，要求暂不开外门并清点人员。"),
+    "radio_lost": ("尚未收到更新", "林岚此后未收到司机的进一步回报，没有可靠的恢复或救援到达时间。"),
+    "traffic_unknown": ("邻线状态未确认", "尚未获得邻线封锁确认，不能把列车停车等同于车外安全。"),
+    "child_last_seen": ("留在05号车厢的孩子", "周屿去07号车厢接水前，小满清醒地坐在05号车厢。现在的情况尚待核实。"),
+    "zhou_tried_door": ("周屿已经试过", "周屿去过06号车厢，徒手没能打开前门，返回07寻找乘务员和工具。"),
+    "door_jammed": ("贯通门被卡住", "急停时移位的服务推车卡住05/06内门导轨。需先稳定推车、再释放门体，强拉无效。"),
+    "child_audible": ("得到回应", "从前门另一侧听见小满辨认父亲的呼喊；这只证明能联系，不是伤情检查。"),
+    "child_checked": ("实际检查小满", "小满意识清醒，有轻微擦伤，能够在成人陪同下行走。邻座乘客一直照看她。"),
+    "child_reunited": ("父女会合", "小满已由实际救援人员带回并与周屿会合。她仍需要成人照看。"),
+    "mother_stable": ("许母的日常支持", "许母有慢性呼吸系统疾病，当前使用设备内置电池；备用电源兼容，但仍由许宁持有。"),
+    "mother_assessed": ("检查照护需求", "许母需要持续照护与稳定供电；烟气暴露和持续等待会增加设备需求，干净空气能减少这一风险。"),
+    "mother_worse": ("照护条件发生变化", "实际烟气暴露或持续供电不足已使许母需求升高。原先的借电前提需要重新评估。"),
+    "mother_protected": ("已完成保护", "许母已被实际转移至封闭通风后的07号车厢，烟气暴露停止增加。"),
+    "backup_compatible": ("备用电源", "许宁的备用电源可用于应急通信，也可接入许母的设备；借出、接入、耗电和归还是不同动作。"),
+    "temporary_fix": ("陈默记得的旧检修", "陈默曾临时处理06辅助回路接头，遗漏复测却签署完成；现在只能怀疑它与故障有关。"),
+    "maintenance_record": ("保留下来的检修记录", "检修记录载明辅助回路接头曾临时处理，复测附件缺失，完成签字为陈默。记录本身不能证明此次故障原因。"),
+    "aux_design": ("独立辅助回路的设计", "辅助支路有独立供电设计，主照明熄灭不能证明其断电；现场状态仍需查看。"),
+    "aux_live": ("独立辅助回路", "主照明断电后，独立辅助回路仍带电。维修前必须隔离并验证，不得依靠主灯判断。"),
+    "joint_diagnosed": ("核实过热接头", "现场检测确认辅助接头出现烧蚀与过热，这是此次电气故障的源头；此前检修过程需要另查记录。"),
+    "aux_isolated": ("故障支路已隔离", "独立辅助回路已切断，热源停止持续增加；此前积累的烟气不会凭空消失。"),
+    "isolation_verified": ("已验证隔离", "检测已确认目标回路隔离，维修的前置条件成立。"),
+    "repair_done": ("实际完成接头修复", "故障接头已使用备件完成维修，仍需独立复测。"),
+    "retest_passed": ("复测通过", "修复后的回路已实际复测通过，可以恢复受限辅助供电。"),
+    "aux_restored": ("辅助供电恢复", "辅助供电恢复，应急通信与车内安全照明能够稳定工作；这不表示列车可自行行驶。"),
+    "fixed_phone": ("独立固定电话", "检修间有独立供电的固定应急电话，无需许宁的备用电源。一次完整联络需要核对位置与接收调度回执。"),
+    "traffic_confirmed": ("收到封锁回执", "调度已确认本列车附近邻线停驶并记录位置；仍需分别核实步道和出口。"),
+    "rescue_contact": ("求援已被接收", "调度已收到列车位置和故障概况。留车接应仍需提交清点结果、确认安全车厢并保持联络。"),
+    "path_surveyed": ("步道实地核实", "从07外门内侧使用灯光核实：同侧步道连续通往避险横通道，出口处没有可见阻塞。"),
+    "outer_open": ("外门实际开放", "交通封锁与路线核实均完成后，07号外门已实际开放。"),
+    "route_lit": ("接应照明就位", "步道照明已实际布置，人员可以按确定的接应顺序转移。"),
+    "passenger_count": ("实际清点", "名单共九人：你、四名主要乘客与工作人员、许母、小满及05和07各一名乘客。去向需要逐一确认。"),
+    "group_sheltered": ("集中至安全车厢", "当前能够到达的乘客已经实际集中到07号车厢，照护和接应位置已安排。未到场者不会自动被算作获救。"),
+    "final_sweep": ("最后检查记录", "最后检查逐一记录了人员所在位置、未完成的转移和必须带走的设备。"),
+    "smoke_seen": ("现场烟气", "06号车厢出现可以观察到的烟气；需要调查来源并重新评估原地等待的条件。"),
+    "tools_ready": ("工具已领取", "应急工具包已经由执行人实际领取。"),
+    "lamp_ready": ("手电已领取", "应急手电已经由执行人实际领取。"),
+    "loan_returned": ("备用电源实际归还", "备用电源已经实际回到许宁手中；此前消耗的电量不会恢复。"),
+    "backup_taken": ("备用电源已交接", "许宁已把备用电源实际交给借约指定的接收者，物品已离开她的保管位置。"),
+    "radio_connected": ("通信电源已经接入", "备用电源已经实际接入07号车厢的无线通信设备；这不是归还或完成求援。"),
+    "radio_disconnected": ("通信电源已经断开", "备用电源已从无线通信设备实际拆下，尚须携带并归还。"),
+    "medical_connected": ("照护电源已接入", "备用电源已实际接入便携呼吸支持设备；此前消耗不会恢复，设备仍需持续获得实际供电。"),
+    "phone_restored": ("固定电话接口已恢复", "独立线路的固定电话接口已恢复，现在可以进行完整调度联络。"),
+    "spares_ready": ("备件已领取", "密封接头备件已实际领取，仍须送到检修现场。"),
+    "aisle_clear": ("过道已清理", "07号车厢散落行李已被移开，可以安排人员转移。"),
+    "vent_closed": ("通风隔断已关闭", "通往07的局部通风隔断已经关闭，可减少烟气继续蔓延，但未消灭热源。"),
+    "stretcher_ready": ("担架已领取", "折叠担架已被实际领取，尚需展开。"),
+    "stretcher_prepared": ("担架已展开", "担架已展开并准备好搬运位置，仍需要两名实际参与者。"),
+    "trolley_cleared": ("推车已移开", "卡在前门导轨的推车已被移开，门体仍需单独释放。"),
+    "inner_door_open": ("贯通门已释放", "05/06内门已被实际释放，可以从车内通过。"),
+    "external05_open": ("05外门已释放", "已从核实过的步道实际释放05外门，可以沿外路接回人员。"),
+}
+INITIAL_KNOWLEDGE = {
+    "player": ["train_stopped", "inner_route_open"],
+    "lin": ["train_stopped", "inner_route_open", "crew_report", "radio_lost", "traffic_unknown"],
+    "zhou": ["train_stopped", "inner_route_open", "child_last_seen", "zhou_tried_door", "door_jammed"],
+    "chen": ["train_stopped", "inner_route_open", "temporary_fix", "aux_design", "fixed_phone"],
+    "xu": ["train_stopped", "inner_route_open", "mother_stable", "backup_compatible"],
+    "mother": ["train_stopped", "mother_stable"], "xiaoman": ["train_stopped"],
+    "passenger05": ["train_stopped"], "passenger07": ["train_stopped"],
+}
+
+def obj(room, label, x, z, description, facts=()):
+    return {"room_id": room, "label": label, "x": x, "z": z, "description": description, "facts": list(facts)}
+
+OBJECTS = {
+    "radio": obj("cabin07", "广播与对讲机", -4, 1.3, "林岚身旁的对讲机没有新回音。广播设备缺少稳定供电，工作人员的岗位记录需要本人说明。"),
+    "outer_door07": obj("cabin07", "07号外门", 5, -1.8, "窗外是昏暗的隧道。停车、邻线封锁、步道安全和门已打开，是四件不同的事。", ["traffic_unknown"]),
+    "water_point": obj("cabin07", "饮水点", 6, 1.5, "热水停止加热，台面上有刚接到一半的水。有人显然原本打算很快回到座位。"),
+    "manifest": obj("cabin07", "应急清点夹板", -1, 1.3, "夹板留有逐人登记位置的空格。清点不能只靠估算车厢里的人数。"),
+    "aisle07": obj("cabin07", "07号过道", 0, -.3, "散落行李挤占了转移伤员的空间；座位区相对远离06号烟气。"),
+    "blocked_door": obj("cabin06", "被推车卡住的前门", -7, 0, "推车歪在门侧，底部嵌入导轨。应先稳住推车，再释放门体；窄窗看不见05座位。", ["door_jammed"]),
+    "oxygen": obj("cabin06", "便携呼吸支持设备", 1, 1.4, "许母坐在设备旁，许宁留意指示灯。设备内置电池有限，不应凭一句安慰改变它的状态。", ["mother_stable"]),
+    "backup_supply": obj("cabin06", "备用电源", 3, 1.3, "许宁把兼容备用电源放在伸手可及处；借用要明确用途、归还节点和保留电量。", ["backup_compatible"]),
+    "vent06": obj("cabin06", "车厢通风隔断", -2, 1.8, "局部通风隔断可以减少烟气向07蔓延，但不能消灭仍在过热的源头。"),
+    "luggage06": obj("cabin06", "散落行李", 5, 1.2, "行李留出了窄窄一条过道，没有藏着万能工具；调查应回到设备和人员。"),
+    "child": obj("cabin05", "小满与邻座乘客", -1, 1.4, "小满坐在原来的座位附近。只有实际接近和检查，才能核实她的情况。"),
+    "seat05": obj("cabin05", "05号座位区", -3, 1.3, "一件成人外套留在座位上，旁边是孩子的小背包。"),
+    "outer_door05": obj("cabin05", "05号外门", -6, -1.8, "可从已经核实的同侧步道接近外侧释放口。它需要独立操作，不会随着07号外门自动打开。"),
+    "passenger_bag": obj("cabin05", "乘客随身包", 4, 1.4, "照看小满的乘客把自己的包挪到一旁，腾出能坐下检查的空间。"),
+    "cabinet": obj("service", "辅助控制箱", -4, 1.4, "主照明熄灭，独立辅助指示灯却还亮着。箱外标明隔离操作位置。", ["aux_live"]),
+    "maintenance_log": obj("service", "检修记录", -1, 1.3, "记录夹公开放在工作台。旧处理单上有签字，复测附件栏却是空的。可用一次完整核对保留证据。"),
+    "fixed_phone": obj("service", "独立应急电话", 5, 1.4, "固定电话的独立电源灯亮着，旁边有位置编号和调度联络流程。", ["fixed_phone"]),
+    "tool_rack": obj("service", "应急工具架", 2, 1.3, "工具包、手电与密封备件各有固定位置，需要实际领取。"),
+    "cable_joint": obj("service", "06辅助回路接头", -4, -1.4, "隔护罩后传来焦热气味。查明原因不等于已安全断电，更不等于已完成修理。"),
+    "stretcher_rack": obj("service", "折叠担架架", 4, -1.4, "担架需要领取并展开。搬运需要两名能够同时到场的成人。"),
+    "power_bus": obj("service", "辅助供电面板", -1, -1.4, "面板分别记录隔离、维修和复测状态，不能跳过复测直接送电。"),
+    "walkway": obj("tunnel", "同侧检修步道", -3, -.3, "已经核实的步道通向横通道，邻线边界保持封闭。"),
+    "refuge": obj("tunnel", "避险横通道", 4, 1, "接应地点在这里。登记必须以实际到场的人为准。"),
+    "signal_marker": obj("tunnel", "避险位置标识", 0, 1.6, "固定标识与调度回执中的位置一致，为后续接应提供明确地点。"),
+}
+
+def action(label, target, duration, actors, description, requires=(), provides=(), kind="work", resource="", repeat=False):
+    return {"label": label, "target_id": target, "duration": duration, "actors": list(actors), "description": description,
+            "requires": list(requires), "provides": list(provides), "kind": kind, "resource": resource, "repeat": repeat}
+
+ADULTS = ("player", "lin", "zhou", "chen", "xu")
+ACTIONS = {
+    "collect_tools": action("领取应急工具", "tool_rack", 1, ADULTS, "实际领取唯一工具包；后续任务必须使用同一份工具。", provides=["tools_ready"], kind="carry", resource="tools"),
+    "collect_lamp": action("领取应急手电", "tool_rack", 1, ADULTS, "领取手电，用于核实车外路线与接应照明。", provides=["lamp_ready"], kind="carry", resource="lamp"),
+    "collect_spares": action("领取密封备件", "tool_rack", 1, ["player", "lin", "chen"], "领取一份替换接头，维修后消耗。", provides=["spares_ready"], kind="carry", resource="spares"),
+    "collect_stretcher": action("领取折叠担架", "stretcher_rack", 1, ADULTS, "领取可展开的担架，不会自动把伤员转移。", provides=["stretcher_ready"], kind="carry", resource="stretcher"),
+    "examine_log": action("核对并保留检修记录", "maintenance_log", 1, ["player", "lin", "chen"], "查验签字和缺失的复测附件；责任证据与故障诊断分开。", provides=["maintenance_record"], kind="inspect"),
+    "inspect_joint": action("检测过热接头", "cable_joint", 2, ["chen"], "使用工具核实故障源。检测不能代替隔离。", requires=["tools_ready"], provides=["joint_diagnosed"], kind="inspect", resource="tools"),
+    "isolate_aux": action("隔离故障辅助支路", "cabinet", 1, ["chen", "lin"], "按箱外标识断开故障支路，阻止热源继续增长。", provides=["aux_isolated"], kind="repair"),
+    "verify_isolation": action("验证实际断电", "cabinet", 1, ["chen"], "使用工具验证目标回路隔离。", requires=["aux_isolated", "tools_ready"], provides=["isolation_verified"], kind="inspect", resource="tools"),
+    "repair_joint": action("修复故障接头", "cable_joint", 3, ["chen"], "隔离验证后消耗备件完成修复；必须复测才能恢复供电。", requires=["isolation_verified", "joint_diagnosed", "spares_ready"], provides=["repair_done"], kind="repair", resource="tools"),
+    "retest_repair": action("执行独立复测", "power_bus", 1, ["chen"], "现场复测并留下结果，不能以口头保证或旧签字替代。", requires=["repair_done"], provides=["retest_passed"], kind="inspect", resource="tools"),
+    "restore_aux": action("恢复受限辅助供电", "power_bus", 1, ["chen", "lin"], "恢复安全照明与通信供电，不恢复列车牵引。", requires=["retest_passed"], provides=["aux_restored"], kind="repair"),
+    "manual_cutoff": action("按外部标识操作应急隔离", "cabinet", 2, ["player", "lin"], "按箱外可见标识使用机械隔离开关；较慢，但不依赖工程师答应合作。", requires=["aux_live"], provides=["aux_isolated"], kind="repair"),
+    "restore_phone": action("按操作卡恢复固定电话接口", "fixed_phone", 2, ["player", "lin", "chen"], "独立线路仍可用；恢复断开的低压接口，比便携通信准备更费时，但不借用医疗电源。", requires=["fixed_phone"], provides=["phone_restored"], kind="repair"),
+    "call_control": action("用固定电话取得调度回执", "fixed_phone", 2, ["player", "lin", "chen"], "核对位置，确认邻线封锁并登记求援；不消耗备用电源。", requires=["fixed_phone", "phone_restored"], provides=["traffic_confirmed", "rescue_contact"], kind="communicate"),
+    "connect_radio": action("把借用电源接入通信设备", "radio", 1, ["player", "lin", "chen"], "需要有效借电约定与实际持有电源；连接后每个行动单位耗电。", requires=["backup_taken"], provides=["radio_connected"], kind="repair", resource="backup"),
+    "radio_request": action("发出并核对无线求援", "radio", 2, ["player", "lin"], "接入的电源或恢复的辅助供电支持完整求援；必须收到回执。", provides=["traffic_confirmed", "rescue_contact"], kind="communicate", resource="radio"),
+    "disconnect_radio": action("断开通信备用电源", "radio", 1, ["player", "lin", "chen"], "实际拔离后停止通信耗电，尚未归还。", requires=["radio_connected"], provides=["radio_disconnected"], kind="carry", resource="backup", repeat=True),
+    "take_backup": action("按约定接过备用电源", "backup_supply", 1, ["player", "lin", "chen"], "只有已经送达的借电约定允许交付；交付前仍归许宁持有。", provides=["backup_taken"], kind="carry", resource="backup", repeat=True),
+    "return_backup": action("实际归还备用电源", "backup_supply", 1, ADULTS, "取下连接并送回许宁身边，保留真实剩余电量。", provides=["loan_returned"], kind="carry", resource="backup", repeat=True),
+    "connect_medical": action("把备用电源接入照护设备", "oxygen", 1, ["xu", "player", "lin"], "使用许宁持有或经许可交接的备用电源保障设备；不会补回已消耗电量。", provides=["medical_connected"], kind="care", resource="backup", repeat=True),
+    "disconnect_medical": action("切回设备内置电池", "oxygen", 1, ["xu", "player", "lin"], "只有内置电池足以安全接续才可断开；不能为借电强行切断照护。", requires=["medical_connected"], provides=["medical_disconnected"], kind="care", resource="backup", repeat=True),
+    "close_vent": action("关闭向07蔓延的通风隔断", "vent06", 1, ADULTS, "降低07烟气暴露，不能消除06热源。", provides=["vent_closed"], kind="protect"),
+    "move_mother": action("陪同许母转到07号车厢", "oxygen", 2, ADULTS, "需另一名成人协助，并先清理过道；设备随人实际移动。", requires=["aisle_clear"], provides=["mother_moved"], kind="care", resource="mother"),
+    "assess_mother": action("和许宁核实照护需求", "oxygen", 1, ["player", "lin", "xu"], "观察设备指示与本人情况，建立可核实的借电前提。", provides=["mother_assessed"], kind="care"),
+    "prepare_stretcher": action("展开担架并确认搬运位", "stretcher_rack", 1, ADULTS, "在实际领取后展开，为步行撤离准备两人搬运。", requires=["stretcher_ready"], provides=["stretcher_prepared"], kind="care", resource="stretcher"),
+    "clear_aisle": action("清理07号转移过道", "aisle07", 1, ADULTS, "把散落行李移入座位区，形成伤员可通行空间。", provides=["aisle_clear"], kind="protect"),
+    "announce_facts": action("说明已知事实与下一核实点", "radio", 1, ["lin", "player"], "明确哪些已经确认、哪些仍未知，避免发布虚假安全保证。", requires=["crew_report"], provides=["facts_announced"], kind="communicate"),
+    "count_passengers": action("逐人核对清点记录", "manifest", 1, ["player", "lin", "zhou"], "需已经进入05、核实孩子情况；记录九个人的位置，不把缺席者算作获救。", requires=["child_checked"], provides=["passenger_count"], kind="inspect"),
+    "clear_trolley": action("稳定并移开卡门推车", "blocked_door", 2, ADULTS, "需要另一名成人协助；解除机械阻塞的第一步。", requires=["door_jammed"], provides=["trolley_cleared"], kind="rescue"),
+    "free_internal_door": action("释放05/06内门", "blocked_door", 1, ["player", "lin", "chen", "zhou"], "移开推车后使用手动释放结构，实际打开通路。", requires=["trolley_cleared"], provides=["inner_door_open"], kind="rescue"),
+    "call_child": action("在前门尝试建立联系", "blocked_door", 1, ADULTS, "得到可辨识回应只确认联系，不代替伤情检查。", requires=["door_jammed"], provides=["child_audible"], kind="communicate"),
+    "open_external05": action("从安全步道释放05号外门", "outer_door05", 2, ["player", "lin"], "沿已照明的核实路线抵达05外侧释放口，建立另一条接回孩子的通路。", requires=["route_lit"], provides=["external05_open"], kind="rescue"),
+    "check_child": action("进入05实际检查小满", "child", 1, ADULTS, "从已打开的内门或安全外路到孩子身边核实；结果只给实际参与者。", provides=["child_checked"], kind="rescue"),
+    "reunite_child": action("把小满接到父亲身边", "child", 2, ADULTS, "实际陪同孩子转移到07并让父女会合，不能仅靠传话完成。", requires=["child_checked"], provides=["child_reunited"], kind="rescue", resource="child"),
+    "assign_child_care": action("确认小满的持续陪护", "child", 1, ["player", "lin", "zhou"], "当面交接陪护责任，确保后续任务不会把孩子独自留下。", requires=["child_reunited"], provides=["child_care_assigned"], kind="care"),
+    "scout_walkway": action("从外门内侧核实同侧步道", "outer_door07", 1, ["player", "lin", "chen", "zhou"], "交通确认后借助手电观察路线；尚不下车或开门。", requires=["traffic_confirmed", "lamp_ready"], provides=["path_surveyed"], kind="inspect", resource="lamp"),
+    "open_outer_door": action("按已确认条件开放07外门", "outer_door07", 1, ["player", "lin"], "交通与路线分别确认后操作出口。", requires=["traffic_confirmed", "path_surveyed"], provides=["outer_open"], kind="rescue"),
+    "light_walkway": action("布置步道与避险点照明", "walkway", 1, ADULTS, "携手电实际进入已经开放的路线，在接应点布置照明。", requires=["outer_open", "lamp_ready"], provides=["route_lit"], kind="protect", resource="lamp"),
+    "escort_mother": action("两人转移许母到避险点", "refuge", 3, ADULTS, "需要展开的担架、另一成人和可持续供电；母亲与设备一起移动。", requires=["route_lit", "stretcher_prepared"], provides=["mother_evacuated"], kind="rescue", resource="mother"),
+    "escort_child": action("陪同小满转移到避险点", "refuge", 2, ADULTS, "实际检查后由成人陪同转移，途中照护不能被其他任务占用。", requires=["route_lit", "child_checked"], provides=["child_evacuated"], kind="rescue", resource="child"),
+    "escort_passengers": action("组织其余乘客转移", "refuge", 2, ["player", "lin", "zhou"], "先打开05通路并完成清点；两名普通乘客跟随到避险点。", requires=["route_lit", "passenger_count"], provides=["passengers_evacuated"], kind="rescue"),
+    "final_sweep": action("核对最后人员与设备去向", "manifest", 1, ["player", "lin"], "如实记录遗漏，为结束救援提供明确的最后确认。", requires=["passenger_count"], provides=["final_sweep"], kind="inspect", repeat=True),
+    "shelter_group": action("组织可达人员集中07接应", "aisle07", 2, ["player", "lin"], "需过道畅通、隔断关闭和05通路；实际带回普通乘客，不自动救出孩子或转移母亲。", requires=["aisle_clear", "vent_closed"], provides=["group_sheltered"], kind="rescue"),
+    "await_rescue": action("确认留车接应并等待救援", "radio", 2, ["player", "lin"], "结束选择：隔离热源、恢复辅助供电、取得回执并清点后，按实际在场人员结算。", requires=["aux_restored", "rescue_contact", "passenger_count", "group_sheltered", "final_sweep"], provides=["ending_stay"], kind="decision"),
+    "finish_evacuation": action("提交避险点清点并结束撤离", "refuge", 1, ["player", "lin"], "结束选择：带领仍在场的成人撤入避险点；孩子、许母和普通乘客必须已分别实际转移。遗漏者不会自动获救。", requires=["route_lit", "rescue_contact", "passenger_count", "final_sweep"], provides=["ending_evacuation"], kind="decision"),
+    "wait": action("等待一个行动单位", "fixed_phone", 1, ["player"], "主动推进现场时间，确认设备耗电和已知危机变化；阅读与网络等待始终免费。", kind="wait", repeat=True),
+    "give_tools": action("把工具包交给陈默", "chen", 1, ADULTS, "持有人实际前往陈默身边交接，工具不会隔空共享。", requires=["tools_ready"], kind="carry", resource="tools", repeat=True),
+    "give_spares": action("把密封备件交给陈默", "chen", 1, ADULTS, "将尚未消耗的备件实际交给检修人员。", requires=["spares_ready"], kind="carry", resource="spares", repeat=True),
+    "give_lamp": action("把手电交给林岚", "lin", 1, ADULTS, "交接实际照明装备，交付不意味着已经核实步道。", requires=["lamp_ready"], kind="carry", resource="lamp", repeat=True),
+    "join_briefing": action("前往07集合与交接", "aisle07", 1, ADULTS, "执行人与已同意的协助者实际前往07，不把远处人自动算作已到场。", kind="move", repeat=True),
+    "move_to_refuge": action("沿照明步道前往避险点", "refuge", 2, ADULTS, "执行人与明确同行的成人实际转移；不会代替孩子、许母或普通乘客的转移。", requires=["route_lit"], kind="move", repeat=True),
+}
+
+TOPICS = [
+    {"id": "lin_report", "npc_id": "lin", "label": "你收到的原始消息是什么？", "description": "核实广播的依据与仍然未知的部分。"},
+    {"id": "lin_help", "npc_id": "lin", "label": "一起安排安全通报和救援", "description": "讨论具体可执行任务，接受条件不等于任务完成。"},
+    {"id": "zhou_child", "npc_id": "zhou", "label": "你为什么急着去前面？", "description": "自然了解周屿试过什么、正在找谁。"},
+    {"id": "zhou_help", "npc_id": "zhou", "label": "我们一起接回孩子", "description": "以实际救援与信息回报建立合作。"},
+    {"id": "chen_history", "npc_id": "chen", "label": "你对这条线路了解多少？", "description": "区分旧检修责任、当前怀疑与现场证据。"},
+    {"id": "chen_work", "npc_id": "chen", "label": "确认隔离后一起检修", "description": "工程师接受明确的安全检修任务。"},
+    {"id": "xu_mother", "npc_id": "xu", "label": "先确认你母亲的照护需求", "description": "了解借电的前提，不直接移动电源。"},
+    {"id": "xu_loan", "npc_id": "xu", "label": "商量通信借电与归还条件", "description": "明确用途、六个行动单位内归还及保留电量。"},
+    {"id": "xu_help", "npc_id": "xu", "label": "一起保护母亲并准备转移", "description": "先保障照护，再协商配合。"},
+]

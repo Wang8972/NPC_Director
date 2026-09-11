@@ -1,0 +1,718 @@
+{
+  "schema_version": 1,
+  "project": "last-light",
+  "p4_status": "not_uploaded",
+  "git_revision": "resolved when workspace is materialized",
+  "files": [
+    {
+      "path": "Art/Source/backup.blend",
+      "size": 1285713,
+      "sha256": "2476a8e376aa555fdf3387325cb221a52dd27ae2e9e2cadd36ab9c63aea56695"
+    },
+    {
+      "path": "Art/Source/cabinet.blend",
+      "size": 1308465,
+      "sha256": "1986b0ec5910937f07e869a8c41fdc51ba4078fecd576a3991d1752e08890057"
+    },
+    {
+      "path": "Art/Source/cart.blend",
+      "size": 1321204,
+      "sha256": "57d589b3bb49c74df883da6940708b0eddb776470ac980ca5187f12f2d652646"
+    },
+    {
+      "path": "Art/Source/chen.blend",
+      "size": 1593690,
+      "sha256": "d60fc6e1e00ed52d882bd5b45e3c5903c74333a40f4b4db4b6ff3f23ba1fff72"
+    },
+    {
+      "path": "Art/Source/clipboard.blend",
+      "size": 1302983,
+      "sha256": "3e898e88e97b1bcafa03af18000cb13e94be864e5a3b2b4d1ea1a225123fac5e"
+    },
+    {
+      "path": "Art/Source/console.blend",
+      "size": 1308465,
+      "sha256": "e906e8c9e7deb2791b79299f42e73658eb2aabc52e9ebbb46f3a416c5abecdad"
+    },
+    {
+      "path": "Art/Source/cup.blend",
+      "size": 1306347,
+      "sha256": "554af124df8c6c4c0a0608eeeee009aa2cc0c720c0b677d28c5fb55f0fd9446f"
+    },
+    {
+      "path": "Art/Source/door.blend",
+      "size": 1312607,
+      "sha256": "a5cb0f3ff5091baa8cfb1177d5d9092ea2dda1387b77b2b7459f85d81b979b9e"
+    },
+    {
+      "path": "Art/Source/driver.blend",
+      "size": 1306347,
+      "sha256": "b9b2af572f20b38bbea300840426b3286ae70971fb346c4d2a20f662b6556868"
+    },
+    {
+      "path": "Art/Source/floor_module.blend",
+      "size": 1302058,
+      "sha256": "a9954ddea1cd928ba171c8be6949bc4cec1c2d09cfc59f85095b4aca4300f08d"
+    },
+    {
+      "path": "Art/Source/joint.blend",
+      "size": 1308465,
+      "sha256": "51505c5c1c2cb3d14e8b166761dd13cdee53770e2a45dbe216e630c235eb0398"
+    },
+    {
+      "path": "Art/Source/key.blend",
+      "size": 1306702,
+      "sha256": "3f8d956f1f89a9d8be26fbfa93253b2559a14da00e99ad6162329643c81f012c"
+    },
+    {
+      "path": "Art/Source/lamp.blend",
+      "size": 1306347,
+      "sha256": "35ad64ac491b1f565e01a2435a4a6b0981170210113b86287487742658027be1"
+    },
+    {
+      "path": "Art/Source/lin.blend",
+      "size": 1467213,
+      "sha256": "1c6f00a03583751c3e50a1e48be1dc8f40ede1dfe42aad8955f4e097bc85b730"
+    },
+    {
+      "path": "Art/Source/medical.blend",
+      "size": 1285730,
+      "sha256": "5185f3c0775e48bf84a4a3cd3f117742201312b43fe74fc1af63d875070e3dc9"
+    },
+    {
+      "path": "Art/Source/meter.blend",
+      "size": 1303908,
+      "sha256": "115c5adc1ed88407d98b7e10b9d3a62a96d4d8891364820235d5623da462b594"
+    },
+    {
+      "path": "Art/Source/mother.blend",
+      "size": 1755623,
+      "sha256": "859f847ea28c4e66cee4646d603c34ffb0ed01a517492dd3f305db5dbce53038"
+    },
+    {
+      "path": "Art/Source/motion.blend",
+      "size": 17233287,
+      "sha256": "32bed28efc53e938309ca7fc43af911b5491bb482c9076a3071ca12afa2a5e00"
+    },
+    {
+      "path": "Art/Source/palette.json",
+      "size": 249,
+      "sha256": "96df30b58dd0577cebb3c19e12b1c52436ab930316b5e2de613cf5f756347ec7"
+    },
+    {
+      "path": "Art/Source/passenger05.blend",
+      "size": 1858473,
+      "sha256": "0d9543d523eb321fc88374c73e5bbf185df7e4cca191ac4e6e0efa86ad70c428"
+    },
+    {
+      "path": "Art/Source/passenger07.blend",
+      "size": 1929402,
+      "sha256": "b7e884f63762ba4f88c62a2000c76060dbed961dc90153d108d92d200012b6ab"
+    },
+    {
+      "path": "Art/Source/phone.blend",
+      "size": 1308465,
+      "sha256": "6d81f525c5175ca3ef93d0eb9408e56f2462a0fc2102ce0828f5b52b2339b0a2"
+    },
+    {
+      "path": "Art/Source/player.blend",
+      "size": 1314359,
+      "sha256": "6dda8e851bd610b69739bebefbeb7e71b87061066309598d360cb5a0166d68d8"
+    },
+    {
+      "path": "Art/Source/radio_handset.blend",
+      "size": 1303908,
+      "sha256": "75f8667d10ee46dd14a683ea578bec5759434a3b95ca0192b2e1503185d57fd8"
+    },
+    {
+      "path": "Art/Source/seat.blend",
+      "size": 1306649,
+      "sha256": "b00ad16e5e134a9a42745682632264b431a4bfae7be06e614e61749e56c2f597"
+    },
+    {
+      "path": "Art/Source/spares.blend",
+      "size": 1302983,
+      "sha256": "dd4506255ea2b4caafadee77e9f5118d3a63f3385254953ac12f679d4d9a0e30"
+    },
+    {
+      "path": "Art/Source/stretcher.blend",
+      "size": 1309088,
+      "sha256": "5ed75abda7b4b68f48683d28c087a25b1fe1ad8b03c629848d88e29c7e629a99"
+    },
+    {
+      "path": "Art/Source/tools.blend",
+      "size": 1303908,
+      "sha256": "e31c54d5597ef74ebe207c61163b35130cf49c36999015f161da6c0dba830fba"
+    },
+    {
+      "path": "Art/Source/vent.blend",
+      "size": 1308465,
+      "sha256": "612f77f93d4624569e934539e368f266806ce10294e96f6fcdd184c4b1114a84"
+    },
+    {
+      "path": "Art/Source/wall_module.blend",
+      "size": 1304816,
+      "sha256": "f40d86ffeafdf3a772d11c7d766e7c380dbce9dbe3106f5ed5c1ea55131c4f8f"
+    },
+    {
+      "path": "Art/Source/xiaoman.blend",
+      "size": 1814252,
+      "sha256": "05d0cbe1911bf0f73af1b54582946bfbc33a47a045331563ddadeb40bda71ff7"
+    },
+    {
+      "path": "Art/Source/xu.blend",
+      "size": 1676194,
+      "sha256": "61d24ccbbd9939d67ce5630c4447ec3f7869c730e4fcb3f13e89dfbb430b43c1"
+    },
+    {
+      "path": "Art/Source/zhou.blend",
+      "size": 1529461,
+      "sha256": "8869e1d3e7c76da07cbb4aca1d4238e36253e3b2e2599ffaf577d816cc63972f"
+    },
+    {
+      "path": "Assets/LastLight/Art/Characters/chen.fbx",
+      "size": 144412,
+      "sha256": "987749b5fc89582446aa0acbd47215bad8fb0dc044d82d84c4ba5862763fe980"
+    },
+    {
+      "path": "Assets/LastLight/Art/Characters/chen.fbx.meta",
+      "size": 60,
+      "sha256": "b17245d79bd1789992a2f28c58487524760c39b72a1fd29e530f38bc0b488a31"
+    },
+    {
+      "path": "Assets/LastLight/Art/Characters/lin.fbx",
+      "size": 148732,
+      "sha256": "24b0289fccf8dd983c2af93da9a8694ddcd806a5e41ad7854add697ce847eb9e"
+    },
+    {
+      "path": "Assets/LastLight/Art/Characters/lin.fbx.meta",
+      "size": 60,
+      "sha256": "ae8c31d49858424afd5b7238073583b2f394b7290324b9007de886e3791bc758"
+    },
+    {
+      "path": "Assets/LastLight/Art/Characters/mother.fbx",
+      "size": 147660,
+      "sha256": "03e6b4f3ea7c3b6978db5cd1b9599cc0118c67756c4f8fff2ebd5c39f26dbe4d"
+    },
+    {
+      "path": "Assets/LastLight/Art/Characters/mother.fbx.meta",
+      "size": 60,
+      "sha256": "629273d6935a0951a04ca2b42ae4d3a9b601df08682618ba8d37eb441bc5da54"
+    },
+    {
+      "path": "Assets/LastLight/Art/Characters/passenger05.fbx",
+      "size": 143036,
+      "sha256": "1740c1fa388fd192b3cb90e783e9b9aca58f456bcdddddd23133e5e8d9dfad17"
+    },
+    {
+      "path": "Assets/LastLight/Art/Characters/passenger05.fbx.meta",
+      "size": 60,
+      "sha256": "13b1536da624e2aade34fe5e27815020c25519360087fff4b2072c4407d3777b"
+    },
+    {
+      "path": "Assets/LastLight/Art/Characters/passenger07.fbx",
+      "size": 143036,
+      "sha256": "c74c324d8c706535eed611a3ac7c1ff458db5f971be925ed6caa6ed074fe61a4"
+    },
+    {
+      "path": "Assets/LastLight/Art/Characters/passenger07.fbx.meta",
+      "size": 60,
+      "sha256": "5873201498cfaf1e7e3d5b2576b1351a4417e8327f450cd30c2e6229a32dccc6"
+    },
+    {
+      "path": "Assets/LastLight/Art/Characters/player.fbx",
+      "size": 142988,
+      "sha256": "328c4326d39951d4b2a179be3a005deec7f379f7479366394387b2dbdeaee008"
+    },
+    {
+      "path": "Assets/LastLight/Art/Characters/player.fbx.meta",
+      "size": 60,
+      "sha256": "94ac0c79331cf12cc6c5e19b09290ba75c7ddd517e37fc0ee2627b5bbb9804c9"
+    },
+    {
+      "path": "Assets/LastLight/Art/Characters/xiaoman.fbx",
+      "size": 145996,
+      "sha256": "fd00ca7afdaa9b04704d440758463305453f994650507240a58af7a89407361d"
+    },
+    {
+      "path": "Assets/LastLight/Art/Characters/xiaoman.fbx.meta",
+      "size": 60,
+      "sha256": "ab102f1420ab756648d27d08582b5d7f2d020b7c9a73c8de909fd8efd3fd4362"
+    },
+    {
+      "path": "Assets/LastLight/Art/Characters/xu.fbx",
+      "size": 147356,
+      "sha256": "a7ace1f393fddae772e26605a07f76b718ab514287193e4e5b4dc4d0d3cd4f64"
+    },
+    {
+      "path": "Assets/LastLight/Art/Characters/xu.fbx.meta",
+      "size": 60,
+      "sha256": "efe6ed33543ff6ea9c2f635ded667fcfb3e38d385109e8966d5d4a9c6c53d0b9"
+    },
+    {
+      "path": "Assets/LastLight/Art/Characters/zhou.fbx",
+      "size": 145212,
+      "sha256": "9e66fafb047dccb25b7e35b81ebabb961e78a4c1c0effece8e113a41fa96514c"
+    },
+    {
+      "path": "Assets/LastLight/Art/Characters/zhou.fbx.meta",
+      "size": 60,
+      "sha256": "c36abf98f8b1e68104445fdcf9ba7f3c4fc8db2ddde62307d968100968c927c3"
+    },
+    {
+      "path": "Assets/LastLight/Art/Characters.meta",
+      "size": 169,
+      "sha256": "3951d309cbb9e9eb139a62feb001a6bd123a4c1619bf9209b5375eefe249e82b"
+    },
+    {
+      "path": "Assets/LastLight/Art/Motion/rescue_motion.fbx",
+      "size": 12456252,
+      "sha256": "23ce11b095a130033b4e7d5ec0a24b318133e36e9bebba25c918aaf7f4fc3a3e"
+    },
+    {
+      "path": "Assets/LastLight/Art/Motion/rescue_motion.fbx.meta",
+      "size": 60,
+      "sha256": "03635d90f6232530301dc67274568884523b3b53792302970ef649f9f47d32ee"
+    },
+    {
+      "path": "Assets/LastLight/Art/Motion.meta",
+      "size": 169,
+      "sha256": "8cc6fb144e5e69f17c7a6a8608893e71a3759e020062d0896dba171d233223bd"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/backup.fbx",
+      "size": 19260,
+      "sha256": "2fa93b905719a59b24f2a058c80b2de6512eb4ba07e8a2c35c5d9f375a2e7d85"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/backup.fbx.meta",
+      "size": 60,
+      "sha256": "c8dd5e7c5b7dfbc9a8ea288b4f14e9456f3b93fe0fcee71e9a399d8e1b2de4a5"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/cabinet.fbx",
+      "size": 20076,
+      "sha256": "02417036cb2c83e4e6536c1477d31fbca7f632bf324c93a1af087f7b79d61cac"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/cabinet.fbx.meta",
+      "size": 60,
+      "sha256": "05b697b3c550f771f9d7a804484b40654242d22a5a4e461999287b51c9ae9bf8"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/cart.fbx",
+      "size": 22588,
+      "sha256": "8d41db75d45680f4653777a4f5ca666082eab235ac8e0d2e307cfebfd4df32e9"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/cart.fbx.meta",
+      "size": 60,
+      "sha256": "8f8208356a85573fe3ea65c09226d1952b03c886ce2546fb0ac07a1439f00773"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/clipboard.fbx",
+      "size": 16636,
+      "sha256": "e9e932502c4c5def39b662076286320b652a5353882f4fabe9dcb1a8e4f71b2a"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/clipboard.fbx.meta",
+      "size": 60,
+      "sha256": "c831342d6abc55f99338419c58849bbf54b611ef53f1e648739d996d24dc637d"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/console.fbx",
+      "size": 20076,
+      "sha256": "9e7855a27ffbe73610541f56840b2dc874366dc922581c58529c1fe1ac4c6354"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/console.fbx.meta",
+      "size": 60,
+      "sha256": "2a157d690e1e7789a48c8a76e461403d878f5b5da02e65f6f5e96516c0333697"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/cup.fbx",
+      "size": 17356,
+      "sha256": "f4060068d55316542f8ea72a0dd963fc9ead8e60acf2f464c10b7f07cacb56c4"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/cup.fbx.meta",
+      "size": 60,
+      "sha256": "8ed1a0ac96c0ac6e77205877642a0f90412e1b6895e78fb172805e90471f09f5"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/door.fbx",
+      "size": 22028,
+      "sha256": "01b74cb3a7b0540afcb1d2e29e5d59a0a90c3ece189b2fc10fe88b86baf25052"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/door.fbx.meta",
+      "size": 60,
+      "sha256": "33f167a8a8cf286eb4e5c5b6949372de9853a06d152644b37f266f6cd974278c"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/driver.fbx",
+      "size": 17420,
+      "sha256": "9459c804afb52b78b89dbb561c0be49162de7c97d957316498a7dc3cdf85c0ab"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/driver.fbx.meta",
+      "size": 60,
+      "sha256": "baee8d00e86557f8636a479a627d849e5dc628b57594cb047cf752dbd454874f"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/floor_module.fbx",
+      "size": 15212,
+      "sha256": "1a15ca4b039bec7416905d253c2eded979b65942c9465dd2d24eddb8c7a7ad1b"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/floor_module.fbx.meta",
+      "size": 60,
+      "sha256": "0c9f6d2d4449e1d5bf756a03b73cb7a703b29deaf2c96b8ff8ca3f49a76cf754"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/joint.fbx",
+      "size": 20076,
+      "sha256": "8eab3e513842e23da2886212b2da8e1b8affe2e1afff465bbc7d9d974a72486f"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/joint.fbx.meta",
+      "size": 60,
+      "sha256": "1758a0e45cd7dc4b6bad54f8464a8a15cabdfededbe5ff886be7d576561969a6"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/key.fbx",
+      "size": 16716,
+      "sha256": "25a0f1a5bb8fb8c4d6a4939b0f8a1773c8407cf2ed2178291cf9860d7c43a5af"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/key.fbx.meta",
+      "size": 60,
+      "sha256": "115c6b9dba4c32967c84037931518c49829277d9f2fa2bd4f41d94537d04d02d"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/lamp.fbx",
+      "size": 17404,
+      "sha256": "a9e8dc03248969657d1e8e96cbef2fe669ebdfb0abd7345b380afc99aff68514"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/lamp.fbx.meta",
+      "size": 60,
+      "sha256": "d82d9080afb48ad9b658a258ea9fd048cf9009c77315aaa8acd6b7909b0d3ccd"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/medical.fbx",
+      "size": 20348,
+      "sha256": "aae035271d11b0c6a682d6fd54fd37d8e638d22d656701c8b45c697d55decf5b"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/medical.fbx.meta",
+      "size": 60,
+      "sha256": "a90bf1644693c0a0e2353c7fa1182081c15b05dacc8ea18966b1629c6d6169da"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/meter.fbx",
+      "size": 18044,
+      "sha256": "5a70deb28bb3328ee6c6d4248f4a00e873dde161d70f2fd9d72a202cf5859920"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/meter.fbx.meta",
+      "size": 60,
+      "sha256": "6855700c5196328fd606a934d1fefa00505c68b71801dbcbc0acc6fda376990c"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/phone.fbx",
+      "size": 20076,
+      "sha256": "94b973f6e6bf060846c05b67b82835feeea449084b8d8a939c5adac09f62ce37"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/phone.fbx.meta",
+      "size": 60,
+      "sha256": "63e8a2f3b379acdce04d4f9def929f57694c448643ef1b4d376a2a87c36ff7cd"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/radio_handset.fbx",
+      "size": 18076,
+      "sha256": "60e08377cb051ec21b99d01e2e2df24f8f28d0df96cc35c5721521003b88db2e"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/radio_handset.fbx.meta",
+      "size": 60,
+      "sha256": "694896df1ddc50f458d05804152235f7ccb549ef1f82f315d30b5e2e31cfb70d"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/seat.fbx",
+      "size": 19660,
+      "sha256": "6f1d4d7f82514399267506ac89ac5734d519e36109987bf5bc592d196ace4a19"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/seat.fbx.meta",
+      "size": 60,
+      "sha256": "10285537e9257693c2245c97361e6e307066ceea7b7d4f7f2cbb3ac62ff5cee6"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/spares.fbx",
+      "size": 16636,
+      "sha256": "73b6033e183bf8c15c1f1355b83e093d0a8d88bf855378420c7cff153e76900b"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/spares.fbx.meta",
+      "size": 60,
+      "sha256": "aa4c031bd97887784ac9583f303e73bcfbfac6fdd3272b69c17bf7f6c3a87882"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/stretcher.fbx",
+      "size": 18588,
+      "sha256": "a5129a1833acf4bc36148b5f2b32cb679f9bd11fd93eeb2a667708e8c3f6339d"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/stretcher.fbx.meta",
+      "size": 60,
+      "sha256": "a585827c53f575cb5eb787ee07b0582929ff71559f9b9ee8d5f891bfa4b4be04"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/tools.fbx",
+      "size": 18060,
+      "sha256": "28fed67a783597b41116a149a93757aa56df5853136977738f8903531f84ea24"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/tools.fbx.meta",
+      "size": 60,
+      "sha256": "c306b282ecad741f575bd2dbb698e1d1c7c8c8316b3bc0990aa97f6597180341"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/vent.fbx",
+      "size": 20076,
+      "sha256": "8078789b1501fe6b9f49a56d3cc168b3b3ba33a0da81325ea975141743a9a0f5"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/vent.fbx.meta",
+      "size": 60,
+      "sha256": "62d8251204ad8f95aeea38949285e078395db0c0af8ed6671daf34d3691b3143"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/wall_module.fbx",
+      "size": 18156,
+      "sha256": "2b20a3f932ada662035b873e1327de5dcd53f3d0f4ba72ec0459132fb67e45c3"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props/wall_module.fbx.meta",
+      "size": 60,
+      "sha256": "14ba7b3b4abadd4d542dcf5e5611a1a9e2f5da02712f4c31e7bec1679acae84d"
+    },
+    {
+      "path": "Assets/LastLight/Art/Props.meta",
+      "size": 169,
+      "sha256": "35014a0da59e61e82c1ebd65892fc3f0641588eb9a9255c0a40ec6eeadb1be2d"
+    },
+    {
+      "path": "Assets/LastLight/Art/manifest.json",
+      "size": 16300,
+      "sha256": "a2507ff4bbaa26ff67da50a0f4e140061504821fc72954226eecaaf6dbc6d81a"
+    },
+    {
+      "path": "Assets/LastLight/Art/manifest.json.meta",
+      "size": 60,
+      "sha256": "758184999816116c495759a24042a030b6323114518752d19297dec278f8293c"
+    },
+    {
+      "path": "Assets/LastLight/Art.meta",
+      "size": 169,
+      "sha256": "f2e488203fb31c4ab31964541b602c4018e4057fc6d8afebb37b5f68f0975a11"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Art.meta",
+      "size": 169,
+      "sha256": "0b0a6bd9f6b9ba61dc259a7a1eeea8f159c4b0d59cee3cc871a914aad1f286df"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio/alert.wav",
+      "size": 39734,
+      "sha256": "8f23ad94aa2c038ed2bdc5fc40a12941ef0974985fd08c4394df17987ae4bec2"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio/alert.wav.meta",
+      "size": 60,
+      "sha256": "c734bc4c7c2703c6678cd2bfb99255437d42bcf6f4edbf977f6a17f391fe41cc"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio/ambient.wav",
+      "size": 705644,
+      "sha256": "277f1eb1e48a2bfaa6a26a88c679c932641737f4b5ef01551430131b01f89537"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio/ambient.wav.meta",
+      "size": 60,
+      "sha256": "226b948389232bae78c6d8eee7a4f73d5c76bcd0a8caa5b7f36a9239f3830f5d"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio/brake.wav",
+      "size": 105884,
+      "sha256": "38ab0053f0114d3540299c78434b631453d0dfbfe1d9dd792823c44b67be80fb"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio/brake.wav.meta",
+      "size": 60,
+      "sha256": "09a334a1bfe2d0fed29fc8ab316517e20d02867a60f3e7638bd7c86c3e0c965a"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio/click.wav",
+      "size": 5336,
+      "sha256": "83a03ec90162836f020f25ac98d08133aa9ed0b038f2e40036fbb25f4ca1e83b"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio/click.wav.meta",
+      "size": 60,
+      "sha256": "5fc9f9fc9088e2de1da311580e5bf8e13e6d1739cf367f864c7805100a4805c5"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio/door.wav",
+      "size": 35324,
+      "sha256": "b0c352bb8de0357285a19fb36d1f651d57ad4fdf397e67373fc1cd993b1c6aed"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio/door.wav.meta",
+      "size": 60,
+      "sha256": "80dd86a8eb39dbe4164037bd6a6627dd791be5896f4733b8a660a5ca7046db80"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio/electrical.wav",
+      "size": 352844,
+      "sha256": "1bff8bf1a6b5e21858fa07a31cd9e15ff70bcd893f9fc07671d7731d5510622d"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio/electrical.wav.meta",
+      "size": 60,
+      "sha256": "9251ef0dbc5796508a7aeb4dc69c7441d61faea90490c8899f36c892493e80f6"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio/footstep.wav",
+      "size": 9746,
+      "sha256": "07ffc3cd5f7eeb99948aedbb039ecd203e7fd53d573462e51206dcb27362f5a7"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio/footstep.wav.meta",
+      "size": 60,
+      "sha256": "b15e48f72102482db7bc892ed7320702ca642e1ff896c8de3932e717bb7477d4"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio/manifest.json",
+      "size": 1969,
+      "sha256": "96ff4e6ec5375df499bae93daffaf4d8f5fc7a37bd15019b4fbad62c2e59f355"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio/manifest.json.meta",
+      "size": 60,
+      "sha256": "6862fb7ebfd3cca9e8b8ec8163e3fbf0415036f3a392bb6f08e2af05fe0a7691"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio/music.wav",
+      "size": 705644,
+      "sha256": "9613b03a91b56a16e44e88f0e94a4bb81a6837b5a5906c912138cdbd3de697a6"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio/music.wav.meta",
+      "size": 60,
+      "sha256": "193b91e325e7344b4c5f8ac7def3b21365390eb7c08c1b0d49be9ba0945f17b9"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio/resolve.wav",
+      "size": 79424,
+      "sha256": "46487ad69c7c2ee4ea336f04c7a6ea4e066e056ef032d17d4cc31dc7daf66faa"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio/resolve.wav.meta",
+      "size": 60,
+      "sha256": "0953fcbe987ecd051f9b737c31441142c18bf045c667d07437d91881b664d7bb"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio/tools.wav",
+      "size": 48554,
+      "sha256": "91d329a024d2baf2bf4a6d4afdf28f4565453378e98d0a4943d86b4fc5796ff3"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio/tools.wav.meta",
+      "size": 60,
+      "sha256": "6977587d34c27f6bf894e2db3e68d9d1d94e13bbb80e0954febd3011fa0a6a43"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio/tunnel.wav",
+      "size": 705644,
+      "sha256": "4724c7cd216d68bc825684b22b6db64b3c1eb6f0fec5a1ce23de228b1b182129"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio/tunnel.wav.meta",
+      "size": 60,
+      "sha256": "968fac8d9e1063cf9f02338963197299abbddf6937d6c5885ad134f3f4a97b5b"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Audio.meta",
+      "size": 169,
+      "sha256": "06f6a5bf3d7710851731349b4d8811397cef74f57b7a31517b79dc4a780b0b76"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Fonts/Chinese.otf",
+      "size": 16437364,
+      "sha256": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Fonts/Chinese.otf.meta",
+      "size": 60,
+      "sha256": "228999450c0ac9a294c1c4f0a62e66e98de16f17edc3ad360f86aca4f124e41e"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Fonts/OFL.txt",
+      "size": 4301,
+      "sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Fonts/OFL.txt.meta",
+      "size": 60,
+      "sha256": "c6e0f109099805c6dba70b568f4625200b2c87b0e5e4b50d1bc6b72517e8eeed"
+    },
+    {
+      "path": "Assets/LastLight/Resources/Fonts.meta",
+      "size": 169,
+      "sha256": "a622856fa96e41b175846609de522c2a0d5dcaacdb3e8d9de64032679194a04c"
+    },
+    {
+      "path": "Assets/LastLight/Resources.meta",
+      "size": 169,
+      "sha256": "017dfd52fbb6323533a44351b5cb0f31f572fcc8b618c045e8bf8746475acb3d"
+    },
+    {
+      "path": "Assets/LastLight.meta",
+      "size": 169,
+      "sha256": "e6ddbae0bf4d0ceb1a25bdb58f93515c088c207be5608c9b195b36dad8dee086"
+    },
+    {
+      "path": "Assets/Scenes/LastLight.unity",
+      "size": 1626,
+      "sha256": "19594eff407b67f596320bc2df824d3485b7422030a00ee25688f9a031219195"
+    },
+    {
+      "path": "Assets/Scenes/LastLight.unity.meta",
+      "size": 152,
+      "sha256": "715bc023c1dac61d56037a1866ac085f61b6c345ef650bc22bdef0841ce3522f"
+    },
+    {
+      "path": "Assets/Scenes.meta",
+      "size": 169,
+      "sha256": "54007104096e27ebd82715dd0e2f3516785f15e29434753ce287f4d984ac8d6a"
+    },
+    {
+      "path": "Packages/manifest.json",
+      "size": 658,
+      "sha256": "597cf3f4d9f5645bad9b0a4fb5e76c19db5946a553851c9be5914e56ffbfdbf7"
+    },
+    {
+      "path": "ProjectSettings/EditorBuildSettings.asset",
+      "size": 255,
+      "sha256": "74ba48c2f672b8a6960e5f8b731ed00c48b9213e4520ae1b3e0b85b48486aa0e"
+    },
+    {
+      "path": "ProjectSettings/ProjectVersion.txt",
+      "size": 85,
+      "sha256": "f55357417191efac9dcba2068adf2a05ab76ec0de30eae3402c257669e98b75e"
+    }
+  ]
+}

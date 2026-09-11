@@ -1,0 +1,220 @@
+{
+  "sockets": [
+    {
+      "id": "hand_r",
+      "owner": "actor",
+      "bone": "Grip_R",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    {
+      "id": "hand_l",
+      "owner": "actor",
+      "bone": "Grip_L",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    {
+      "id": "carry_front",
+      "owner": "actor",
+      "bone": "Hips",
+      "x": 0,
+      "y": 0.12,
+      "z": 0.28
+    },
+    {
+      "id": "stow",
+      "owner": "actor",
+      "bone": "Hips",
+      "x": 0.19,
+      "y": -0.08,
+      "z": 0
+    },
+    {
+      "id": "head",
+      "owner": "actor",
+      "bone": "Head",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    {
+      "id": "chest",
+      "owner": "actor",
+      "bone": "Chest",
+      "x": -0.1,
+      "y": 0.02,
+      "z": 0.13
+    },
+    {
+      "id": "support_l",
+      "owner": "actor",
+      "bone": "Hips",
+      "x": -0.23,
+      "y": 0.12,
+      "z": 0
+    },
+    {
+      "id": "support_r",
+      "owner": "actor",
+      "bone": "Hips",
+      "x": 0.23,
+      "y": 0.12,
+      "z": 0
+    },
+    {
+      "id": "document_hold",
+      "owner": "actor",
+      "bone": "Grip_L",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    {
+      "id": "tool_rack_tools",
+      "owner": "tool_rack",
+      "bone": "",
+      "x": -0.3,
+      "y": 0.85,
+      "z": 0
+    },
+    {
+      "id": "tool_rack_lamp",
+      "owner": "tool_rack",
+      "bone": "",
+      "x": 0.2,
+      "y": 0.85,
+      "z": 0
+    },
+    {
+      "id": "tool_rack_spares",
+      "owner": "tool_rack",
+      "bone": "",
+      "x": 0.6,
+      "y": 0.85,
+      "z": 0
+    },
+    {
+      "id": "stretcher_rack_mount",
+      "owner": "stretcher_rack",
+      "bone": "",
+      "x": 0,
+      "y": 0.8,
+      "z": 0
+    },
+    {
+      "id": "radio_power",
+      "owner": "radio",
+      "bone": "",
+      "x": 0.2,
+      "y": 0.23,
+      "z": -0.18
+    },
+    {
+      "id": "medical_power",
+      "owner": "medical",
+      "bone": "",
+      "x": 0.15,
+      "y": 0.2,
+      "z": 0.12
+    },
+    {
+      "id": "aux_breaker",
+      "owner": "cabinet",
+      "bone": "",
+      "x": 0,
+      "y": 0.9,
+      "z": -0.2
+    },
+    {
+      "id": "aux_joint",
+      "owner": "cable_joint",
+      "bone": "",
+      "x": 0,
+      "y": 0.4,
+      "z": -0.2
+    },
+    {
+      "id": "aux_test",
+      "owner": "power_bus",
+      "bone": "",
+      "x": 0,
+      "y": 1.1,
+      "z": -0.2
+    },
+    {
+      "id": "phone_interface",
+      "owner": "fixed_phone",
+      "bone": "",
+      "x": 0.18,
+      "y": 0.45,
+      "z": -0.18
+    },
+    {
+      "id": "door_handle",
+      "owner": "door",
+      "bone": "",
+      "x": 0.4,
+      "y": 1,
+      "z": -0.1
+    },
+    {
+      "id": "cart_grip_l",
+      "owner": "cart",
+      "bone": "",
+      "x": -0.27,
+      "y": 0.84,
+      "z": 0.24
+    },
+    {
+      "id": "cart_grip_r",
+      "owner": "cart",
+      "bone": "",
+      "x": 0.27,
+      "y": 0.84,
+      "z": 0.24
+    },
+    {
+      "id": "stretcher_front",
+      "owner": "stretcher",
+      "bone": "",
+      "x": 0,
+      "y": 0.06,
+      "z": 0.9
+    },
+    {
+      "id": "stretcher_rear",
+      "owner": "stretcher",
+      "bone": "",
+      "x": 0,
+      "y": 0.06,
+      "z": -0.9
+    },
+    {
+      "id": "refuge_lamp",
+      "owner": "refuge",
+      "bone": "",
+      "x": 0.5,
+      "y": 1.1,
+      "z": 0
+    },
+    {
+      "id": "gather_point",
+      "owner": "manifest",
+      "bone": "",
+      "x": 0,
+      "y": 0.8,
+      "z": 0
+    },
+    {
+      "id": "power_out",
+      "owner": "backup",
+      "bone": "",
+      "x": 0.15,
+      "y": 0.2,
+      "z": 0.12
+    }
+  ]
+}

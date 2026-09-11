@@ -1005,3 +1005,9 @@ WebSocket 会话与 outbox 状态都在实例本地，**同一 session 的所有
 - **升级流程**：契约（`contracts/`）变更需同步更新 Unity `NpcDirectorMessages.cs` 与
   动作/表情目录（`make catalog`），并通过 `schema_version` 做兼容判断；先灰度一个区服
   实例再全量。
+
+## 《余灯》配套游戏
+
+完整的列车救援游戏源码位于 [games/last-light](games/last-light/README.md)，包含 Python 权威世界、真实 NPC Director v2 适配、Unity 客户端、表现资源生成工具与离线测试。它是独立子项目，不改变 SDK 原有包入口和默认测试范围。
+
+沿用既定 Git/P4 分工：Git 管代码与资源生成逻辑，P4 管独立 Unity 工作区的美术与工程资产；不要在同一目录初始化两套版本控制。[同步与首次导入说明](games/last-light/integration/README.md)。当前资源准备为本地待导入包，未宣称已提交 P4 或通过 Windows 验收。

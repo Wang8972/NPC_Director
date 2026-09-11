@@ -1,0 +1,59 @@
+{
+  "catalog_version": "last-light-v1",
+  "tension": 0.55,
+  "content_policy": {
+    "allowed_kinds": [
+      "event",
+      "background",
+      "quest"
+    ],
+    "allowed_actions": [
+      "dialogue",
+      "npc_message",
+      "quest_transition"
+    ],
+    "allowed_reward_types": [
+      "relationship"
+    ],
+    "hard_constraints": [
+      "列车的固定事故原因、历史记录和关键证据由规则定义，不能创作或修改。",
+      "生成内容只能是根据已知局势提出的求援电文、广播、人物交流或可选邀请；不能凭空出现物品、人员、路线、伤情。",
+      "台词不证明行动完成；物理结果必须来自已完成的游戏行动。",
+      "创作的角色发言和说法不是世界事实。"
+    ]
+  },
+  "capabilities": {
+    "available_actions": [
+      "idle",
+      "nod",
+      "small_nod",
+      "shake_head",
+      "step_forward",
+      "step_back",
+      "point",
+      "reach_out",
+      "cross_arms",
+      "open_palms"
+    ],
+    "available_faces": [
+      "neutral",
+      "happy",
+      "sad",
+      "angry",
+      "surprised",
+      "relieved_smile",
+      "concerned",
+      "stern",
+      "suspicious"
+    ],
+    "allowed_state_paths": [
+      "relationship.trust_delta",
+      "relationship.affinity_delta"
+    ],
+    "state_tokens": [
+      "adjust_relationship:trust",
+      "adjust_relationship:affinity"
+    ]
+  },
+  "location": "cabin06"
+}
