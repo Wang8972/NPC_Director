@@ -1,0 +1,110 @@
+[
+  {
+    "source": "artifacts/cognition/live-alias-memory-check.json",
+    "archive": "live-alias-memory-check.json.gz",
+    "sha256": "2319d6309a52e8ea50da89cae8a545e3b9f48d30a6fae945a6223acc2df4d3e5",
+    "bytes": 141467
+  },
+  {
+    "source": "artifacts/cognition/live-alias-v2-check.json",
+    "archive": "live-alias-v2-check.json.gz",
+    "sha256": "04f99a83318cc745bdc485b5805a28299bdc4b62a5a3ce0831b43f2c9d5252d4",
+    "bytes": 73685
+  },
+  {
+    "source": "artifacts/cognition/live-memory-36.json",
+    "archive": "live-memory-36.json.gz",
+    "sha256": "2aa17b3729651fcd50975305a46323e1fa51b00f7cba7a1fdc3d2d58cde0ba10",
+    "bytes": 3975611
+  },
+  {
+    "source": "artifacts/cognition/live-memory-release-36.json",
+    "archive": "live-memory-release-36.json.gz",
+    "sha256": "d49a019b8b0e8ba5dd5c50a70bce29167baf9b5afa7540ab71a3f12112c16deb",
+    "bytes": 5345706
+  },
+  {
+    "source": "artifacts/cognition/live-mode-normalization-check.json",
+    "archive": "live-mode-normalization-check.json.gz",
+    "sha256": "b0301e2d0a45d45a6a9ecc56851268b00ebde294993d4bd08e3b30c44d8a8be3",
+    "bytes": 241985
+  },
+  {
+    "source": "artifacts/cognition/live-pilot-01.json",
+    "archive": "live-pilot-01.json.gz",
+    "sha256": "696e57ce260746bbb6ebf8df37b378098a1382a3e1d45499216318c7f3779eba",
+    "bytes": 207619
+  },
+  {
+    "source": "artifacts/cognition/live-pilot-02.json",
+    "archive": "live-pilot-02.json.gz",
+    "sha256": "d63b6ccf0465822e7b42b7a244dd1b4221ad83d840bbb083d689310c8ea7743a",
+    "bytes": 83248
+  },
+  {
+    "source": "artifacts/cognition/live-pilot-03.json",
+    "archive": "live-pilot-03.json.gz",
+    "sha256": "1b88d712ea16b114c494b19304f3319b68216889684b7e7c30646477cd29b1e9",
+    "bytes": 95868
+  },
+  {
+    "source": "artifacts/cognition/live-v2-regression-102.json",
+    "archive": "live-v2-regression-102.json.gz",
+    "sha256": "06bfe7a76f5174f45879b8e6aa26b4b09758e5a756a018e3907e214473c98bc6",
+    "bytes": 2950310
+  },
+  {
+    "source": "artifacts/cognition/live-v2-release-102.json",
+    "archive": "live-v2-release-102.json.gz",
+    "sha256": "430ce4534172b4aeece3f972ef75d2b5d9a4043b6901b38b85b32e3ed00238a4",
+    "bytes": 8796709
+  },
+  {
+    "source": "artifacts/cognition/recorded-combined-final.json",
+    "archive": "recorded-combined-final.json.gz",
+    "sha256": "eccf8be292ac91c79af8862dd7187d6655c02b327a263510efdc426af56e956a",
+    "bytes": 12279469
+  },
+  {
+    "source": "artifacts/cognition/recorded-initial.json",
+    "archive": "recorded-initial.json.gz",
+    "sha256": "d5436f8e6045ef07442d140181086259a283c552abb4879eb0a9968a90f67fb0",
+    "bytes": 4129468
+  },
+  {
+    "source": "artifacts/cognition/recorded-memory-final-code.json",
+    "archive": "recorded-memory-final-code.json.gz",
+    "sha256": "f697546930cf50eb42381cf2d14eba59c91143d9d9883d28a8c6c6cb502f4bcd",
+    "bytes": 4097156
+  },
+  {
+    "source": "artifacts/cognition/recorded-memory-final.json",
+    "archive": "recorded-memory-final.json.gz",
+    "sha256": "95b0f48eb7d2ab465d9d50007ceeec2152919e60b4e4e21bdb3e7f9cbeaafe1a",
+    "bytes": 4002534
+  },
+  {
+    "source": "artifacts/cognition/recorded-memory-release.json",
+    "archive": "recorded-memory-release.json.gz",
+    "sha256": "1e101b1cf9f4beb44534ed887c3265715d998d59d25c7bab5c72870826e49275",
+    "bytes": 4097178
+  },
+  {
+    "source": "artifacts/cognition/recorded-v2-final-code.json",
+    "archive": "recorded-v2-final-code.json.gz",
+    "sha256": "c47100cb691f711688cf42c313fe3d2826b41ad1a8d1186054e12be0b732819b",
+    "bytes": 8183242
+  },
+  {
+    "source": "artifacts/cognition/recorded-v2-regression.json",
+    "archive": "recorded-v2-regression.json.gz",
+    "sha256": "9a1200267a8689cfccd1cb4f071b6975e104f788d500ef774280b13f25c1c882",
+    "bytes": 8049642
+  },
+  {
+    "source": "artifacts/cognition/recorded-v2-release.json",
+    "archive": "recorded-v2-release.json.gz",
+    "sha256": "3235557e648b2cb38b3bb61b5e905446c36ec930e79a0058821d5647772f3bf0",
+    "bytes": 8183213
+  }
+]

@@ -17,6 +17,11 @@ def _optional_float(name: str) -> float | None:
 
 @dataclass(frozen=True, slots=True)
 class Settings:
+    cognition_enabled: bool = False
+    memory_model: str | None = None
+    memory_half_life: int = 32
+    memory_dormant_threshold: float = 0.1
+    memory_reflect_after: int = 8
     model: str | None = None
     director_model: str | None = None
     narrative_model: str | None = None
@@ -71,6 +76,13 @@ class Settings:
         if max_turns < 1:
             raise ValueError("NPC_DIRECTOR_MAX_TURNS must be at least 1")
         settings = cls(
+            cognition_enabled=os.getenv("NPC_DIRECTOR_COGNITION", "false").lower() == "true",
+            memory_model=_optional_string("NPC_DIRECTOR_MEMORY_MODEL"),
+            memory_half_life=int(os.getenv("NPC_DIRECTOR_MEMORY_HALF_LIFE", "32")),
+            memory_reflect_after=int(os.getenv("NPC_DIRECTOR_MEMORY_REFLECT_AFTER", "8")),
+            memory_dormant_threshold=float(
+                os.getenv("NPC_DIRECTOR_MEMORY_DORMANT_THRESHOLD", "0.1")
+            ),
             model=model,
             director_model=_optional_string("NPC_DIRECTOR_DIRECTOR_MODEL"),
             narrative_model=_optional_string("NPC_DIRECTOR_NARRATIVE_MODEL"),
@@ -139,6 +151,10 @@ class Settings:
         return settings
 
     def validate(self) -> None:
+        if self.memory_half_life < 1 or self.memory_reflect_after < 1:
+            raise ValueError("memory event thresholds must be positive")
+        if not 0 < self.memory_dormant_threshold < 1:
+            raise ValueError("memory dormant threshold must be between zero and one")
         if self.node_reasoning_effort not in {"low", "medium", "high"}:
             raise ValueError("node reasoning effort must be low, medium or high")
         if not 1 <= self.max_episode_participants <= 20:
@@ -186,6 +202,7 @@ class Settings:
 
     def model_for(self, role: str) -> str | None:
         role_models = {
+            "memory": self.memory_model,
             "director": self.director_model,
             "narrative": self.narrative_model,
             "lore": self.lore_model,

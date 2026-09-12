@@ -27,6 +27,7 @@ from npc_director.config import Settings
 
 def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(description=__doc__)
+    result.add_argument("--cognition", action="store_true")
     result.add_argument("--mode", choices=("recorded", "live"), default="recorded")
     result.add_argument("--transport", choices=("codex", "sdk"), default="sdk")
     result.add_argument("--cases", type=Path, default=DEFAULT_EPISODE_CASES)
@@ -47,7 +48,7 @@ def report_path(mode: str, *, prefix: str = "episodes") -> Path:
 
 def eval_settings(args: argparse.Namespace) -> Settings:
     settings = Settings.from_env()
-    updates = {}
+    updates = {"cognition_enabled": args.cognition or settings.cognition_enabled}
     if args.model:
         updates["model"] = args.model
     elif args.mode == "live" and not settings.model:
@@ -117,7 +118,7 @@ def main() -> int:
         if args.mode == "live"
         else summary["structural_passes"] == summary["runs"]
     )
-    return 0 if passed else 1
+    return 0 if passed and not report.get("budget_exhausted") else 1
 
 
 if __name__ == "__main__":

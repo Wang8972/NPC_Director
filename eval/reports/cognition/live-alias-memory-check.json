@@ -1,0 +1,154 @@
+{
+  "schema_version": "director-episodes-v1",
+  "mode": "live",
+  "started_at": "2026-09-12T16:56:50.750419+00:00",
+  "repeats": 1,
+  "case_count": 1,
+  "concurrency": 1,
+  "model": "gpt-5.6-luna",
+  "transport": "sdk",
+  "node_reasoning_effort": "low",
+  "dataset_sha256": "edf48143e0a6216f5eda564872e2a8646a5de0dc7389a1b8e0880f4f336f0ffc",
+  "source_sha256": "d4d71ae470e404f1099ad19ef27d98465928e8f10b5b696a9eaf5887798f5e51",
+  "summary": {
+    "runs": 1,
+    "structural_passes": 0,
+    "live_runs": 1,
+    "live_goal_passes": 0,
+    "live_goal_success_rate": 0.0,
+    "fallback_runs": 1,
+    "naturalness_mean": 4,
+    "persona_mean": 5,
+    "generation_tokens": 67838,
+    "generation_latency_ms": 48033.45641600026,
+    "unknown_usage_calls": 0,
+    "meets_live_acceptance": false,
+    "quality_claim": "live independent model judgment"
+  },
+  "token_ledger": {
+    "charged_tokens": 3554766,
+    "limit": 10000000,
+    "pilot_limit": 300000,
+    "calls": 747,
+    "unknown_usage_calls": 6,
+    "phase": "full",
+    "stopped": false
+  },
+  "budget_exhausted": false,
+  "completed_at": "2026-09-12T16:57:40.984444+00:00",
+  "archive_representation": "summary",
+  "full_report": "live-alias-memory-check.json.gz",
+  "original_sha256": "2319d6309a52e8ea50da89cae8a545e3b9f48d30a6fae945a6223acc2df4d3e5",
+  "results": [
+    {
+      "case_id": "cog_investigate",
+      "repeat": 1,
+      "structural_passed": false,
+      "goal_passed": false,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false,
+        "expected_behavior_mode": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 4,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "完整处理两轮输入，持续将旧路状况视为未核实信息。",
+          "没有把传闻升级为事实，也明确暂停派人并拒绝替他人保证。",
+          "玛伦的克制、重证据和简短沉稳风格得到保持；艾伦未被擅自替其提供事实。",
+          "第二轮回应略有重复，但属于对玩家确认的自然承接，未产生额外副作用。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 48033.45641600026,
+        "input_tokens": 63287,
+        "output_tokens": 4551,
+        "total_tokens": 67838,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 13,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 67838
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "investigative",
+              "version": 2,
+              "goal_id": null,
+              "reason": "玩家确认自己没有亲眼证据，旧路状况仍存在影响安全安排的事实缺口。",
+              "evidence_refs": [
+                "input:43fe5db464e3ef6c21ea487e671fe80c86f63056",
+                "spoken:fa36cb8e540f911403282a876fb9e26bc0509ad5"
+              ],
+              "source_turn_id": "eval:cog_investigate:1:main:turn:1"
+            },
+            "memory_count": 5,
+            "derived_memories": [],
+            "jobs": [
+              {
+                "job_id": "cog:4c69cf181007aebc9e1f51adb4ea68444002b9f1",
+                "status": "obsolete",
+                "attempts": 1,
+                "last_error": null,
+                "usage_json": "{\"input_tokens\": 558, \"output_tokens\": 13, \"total_tokens\": 571, \"usage_known\": true, \"elapsed_seconds\": 1.7626640830021643}"
+              }
+            ]
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 2,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    }
+  ]
+}

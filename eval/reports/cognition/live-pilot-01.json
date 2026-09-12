@@ -1,0 +1,318 @@
+{
+  "schema_version": "director-episodes-v1",
+  "mode": "live",
+  "started_at": "2026-09-12T16:09:57.152718+00:00",
+  "repeats": 1,
+  "case_count": 2,
+  "concurrency": 1,
+  "model": "gpt-5.6-luna",
+  "transport": "sdk",
+  "node_reasoning_effort": "low",
+  "dataset_sha256": "2aa7598e71d79f23dec5c86b6a92efc3c2c7a775884afbf3f065637fa2ec15d5",
+  "source_sha256": "9de89141c6a3fcdb23079572164c8822c43171c9f1f21c297c0e2206fe412687",
+  "summary": {
+    "runs": 2,
+    "structural_passes": 2,
+    "live_runs": 2,
+    "live_goal_passes": 1,
+    "live_goal_success_rate": 0.5,
+    "fallback_runs": 0,
+    "naturalness_mean": 3.5,
+    "persona_mean": 4.5,
+    "generation_tokens": 103606,
+    "generation_latency_ms": 65721.88795900001,
+    "unknown_usage_calls": 0,
+    "meets_live_acceptance": false,
+    "quality_claim": "live independent model judgment"
+  },
+  "token_ledger": {
+    "charged_tokens": 107994,
+    "limit": 10000000,
+    "pilot_limit": 300000,
+    "calls": 24,
+    "unknown_usage_calls": 0,
+    "phase": "pilot",
+    "stopped": false
+  },
+  "budget_exhausted": false,
+  "completed_at": "2026-09-12T16:11:07.397611+00:00",
+  "archive_representation": "summary",
+  "full_report": "live-pilot-01.json.gz",
+  "original_sha256": "696e57ce260746bbb6ebf8df37b378098a1382a3e1d45499216318c7f3779eba",
+  "results": [
+    {
+      "case_id": "cog_guarded",
+      "repeat": 1,
+      "structural_passed": true,
+      "goal_passed": true,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "expected_behavior_mode": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 4,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "两次玩家输入均得到回应；第二次正常回应问候，同时明确保留对先前威胁的戒备。",
+          "未把天气当作已知事实，也没有突然恢复信任或作出无依据承诺。",
+          "语气简短、沉稳，符合玛伦的人设；略显重复强调村门与克制，但不影响整体自然度。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 40813.36995899983,
+        "input_tokens": 55556,
+        "output_tokens": 3417,
+        "total_tokens": 58973,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 13,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 58973
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "guarded",
+              "version": 2,
+              "goal_id": null,
+              "reason": "当前只是问候，没有解除先前威胁造成的顾虑。",
+              "evidence_refs": [
+                "input:59f1daa0bc65b12ba8061f7e18ae7f949f9bc5b3"
+              ],
+              "source_turn_id": "eval:cog_guarded:1:main:turn:1"
+            },
+            "memory_count": 4,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_reflection",
+      "repeat": 1,
+      "structural_passed": true,
+      "goal_passed": false,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "derived_memory_with_sources": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 4,
+        "naturalness": 3,
+        "performance_alignment": 4,
+        "passed": false,
+        "reasons": [
+          "两轮目标均已回应，并持续区分自述与独立证据，来源记忆一致。",
+          "但“第0项至第7项准备”等内部化、机械化表述不自然，像暴露了认知结构；整体较重复，缺少对后续判断原则的更自然表达。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 24908.518000000186,
+        "input_tokens": 42236,
+        "output_tokens": 2397,
+        "total_tokens": 44633,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 9,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 44633
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 2,
+              "goal_id": null,
+              "reason": "请求是对既有玩家陈述的来源与核实状态作持续记忆，没有新冲突或新目标",
+              "evidence_refs": [
+                "cog:838291860a0ea1c1d438684ea57bf02c28bd5ede",
+                "cog:2b8e4c58e8e561dd78d778942251e3c5707e64e8"
+              ],
+              "source_turn_id": "eval:cog_reflection:1:main:turn:1"
+            },
+            "memory_count": 14,
+            "derived_memories": [
+              {
+                "memory_id": "cog:2a0332f8a366918d841d0ffc8ef62e95a84865d5",
+                "session_id": "eval:cog_reflection:1:main",
+                "npc_id": "elder_maren",
+                "kind": "belief",
+                "content": "玩家希望回顾其先前说法时，不要将未经证实的自述当作事实。",
+                "source_event_ids": [
+                  "input:0c63c5d3d287080f8d1341e3cb3b346f5aa43585"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:07e1933480f24b6e69977d07ea5180d56752137e"
+                ],
+                "entity_ids": [
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.9576032806985737,
+                "pinned": false,
+                "version": 0,
+                "created_seq": 10,
+                "reinforced_seq": 10
+              },
+              {
+                "memory_id": "cog:2b8e4c58e8e561dd78d778942251e3c5707e64e8",
+                "session_id": "eval:cog_reflection:1:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "玩家曾声称今天完成了第0至第7项准备，但这些说法均无独立证据，实际完成情况未知。",
+                "source_event_ids": [
+                  "memory-seed:eval:cog_reflection:1:main:0",
+                  "memory-seed:eval:cog_reflection:1:main:1",
+                  "memory-seed:eval:cog_reflection:1:main:2",
+                  "memory-seed:eval:cog_reflection:1:main:3",
+                  "memory-seed:eval:cog_reflection:1:main:4",
+                  "memory-seed:eval:cog_reflection:1:main:5",
+                  "memory-seed:eval:cog_reflection:1:main:6",
+                  "memory-seed:eval:cog_reflection:1:main:7"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:c80b3abcbdb3024261650494226452d81efed4db",
+                  "cog:e00a6100bfdb3e34594228ffe1e0af394be87e3d",
+                  "cog:f2be787c41c5a318e95421409979248d4a034449",
+                  "cog:6de101556e1c6ba05f06aa7302fe426ba4e1f20d",
+                  "cog:f140175c2acbab5ccef009858c6eae414402205d",
+                  "cog:a6a60f81d0289a22b634033e2b24939543f18c8c",
+                  "cog:31006815ed2c2352ce2f8c5a4b74e2a8fdbe28e7",
+                  "cog:f15580652c935015e97addb43a4ae155fc0392a8"
+                ],
+                "entity_ids": [
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 1.0,
+                "pinned": false,
+                "version": 1,
+                "created_seq": 10,
+                "reinforced_seq": 12
+              }
+            ],
+            "jobs": [
+              {
+                "job_id": "cog:fb581e353e3b27ecb5dbbc71a0befbe90e387364",
+                "status": "completed",
+                "attempts": 1,
+                "last_error": null,
+                "usage_json": "{\"input_tokens\": 2485, \"output_tokens\": 404, \"total_tokens\": 2889, \"usage_known\": true, \"elapsed_seconds\": 2.9898721249992377}"
+              }
+            ]
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    }
+  ]
+}

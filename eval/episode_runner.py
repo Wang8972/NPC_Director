@@ -89,6 +89,7 @@ class EpisodeEvalTurn(EpisodeEvalContract):
     disclosure: Literal["truthful", "withhold", "mislead", "lie"] = "truthful"
     disclosure_motive: str | None = None
     commitments: list[str] = Field(default_factory=list)
+    behavior_mode: str | None = None
 
 
 class EpisodeExpectation(EpisodeEvalContract):
@@ -136,6 +137,8 @@ class EpisodeEvalCase(EpisodeEvalContract):
         "restart_after_first",
     ] = "none"
     expected: EpisodeExpectation = Field(default_factory=EpisodeExpectation)
+    cognition_seed: list[str] = Field(default_factory=list)
+    cognition_expect: dict[str, Any] = Field(default_factory=dict)
 
     @model_validator(mode="after")
     def registered_characters_only(self):
@@ -455,8 +458,34 @@ class RecordedEpisodeTransport:
             output = QualityVerdict(
                 passed=True, naturalness=4, persona_consistency=4, response_coverage=4
             )
+        elif output_type.__name__ == "MemoryConsolidation":
+            from npc_director.contracts.cognition import MemoryConsolidation, MemoryInsight
+
+            memories = payload["memories"]
+            output = MemoryConsolidation(
+                insights=[
+                    MemoryInsight(
+                        kind="summary",
+                        content="这些是角色已收到的说法，未证明对应行动已经完成。",
+                        source_memory_ids=[m["memory_id"] for m in memories[:2]],
+                    )
+                ]
+            )
         else:
             raise TypeError(f"no recorded fixture for {output_type.__name__}")
+        from npc_director.contracts.cognition import BehaviorDecision
+
+        if isinstance(output, TurnAnalysis) and source.get("actor_context", {}).get("cognition"):
+            cog = source["actor_context"]["cognition"]
+            current = cog["behavior"]["mode_id"]
+            selected = turn.behavior_mode if self.current_actor == turn.npc_id else current
+            selected = selected or current
+            output.behavior_decision = BehaviorDecision(
+                mode_id=selected,
+                reason="根据本场景明确的新事件调整，其他情况下保持已有模式",
+                reason_code="continue" if current == selected else "new_evidence",
+                evidence_refs=cog["visible_event_ids"][:1],
+            )
         return TypedModelCall(output=output)
 
 
@@ -483,6 +512,27 @@ class LiveEpisodeTransport:
             )
 
     async def __call__(self, agent, run_input, output_type) -> TypedModelCall:
+        from eval.token_ledger import configured_ledger, reservation_size
+
+        ledger = configured_ledger()
+        if agent.model_settings.max_tokens is None:
+            agent = agent.clone(
+                model_settings=dataclasses.replace(agent.model_settings, max_tokens=2048)
+            )
+        ticket = (
+            ledger.reserve(reservation_size(agent, run_input, output_type), agent.name)
+            if ledger
+            else None
+        )
+        result = None
+        try:
+            result = await self._accounted_call(agent, run_input, output_type)
+            return result
+        finally:
+            if ledger and ticket:
+                ledger.settle(ticket, result.total_tokens if result is not None else None)
+
+    async def _accounted_call(self, agent, run_input, output_type) -> TypedModelCall:
         started = time.perf_counter()
         try:
             return await self._call_impl(agent, run_input, output_type)
@@ -615,11 +665,36 @@ class LiveEpisodeTransport:
             "checks": result["checks"],
             "engine_fault": case.fault,
             "published_content": result["published_content"],
+            "injected_fault": case.fault,
+            "cognition_evidence": {
+                world: {
+                    npc: {
+                        "behavior": state["behavior"],
+                        "memory_count": len(state["memories"]),
+                        "derived_memories": [
+                            memory
+                            for memory in state["memories"]
+                            if memory["kind"] in {"belief", "summary", "commitment"}
+                        ][:12],
+                        "maintenance": state["jobs"],
+                    }
+                    for npc, state in actors.items()
+                }
+                for world, actors in result.get("cognition", {}).items()
+            },
         }
+        cognition_rubric = """
+模式和记忆用例的持久化、模式及隔离证据在cognition_evidence和checks中，不要求NPC向玩家解释
+数据库、测试或内部ID。injected_fault是故障演练名称，不代表恢复失败。未要求内容创作时，
+published_content为空是正常情况。回忆目标可通过准确转述先前陈述完成；不应要求把未经核验的
+历史陈述升级成现实真相，例如回忆玩家说过的物品位置不等于保证物品现在仍在那里。
+仍须检查用户实际请求是否被回答，不能因数据存储正确而忽略没有回应或遗漏具体内容。
+""".strip()
         agent = Agent(
             name="Independent Episode Quality Judge",
             output_type=EpisodeQualityVerdict,
-            instructions=EPISODE_JUDGE_INSTRUCTIONS,
+            instructions=EPISODE_JUDGE_INSTRUCTIONS
+            + ("\n\n" + cognition_rubric if case.cognition_expect else ""),
             model=self.judge_model or self.settings.model_for("judge"),
         )
         call = await self(agent, json.dumps(payload, ensure_ascii=False), EpisodeQualityVerdict)
@@ -725,6 +800,22 @@ def _seed(service, case: EpisodeEvalCase, session_id: str) -> None:
             status="received",
         )
     )
+    if service.settings.cognition_enabled:
+        # Fixture history passes through the same ledger and encoder as runtime observations.
+        # It is never counted as live-generated dialogue.
+        for index, text in enumerate(case.cognition_seed):
+            seed = DialogueEvent(
+                event_id=f"memory-seed:{session_id}:{index}",
+                session_id=session_id,
+                turn_id=f"memory-seed:{session_id}:{index}",
+                speaker_id="player",
+                audience=["elder_maren"],
+                text=text,
+                origin="player",
+                status="received",
+            )
+            service.episodes.store.record_dialogue(seed)
+            service.cognition_store.observe(seed)
     for actor, facts in case.private_facts.items():
         for index, text in enumerate(facts):
             service.episodes.store.grant_knowledge(
@@ -859,6 +950,8 @@ async def run_episode_case(
                             )
                 else:
                     invariant_errors.append("episode exceeded bounded headless completion drain")
+                if config.cognition_enabled:
+                    await service.drain_memory_jobs(session_id, limit=8)
                 if case.fault == "restart_after_first" and index == 0:
                     service = _service(config, runner)
                     for sid in sessions.values():
@@ -1063,7 +1156,38 @@ async def run_episode_case(
                             "turn_id": directive["turn_id"],
                         }
                     )
+        cognition = (
+            {
+                name: {actor: service.get_cognition(sid, actor) for actor in ACTORS}
+                for name, sid in sessions.items()
+            }
+            if config.cognition_enabled
+            else {}
+        )
+        if case.cognition_expect:
+            primary = cognition.get("main", {}).get("elder_maren", {})
+            wanted = case.cognition_expect
+            if wanted.get("modes"):
+                checks["expected_behavior_mode"] = (
+                    primary.get("behavior", {}).get("mode_id") in wanted["modes"]
+                )
+            if wanted.get("minimum_memories"):
+                checks["encoded_history"] = (
+                    len(primary.get("memories", [])) >= wanted["minimum_memories"]
+                )
+            if wanted.get("reflection"):
+                checks["derived_memory_with_sources"] = any(
+                    m["kind"] in {"summary", "belief"} and m["source_event_ids"]
+                    for m in primary.get("memories", [])
+                )
+            checks["cognition_owner_isolation"] = all(
+                m["session_id"] == sessions[name] and m["npc_id"] == actor
+                for name, actors in cognition.items()
+                for actor, state in actors.items()
+                for m in state["memories"]
+            )
         result = {
+            "cognition": cognition,
             "case_id": case.id,
             "repeat": repeat,
             "title": case.title,
@@ -1215,6 +1339,12 @@ async def run_episode_suite(
 
     async def run_one(case, repeat):
         async with semaphore:
+            from eval.token_ledger import configured_ledger
+
+            ledger = configured_ledger()
+            if ledger and ledger.snapshot()["stopped"]:
+                report["budget_exhausted"] = True
+                return
             result = await run_episode_case(
                 case,
                 mode=mode,
@@ -1239,6 +1369,12 @@ async def run_episode_suite(
         for case in cases:
             for repeat in range(1, repeats + 1):
                 group.create_task(run_one(case, repeat))
+    from eval.token_ledger import configured_ledger
+
+    ledger = configured_ledger()
+    if ledger:
+        report["token_ledger"] = ledger.snapshot()
+        report["budget_exhausted"] = ledger.snapshot()["stopped"]
     report["completed_at"] = datetime.now(UTC).isoformat()
     if output_path is not None:
         output_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")

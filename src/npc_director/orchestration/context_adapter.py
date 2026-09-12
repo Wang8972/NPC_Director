@@ -65,6 +65,7 @@ class DefaultContextBuilder:
         self.conversation_reader = conversation_reader
         self.character_registry = character_registry
         self.builder = DirectorContextBuilder()
+        self.cognition_store = None
 
     async def build(
         self,
@@ -203,6 +204,58 @@ class DefaultContextBuilder:
         )
         if self.conversation_reader is not None or profile is not None:
             actor_context = profile.model_dump(mode="json") if profile is not None else {}
+            if self.cognition_store is not None:
+                with self.cognition_store.connection() as conn:
+                    version_row = conn.execute(
+                        "SELECT e.record_json FROM episodes e JOIN episode_turn_links l "
+                        "ON e.episode_id=l.episode_id WHERE l.turn_id=?",
+                        (request.turn_id,),
+                    ).fetchone()
+                enabled = bool(
+                    version_row
+                    and json.loads(version_row[0]).get("artifacts", {}).get("cognition_version")
+                    == "memory-v1"
+                )
+                if enabled and profile is not None:
+                    from npc_director.orchestration.cognition import mode_catalog
+
+                    snapshot = await asyncio.to_thread(
+                        self.cognition_store.snapshot, request.session_id, request.npc_id
+                    )
+                    recalled = await asyncio.to_thread(
+                        self.cognition_store.recall,
+                        request.session_id,
+                        request.npc_id,
+                        request.player_input,
+                        goal_ids=list(domain_state.quests),
+                    )
+                    aliases = {
+                        f"e{i + 1}": e["event_id"] for i, e in enumerate(snapshot["visible_events"])
+                    }
+                    for event in snapshot["visible_events"]:
+                        aliases.setdefault(event["turn_id"], event["event_id"])
+                    aliases.update({f"m{i + 1}": m["memory_id"] for i, m in enumerate(recalled)})
+                    actor_context["cognition"] = {
+                        "evidence_aliases": aliases,
+                        "event_catalog": [
+                            {"ref": f"e{i + 1}", "text": e["text"]}
+                            for i, e in enumerate(snapshot["visible_events"][:12])
+                        ],
+                        "memory_catalog": [
+                            {
+                                "ref": f"m{i + 1}",
+                                "content": m["content"],
+                                "epistemic_status": m["epistemic_status"],
+                            }
+                            for i, m in enumerate(recalled)
+                        ],
+                        "version": snapshot["version"],
+                        "revision": snapshot["revision"],
+                        "behavior": snapshot["behavior"],
+                        "visible_event_ids": snapshot["visible_event_ids"],
+                        "mode_catalog": mode_catalog(profile),
+                        "recalled_memories": recalled,
+                    }
             actor_context["known_claims"] = conversation.get("knowledge", [])
             actor_context["shareable_fact_refs"] = [
                 claim["content_id"]
@@ -212,7 +265,11 @@ class DefaultContextBuilder:
             actor_context["relationships"] = conversation.get("relationships", [])
             actor_context["recent_dialogue"] = history[-12:]
             if self.conversation_reader is not None:
-                actor_context["long_term_memories"] = [asdict(memory) for memory in memories]
+                actor_context["long_term_memories"] = (
+                    []
+                    if actor_context.get("cognition")
+                    else [asdict(memory) for memory in memories]
+                )
             actor_context["display_aliases"] = {
                 entry["npc_id"]: entry.get("display_name") or "对方" for entry in roster
             }

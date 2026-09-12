@@ -97,6 +97,21 @@ ROUTER_INSTRUCTIONS = """
 27. 玩家只是随口建议或试探一种做法时，先讨论眼前行动，不自动登记委托。即使背景中可能
     有独立关系价值，也要区分“讨论可能怎么做”与“本拍正式提出新可选委托”；前者content_need为空。
 
+认知与持续行为模式：
+28. actor_context.cognition 存在时，依据其 mode_catalog 和已有 behavior 选择 behavior_decision。
+    优先用event_catalog的e1/e2或memory_catalog的m1/m2作为引用，不复制或编造长散列。
+    当前回合ID也只能引用自己可见的回合。每个NPC的模式独立，不继承询问者的模式。
+    模式选择本身不需要Narrative；保持查证立场也不等于必须立即开启调查、创建任务步骤。
+    needs_narrative、operations仍按实际请求及可执行能力决定，普通确认/提醒走短路径。
+    mode_catalog.allowed_operations是Agent编排操作，不是游戏动作；不得填入ObjectiveStep.action。
+    模式跨回合持续，普通问候或换话题不是解除戒备、放弃目标的依据。模式与情绪分别判断。
+    切换时引用 cognition.visible_event_ids 或 recalled_memories.memory_id；不能引用不可见来源。
+    goal_completed 只用于已观察到的目标完成。口头声称、计划或承诺不等于完成。
+29. recalled_memories 中 inferred 是角色判断，reported 是转述，legacy_unverified 是未核验历史；
+    不因记忆被召回而提升为事实。superseded/disputed 不作为当前可靠结论。
+30. 模式可以推动有目的的询问、协作和下一项合法操作，但不能增权、无限自问或替别人承诺。
+    没有 cognition 时 behavior_decision 保持 null。continue 保持原模式并保留目标。
+    used_memory_refs只列本拍实际用于回答或决策的recalled_memories.memory_id，不能把所有召回项照抄。
 只输出 TurnAnalysis，不输出解释文字。
 """.strip()
 

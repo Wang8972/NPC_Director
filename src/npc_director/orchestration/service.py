@@ -122,10 +122,51 @@ class NPCDirectorService:
         self._turn_locks: WeakValueDictionary[str, asyncio.Lock] = WeakValueDictionary()
         self._turn_locks_guard = asyncio.Lock()
         self.episodes = None
+        self.cognition_store = None
+        self.memory_worker = None
+        if episode_store is not None:
+            from npc_director.orchestration.memory_worker import MemoryWorker
+            from npc_director.state.cognition_store import CognitionStore
+
+            self.cognition_store = CognitionStore(
+                episode_store.database,
+                half_life=settings.memory_half_life,
+                dormant_threshold=settings.memory_dormant_threshold,
+                reflect_after=settings.memory_reflect_after,
+            )
+            if context_builder.character_registry is not None:
+                registry = context_builder.character_registry
+                self.cognition_store.initial_mode_provider = lambda npc: (
+                    registry.require(npc).initial_behavior_mode
+                )
+                self.cognition_store.protected_refs_provider = lambda npc: (
+                    registry.require(npc).protected_memory_refs
+                )
+            episode_store.cognition_store = self.cognition_store
+            context_builder.cognition_store = self.cognition_store
+            self.memory_worker = MemoryWorker(self)
         if episode_store is not None:
             from npc_director.orchestration.episode_runtime import EpisodeRuntime
 
             self.episodes = EpisodeRuntime(self, episode_store, content_store)
+
+    async def start_memory_maintenance(self):
+        if self.memory_worker is not None:
+            await self.memory_worker.start()
+
+    async def stop_memory_maintenance(self):
+        if self.memory_worker is not None:
+            await self.memory_worker.stop()
+
+    async def drain_memory_jobs(self, session_id=None, *, limit=16):
+        if self.memory_worker is None:
+            return 0
+        return await self.memory_worker.drain(session_id, limit=limit)
+
+    def get_cognition(self, session_id, npc_id):
+        if self.cognition_store is None:
+            raise RuntimeError("cognition requires the episode service")
+        return self.cognition_store.snapshot(session_id, npc_id)
 
     async def run_turn(
         self,

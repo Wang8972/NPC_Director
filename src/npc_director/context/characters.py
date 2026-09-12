@@ -5,6 +5,8 @@ from pathlib import Path
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from npc_director.contracts.cognition import BehaviorModeDefinition
+
 
 class CharacterProfile(BaseModel):
     """Authored character data. Public roster entries deliberately omit private traits."""
@@ -24,6 +26,9 @@ class CharacterProfile(BaseModel):
     locations: list[str] = Field(default_factory=list)
     capabilities: list[str] = Field(default_factory=list)
     deception_policy: str = "character_consistent"
+    behavior_modes: list[BehaviorModeDefinition] = Field(default_factory=list)
+    initial_behavior_mode: str = "neutral"
+    protected_memory_refs: list[str] = Field(default_factory=list)
 
     def public_view(self) -> dict[str, object]:
         return self.model_dump(

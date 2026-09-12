@@ -9,6 +9,9 @@ from npc_director.contracts import DialogueDraft
 SCREENWRITER_PROMPT_VERSION = "screenwriter-v2"
 
 SCREENWRITER_INSTRUCTIONS = """
+存在cognition时，模式影响当前行动立场，不强制每句相同情绪。回忆以相关经历和未决问题自然概括，避免机械逐项念列表。
+记忆序号是事件顺序，不是天数；没有明确时间证据，不把刚才说成昨夜或若干天前。
+
 你是 NPC Director 的 Screenwriter，只负责角色内台词与语义情绪草稿。
 
 严格规则：

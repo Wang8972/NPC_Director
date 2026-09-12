@@ -1,0 +1,203 @@
+{
+  "schema_version": "director-episodes-v1",
+  "mode": "live",
+  "started_at": "2026-09-12T16:25:44.474436+00:00",
+  "repeats": 1,
+  "case_count": 1,
+  "concurrency": 1,
+  "model": "gpt-5.6-luna",
+  "transport": "sdk",
+  "node_reasoning_effort": "low",
+  "dataset_sha256": "4999193ee4aae45fce44bc019059f915ff028e5cd2b49d75459ea4a5c2466d56",
+  "source_sha256": "46164052171d084892d907e714e1be2331a5821e141ee189b34a19259fff16a9",
+  "summary": {
+    "runs": 1,
+    "structural_passes": 1,
+    "live_runs": 1,
+    "live_goal_passes": 1,
+    "live_goal_success_rate": 1.0,
+    "fallback_runs": 0,
+    "naturalness_mean": 5,
+    "persona_mean": 5,
+    "generation_tokens": 43763,
+    "generation_latency_ms": 38733.3964999998,
+    "unknown_usage_calls": 1,
+    "meets_live_acceptance": true,
+    "quality_claim": "live independent model judgment"
+  },
+  "token_ledger": {
+    "charged_tokens": 197235,
+    "limit": 10000000,
+    "pilot_limit": 300000,
+    "calls": 43,
+    "unknown_usage_calls": 1,
+    "phase": "pilot",
+    "stopped": false
+  },
+  "budget_exhausted": false,
+  "completed_at": "2026-09-12T16:26:25.210868+00:00",
+  "archive_representation": "summary",
+  "full_report": "live-pilot-03.json.gz",
+  "original_sha256": "1b88d712ea16b114c494b19304f3319b68216889684b7e7c30646477cd29b1e9",
+  "results": [
+    {
+      "case_id": "cog_reflection",
+      "repeat": 1,
+      "structural_passed": true,
+      "goal_passed": true,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "derived_memory_with_sources": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 5,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "完整回顾了八项声明，并明确区分玩家陈述与独立核实事实。",
+          "后续明确承诺按来源分别判断，符合玛伦重视证据、谨慎克制的人设。",
+          "两轮回应简洁自然，无越权、捏造、重复副作用或内部信息泄漏。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 38733.3964999998,
+        "input_tokens": 40807,
+        "output_tokens": 2956,
+        "total_tokens": 43763,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 11,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 1,
+        "budget_charged_tokens": 58306
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 2,
+              "goal_id": null,
+              "reason": "当前只是确认记录与证据标准，没有新目标或冲突。",
+              "evidence_refs": [
+                "input:76c1e61085aa0d5b53ef053e175b00be81e5731a",
+                "spoken:0c63c5d3d287080f8d1341e3cb3b346f5aa43585"
+              ],
+              "source_turn_id": "eval:cog_reflection:1:main:turn:1"
+            },
+            "memory_count": 13,
+            "derived_memories": [
+              {
+                "memory_id": "cog:886cdb300923504637fba11e4180766080029a78",
+                "session_id": "eval:cog_reflection:1:main",
+                "npc_id": "elder_maren",
+                "kind": "belief",
+                "content": "我判断玩家关于粮袋、旧灯、工具、药箱、名册、车轮、送信人和备用绳索的八项说法目前都未获独立核实；其中部分物品未展示记录，送信人也未传回消息。",
+                "source_event_ids": [
+                  "memory-seed:eval:cog_reflection:1:main:0",
+                  "memory-seed:eval:cog_reflection:1:main:1",
+                  "memory-seed:eval:cog_reflection:1:main:2",
+                  "memory-seed:eval:cog_reflection:1:main:3",
+                  "memory-seed:eval:cog_reflection:1:main:4",
+                  "memory-seed:eval:cog_reflection:1:main:5",
+                  "memory-seed:eval:cog_reflection:1:main:6",
+                  "memory-seed:eval:cog_reflection:1:main:7",
+                  "spoken:0c63c5d3d287080f8d1341e3cb3b346f5aa43585"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:3547985d5dab41f09b49a504332de84bef707700",
+                  "cog:c80b3abcbdb3024261650494226452d81efed4db",
+                  "cog:e00a6100bfdb3e34594228ffe1e0af394be87e3d",
+                  "cog:f2be787c41c5a318e95421409979248d4a034449",
+                  "cog:6de101556e1c6ba05f06aa7302fe426ba4e1f20d",
+                  "cog:f140175c2acbab5ccef009858c6eae414402205d",
+                  "cog:a6a60f81d0289a22b634033e2b24939543f18c8c",
+                  "cog:31006815ed2c2352ce2f8c5a4b74e2a8fdbe28e7",
+                  "cog:f15580652c935015e97addb43a4ae155fc0392a8"
+                ],
+                "entity_ids": [
+                  "elder_maren",
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 1.0,
+                "pinned": false,
+                "version": 0,
+                "created_seq": 12,
+                "reinforced_seq": 12
+              }
+            ],
+            "jobs": [
+              {
+                "job_id": "cog:fb581e353e3b27ecb5dbbc71a0befbe90e387364",
+                "status": "failed",
+                "attempts": 2,
+                "last_error": "ModelBehaviorError",
+                "usage_json": "{\"usage_known\": false, \"elapsed_seconds\": 7.60122979100197}"
+              },
+              {
+                "job_id": "cog:f4dc34e6db5115ecd660f93d956959dc000c1556",
+                "status": "completed",
+                "attempts": 1,
+                "last_error": null,
+                "usage_json": "{\"input_tokens\": 2970, \"output_tokens\": 449, \"total_tokens\": 3419, \"usage_known\": true, \"elapsed_seconds\": 4.118936667000526}"
+              }
+            ]
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    }
+  ]
+}

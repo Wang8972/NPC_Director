@@ -38,7 +38,15 @@ def create_app(
         recover = getattr(service, "recover_incomplete_events", None)
         if callable(recover):
             await recover()
-        yield
+        start = getattr(service, "start_memory_maintenance", None)
+        stop = getattr(service, "stop_memory_maintenance", None)
+        if callable(start):
+            await start()
+        try:
+            yield
+        finally:
+            if callable(stop):
+                await stop()
 
     app = FastAPI(title="NPC Director", version=__version__, lifespan=lifespan)
     app.state.turn_service = service

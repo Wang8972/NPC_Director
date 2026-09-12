@@ -6,6 +6,7 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from npc_director.contracts.cognition import BehaviorDecision
 from npc_director.contracts.content import ContentNeed
 from npc_director.contracts.enums import Intent
 from npc_director.contracts.routing import RouteDecision
@@ -67,6 +68,8 @@ class OperationRequest(PlanningContract):
 class TurnAnalysis(RouteDecision):
     """A primary legacy intent is a summary, never the whole interpretation."""
 
+    behavior_decision: BehaviorDecision | None = None
+    used_memory_refs: list[str] = Field(default_factory=list, max_length=6)
     speech_acts: list[SpeechAct] = Field(default_factory=list, max_length=8)
     goals: list[TurnGoal] = Field(default_factory=list, max_length=8)
     knowledge_needs: list[KnowledgeNeed] = Field(default_factory=list, max_length=8)

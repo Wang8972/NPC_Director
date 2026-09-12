@@ -691,6 +691,18 @@ class EpisodeStore(SQLiteStore):
                     datetime_text(event.occurred_at),
                 ),
             )
+            cognition = getattr(self, "cognition_store", None)
+            if cognition is not None:
+                episode_row = conn.execute(
+                    "SELECT record_json FROM episodes WHERE episode_id=?", (event.episode_id,)
+                ).fetchone()
+                enabled = (
+                    episode_row
+                    and json_loads(episode_row[0]).get("artifacts", {}).get("cognition_version")
+                    == "memory-v1"
+                )
+                if enabled:
+                    cognition.observe(event, connection=conn)
             return True
 
     def save_dialogue_state(
@@ -935,6 +947,48 @@ class EpisodeStore(SQLiteStore):
                         )
             if dialogue_state is not None:
                 self.save_dialogue_state(dialogue_state, connection=connection)
+                cognition = getattr(self, "cognition_store", None)
+                if (
+                    cognition is not None
+                    and episode.artifacts.get("cognition_version") == "memory-v1"
+                ):
+                    row = connection.execute(
+                        "SELECT generation_json FROM episode_turn_links WHERE turn_id=?", (turn_id,)
+                    ).fetchone()
+                    generation = json_loads(row[0] or "{}") if row else {}
+                    cognitive = generation.get("cognitive_commit", {})
+                    cognitive_analysis = (generation.get("trace") or {}).get("analysis") or {}
+                    completed_turn = connection.execute(
+                        "SELECT record_json FROM turns WHERE turn_id=?", (turn_id,)
+                    ).fetchone()
+                    proposal = (
+                        json_loads(completed_turn[0]).get("proposal") if completed_turn else {}
+                    )
+                    relationship = (proposal or {}).get("plan", {}).get(
+                        "proposed_state_changes", {}
+                    ).get("relationship") or {}
+                    cognition.commit_state(
+                        connection,
+                        episode.session_id,
+                        dialogue_state.npc_id,
+                        turn_id,
+                        behavior=cognitive.get("behavior")
+                        if episode.status not in _TERMINAL
+                        else None,
+                        expected_version=cognitive.get("expected_version", 0),
+                        memory_refs=cognitive.get("memory_refs", []),
+                        commitments=dialogue_state.commitments,
+                        goals=dialogue_state.pending_intents,
+                        episode_id=episode.id,
+                        significant=any(relationship.values())
+                        or cognitive_analysis.get("intent")
+                        in {"threat", "insult", "critical_choice"}
+                        or any(
+                            need.get("kind") == "evidence_conflict"
+                            for need in cognitive_analysis.get("knowledge_needs", [])
+                        ),
+                    )
+
             for npc_id, claims in (knowledge or {}).items():
                 for claim in claims:
                     self.grant_knowledge(
@@ -944,6 +998,24 @@ class EpisodeStore(SQLiteStore):
                         source_event_id=source_event,
                         connection=connection,
                     )
+            cognition = getattr(self, "cognition_store", None)
+            if (
+                cognition is not None
+                and dialogue is not None
+                and episode.artifacts.get("cognition_version") == "memory-v1"
+            ):
+                for owner in sorted(
+                    set([dialogue.speaker_id, *dialogue.audience]) - {"player", "world"}
+                ):
+                    actor = connection.execute(
+                        "SELECT * FROM cognition_actors WHERE session_id=? AND npc_id=?",
+                        (episode.session_id, owner),
+                    ).fetchone()
+                    if (
+                        actor
+                        and actor["sequence"] - actor["consolidated_seq"] >= cognition.reflect_after
+                    ):
+                        cognition.enqueue(connection, episode.session_id, owner, episode.id)
             result = {
                 "applied": True,
                 "episode_id": episode_id,

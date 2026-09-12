@@ -1,0 +1,3664 @@
+{
+  "schema_version": "director-episodes-v1",
+  "mode": "recorded",
+  "started_at": "2026-09-12T17:42:17.741715+00:00",
+  "repeats": 3,
+  "case_count": 12,
+  "concurrency": 3,
+  "model": null,
+  "transport": "sdk",
+  "node_reasoning_effort": "low",
+  "dataset_sha256": "b0d1a06d16402a98d1395c2535a53733b1effc48bda350a85161d76be41e3266",
+  "source_sha256": "60da907a9928a6e04a1d7330c37e7a79d1063b59cc8a7f55f113ef9d6d91d112",
+  "summary": {
+    "runs": 36,
+    "structural_passes": 36,
+    "live_runs": 0,
+    "live_goal_passes": 0,
+    "live_goal_success_rate": null,
+    "fallback_runs": 0,
+    "naturalness_mean": null,
+    "persona_mean": null,
+    "generation_tokens": 0,
+    "generation_latency_ms": 28278.708706988255,
+    "unknown_usage_calls": 0,
+    "meets_live_acceptance": false,
+    "quality_claim": "No live quality claim: fixtures test orchestration and state invariants only."
+  },
+  "completed_at": "2026-09-12T17:42:28.701483+00:00",
+  "archive_representation": "summary",
+  "full_report": "recorded-memory-final-code.json.gz",
+  "original_sha256": "f697546930cf50eb42381cf2d14eba59c91143d9d9883d28a8c6c6cb502f4bcd",
+  "results": [
+    {
+      "case_id": "cog_guarded",
+      "repeat": 3,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "expected_behavior_mode": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 585.931374997017,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 8,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "guarded",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:f38a9b479fb601d7b85d50baf534a7df7f50dd40"
+              ],
+              "source_turn_id": "eval:cog_guarded:3:main:turn:1"
+            },
+            "memory_count": 4,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_guarded",
+      "repeat": 2,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "expected_behavior_mode": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 621.8419580000045,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 8,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "guarded",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:3d97cabbad7dab6283cc0db7cac7e9f3ee0b8d0d"
+              ],
+              "source_turn_id": "eval:cog_guarded:2:main:turn:1"
+            },
+            "memory_count": 4,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_guarded",
+      "repeat": 1,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "expected_behavior_mode": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 658.3304580017284,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 8,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "guarded",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:0bc970eaa5b85fa0e2e0d806711d971805c13eb3"
+              ],
+              "source_turn_id": "eval:cog_guarded:1:main:turn:1"
+            },
+            "memory_count": 4,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_cooperate",
+      "repeat": 1,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "expected_behavior_mode": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 491.9779169977119,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 8,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "cooperative",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:24d10da1d82fd92a0da55e0bfb90778b71164e0c"
+              ],
+              "source_turn_id": "eval:cog_cooperate:1:main:turn:1"
+            },
+            "memory_count": 4,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_cooperate",
+      "repeat": 2,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "expected_behavior_mode": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 477.71045799891,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 8,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "cooperative",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:5dc21494a6715f461345ef1c2ec6c93bec319451"
+              ],
+              "source_turn_id": "eval:cog_cooperate:2:main:turn:1"
+            },
+            "memory_count": 4,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_cooperate",
+      "repeat": 3,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "expected_behavior_mode": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 516.1291249969508,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 8,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "cooperative",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:b347c77b013cc4a65a9d2571a9b7fcae3b44d4a7"
+              ],
+              "source_turn_id": "eval:cog_cooperate:3:main:turn:1"
+            },
+            "memory_count": 4,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_investigate",
+      "repeat": 1,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "expected_behavior_mode": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 488.724375001766,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 8,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "investigative",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:43fe5db464e3ef6c21ea487e671fe80c86f63056"
+              ],
+              "source_turn_id": "eval:cog_investigate:1:main:turn:1"
+            },
+            "memory_count": 4,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_investigate",
+      "repeat": 2,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "expected_behavior_mode": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 486.27412499990896,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 8,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "investigative",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:8475c669bc38d0241b78e641c7301edc5112245d"
+              ],
+              "source_turn_id": "eval:cog_investigate:2:main:turn:1"
+            },
+            "memory_count": 4,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_investigate",
+      "repeat": 3,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "expected_behavior_mode": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 498.8854170005652,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 8,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "investigative",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:a6f1f0155fe6c38b4b36f4fee7d0caea3f64e225"
+              ],
+              "source_turn_id": "eval:cog_investigate:3:main:turn:1"
+            },
+            "memory_count": 4,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_task",
+      "repeat": 1,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "expected_behavior_mode": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 508.4281249983178,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 10,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "task_focused",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:57aa02913dca24096a3e1daef7b5db319a51be0c"
+              ],
+              "source_turn_id": "eval:cog_task:1:main:turn:1"
+            },
+            "memory_count": 4,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_task",
+      "repeat": 2,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "expected_behavior_mode": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 549.037374999898,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 10,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "task_focused",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:3e8ebc5405957e379fe334aa1e0fa9eb24a1c91c"
+              ],
+              "source_turn_id": "eval:cog_task:2:main:turn:1"
+            },
+            "memory_count": 4,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_task",
+      "repeat": 3,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "expected_behavior_mode": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 514.9177079983929,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 10,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "task_focused",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:bb8fe2d53822c9c5982dbfe34b1e09fb3c106c19"
+              ],
+              "source_turn_id": "eval:cog_task:3:main:turn:1"
+            },
+            "memory_count": 4,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_followup",
+      "repeat": 3,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 820.5498749994149,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 16,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "investigative",
+              "version": 3,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:a1294a7b8670d86eb4be2b8a8cd2c68a635b1017"
+              ],
+              "source_turn_id": "eval:cog_followup:3:main:turn:1"
+            },
+            "memory_count": 6,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 1,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "spoken:029d833b28ffcf2dc6b50d92faa771aac204c877"
+              ],
+              "source_turn_id": "npc:4e8a1af8b0e27f4cd24d02c7bb371d290489bd12"
+            },
+            "memory_count": 3,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_followup",
+      "repeat": 2,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 1803.9402499998687,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 16,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "investigative",
+              "version": 3,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:768c5c34f37ab9e4c0f3912b8a961f7f8221666e"
+              ],
+              "source_turn_id": "eval:cog_followup:2:main:turn:1"
+            },
+            "memory_count": 6,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 1,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "spoken:a78bce14f3346e3d96b029147dd3c5a67d75948a"
+              ],
+              "source_turn_id": "npc:cc5fef4a327bb2bebcfcf21a697fbe474be686e2"
+            },
+            "memory_count": 3,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_followup",
+      "repeat": 1,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 2814.920875000098,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 16,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "investigative",
+              "version": 3,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:78640c2bd45185ccc6a66001ae8107d2e7586601"
+              ],
+              "source_turn_id": "eval:cog_followup:1:main:turn:1"
+            },
+            "memory_count": 6,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 1,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "spoken:a810b345d721cb793fa8db01424a26db1904bd1d"
+              ],
+              "source_turn_id": "npc:756b35d7480a6bd52d249772f51afced73ee4c6b"
+            },
+            "memory_count": 3,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_long_memory",
+      "repeat": 1,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 2473.412750001444,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 9,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:b9e76a10e5d436763a651883d7b0a190cde25d49"
+              ],
+              "source_turn_id": "eval:cog_long_memory:1:main:turn:1"
+            },
+            "memory_count": 306,
+            "derived_memories": [
+              {
+                "memory_id": "cog:0901538f33812eb0199d5946ae281ccdab8a9a79",
+                "session_id": "eval:cog_long_memory:1:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "这些是角色已收到的说法，未证明对应行动已经完成。",
+                "source_event_ids": [
+                  "input:f644da806b8b15cf5983baca579610718a03708a",
+                  "spoken:f644da806b8b15cf5983baca579610718a03708a"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:168dc13d04f79747630291214eb9608031322fb3",
+                  "cog:4d42d542caf33a3912eb8f9791b2ba4a562202b8"
+                ],
+                "entity_ids": [
+                  "elder_maren",
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.9576032806985737,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 303,
+                "reinforced_seq": 303
+              }
+            ],
+            "jobs": [
+              {
+                "job_id": "cog:6dbae2a8c62a9c8828fa1f3e5e9fc03d4391b6ed",
+                "status": "completed",
+                "attempts": 1,
+                "last_error": null,
+                "usage_json": "{\"input_tokens\": 0, \"output_tokens\": 0, \"total_tokens\": 0, \"usage_known\": true, \"elapsed_seconds\": 0.001467124999180669}"
+              }
+            ]
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_long_memory",
+      "repeat": 2,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 1617.1100409992505,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 9,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:28d2bc9c4fc1dc5081b4cd5a64005f5e8c1ef8c5"
+              ],
+              "source_turn_id": "eval:cog_long_memory:2:main:turn:1"
+            },
+            "memory_count": 306,
+            "derived_memories": [
+              {
+                "memory_id": "cog:e01fb883b4b88b94bd1561cac33f96676c8c8055",
+                "session_id": "eval:cog_long_memory:2:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "这些是角色已收到的说法，未证明对应行动已经完成。",
+                "source_event_ids": [
+                  "input:50fa589f20991ee62d74ebea3badbd091cffe512",
+                  "spoken:50fa589f20991ee62d74ebea3badbd091cffe512"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:f17061aa288cbb5f76f29438eb88324d8581e5c2",
+                  "cog:8124da2b95e93ee6a0841cf24987f3687c0346a6"
+                ],
+                "entity_ids": [
+                  "elder_maren",
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.9576032806985737,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 303,
+                "reinforced_seq": 303
+              }
+            ],
+            "jobs": [
+              {
+                "job_id": "cog:d45af1fe04bff36dc5fb81c4a7d960401b0bbfd4",
+                "status": "completed",
+                "attempts": 1,
+                "last_error": null,
+                "usage_json": "{\"input_tokens\": 0, \"output_tokens\": 0, \"total_tokens\": 0, \"usage_known\": true, \"elapsed_seconds\": 0.0011643750003713649}"
+              }
+            ]
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_long_memory",
+      "repeat": 3,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 689.0247500014084,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 9,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:8c807b22fd3d46d6aac3d381c68a673b5342c82c"
+              ],
+              "source_turn_id": "eval:cog_long_memory:3:main:turn:1"
+            },
+            "memory_count": 306,
+            "derived_memories": [
+              {
+                "memory_id": "cog:72253f5b29778bdd0c92cbe63bb11636a75777d9",
+                "session_id": "eval:cog_long_memory:3:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "这些是角色已收到的说法，未证明对应行动已经完成。",
+                "source_event_ids": [
+                  "input:565802a1a686681bc195d1298088664b03c7e6f8",
+                  "spoken:565802a1a686681bc195d1298088664b03c7e6f8"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:24ed36b21a1a60fe8cf7ef8b82de12dd7bd66fa1",
+                  "cog:28e285afece24f60411bdd59055a8b06ed447913"
+                ],
+                "entity_ids": [
+                  "elder_maren",
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.9576032806985737,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 303,
+                "reinforced_seq": 303
+              }
+            ],
+            "jobs": [
+              {
+                "job_id": "cog:7b85eb6103fe5f499e6e7006237b9af8df39f0ed",
+                "status": "completed",
+                "attempts": 1,
+                "last_error": null,
+                "usage_json": "{\"input_tokens\": 0, \"output_tokens\": 0, \"total_tokens\": 0, \"usage_known\": true, \"elapsed_seconds\": 0.0016772080016380642}"
+              }
+            ]
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_association",
+      "repeat": 1,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 521.4633750001667,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 8,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "investigative",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:3d104f76afea4fffe36d4cdc17f85e0d529b5ccb"
+              ],
+              "source_turn_id": "eval:cog_association:1:main:turn:1"
+            },
+            "memory_count": 6,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_association",
+      "repeat": 2,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 537.1979999981704,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 8,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "investigative",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:e31ca48fe4ad21578ffea1cb48ebd8bea2c97a33"
+              ],
+              "source_turn_id": "eval:cog_association:2:main:turn:1"
+            },
+            "memory_count": 6,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_association",
+      "repeat": 3,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 537.741542000731,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 8,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "investigative",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:36acdc935fe5031339e38bd5da84f5e0d3dbc5bf"
+              ],
+              "source_turn_id": "eval:cog_association:3:main:turn:1"
+            },
+            "memory_count": 6,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_reflection",
+      "repeat": 1,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "derived_memory_with_sources": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 583.8703339977656,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 9,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "investigative",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:76c1e61085aa0d5b53ef053e175b00be81e5731a"
+              ],
+              "source_turn_id": "eval:cog_reflection:1:main:turn:1"
+            },
+            "memory_count": 13,
+            "derived_memories": [
+              {
+                "memory_id": "cog:2b8e4c58e8e561dd78d778942251e3c5707e64e8",
+                "session_id": "eval:cog_reflection:1:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "这些是角色已收到的说法，未证明对应行动已经完成。",
+                "source_event_ids": [
+                  "input:0c63c5d3d287080f8d1341e3cb3b346f5aa43585",
+                  "spoken:0c63c5d3d287080f8d1341e3cb3b346f5aa43585"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:3547985d5dab41f09b49a504332de84bef707700",
+                  "cog:07e1933480f24b6e69977d07ea5180d56752137e"
+                ],
+                "entity_ids": [
+                  "elder_maren",
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.9576032806985737,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 10,
+                "reinforced_seq": 10
+              }
+            ],
+            "jobs": [
+              {
+                "job_id": "cog:fb581e353e3b27ecb5dbbc71a0befbe90e387364",
+                "status": "completed",
+                "attempts": 1,
+                "last_error": null,
+                "usage_json": "{\"input_tokens\": 0, \"output_tokens\": 0, \"total_tokens\": 0, \"usage_known\": true, \"elapsed_seconds\": 0.0007067919977998827}"
+              }
+            ]
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_reflection",
+      "repeat": 2,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "derived_memory_with_sources": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 578.8936659992032,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 9,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "investigative",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:21e3159d4ff5d1c369b99f44c01cbda6dfa3f476"
+              ],
+              "source_turn_id": "eval:cog_reflection:2:main:turn:1"
+            },
+            "memory_count": 13,
+            "derived_memories": [
+              {
+                "memory_id": "cog:562e7b3287fdd7b6e126d95faf33e2d2dd607803",
+                "session_id": "eval:cog_reflection:2:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "这些是角色已收到的说法，未证明对应行动已经完成。",
+                "source_event_ids": [
+                  "input:e266176a3324b066a89fbf97c9c0c13276953ea0",
+                  "spoken:e266176a3324b066a89fbf97c9c0c13276953ea0"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:577a3620601a708db70f9112eef940e64a82fcb4",
+                  "cog:3782c2631984cb608e306be23371172c03999cc8"
+                ],
+                "entity_ids": [
+                  "elder_maren",
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.9576032806985737,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 10,
+                "reinforced_seq": 10
+              }
+            ],
+            "jobs": [
+              {
+                "job_id": "cog:a8522ad479116e625d3db3385a496ab3d8c44583",
+                "status": "completed",
+                "attempts": 1,
+                "last_error": null,
+                "usage_json": "{\"input_tokens\": 0, \"output_tokens\": 0, \"total_tokens\": 0, \"usage_known\": true, \"elapsed_seconds\": 0.0015027910012577195}"
+              }
+            ]
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_reflection",
+      "repeat": 3,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "derived_memory_with_sources": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 576.6773750001448,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 9,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "investigative",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:17f233196067e45b029aca5c3e74149ffd47eeb9"
+              ],
+              "source_turn_id": "eval:cog_reflection:3:main:turn:1"
+            },
+            "memory_count": 13,
+            "derived_memories": [
+              {
+                "memory_id": "cog:bd9cae4dfbec9389e3df1f32b3dc812e47dea4c7",
+                "session_id": "eval:cog_reflection:3:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "这些是角色已收到的说法，未证明对应行动已经完成。",
+                "source_event_ids": [
+                  "input:e35db635dd7023cea47fbdad19d3b982bfb44739",
+                  "spoken:e35db635dd7023cea47fbdad19d3b982bfb44739"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:913fdb04698c656a6636f0849e1da5f07c30ef6b",
+                  "cog:e6769d6b21d85c1f334f10af1dc4e53588d1830a"
+                ],
+                "entity_ids": [
+                  "elder_maren",
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.9576032806985737,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 10,
+                "reinforced_seq": 10
+              }
+            ],
+            "jobs": [
+              {
+                "job_id": "cog:4761203395f503f0e4234d145cb9875f025fb1f1",
+                "status": "completed",
+                "attempts": 1,
+                "last_error": null,
+                "usage_json": "{\"input_tokens\": 0, \"output_tokens\": 0, \"total_tokens\": 0, \"usage_known\": true, \"elapsed_seconds\": 0.0012300000016693957}"
+              }
+            ]
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_revision",
+      "repeat": 1,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 548.4679999972286,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 8,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "investigative",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:c4de17e25f5e5e80ead152c00bc7c7d7d7929eb8"
+              ],
+              "source_turn_id": "eval:cog_revision:1:main:turn:1"
+            },
+            "memory_count": 5,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_revision",
+      "repeat": 2,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 821.7995410013827,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 8,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "investigative",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:1354ec39fdd0fd97113d85c0a20c8fff9358b758"
+              ],
+              "source_turn_id": "eval:cog_revision:2:main:turn:1"
+            },
+            "memory_count": 5,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_revision",
+      "repeat": 3,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 1088.357458000246,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 8,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "investigative",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:df64f6c5406576a04871582b38963266f8e684c6"
+              ],
+              "source_turn_id": "eval:cog_revision:3:main:turn:1"
+            },
+            "memory_count": 5,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_forgetting",
+      "repeat": 1,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 1147.7112920001673,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 9,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:bda3064efeb288778e1868688ca3cd4012c3ed45"
+              ],
+              "source_turn_id": "eval:cog_forgetting:1:main:turn:1"
+            },
+            "memory_count": 136,
+            "derived_memories": [
+              {
+                "memory_id": "cog:2d5b1e5d094040c5e4dc0f2ab5d96cec8d8dd25e",
+                "session_id": "eval:cog_forgetting:1:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "这些是角色已收到的说法，未证明对应行动已经完成。",
+                "source_event_ids": [
+                  "input:ec7d1a6a7fc68c0539750faf4fd9d37f96106741",
+                  "spoken:ec7d1a6a7fc68c0539750faf4fd9d37f96106741"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:e743df97541b966f7411837fad381c9610a079cb",
+                  "cog:7ca101d35c6bf0fd8a44dfe217db1f37b0453c33"
+                ],
+                "entity_ids": [
+                  "elder_maren",
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.9576032806985737,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 133,
+                "reinforced_seq": 133
+              }
+            ],
+            "jobs": [
+              {
+                "job_id": "cog:a7e5c2260bd1412702fc6a411ee80e16ca288e90",
+                "status": "completed",
+                "attempts": 1,
+                "last_error": null,
+                "usage_json": "{\"input_tokens\": 0, \"output_tokens\": 0, \"total_tokens\": 0, \"usage_known\": true, \"elapsed_seconds\": 0.0010790829983307049}"
+              }
+            ]
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_forgetting",
+      "repeat": 2,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 881.4178749998973,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 9,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:32b8a40306a2391ebc069e9e1ad10690d39af1ef"
+              ],
+              "source_turn_id": "eval:cog_forgetting:2:main:turn:1"
+            },
+            "memory_count": 136,
+            "derived_memories": [
+              {
+                "memory_id": "cog:9d27fe78f67c326c57263fc50c545cf87dbceb76",
+                "session_id": "eval:cog_forgetting:2:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "这些是角色已收到的说法，未证明对应行动已经完成。",
+                "source_event_ids": [
+                  "input:6519ceb689b151a94763afc6e8f786d226e523ea",
+                  "spoken:6519ceb689b151a94763afc6e8f786d226e523ea"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:c3b5cd4c5138b04aaa72fba07962c6547ce3b85b",
+                  "cog:c0e2ed1015a713263c1caa115097f07cc1e4fbb1"
+                ],
+                "entity_ids": [
+                  "elder_maren",
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.9576032806985737,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 133,
+                "reinforced_seq": 133
+              }
+            ],
+            "jobs": [
+              {
+                "job_id": "cog:a5a465b452179d16403cf0401ba4ed940f6f5123",
+                "status": "completed",
+                "attempts": 1,
+                "last_error": null,
+                "usage_json": "{\"input_tokens\": 0, \"output_tokens\": 0, \"total_tokens\": 0, \"usage_known\": true, \"elapsed_seconds\": 0.0017976249982893933}"
+              }
+            ]
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_forgetting",
+      "repeat": 3,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 619.7410419990774,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 9,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:db76f43038c2540b9bb3bb48de69cb0ade02bbea"
+              ],
+              "source_turn_id": "eval:cog_forgetting:3:main:turn:1"
+            },
+            "memory_count": 136,
+            "derived_memories": [
+              {
+                "memory_id": "cog:042ed187f7f90a4394e84235445318f042c99ed9",
+                "session_id": "eval:cog_forgetting:3:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "这些是角色已收到的说法，未证明对应行动已经完成。",
+                "source_event_ids": [
+                  "input:df987c1dd96c089c23a3c7bbbd0be8ff58e680e6",
+                  "spoken:df987c1dd96c089c23a3c7bbbd0be8ff58e680e6"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:6a7812cb3ccc47da6d6a39dff4d8a958a875b74b",
+                  "cog:daad87153dcbf4c69c7b696c3d99ce6504a42a96"
+                ],
+                "entity_ids": [
+                  "elder_maren",
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.9576032806985737,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 133,
+                "reinforced_seq": 133
+              }
+            ],
+            "jobs": [
+              {
+                "job_id": "cog:cc2b4163cb42c1f789b9ad19494ecd317567e8fc",
+                "status": "completed",
+                "attempts": 1,
+                "last_error": null,
+                "usage_json": "{\"input_tokens\": 0, \"output_tokens\": 0, \"total_tokens\": 0, \"usage_known\": true, \"elapsed_seconds\": 0.0009385420016769785}"
+              }
+            ]
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_isolation",
+      "repeat": 1,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 537.620875002176,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 8,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 1,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:772f4f2d531ea8465480748bb43a1a48ca81a487"
+              ],
+              "source_turn_id": "eval:cog_isolation:1:main:turn:0"
+            },
+            "memory_count": 2,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        },
+        "isolated": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 1,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:8ce8ccd71401a392d74a590e98d7602f681ae060"
+              ],
+              "source_turn_id": "eval:cog_isolation:1:isolated:turn:1"
+            },
+            "memory_count": 2,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_isolation",
+      "repeat": 2,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 539.1054169995186,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 8,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 1,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:893b23bdcffdb5d58b366ad948fd17cc129d8bfb"
+              ],
+              "source_turn_id": "eval:cog_isolation:2:main:turn:0"
+            },
+            "memory_count": 2,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        },
+        "isolated": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 1,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:e10d01777f1ebbbe1b47e37a3da8973738f162fc"
+              ],
+              "source_turn_id": "eval:cog_isolation:2:isolated:turn:1"
+            },
+            "memory_count": 2,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_isolation",
+      "repeat": 3,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 546.5951250007492,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 8,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 1,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:bdb74ebecb396be01c059b042c87920c5f182b65"
+              ],
+              "source_turn_id": "eval:cog_isolation:3:main:turn:0"
+            },
+            "memory_count": 2,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        },
+        "isolated": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 1,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:6c3253bca6d9c43c3944ffb2cd0eadee1611eb2c"
+              ],
+              "source_turn_id": "eval:cog_isolation:3:isolated:turn:1"
+            },
+            "memory_count": 2,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_restart",
+      "repeat": 1,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "expected_behavior_mode": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 578.8070409980719,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 8,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "guarded",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:d4d3e6a5f8754539c96a85bad3fcec0bf1896967"
+              ],
+              "source_turn_id": "eval:cog_restart:1:main:turn:1"
+            },
+            "memory_count": 7,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_restart",
+      "repeat": 2,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "expected_behavior_mode": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 530.1719999988563,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 8,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "guarded",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:30b9e0ced37d8f5b7d938d0092f515e699fd52f0"
+              ],
+              "source_turn_id": "eval:cog_restart:2:main:turn:1"
+            },
+            "memory_count": 7,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_restart",
+      "repeat": 3,
+      "structural_passed": true,
+      "goal_passed": null,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "expected_behavior_mode": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": null,
+      "quality_status": "not_measured_in_recorded_mode",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 485.92179200204555,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "actual_models": [
+          "scripted-fixture"
+        ],
+        "model_calls": 0,
+        "fixture_calls": 8,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 0
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "guarded",
+              "version": 2,
+              "goal_id": null,
+              "reason": "根据本场景明确的新事件调整，其他情况下保持已有模式",
+              "evidence_refs": [
+                "input:ae59cd5c7655ed5f3387f20fd94e927ca080b0af"
+              ],
+              "source_turn_id": "eval:cog_restart:3:main:turn:1"
+            },
+            "memory_count": 7,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    }
+  ]
+}

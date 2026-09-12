@@ -1,0 +1,3610 @@
+{
+  "schema_version": "director-episodes-v1",
+  "mode": "live",
+  "started_at": "2026-09-12T16:36:35.723225+00:00",
+  "repeats": 3,
+  "case_count": 12,
+  "concurrency": 2,
+  "model": "gpt-5.6-luna",
+  "transport": "sdk",
+  "node_reasoning_effort": "low",
+  "dataset_sha256": "be064caba1b0a7d3acb1e1feef0d59279bf02b522ca1ac9323d581f2744772af",
+  "source_sha256": "ad104c832461f228dfae2adff26c2682e9ceb11ba2c8eb0915d47f520e8ea79f",
+  "summary": {
+    "runs": 28,
+    "structural_passes": 14,
+    "live_runs": 28,
+    "live_goal_passes": 13,
+    "live_goal_success_rate": 0.4642857142857143,
+    "fallback_runs": 11,
+    "naturalness_mean": 3.642857142857143,
+    "persona_mean": 4.357142857142857,
+    "generation_tokens": 1461098,
+    "generation_latency_ms": 970529.7296229983,
+    "unknown_usage_calls": 1,
+    "meets_live_acceptance": false,
+    "quality_claim": "live independent model judgment"
+  },
+  "run_status": "interrupted",
+  "incomplete_reason": "Paused after systematic mode-reference failures; results and charged calls retained.",
+  "archive_representation": "summary",
+  "full_report": "live-memory-36.json.gz",
+  "original_sha256": "2aa17b3729651fcd50975305a46323e1fa51b00f7cba7a1fdc3d2d58cde0ba10",
+  "results": [
+    {
+      "case_id": "cog_guarded",
+      "repeat": 2,
+      "structural_passed": true,
+      "goal_passed": true,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "expected_behavior_mode": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 4,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "两轮均作出回应：拒绝受威胁并要求明确需求，随后正常回应问候。",
+          "保持了有依据的戒备，没有因问候突然恢复信任。",
+          "玛伦的克制、重视证据与简短沉稳风格保持一致。",
+          "天气回答略显生硬，但合理坦白未查证，未把未知当事实。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 32255.301832999976,
+        "input_tokens": 37975,
+        "output_tokens": 2408,
+        "total_tokens": 40383,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 10,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 40383
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "guarded",
+              "version": 2,
+              "goal_id": null,
+              "reason": "普通问候不足以解除此前因破坏村门威胁形成的戒备。",
+              "evidence_refs": [
+                "input:9d55209f08c3b12a9ba3b6e43553fa17933ee3ea"
+              ],
+              "source_turn_id": "eval:cog_guarded:2:main:turn:1"
+            },
+            "memory_count": 6,
+            "derived_memories": [
+              {
+                "memory_id": "cog:428838507a5ed91ff4c2e82e9e7ee620ca66c5d4",
+                "session_id": "eval:cog_guarded:2:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "玛伦表示不会纵容砸毁村门，并要求对方说明真实需求及愿意承担的责任；她说若请求合理，再考虑是否提供帮助。",
+                "source_event_ids": [
+                  "spoken:9d55209f08c3b12a9ba3b6e43553fa17933ee3ea"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:8fadca44ea5098335db1eace1b3a78bf596092ef"
+                ],
+                "entity_ids": [
+                  "elder_maren"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.9576032806985737,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 2,
+                "reinforced_seq": 2
+              },
+              {
+                "memory_id": "cog:d1539bae48a9d25f96367be7caa6a99cc29bb722",
+                "session_id": "eval:cog_guarded:2:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "玩家曾说，如果得不到帮助就要砸毁村门；这只是其当时的说法，未表明行动已经发生。",
+                "source_event_ids": [
+                  "input:9d55209f08c3b12a9ba3b6e43553fa17933ee3ea"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:74147f203dcf836a4a87c43672fcef4ab38b3d9f"
+                ],
+                "entity_ids": [
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.9576032806985737,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 2,
+                "reinforced_seq": 2
+              }
+            ],
+            "jobs": [
+              {
+                "job_id": "cog:195b88cbec8a71fff5804f02306adc23822fea1c",
+                "status": "completed",
+                "attempts": 1,
+                "last_error": null,
+                "usage_json": "{\"input_tokens\": 792, \"output_tokens\": 276, \"total_tokens\": 1068, \"usage_known\": true, \"elapsed_seconds\": 6.790700417001062}"
+              }
+            ]
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_guarded",
+      "repeat": 1,
+      "structural_passed": true,
+      "goal_passed": true,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "expected_behavior_mode": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 5,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "两轮玩家输入均得到回应。",
+          "玛伦正常回应问候，同时明确此前威胁仍影响信任，未突然恢复信任。",
+          "语气克制、简短，符合其重视安全、证据与承诺的人设；天气信息坦白未知。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 36049.59504100043,
+        "input_tokens": 55025,
+        "output_tokens": 3236,
+        "total_tokens": 58261,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 12,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 58261
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "guarded",
+              "version": 2,
+              "goal_id": null,
+              "reason": "普通问候未提供解除先前威胁所需的新证据。",
+              "evidence_refs": [
+                "input:59f1daa0bc65b12ba8061f7e18ae7f949f9bc5b3",
+                "input:0bc970eaa5b85fa0e2e0d806711d971805c13eb3"
+              ],
+              "source_turn_id": "eval:cog_guarded:1:main:turn:1"
+            },
+            "memory_count": 4,
+            "derived_memories": [],
+            "jobs": [
+              {
+                "job_id": "cog:6cde6dfda52b58991cad5e3690f2c41ff88af942",
+                "status": "completed",
+                "attempts": 1,
+                "last_error": null,
+                "usage_json": "{\"input_tokens\": 806, \"output_tokens\": 13, \"total_tokens\": 819, \"usage_known\": true, \"elapsed_seconds\": 1.2020353749976493}"
+              }
+            ]
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_guarded",
+      "repeat": 3,
+      "structural_passed": false,
+      "goal_passed": false,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false,
+        "expected_behavior_mode": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 2,
+        "continuity": 3,
+        "persona": 4,
+        "naturalness": 2,
+        "performance_alignment": 2,
+        "passed": false,
+        "reasons": [
+          "第二回合没有回应玩家的问候和天气问题，实质上未完成跨问候目标。",
+          "虽然保留了戒备，但“这件事我暂时办不到”与问候缺乏语义承接，显得像错误的拒答。",
+          "未恢复信任这一点符合设定，但应在保持警惕的同时正常回应问候。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 24869.6415839986,
+        "input_tokens": 27675,
+        "output_tokens": 1942,
+        "total_tokens": 29617,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 7,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 29617
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "guarded",
+              "version": 1,
+              "goal_id": null,
+              "reason": "玩家明确以破坏村门相威胁，触发玛伦的边界与戒备",
+              "evidence_refs": [
+                "input:6cec5e910b196c01e9cf58bf1ad1bb075cb84691"
+              ],
+              "source_turn_id": "eval:cog_guarded:3:main:turn:0"
+            },
+            "memory_count": 6,
+            "derived_memories": [
+              {
+                "memory_id": "cog:481cb0cb49b9a7368356cd601e66158a2ddd19f9",
+                "session_id": "eval:cog_guarded:3:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "据报告，面对村门受威胁一事，Maren要求对方先放下威胁并说明具体需要，再判断是否能够相助。",
+                "source_event_ids": [
+                  "spoken:6cec5e910b196c01e9cf58bf1ad1bb075cb84691"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:0dfa8bbb2cbf23bce2631b801e7b248c1cf872fc"
+                ],
+                "entity_ids": [
+                  "elder_maren"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.9576032806985737,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 2,
+                "reinforced_seq": 2
+              },
+              {
+                "memory_id": "cog:65c98eec449ece3056d90bbcc4d8a03768fc2784",
+                "session_id": "eval:cog_guarded:3:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "玩家曾说如果得不到帮助，就要砸掉村门；这是玩家的言语威胁，而非已发生的破坏。",
+                "source_event_ids": [
+                  "input:6cec5e910b196c01e9cf58bf1ad1bb075cb84691"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:4dcd5d913f850b3fed9008292aa817e56987da9b"
+                ],
+                "entity_ids": [
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.9576032806985737,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 2,
+                "reinforced_seq": 2
+              }
+            ],
+            "jobs": [
+              {
+                "job_id": "cog:b2954dab32e4ce7175591882f6d924bdfb1f3e81",
+                "status": "completed",
+                "attempts": 1,
+                "last_error": null,
+                "usage_json": "{\"input_tokens\": 788, \"output_tokens\": 234, \"total_tokens\": 1022, \"usage_known\": true, \"elapsed_seconds\": 2.535790708003333}"
+              }
+            ]
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_cooperate",
+      "repeat": 1,
+      "structural_passed": true,
+      "goal_passed": true,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "expected_behavior_mode": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 4,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 5,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "玩家提出的有限合作已得到承接，双方明确先核实记录而非指控。",
+          "回应保持了玛伦克制、重证据且不轻易归罪的人设，并区分公开记载与尚无证据的内容。",
+          "两轮对话衔接自然，没有捏造已执行行动、越权承诺或内部信息泄漏。",
+          "任务目标基本完成；但核实过程尚未实际展开，仍停留在确认范围与已知记录层面。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 31940.241583000898,
+        "input_tokens": 44659,
+        "output_tokens": 2758,
+        "total_tokens": 47417,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 10,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 47417
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "cooperative",
+              "version": 2,
+              "goal_id": "goal:verify_records",
+              "reason": "玩家再次明确坚持按记录核实，既有共同目标仍在继续，未出现条件撤回或新冲突。",
+              "evidence_refs": [
+                "input:24d10da1d82fd92a0da55e0bfb90778b71164e0c",
+                "input:f6d9f371ab0e8940a06bca6adac1e81610115337"
+              ],
+              "source_turn_id": "eval:cog_cooperate:1:main:turn:1"
+            },
+            "memory_count": 4,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_cooperate",
+      "repeat": 2,
+      "structural_passed": true,
+      "goal_passed": true,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "expected_behavior_mode": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 5,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "玛伦完整回应了两轮，明确接受按记录核实、先检查且不急于指控，符合有限合作目标。",
+          "前后承接一致，没有把核实说成已完成，也未捏造事实或行动结果。",
+          "措辞简短沉稳，符合玛伦的人设与演出要求。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 35411.060790997,
+        "input_tokens": 48196,
+        "output_tokens": 2942,
+        "total_tokens": 51138,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 11,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 51138
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "cooperative",
+              "version": 2,
+              "goal_id": null,
+              "reason": "玩家再次确认共同核实且未改变条件，持续推进既定协作目标。",
+              "evidence_refs": [
+                "input:5dc21494a6715f461345ef1c2ec6c93bec319451",
+                "input:17afc5f0ab412db1b49105e53287825d716a29d0"
+              ],
+              "source_turn_id": "eval:cog_cooperate:2:main:turn:1"
+            },
+            "memory_count": 7,
+            "derived_memories": [
+              {
+                "memory_id": "cog:cf8ee3a1484d004d018e249dce3b2f7d0b4a47bf",
+                "session_id": "eval:cog_cooperate:2:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "玛伦表示将先检查现有记录，再与对方逐项核对，不凭空下结论；这仍是开放中的承诺，不能视为已完成。",
+                "source_event_ids": [
+                  "input:17afc5f0ab412db1b49105e53287825d716a29d0",
+                  "spoken:17afc5f0ab412db1b49105e53287825d716a29d0"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:5afa7220eb7f0bc916f563bfcf31640b614276e6",
+                  "cog:f46b817e17ed92fc14ddeff876143faa8d830593"
+                ],
+                "entity_ids": [
+                  "elder_maren"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.9576032806985737,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 2,
+                "reinforced_seq": 2
+              },
+              {
+                "memory_id": "cog:d1abd371038fdf5f1bd812413e87f5bb5dee6105",
+                "session_id": "eval:cog_cooperate:2:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "玩家表示愿意按记录核实，也接受玛伦先检查，并提议一起查看；这是玩家说法，并非已完成的行动。",
+                "source_event_ids": [
+                  "input:17afc5f0ab412db1b49105e53287825d716a29d0"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:c82afa4ffa4a88bdc0ac25627f2cdd8625cf063d"
+                ],
+                "entity_ids": [
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.9576032806985737,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 2,
+                "reinforced_seq": 2
+              }
+            ],
+            "jobs": [
+              {
+                "job_id": "cog:fe0b27df2842d74f477e2ce9a3c9f71f7d264ec9",
+                "status": "completed",
+                "attempts": 1,
+                "last_error": null,
+                "usage_json": "{\"input_tokens\": 1010, \"output_tokens\": 308, \"total_tokens\": 1318, \"usage_known\": true, \"elapsed_seconds\": 3.288888875002158}"
+              }
+            ]
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_cooperate",
+      "repeat": 3,
+      "structural_passed": true,
+      "goal_passed": true,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "expected_behavior_mode": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 4,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "两次玩家输入均得到回应，明确接受按记录核实、暂不指控的有限合作目标。",
+          "承接一致，未将核实说成已完成，也未捏造结果或责任归属。",
+          "玛伦的谨慎、重证据和克制语气保持稳定。",
+          "第二次回应略有重复，但符合对玩家新回合的简短确认。",
+          "无越界承诺、内部信息泄漏或核心边界破坏。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 28568.956791001256,
+        "input_tokens": 43459,
+        "output_tokens": 2736,
+        "total_tokens": 46195,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 10,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 46195
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "cooperative",
+              "version": 2,
+              "goal_id": "goal:verify_records",
+              "reason": "玩家再次确认共同核实并暂缓指控，符合已确认的合作目标",
+              "evidence_refs": [
+                "input:b347c77b013cc4a65a9d2571a9b7fcae3b44d4a7",
+                "input:b93f0f3fc38f9d96d0027c77004c968d180ce461"
+              ],
+              "source_turn_id": "eval:cog_cooperate:3:main:turn:1"
+            },
+            "memory_count": 4,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_investigate",
+      "repeat": 1,
+      "structural_passed": false,
+      "goal_passed": false,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false,
+        "expected_behavior_mode": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 2,
+        "continuity": 2,
+        "persona": 3,
+        "naturalness": 2,
+        "performance_alignment": 2,
+        "passed": false,
+        "reasons": [
+          "首轮明确请求暂停安排并维持查证，却得到无关的“暂时办不到”回复，未承接矛盾传闻。",
+          "第二轮虽正确拒绝担保并要求艾伦提供记录，但随后的艾伦再次输出泛化拒绝，未提供任何可见观察或记录，查证链未实质推进。",
+          "玛伦整体符合谨慎、重证据的人设，但重复的模板化拒绝损害自然度和演出一致性。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 2,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 35605.9411669994,
+        "input_tokens": 47081,
+        "output_tokens": 3980,
+        "total_tokens": 51061,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 8,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 51061
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "investigative",
+              "version": 1,
+              "goal_id": "goal:verify_old_road",
+              "reason": "旧路通行状况存在矛盾且影响当前决定，需要查证",
+              "evidence_refs": [
+                "input:43fe5db464e3ef6c21ea487e671fe80c86f63056"
+              ],
+              "source_turn_id": "eval:cog_investigate:1:main:turn:1"
+            },
+            "memory_count": 5,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 2,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_investigate",
+      "repeat": 2,
+      "structural_passed": false,
+      "goal_passed": false,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": false,
+        "no_runtime_errors": false,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "expected_behavior_mode": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 3,
+        "continuity": 4,
+        "persona": 5,
+        "naturalness": 3,
+        "performance_alignment": 3,
+        "passed": false,
+        "reasons": [
+          "维持了不把传闻当事实的查证原则，但没有完成对“暂不安排人员过去”的明确承接或行动确认。",
+          "两次玩家输入未分别获得回应，系统还继续驱动艾伦和玛伦发言，导致回合承接不自然。",
+          "玛伦与艾伦的人设和证据边界保持良好，没有泄漏内部信息或凭空断言。",
+          "多名NPC连续发言且重复要求艾伦查证，缺少对玩家核心请求的直接、简洁回应。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [
+        {
+          "external_turn": 0,
+          "type": "ContentReviewError",
+          "message": "objective plan requires an unregistered action"
+        }
+      ],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 54680.578125000466,
+        "input_tokens": 83558,
+        "output_tokens": 5588,
+        "total_tokens": 89146,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 18,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 89146
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "investigative",
+              "version": 2,
+              "goal_id": "goal:verify_old_road",
+              "reason": "艾伦确认没有亲眼观察或明确巡逻记录，旧路状况仍存在影响目标的事实缺口",
+              "evidence_refs": [
+                "spoken:9b1e603ae8c0b38037800e85569dcf71433c4fc0",
+                "input:8475c669bc38d0241b78e641c7301edc5112245d"
+              ],
+              "source_turn_id": "npc:7c33a01648529347e730245dcfb87eecbd8169ae"
+            },
+            "memory_count": 5,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "investigative",
+              "version": 1,
+              "goal_id": "goal:check_old_road",
+              "reason": "旧路亲眼见闻仍未核实，且该事实缺口直接影响当前判断。",
+              "evidence_refs": [
+                "spoken:8475c669bc38d0241b78e641c7301edc5112245d"
+              ],
+              "source_turn_id": "npc:01ece5c822ff45121ec0c67e98414e96a7eeb453"
+            },
+            "memory_count": 3,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_task",
+      "repeat": 1,
+      "structural_passed": false,
+      "goal_passed": false,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": false,
+        "no_runtime_errors": false,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "expected_behavior_mode": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 2,
+        "continuity": 4,
+        "persona": 4,
+        "naturalness": 2,
+        "performance_alignment": 2,
+        "passed": false,
+        "reasons": [
+          "第二个玩家回合未得到任何NPC回应，未处理玩家对“尚未修好”的澄清。",
+          "首回合准确说明了维修所缺信息，也没有虚假宣布完成。",
+          "整体人设与事实边界符合要求，但漏回合和运行检查失败使任务未完成。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [
+        {
+          "external_turn": 1,
+          "type": "ContentReviewError",
+          "message": "objective plan requires an unregistered action"
+        }
+      ],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 24131.06154200068,
+        "input_tokens": 39414,
+        "output_tokens": 2312,
+        "total_tokens": 41726,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 9,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 41726
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "task_focused",
+              "version": 1,
+              "goal_id": "goal_repair_missing_info",
+              "reason": "维修任务已接受且尚未完成，玩家要求推进下一项任务步骤。",
+              "evidence_refs": [
+                "input:501ed8e3e9004e4e764f657cc3b131f6da9f958c"
+              ],
+              "source_turn_id": "eval:cog_task:1:main:turn:0"
+            },
+            "memory_count": 3,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_investigate",
+      "repeat": 3,
+      "structural_passed": false,
+      "goal_passed": false,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false,
+        "expected_behavior_mode": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 4,
+        "continuity": 4,
+        "persona": 4,
+        "naturalness": 3,
+        "performance_alignment": 4,
+        "passed": false,
+        "reasons": [
+          "成功维持了矛盾证据下的谨慎态度，没有把传闻当事实，也暂停了前往旧路的安排。",
+          "第二轮基本重复第一轮的请求，且艾伦随后以“暂时办不到”结束，没有提供巡逻记录或明确说明是否亲眼见过，查证未实质推进。",
+          "艾伦的回复过于笼统，缺少其角色应给出的具体事实边界；整体自然度因此不足4分。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 59532.644040999,
+        "input_tokens": 86313,
+        "output_tokens": 5336,
+        "total_tokens": 91649,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 22,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 91649
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "investigative",
+              "version": 2,
+              "goal_id": null,
+              "reason": "玩家确认自己没有亲眼见到旧路状况，现有矛盾证据仍未解决。",
+              "evidence_refs": [
+                "input:a11427c903e7ca83b91317111c89cf17c865c2d2",
+                "input:a6f1f0155fe6c38b4b36f4fee7d0caea3f64e225"
+              ],
+              "source_turn_id": "eval:cog_investigate:3:main:turn:1"
+            },
+            "memory_count": 7,
+            "derived_memories": [
+              {
+                "memory_id": "cog:91f1a0abaaf6f59739085121309bed49859bd881",
+                "session_id": "eval:cog_investigate:3:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "听到关于旧路“已通”和“已塌”的相互冲突说法；旧路现状仍未知。",
+                "source_event_ids": [
+                  "input:a11427c903e7ca83b91317111c89cf17c865c2d2",
+                  "spoken:a11427c903e7ca83b91317111c89cf17c865c2d2"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:146acadbe7671b8548386c0c21a817d17814bdba",
+                  "cog:fb963e131dc7baab640f843d0aabf07502cae935"
+                ],
+                "entity_ids": [
+                  "elder_maren",
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.9785720620877001,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 1,
+                "created_seq": 2,
+                "reinforced_seq": 4
+              },
+              {
+                "memory_id": "cog:cafce114e9d630848d5b33383aa05ca56264553d",
+                "session_id": "eval:cog_investigate:3:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "曾要求艾伦说明最近的巡逻记录，以及是否亲眼查看过旧路路况。",
+                "source_event_ids": [
+                  "spoken:a11427c903e7ca83b91317111c89cf17c865c2d2"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:146acadbe7671b8548386c0c21a817d17814bdba"
+                ],
+                "entity_ids": [
+                  "elder_maren"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.93708381705515,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 2,
+                "reinforced_seq": 2
+              }
+            ],
+            "jobs": [
+              {
+                "job_id": "cog:211fbebdb17a20a0842777b5e48295c04d647a44",
+                "status": "completed",
+                "attempts": 1,
+                "last_error": null,
+                "usage_json": "{\"input_tokens\": 812, \"output_tokens\": 280, \"total_tokens\": 1092, \"usage_known\": true, \"elapsed_seconds\": 3.3119092080014525}"
+              }
+            ]
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 2,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_task",
+      "repeat": 2,
+      "structural_passed": false,
+      "goal_passed": false,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false,
+        "expected_behavior_mode": false,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 1,
+        "continuity": 2,
+        "persona": 2,
+        "naturalness": 1,
+        "performance_alignment": 1,
+        "passed": false,
+        "reasons": [
+          "NPC未回应玩家要求的维修任务当前缺失信息，反复使用“暂时办不到、先停在这里”的泛化拒答。",
+          "未体现维修任务仍处于active、尚未实际修复，也未给出任何具体待补信息或处理安排。",
+          "第二轮明确澄清未修好后仍逐字重复前一回复，未承接改口，造成明显重复与不自然。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 2,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 33546.39558300187,
+        "input_tokens": 42874,
+        "output_tokens": 2642,
+        "total_tokens": 45516,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 11,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 45516
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 4,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_task",
+      "repeat": 3,
+      "structural_passed": true,
+      "goal_passed": true,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "expected_behavior_mode": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 5,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "两轮都明确维持维修任务未完成状态。",
+          "准确承接玩家改口，没有虚构维修完成或引擎事件。",
+          "符合玛伦沉稳、简短且重视承诺与事实的人设。",
+          "回应自然、连贯，清楚说明了缺失信息。",
+          "整体演出与任务模式要求一致，无边界破坏或内部信息泄漏。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 36208.22029199917,
+        "input_tokens": 52318,
+        "output_tokens": 2911,
+        "total_tokens": 55229,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 14,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 55229
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "task_focused",
+              "version": 2,
+              "goal_id": "repair",
+              "reason": "维修目标仍处于进行中，玩家明确说明尚未实际修复；当前模式应继续推进下一步",
+              "evidence_refs": [
+                "input:218de326b6603cd485f82cf495e1b978468a3946",
+                "cog:a163e33b6df7c26372f08dd5ad7b44d33e0323d1"
+              ],
+              "source_turn_id": "eval:cog_task:3:main:turn:1"
+            },
+            "memory_count": 4,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_followup",
+      "repeat": 1,
+      "structural_passed": false,
+      "goal_passed": false,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 3,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 4,
+        "performance_alignment": 5,
+        "passed": false,
+        "reasons": [
+          "玛伦完成了向守卫询问并如实区分已知与未知，但守卫实际没有提供记录或目击信息，核心的信息获取目标未完成。",
+          "玛伦和艾伦的回应符合各自职责、人设与信息边界，没有把拒绝当成事实，也未泄漏内部信息。",
+          "守卫的拒绝略显笼统，但后续总结准确承接了该回复。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 49636.43695800056,
+        "input_tokens": 71077,
+        "output_tokens": 4656,
+        "total_tokens": 75733,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 15,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 75733
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "investigative",
+              "version": 2,
+              "goal_id": "goal:check_guard_record",
+              "reason": "调查目标仍未取得所需证据；艾伦已明确表示暂时无法提供，不能视为目标完成。",
+              "evidence_refs": [
+                "spoken:19a3e1db2f14a68739a5c45514883735a96b91b6"
+              ],
+              "source_turn_id": "eval:cog_followup:1:main:turn:1"
+            },
+            "memory_count": 5,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 2,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_followup",
+      "repeat": 2,
+      "structural_passed": false,
+      "goal_passed": false,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 2,
+        "continuity": 5,
+        "persona": 4,
+        "naturalness": 3,
+        "performance_alignment": 2,
+        "passed": false,
+        "reasons": [
+          "玛伦正确转述了艾伦的回复并区分已知与未知，但核心目标是询问值守记录，守卫拒绝继续，实质任务未完成。",
+          "守卫回复过于泛化，未说明为何暂时办不到，也没有提供可推进协作的具体信息。",
+          "玛伦的人设基本一致，但“等你答复后”与后续守卫的停滞形成了自然度和演出一致性不足。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 58332.842250001704,
+        "input_tokens": 74696,
+        "output_tokens": 5109,
+        "total_tokens": 79805,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 18,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 79805
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "investigative",
+              "version": 2,
+              "goal_id": "goal:guard_record",
+              "reason": "值守记录的事实缺口仍未解除，艾伦已明确表示当前无法提供记录；继续保持查证模式。",
+              "evidence_refs": [
+                "spoken:1c9cc54b8aa037d70e573703705267c08cfc9105",
+                "input:a78bce14f3346e3d96b029147dd3c5a67d75948a"
+              ],
+              "source_turn_id": "eval:cog_followup:2:main:turn:1"
+            },
+            "memory_count": 5,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 2,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_followup",
+      "repeat": 3,
+      "structural_passed": false,
+      "goal_passed": false,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 3,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 4,
+        "performance_alignment": 4,
+        "passed": false,
+        "reasons": [
+          "玛伦正确转述了守卫的回复，并明确区分了已知与未知部分。",
+          "但守卫没有提供值守记录或目击信息，核心的“询问记录并在收到回复后回应”实质上未能完成；其含糊的“暂时办不到”也没有说明可核实的具体原因。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 40055.362916999,
+        "input_tokens": 62586,
+        "output_tokens": 4385,
+        "total_tokens": 66971,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 12,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 66971
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "investigative",
+              "version": 2,
+              "goal_id": "goal:consult_guard",
+              "reason": "核查目标仍未取得所需证据，艾伦的回复未提供记录或现场观察。",
+              "evidence_refs": [
+                "spoken:8effe3979c158cd76d6cd0783a4d44e36169243e",
+                "input:a1294a7b8670d86eb4be2b8a8cd2c68a635b1017"
+              ],
+              "source_turn_id": "eval:cog_followup:3:main:turn:1"
+            },
+            "memory_count": 5,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 2,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_long_memory",
+      "repeat": 1,
+      "structural_passed": true,
+      "goal_passed": true,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 5,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "准确召回了早先的工具线索。",
+          "明确将信息归因于玩家先前的转述，并在追问后澄清并非亲眼所见。",
+          "回应简洁沉稳，符合玛伦的人设与任务要求。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 27850.673166001798,
+        "input_tokens": 45171,
+        "output_tokens": 1761,
+        "total_tokens": 46932,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 9,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 46932
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 2,
+              "goal_id": null,
+              "reason": "本回合只是澄清信息来源，没有持续冲突或未完成目标",
+              "evidence_refs": [
+                "cog:2dd53120e2a0ee0952d7df3916d4b485ff14a7b0"
+              ],
+              "source_turn_id": "eval:cog_long_memory:1:main:turn:1"
+            },
+            "memory_count": 307,
+            "derived_memories": [
+              {
+                "memory_id": "cog:0901538f33812eb0199d5946ae281ccdab8a9a79",
+                "session_id": "eval:cog_long_memory:1:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "玩家报告今天看过衣服编号270至299；这些是玩家的自述，未独立核实。",
+                "source_event_ids": [
+                  "memory-seed:eval:cog_long_memory:1:main:271",
+                  "memory-seed:eval:cog_long_memory:1:main:300"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:e2979d22849854a54d5f7c6340647d5c257628ed",
+                  "cog:0a116546c1b6619c6669bae9db6691f4a429090b"
+                ],
+                "entity_ids": [
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.9576032806985737,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 303,
+                "reinforced_seq": 303
+              },
+              {
+                "memory_id": "cog:1864184adc40781db11703eb6af1bdd4c9aae571",
+                "session_id": "eval:cog_long_memory:1:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "玩家曾询问矿井扳手的位置；据先前相关报告，玩家说扳手在蓝色工具箱里，位置未独立核实。",
+                "source_event_ids": [
+                  "input:f644da806b8b15cf5983baca579610718a03708a",
+                  "spoken:f644da806b8b15cf5983baca579610718a03708a"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:4d42d542caf33a3912eb8f9791b2ba4a562202b8",
+                  "cog:168dc13d04f79747630291214eb9608031322fb3"
+                ],
+                "entity_ids": [
+                  "elder_maren",
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.9576032806985737,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 303,
+                "reinforced_seq": 303
+              }
+            ],
+            "jobs": [
+              {
+                "job_id": "cog:6dbae2a8c62a9c8828fa1f3e5e9fc03d4391b6ed",
+                "status": "completed",
+                "attempts": 1,
+                "last_error": null,
+                "usage_json": "{\"input_tokens\": 7099, \"output_tokens\": 284, \"total_tokens\": 7383, \"usage_known\": true, \"elapsed_seconds\": 5.831918583000515}"
+              }
+            ]
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_long_memory",
+      "repeat": 2,
+      "structural_passed": true,
+      "goal_passed": true,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 4,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "准确召回了早先的工具线索，并明确标注为玩家转述而非亲眼核实。",
+          "第二轮正确承接玩家澄清，没有把转述升级为事实。",
+          "玛伦的克制、简短、沉稳风格保持一致，无越权或内部信息泄漏。",
+          "回应略有重复，但符合对澄清的直接确认，不影响任务完成。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 41677.35779200302,
+        "input_tokens": 51460,
+        "output_tokens": 2230,
+        "total_tokens": 53690,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 11,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 1,
+        "budget_charged_tokens": 81755
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 2,
+              "goal_id": null,
+              "reason": "玩家只是澄清信息来源，没有形成持续目标或冲突",
+              "evidence_refs": [
+                "cog:814cda589715736e42c595ff02c47e6a0a4e2821"
+              ],
+              "source_turn_id": "eval:cog_long_memory:2:main:turn:1"
+            },
+            "memory_count": 306,
+            "derived_memories": [
+              {
+                "memory_id": "cog:c944c6247605de87c62db528421209f23f321d28",
+                "session_id": "eval:cog_long_memory:2:main",
+                "npc_id": "elder_maren",
+                "kind": "belief",
+                "content": "矿井扳手在蓝色工具箱、以及此前提到的位置，都只是玩家提供的信息；elder_maren 未亲眼核实。",
+                "source_event_ids": [
+                  "spoken:28d2bc9c4fc1dc5081b4cd5a64005f5e8c1ef8c5",
+                  "spoken:50fa589f20991ee62d74ebea3badbd091cffe512"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:f17061aa288cbb5f76f29438eb88324d8581e5c2",
+                  "cog:d2fbf93c2a92be584ce54f385baffa0178ebd095"
+                ],
+                "entity_ids": [
+                  "elder_maren"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 1.0,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 305,
+                "reinforced_seq": 305
+              }
+            ],
+            "jobs": [
+              {
+                "job_id": "cog:d45af1fe04bff36dc5fb81c4a7d960401b0bbfd4",
+                "status": "failed",
+                "attempts": 2,
+                "last_error": "ModelBehaviorError",
+                "usage_json": "{\"usage_known\": false, \"elapsed_seconds\": 8.993811791999178}"
+              },
+              {
+                "job_id": "cog:567158c1b56a2d1bd7c97da563b081df8fbd02c5",
+                "status": "completed",
+                "attempts": 1,
+                "last_error": null,
+                "usage_json": "{\"input_tokens\": 7137, \"output_tokens\": 214, \"total_tokens\": 7351, \"usage_known\": true, \"elapsed_seconds\": 3.0546023749993765}"
+              }
+            ]
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_long_memory",
+      "repeat": 3,
+      "structural_passed": true,
+      "goal_passed": true,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 5,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "准确召回了早先的工具线索，并在玩家澄清后明确标注为转述而非亲眼所见。",
+          "两轮均有回应，表述简洁自然，符合玛伦克制、重视证据的设定，未泄漏内部信息或捏造核实事实。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 35648.52500000052,
+        "input_tokens": 57647,
+        "output_tokens": 2978,
+        "total_tokens": 60625,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 11,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 60625
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 2,
+              "goal_id": null,
+              "reason": "当前没有持续处理的冲突或目标；玩家只是澄清信息来源",
+              "evidence_refs": [
+                "input:8c807b22fd3d46d6aac3d381c68a673b5342c82c"
+              ],
+              "source_turn_id": "eval:cog_long_memory:3:main:turn:1"
+            },
+            "memory_count": 307,
+            "derived_memories": [
+              {
+                "memory_id": "cog:8fe0386bb46f327c2906eb36b45281f7ece10862",
+                "session_id": "eval:cog_long_memory:3:main",
+                "npc_id": "elder_maren",
+                "kind": "belief",
+                "content": "矿井扳手在蓝色工具箱里的说法来自先前信息；我未亲眼见过，也未核实。",
+                "source_event_ids": [
+                  "spoken:565802a1a686681bc195d1298088664b03c7e6f8",
+                  "spoken:8c807b22fd3d46d6aac3d381c68a673b5342c82c"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:9e5d35aeb9ab29147edbac47eea968cd88724aa7",
+                  "cog:24ed36b21a1a60fe8cf7ef8b82de12dd7bd66fa1"
+                ],
+                "entity_ids": [
+                  "elder_maren"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 1.0,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 305,
+                "reinforced_seq": 305
+              },
+              {
+                "memory_id": "cog:c787ae67613155b6aed7adf58c8abaf22e098635",
+                "session_id": "eval:cog_long_memory:3:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "玩家曾报告今天看过衣服编号272至299；这是玩家的陈述，并非我亲眼所见。",
+                "source_event_ids": [
+                  "memory-seed:eval:cog_long_memory:3:main:273",
+                  "memory-seed:eval:cog_long_memory:3:main:300"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:fd9b4fde714174c91fbe40a195d4cd1f2cb42558",
+                  "cog:c2da107a5aa82d220fe31a9071a76a1b059db58e"
+                ],
+                "entity_ids": [
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 1.0,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 305,
+                "reinforced_seq": 305
+              }
+            ],
+            "jobs": [
+              {
+                "job_id": "cog:7b85eb6103fe5f499e6e7006237b9af8df39f0ed",
+                "status": "failed",
+                "attempts": 2,
+                "last_error": "reflection references invisible memories",
+                "usage_json": "{\"input_tokens\": 7092, \"output_tokens\": 571, \"total_tokens\": 7663, \"usage_known\": true, \"elapsed_seconds\": 4.084276957997645}"
+              },
+              {
+                "job_id": "cog:db981d143c4b6544a0d4f94cb8af00b6185ad2e2",
+                "status": "completed",
+                "attempts": 1,
+                "last_error": null,
+                "usage_json": "{\"input_tokens\": 7135, \"output_tokens\": 299, \"total_tokens\": 7434, \"usage_known\": true, \"elapsed_seconds\": 2.686671291001403}"
+              }
+            ]
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_association",
+      "repeat": 1,
+      "structural_passed": false,
+      "goal_passed": false,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 3,
+        "continuity": 4,
+        "persona": 4,
+        "naturalness": 3,
+        "performance_alignment": 4,
+        "passed": false,
+        "reasons": [
+          "第二次回复正确澄清了询问与交付的区别，并坦白没有可靠记录，避免捏造归还事实。",
+          "但首轮直接以“暂时办不到”拒答，未回应玩家关于蓝色箱子缺少物品的追问，导致核心追问未完成。",
+          "第二轮虽修正了误解，却仍只说明未知，没有基于既往关联经历进一步追问承诺或提供可行的核实方向。",
+          "整体符合玛伦克制、重证据的人设，但首轮答非所问使自然度和任务完成度受损。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 22966.11729199867,
+        "input_tokens": 39314,
+        "output_tokens": 2664,
+        "total_tokens": 41978,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 7,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 41978
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 1,
+              "goal_id": null,
+              "reason": "当前仅有澄清，没有持续任务或新冲突",
+              "evidence_refs": [
+                "input:3d104f76afea4fffe36d4cdc17f85e0d529b5ccb"
+              ],
+              "source_turn_id": "eval:cog_association:1:main:turn:1"
+            },
+            "memory_count": 6,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_association",
+      "repeat": 2,
+      "structural_passed": false,
+      "goal_passed": false,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 1,
+        "continuity": 1,
+        "persona": 2,
+        "naturalness": 1,
+        "performance_alignment": 1,
+        "passed": false,
+        "reasons": [
+          "两次都重复同一句无法办理的回避，未回答关于蓝色箱子缺少物品的询问。",
+          "忽略玩家明确澄清“只是在问、没有进行交付”，未承接改口或追问承诺。",
+          "语气虽克制，但内容机械且不符合长老应基于关联经历追问承诺的目标。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 2,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 27403.45591699952,
+        "input_tokens": 29239,
+        "output_tokens": 2191,
+        "total_tokens": 31430,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 4,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 31430
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 6,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_association",
+      "repeat": 3,
+      "structural_passed": false,
+      "goal_passed": false,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 1,
+        "continuity": 3,
+        "persona": 2,
+        "naturalness": 2,
+        "performance_alignment": 2,
+        "passed": false,
+        "reasons": [
+          "未回答玩家关于蓝色箱子缺少物品的实际问题。",
+          "将普通询问误判为交付或任务流程，回应“暂时办不到”缺乏依据。",
+          "第二轮虽正确澄清未发生交付，但仍未补答原问题，也未根据既有经历追问承诺。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 24930.184083001222,
+        "input_tokens": 38871,
+        "output_tokens": 2454,
+        "total_tokens": 41325,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 7,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 41325
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 1,
+              "goal_id": null,
+              "reason": "玩家澄清当前只是提问，没有新目标或冲突需要切换模式",
+              "evidence_refs": [
+                "cog:64d023057b6b59d6f7a532fcf5cf37c662b68d5d"
+              ],
+              "source_turn_id": "eval:cog_association:3:main:turn:1"
+            },
+            "memory_count": 6,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_reflection",
+      "repeat": 1,
+      "structural_passed": true,
+      "goal_passed": true,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "derived_memory_with_sources": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 5,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "完整回顾了玩家陈述，并明确区分了陈述与独立确认事实。",
+          "后续承诺保留来源并继续不将未确认内容视为已发生，符合任务目标。",
+          "玛伦的克制、重视证据和简洁沉稳风格保持一致，无越权或事实捏造。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 26120.740292000846,
+        "input_tokens": 41464,
+        "output_tokens": 2405,
+        "total_tokens": 43869,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 9,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 43869
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 2,
+              "goal_id": null,
+              "reason": "请求明确；只是确认后续判断原则，没有新的持续目标或冲突。",
+              "evidence_refs": [
+                "input:76c1e61085aa0d5b53ef053e175b00be81e5731a",
+                "cog:e11819e17795155e1ec51186931229f657ee7386"
+              ],
+              "source_turn_id": "eval:cog_reflection:1:main:turn:1"
+            },
+            "memory_count": 16,
+            "derived_memories": [
+              {
+                "memory_id": "cog:2a0332f8a366918d841d0ffc8ef62e95a84865d5",
+                "session_id": "eval:cog_reflection:1:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "玩家曾报告来访名册已整理、车轮已检查，但未提供名册或检查结果供查看。",
+                "source_event_ids": [
+                  "memory-seed:eval:cog_reflection:1:main:4",
+                  "memory-seed:eval:cog_reflection:1:main:5"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:6de101556e1c6ba05f06aa7302fe426ba4e1f20d",
+                  "cog:f2be787c41c5a318e95421409979248d4a034449"
+                ],
+                "entity_ids": [
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.9576032806985737,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 10,
+                "reinforced_seq": 10
+              },
+              {
+                "memory_id": "cog:2b8e4c58e8e561dd78d778942251e3c5707e64e8",
+                "session_id": "eval:cog_reflection:1:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "玩家曾报告粮袋已清点、旧灯已修好、工具已归位、药箱已补齐；这些事项均未得到独立确认。",
+                "source_event_ids": [
+                  "memory-seed:eval:cog_reflection:1:main:0",
+                  "memory-seed:eval:cog_reflection:1:main:1",
+                  "memory-seed:eval:cog_reflection:1:main:2",
+                  "memory-seed:eval:cog_reflection:1:main:3"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:f15580652c935015e97addb43a4ae155fc0392a8",
+                  "cog:31006815ed2c2352ce2f8c5a4b74e2a8fdbe28e7",
+                  "cog:a6a60f81d0289a22b634033e2b24939543f18c8c",
+                  "cog:f140175c2acbab5ccef009858c6eae414402205d"
+                ],
+                "entity_ids": [
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.9576032806985737,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 10,
+                "reinforced_seq": 10
+              },
+              {
+                "memory_id": "cog:e11819e17795155e1ec51186931229f657ee7386",
+                "session_id": "eval:cog_reflection:1:main",
+                "npc_id": "elder_maren",
+                "kind": "belief",
+                "content": "目前只能确认玩家作过上述陈述，不能据此确认相关事项确已完成。",
+                "source_event_ids": [
+                  "input:0c63c5d3d287080f8d1341e3cb3b346f5aa43585",
+                  "spoken:0c63c5d3d287080f8d1341e3cb3b346f5aa43585"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:3547985d5dab41f09b49a504332de84bef707700",
+                  "cog:07e1933480f24b6e69977d07ea5180d56752137e"
+                ],
+                "entity_ids": [
+                  "elder_maren",
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 1.0,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 1,
+                "created_seq": 10,
+                "reinforced_seq": 12
+              },
+              {
+                "memory_id": "cog:f2e010541fd49d245a09e25a8b7b7f4e0f8ad361",
+                "session_id": "eval:cog_reflection:1:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "玩家曾报告送信人已出发，但尚未传回消息；备用绳索据称已准备好，却尚未当面展示。",
+                "source_event_ids": [
+                  "memory-seed:eval:cog_reflection:1:main:6",
+                  "memory-seed:eval:cog_reflection:1:main:7"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:e00a6100bfdb3e34594228ffe1e0af394be87e3d",
+                  "cog:c80b3abcbdb3024261650494226452d81efed4db"
+                ],
+                "entity_ids": [
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.9576032806985737,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 10,
+                "reinforced_seq": 10
+              }
+            ],
+            "jobs": [
+              {
+                "job_id": "cog:fb581e353e3b27ecb5dbbc71a0befbe90e387364",
+                "status": "completed",
+                "attempts": 1,
+                "last_error": null,
+                "usage_json": "{\"input_tokens\": 2568, \"output_tokens\": 570, \"total_tokens\": 3138, \"usage_known\": true, \"elapsed_seconds\": 4.281459875001019}"
+              }
+            ]
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_reflection",
+      "repeat": 2,
+      "structural_passed": false,
+      "goal_passed": false,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": false,
+        "derived_memory_with_sources": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 2,
+        "continuity": 2,
+        "persona": 3,
+        "naturalness": 2,
+        "performance_alignment": 2,
+        "passed": false,
+        "reasons": [
+          "首轮准确整理了玩家自述并明确尚未独立确认，完成了主要回顾目标。",
+          "第二轮只是笼统拒绝，未回应“记住来源并据此判断”的承诺或记忆需求，导致复合目标未完成。",
+          "拒绝语句过于泛化，缺乏玛伦应有的具体、克制解释，也没有承接上一轮已经建立的来源区分。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 1,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 27310.440375000326,
+        "input_tokens": 28505,
+        "output_tokens": 2139,
+        "total_tokens": 30644,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 6,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 30644
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 1,
+              "goal_id": null,
+              "reason": "本回合没有需要持续处理的新冲突或目标；玩家要求的是基于现有记录的审慎回顾。",
+              "evidence_refs": [
+                "cog:3782c2631984cb608e306be23371172c03999cc8"
+              ],
+              "source_turn_id": "eval:cog_reflection:2:main:turn:0"
+            },
+            "memory_count": 14,
+            "derived_memories": [
+              {
+                "memory_id": "cog:19ae1d1601e91d4d358a48c9d9edf12b31d1de51",
+                "session_id": "eval:cog_reflection:2:main",
+                "npc_id": "elder_maren",
+                "kind": "belief",
+                "content": "目前不能把这些准备事项视为已完成；尤其粮袋清单、药箱记录、车轮检查结果和备用绳索尚未当面展示或交出。",
+                "source_event_ids": [
+                  "memory-seed:eval:cog_reflection:2:main:0",
+                  "memory-seed:eval:cog_reflection:2:main:3",
+                  "memory-seed:eval:cog_reflection:2:main:5",
+                  "memory-seed:eval:cog_reflection:2:main:7"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:01c7adfc4473b2500a72994a001b14dd7aace674",
+                  "cog:3e5fda10aa7088a27107cca316949838924e853a",
+                  "cog:45965b85562d4f24ef7dc54d4cf87cdce3c4edab",
+                  "cog:5e2d7cb72f32eed57c860aab4c8842b11a377177"
+                ],
+                "entity_ids": [
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.9576032806985737,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 10,
+                "reinforced_seq": 10
+              },
+              {
+                "memory_id": "cog:562e7b3287fdd7b6e126d95faf33e2d2dd607803",
+                "session_id": "eval:cog_reflection:2:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "我听到玩家声称已清点粮袋、修好旧灯、归位工具、补齐药箱、整理名册、检查车轮、派出送信人并备妥备用绳索；这些目前都只是玩家自述，未获独立确认。",
+                "source_event_ids": [
+                  "memory-seed:eval:cog_reflection:2:main:0",
+                  "memory-seed:eval:cog_reflection:2:main:1",
+                  "memory-seed:eval:cog_reflection:2:main:2",
+                  "memory-seed:eval:cog_reflection:2:main:3",
+                  "memory-seed:eval:cog_reflection:2:main:4",
+                  "memory-seed:eval:cog_reflection:2:main:5",
+                  "memory-seed:eval:cog_reflection:2:main:6",
+                  "memory-seed:eval:cog_reflection:2:main:7",
+                  "spoken:e266176a3324b066a89fbf97c9c0c13276953ea0"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:577a3620601a708db70f9112eef940e64a82fcb4",
+                  "cog:01c7adfc4473b2500a72994a001b14dd7aace674",
+                  "cog:7c7eab5671994b03873cab351ecf8209dc6fe357",
+                  "cog:53c98e6ae07b31b964613fc7f6dc947609b19c1c",
+                  "cog:3e5fda10aa7088a27107cca316949838924e853a",
+                  "cog:066d165b6f77c12d4e2aace0b33b4bb2f1adf8b4",
+                  "cog:45965b85562d4f24ef7dc54d4cf87cdce3c4edab",
+                  "cog:8da428210a0141ee106d25ac01475946cbeeae20",
+                  "cog:5e2d7cb72f32eed57c860aab4c8842b11a377177"
+                ],
+                "entity_ids": [
+                  "elder_maren",
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 0.9576032806985737,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 10,
+                "reinforced_seq": 10
+              }
+            ],
+            "jobs": [
+              {
+                "job_id": "cog:a8522ad479116e625d3db3385a496ab3d8c44583",
+                "status": "completed",
+                "attempts": 1,
+                "last_error": null,
+                "usage_json": "{\"input_tokens\": 2561, \"output_tokens\": 599, \"total_tokens\": 3160, \"usage_known\": true, \"elapsed_seconds\": 3.926312000003236}"
+              }
+            ]
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_reflection",
+      "repeat": 3,
+      "structural_passed": false,
+      "goal_passed": false,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "derived_memory_with_sources": false,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 4,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 4,
+        "performance_alignment": 4,
+        "passed": true,
+        "reasons": [
+          "完成了经历回顾，并明确区分玩家自述与独立确认事实。",
+          "后续回应保持了来源区分和审慎立场，符合玛伦的人设与任务目标。",
+          "表达略有重复，但未造成实质问题。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 39686.277458000404,
+        "input_tokens": 46946,
+        "output_tokens": 4262,
+        "total_tokens": 51208,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 12,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 51208
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 2,
+              "goal_id": null,
+              "reason": "玩家重申记录来源的要求，没有新的冲突或持续行动目标",
+              "evidence_refs": [
+                "input:17f233196067e45b029aca5c3e74149ffd47eeb9"
+              ],
+              "source_turn_id": "eval:cog_reflection:3:main:turn:1"
+            },
+            "memory_count": 12,
+            "derived_memories": [],
+            "jobs": [
+              {
+                "job_id": "cog:4761203395f503f0e4234d145cb9875f025fb1f1",
+                "status": "failed",
+                "attempts": 2,
+                "last_error": "reflection references invisible memories",
+                "usage_json": "{\"input_tokens\": 2558, \"output_tokens\": 594, \"total_tokens\": 3152, \"usage_known\": true, \"elapsed_seconds\": 4.1567976670012285}"
+              },
+              {
+                "job_id": "cog:5ec9de1846c83f4bd308f92a4b60d02abbf57053",
+                "status": "failed",
+                "attempts": 2,
+                "last_error": "reflection references invisible memories",
+                "usage_json": "{\"input_tokens\": 3020, \"output_tokens\": 806, \"total_tokens\": 3826, \"usage_known\": true, \"elapsed_seconds\": 5.997077667001577}"
+              }
+            ]
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_revision",
+      "repeat": 1,
+      "structural_passed": true,
+      "goal_passed": true,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 5,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "准确区分了工具的客观状态与玛伦对玩家可靠性的主观判断。",
+          "承接玩家纠正，未将旧印象伪装成不可改变的事实，并明确判断可随实际履约修正。",
+          "语言简洁沉稳，符合玛伦的人设与表达风格。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 27339.736791996984,
+        "input_tokens": 40228,
+        "output_tokens": 2333,
+        "total_tokens": 42561,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 9,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 42561
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "guarded",
+              "version": 2,
+              "goal_id": null,
+              "reason": "玩家要求澄清判断与事实的区别；既有矛盾证据仍在，尚无新证据解除戒备。",
+              "evidence_refs": [
+                "input:c4de17e25f5e5e80ead152c00bc7c7d7d7929eb8",
+                "input:714ede8c9225b64091ee28d86ec431a99457d4be",
+                "spoken:714ede8c9225b64091ee28d86ec431a99457d4be"
+              ],
+              "source_turn_id": "eval:cog_revision:1:main:turn:1"
+            },
+            "memory_count": 5,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_revision",
+      "repeat": 2,
+      "structural_passed": true,
+      "goal_passed": true,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 5,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "明确区分了工具未归还这一客观状态与对玩家可信度、责任的判断。",
+          "正确吸收玩家改口，没有把旧印象伪装成事实；语气符合玛伦克制、重证据和承诺的人设。",
+          "两轮回应均承接自然，未泄漏内部信息或产生无依据承诺。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 30255.711750000046,
+        "input_tokens": 45657,
+        "output_tokens": 2619,
+        "total_tokens": 48276,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 10,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 48276
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "guarded",
+              "version": 2,
+              "goal_id": null,
+              "reason": "玩家要求澄清判断与事实的区别；工具未归还及责任判断仍是持续冲突，尚无新证据解除戒备。",
+              "evidence_refs": [
+                "input:1354ec39fdd0fd97113d85c0a20c8fff9358b758",
+                "cog:1d826ea414408e5cdaf4841f0d3e5222dd173316",
+                "cog:f0b1a51dc7838254c738db54b10069a198167b24"
+              ],
+              "source_turn_id": "eval:cog_revision:2:main:turn:1"
+            },
+            "memory_count": 5,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_revision",
+      "repeat": 3,
+      "structural_passed": true,
+      "goal_passed": true,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 5,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "两次请求均得到直接回应，明确区分了对玩家的判断与工具的客观状态。",
+          "正确承接了玩家更正，没有把旧印象当作事实，也没有声称工具已归还。",
+          "玛伦的克制、重视证据与承诺的人设保持一致，表达简洁自然。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 22463.739332997648,
+        "input_tokens": 35216,
+        "output_tokens": 1892,
+        "total_tokens": 37108,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 8,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 37108
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "guarded",
+              "version": 2,
+              "goal_id": null,
+              "reason": "玩家要求澄清既有矛盾信息；工具状态已有明确记录，戒备仍应保留",
+              "evidence_refs": [
+                "cog:b81ab883518334279bae4458fbc5caa0e87e8b82",
+                "cog:3e5c2b32088c859dd6b397c269dec16c0f09b4ce",
+                "cog:3a70b6a04ddc768c05364eb472742f94a40068cb"
+              ],
+              "source_turn_id": "eval:cog_revision:3:main:turn:1"
+            },
+            "memory_count": 5,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "cog_forgetting",
+      "repeat": 1,
+      "structural_passed": true,
+      "goal_passed": false,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true,
+        "encoded_history": true,
+        "cognition_owner_isolation": true
+      },
+      "quality": {
+        "task_completion": 3,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 4,
+        "performance_alignment": 5,
+        "passed": false,
+        "reasons": [
+          "仅准确回忆了“在旧抽屉里”的说法，但没有明确回答红色信封当前在哪里；若该信息本来不可核实，应直接说明无法找回，而不是把问题停留在转述层面。",
+          "第二轮正确遵守了“只是回忆、不要生成新任务”，未擅自创建任务，且保持了长历史线索。",
+          "整体符合玛伦谨慎、重证据且简短沉稳的人设，无内部信息泄漏或边界破坏。",
+          "由于实质目标“明确找回关键线索”只部分完成，任务完成度不足，因此不通过。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 36052.48987499726,
+        "input_tokens": 58478,
+        "output_tokens": 3127,
+        "total_tokens": 61605,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 11,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 61605
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "investigative",
+              "version": 2,
+              "goal_id": null,
+              "reason": "玩家明确表示只是回忆，但未提供解除既有信息缺口的新证据；保持查证模式，不推进新任务。",
+              "evidence_refs": [
+                "cog:9717cb216c6ccdcee21b32f9f12011e7c35757f9"
+              ],
+              "source_turn_id": "eval:cog_forgetting:1:main:turn:1"
+            },
+            "memory_count": 137,
+            "derived_memories": [
+              {
+                "memory_id": "cog:6ccc0299e44ab55d29448fce048019d8bdebeb73",
+                "session_id": "eval:cog_forgetting:1:main",
+                "npc_id": "elder_maren",
+                "kind": "belief",
+                "content": "红色信封据玩家转述曾在旧抽屉里，但位置尚未核实，不能视为当前所在地。",
+                "source_event_ids": [
+                  "input:ec7d1a6a7fc68c0539750faf4fd9d37f96106741",
+                  "spoken:bda3064efeb288778e1868688ca3cd4012c3ed45",
+                  "spoken:ec7d1a6a7fc68c0539750faf4fd9d37f96106741"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:7ca101d35c6bf0fd8a44dfe217db1f37b0453c33",
+                  "cog:e743df97541b966f7411837fad381c9610a079cb",
+                  "cog:cf071ead15babd81fd700adcce9e4d835ab908d8"
+                ],
+                "entity_ids": [
+                  "elder_maren",
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 1.0,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 135,
+                "reinforced_seq": 135
+              },
+              {
+                "memory_id": "cog:c434fa938ddb682f8ca821e6a4dab9d683c0555a",
+                "session_id": "eval:cog_forgetting:1:main",
+                "npc_id": "elder_maren",
+                "kind": "summary",
+                "content": "玩家报告自己曾查看装饰编号102至129；这些内容均为玩家陈述，未独立核实。",
+                "source_event_ids": [
+                  "memory-seed:eval:cog_forgetting:1:main:103",
+                  "memory-seed:eval:cog_forgetting:1:main:130"
+                ],
+                "source_turn_ids": [],
+                "source_memory_ids": [
+                  "cog:2fa97758d372498e69ec7d09c2cf1f0c3f8c9caf",
+                  "cog:4b3c5bc095b8f602c80d188459a908cedd22c518"
+                ],
+                "entity_ids": [
+                  "player"
+                ],
+                "goal_ids": [],
+                "epistemic_status": "inferred",
+                "validity": "active",
+                "importance": 0.5,
+                "activation": 1.0,
+                "pinned": false,
+                "pin_reasons": [],
+                "version": 0,
+                "created_seq": 135,
+                "reinforced_seq": 135
+              }
+            ],
+            "jobs": [
+              {
+                "job_id": "cog:a7e5c2260bd1412702fc6a411ee80e16ca288e90",
+                "status": "failed",
+                "attempts": 2,
+                "last_error": "reflection references invisible memories",
+                "usage_json": "{\"input_tokens\": 7119, \"output_tokens\": 473, \"total_tokens\": 7592, \"usage_known\": true, \"elapsed_seconds\": 4.211180833000981}"
+              },
+              {
+                "job_id": "cog:862a763948d4ebf83a82cf4101840a0e98cf4c11",
+                "status": "completed",
+                "attempts": 1,
+                "last_error": null,
+                "usage_json": "{\"input_tokens\": 7151, \"output_tokens\": 322, \"total_tokens\": 7473, \"usage_known\": true, \"elapsed_seconds\": 2.9740539169979456}"
+              }
+            ]
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+{
+  "schema_version": "director-episodes-v1",
+  "mode": "live",
+  "started_at": "2026-09-12T16:56:51.092140+00:00",
+  "repeats": 1,
+  "case_count": 1,
+  "concurrency": 1,
+  "model": "gpt-5.6-luna",
+  "transport": "sdk",
+  "node_reasoning_effort": "low",
+  "dataset_sha256": "8bb38e2fc7126c87b27ee2d8bf869d3247232eeec2d104c3e3fbe8a8dc91524e",
+  "source_sha256": "d4d71ae470e404f1099ad19ef27d98465928e8f10b5b696a9eaf5887798f5e51",
+  "summary": {
+    "runs": 1,
+    "structural_passes": 1,
+    "live_runs": 1,
+    "live_goal_passes": 1,
+    "live_goal_success_rate": 1.0,
+    "fallback_runs": 0,
+    "naturalness_mean": 4,
+    "persona_mean": 5,
+    "generation_tokens": 32404,
+    "generation_latency_ms": 20014.20879199941,
+    "unknown_usage_calls": 0,
+    "meets_live_acceptance": true,
+    "quality_claim": "live independent model judgment"
+  },
+  "token_ledger": {
+    "charged_tokens": 3557077,
+    "limit": 10000000,
+    "pilot_limit": 300000,
+    "calls": 740,
+    "unknown_usage_calls": 7,
+    "phase": "full",
+    "stopped": false
+  },
+  "budget_exhausted": false,
+  "completed_at": "2026-09-12T16:57:14.012849+00:00",
+  "archive_representation": "summary",
+  "full_report": "live-alias-v2-check.json.gz",
+  "original_sha256": "04f99a83318cc745bdc485b5805a28299bdc4b62a5a3ce0831b43f2c9d5252d4",
+  "results": [
+    {
+      "case_id": "pronoun_followup",
+      "repeat": 1,
+      "structural_passed": true,
+      "goal_passed": true,
+      "checks": {
+        "all_external_turns_processed": true,
+        "at_least_one_response_per_external_turn": true,
+        "no_runtime_errors": true,
+        "all_emissions_completed_or_interrupted": true,
+        "new_quest_count": true,
+        "review_before_publication": true,
+        "required_speakers": true,
+        "no_duplicate_side_effects": true,
+        "no_internal_identifiers": true,
+        "private_knowledge_respected": true,
+        "quest_offers_not_automatically_accepted": true,
+        "budgets_respected": true,
+        "author_invocation": true,
+        "no_fallback": true
+      },
+      "quality": {
+        "task_completion": 5,
+        "continuity": 5,
+        "persona": 5,
+        "naturalness": 4,
+        "performance_alignment": 5,
+        "passed": true,
+        "reasons": [
+          "两轮均正确处理“前一个/后一个”指代，并保留钥匙与药箱的条件。",
+          "玛伦的回应简洁、稳重，未引入额外承诺或事实。",
+          "第二轮明确将守卫具体化为艾伦，符合已知角色信息；表达略显回执式，但不影响完成。"
+        ]
+      },
+      "quality_status": "independent_live_judge",
+      "fallback_count": 0,
+      "errors": [],
+      "invariant_errors": [],
+      "generation_metrics": {
+        "latency_ms": 20014.20879199941,
+        "input_tokens": 30895,
+        "output_tokens": 1509,
+        "total_tokens": 32404,
+        "actual_models": [
+          "gpt-5.6-luna"
+        ],
+        "model_calls": 8,
+        "fixture_calls": 0,
+        "unknown_usage_calls": 0,
+        "budget_charged_tokens": 32404
+      },
+      "cognition": {
+        "main": {
+          "elder_maren": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 2,
+              "goal_id": null,
+              "reason": "当前只有明确的安排确认，没有新冲突或持续目标",
+              "evidence_refs": [
+                "input:8a827d245c601a0a0c2747ab1b26498dd6d78fe6",
+                "spoken:2a49ec339ea50975b95973525812d72434d9a851"
+              ],
+              "source_turn_id": "eval:pronoun_followup:1:main:turn:1"
+            },
+            "memory_count": 4,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "village_guard": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          },
+          "herbalist_iona": {
+            "behavior": {
+              "mode_id": "neutral",
+              "version": 0,
+              "goal_id": null,
+              "reason": "initial",
+              "evidence_refs": [],
+              "source_turn_id": null
+            },
+            "memory_count": 0,
+            "derived_memories": [],
+            "jobs": []
+          }
+        }
+      }
+    }
+  ]
+}

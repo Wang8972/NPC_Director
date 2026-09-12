@@ -90,6 +90,7 @@ class DirectorRunResult(WorkflowContract):
     content_candidates: list[dict[str, Any]] = Field(default_factory=list, max_length=8)
     objective_steps: list[ObjectiveStep] = Field(default_factory=list, max_length=16)
     objective_events: list[ObjectiveEvent] = Field(default_factory=list, max_length=8)
+    cognitive_commit: dict[str, Any] = Field(default_factory=dict)
 
 
 class TurnStateRecord(WorkflowContract):

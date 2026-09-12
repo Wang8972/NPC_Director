@@ -10,6 +10,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from npc_director.state.cognition_schema import COGNITION_SCHEMA
+
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS npc_domain_states (
     npc_id TEXT PRIMARY KEY,
@@ -327,7 +329,7 @@ class SQLiteStore:
             try:
                 connection.execute("PRAGMA journal_mode = WAL")
                 connection.execute("PRAGMA synchronous = NORMAL")
-                connection.executescript(SCHEMA)
+                connection.executescript(SCHEMA + COGNITION_SCHEMA)
                 # Additive migration for databases opened by earlier episode builds.
                 connection.execute("BEGIN IMMEDIATE")
                 columns = {

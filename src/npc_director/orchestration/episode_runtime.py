@@ -186,7 +186,29 @@ class EpisodeRuntime:
                 "speaker_id": "world" if event.origin == "world_event" else "player",
             }
         )
+        with self.store.connection() as conn:
+            already_existed = (
+                conn.execute(
+                    "SELECT 1 FROM episodes WHERE session_id=? AND event_id=?",
+                    (event.session_id, event.event_id),
+                ).fetchone()
+                is not None
+            )
         episode = self.store.create_episode(event, budget=self._budget())
+        if "cognition_version" not in episode.artifacts:
+            episode = self._update(
+                episode.id,
+                lambda e: e.model_copy(
+                    update={
+                        "artifacts": {
+                            **e.artifacts,
+                            "cognition_version": "memory-v1"
+                            if self.service.settings.cognition_enabled and not already_existed
+                            else "off",
+                        }
+                    }
+                ),
+            )
         jobs = self.store.list_jobs(episode.id)
         if self.content_store is not None:
             root_objective = ObjectiveRef(objective_id=_id("objective", episode.id, "root"))
@@ -259,6 +281,10 @@ class EpisodeRuntime:
         )
 
     def _bind(self, episode, job, request, stimulus) -> None:
+        stimulus = {
+            **stimulus,
+            "cognition_version": episode.artifacts.get("cognition_version", "off"),
+        }
         with self.store.transaction() as connection:
             connection.execute(
                 "INSERT OR IGNORE INTO episode_turn_links "
@@ -523,6 +549,7 @@ class EpisodeRuntime:
             "trace": _dump(result.execution_trace),
             "messages": [_dump(item) for item in result.collaboration_messages],
             "dialogue_state_delta": _dump(result.dialogue_state_delta),
+            "cognitive_commit": result.cognitive_commit,
             "content_candidates": [_dump(item) for item in result.content_candidates],
             "objective_steps": [_dump(item) for item in result.objective_steps],
             "objective_events": [_dump(item) for item in result.objective_events],

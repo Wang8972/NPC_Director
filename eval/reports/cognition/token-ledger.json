@@ -1,0 +1,113 @@
+{
+  "charged_tokens": 9954926,
+  "limit": 10000000,
+  "pilot_limit": 300000,
+  "calls": 2258,
+  "unknown_usage_calls": 8,
+  "phase": "full",
+  "stopped": true,
+  "by_role": [
+    {
+      "phase": "full",
+      "role": "Content Author",
+      "calls": 1,
+      "charged_tokens": 4070
+    },
+    {
+      "phase": "full",
+      "role": "Content Reviewer",
+      "calls": 1,
+      "charged_tokens": 4555
+    },
+    {
+      "phase": "full",
+      "role": "Dialogue Quality Reviewer",
+      "calls": 442,
+      "charged_tokens": 1975691
+    },
+    {
+      "phase": "full",
+      "role": "Independent Episode Quality Judge",
+      "calls": 173,
+      "charged_tokens": 393674
+    },
+    {
+      "phase": "full",
+      "role": "Memory Consolidator",
+      "calls": 77,
+      "charged_tokens": 201123
+    },
+    {
+      "phase": "full",
+      "role": "NPC Semantic Router",
+      "calls": 490,
+      "charged_tokens": 4026502
+    },
+    {
+      "phase": "full",
+      "role": "Narrative Planner",
+      "calls": 135,
+      "charged_tokens": 619080
+    },
+    {
+      "phase": "full",
+      "role": "Negotiation Specialist",
+      "calls": 8,
+      "charged_tokens": 29278
+    },
+    {
+      "phase": "full",
+      "role": "Performance Specialist",
+      "calls": 444,
+      "charged_tokens": 730600
+    },
+    {
+      "phase": "full",
+      "role": "Screenwriter",
+      "calls": 444,
+      "charged_tokens": 1773118
+    },
+    {
+      "phase": "pilot",
+      "role": "Dialogue Quality Reviewer",
+      "calls": 8,
+      "charged_tokens": 39807
+    },
+    {
+      "phase": "pilot",
+      "role": "Independent Episode Quality Judge",
+      "calls": 4,
+      "charged_tokens": 8873
+    },
+    {
+      "phase": "pilot",
+      "role": "Memory Consolidator",
+      "calls": 5,
+      "charged_tokens": 23680
+    },
+    {
+      "phase": "pilot",
+      "role": "NPC Semantic Router",
+      "calls": 9,
+      "charged_tokens": 71593
+    },
+    {
+      "phase": "pilot",
+      "role": "Narrative Planner",
+      "calls": 1,
+      "charged_tokens": 4291
+    },
+    {
+      "phase": "pilot",
+      "role": "Performance Specialist",
+      "calls": 8,
+      "charged_tokens": 13501
+    },
+    {
+      "phase": "pilot",
+      "role": "Screenwriter",
+      "calls": 8,
+      "charged_tokens": 35490
+    }
+  ]
+}

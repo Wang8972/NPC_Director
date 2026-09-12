@@ -504,6 +504,8 @@ class BoundedDirectorExecutor:
         assert run is not None
         execution = run.execution_trace
         execution.analysis = analysis
+        from npc_director.orchestration.cognition import preview_behavior
+
         artifacts: dict[str, Any] = dict(cached or {})
         artifacts["_node_cache"] = dict(artifacts.get("_node_cache", {}))
         artifacts["analysis"] = analysis
@@ -515,6 +517,7 @@ class BoundedDirectorExecutor:
         original_key = _prefix_cache_key(director_input, policy)
         try:
             analysis, plan = await self._compile_planned_analysis(analysis, usage)
+            director_input = preview_behavior(director_input, analysis)
             execution.analysis = analysis
             artifacts["analysis"] = analysis
         except ValueError as exc:
@@ -659,6 +662,7 @@ class BoundedDirectorExecutor:
                     artifacts["analysis"] = analysis
                     _invalidate_artifacts(artifacts, {"narrative", "negotiation", "dialogue"})
                     analysis, plan = await self._compile_planned_analysis(analysis, usage)
+                    director_input = preview_behavior(director_input, analysis)
                     execution.analysis = analysis
                     artifacts["analysis"] = analysis
                     execution.plans.append(plan)
@@ -815,6 +819,18 @@ class BoundedDirectorExecutor:
             content_candidates=artifacts.get("content_results", []),
             objective_steps=narrative.steps if reuse_plan else [],
             objective_events=narrative.events if reuse_plan else [],
+            cognitive_commit={
+                "behavior": director_input.actor_context["cognition"]["effective_behavior"],
+                "expected_version": director_input.actor_context["cognition"]["behavior"].get(
+                    "version", 0
+                ),
+                "memory_refs": analysis.used_memory_refs,
+                "ignored_memory_ref_count": director_input.actor_context["cognition"].get(
+                    "ignored_memory_ref_count", 0
+                ),
+            }
+            if director_input.actor_context.get("cognition")
+            else {},
             trace_id=f"episode:{director_input.episode_id or director_input.turn_id}:{run.run_id}",
             response_id=artifacts.get("response_id"),
         )
@@ -830,6 +846,18 @@ class BoundedDirectorExecutor:
         events: dict[SpecialistName, DelegationEvent],
         feedback: list[str],
     ) -> Any:
+        if node.kind != "replan" and source.actor_context.get("cognition"):
+            actor = {
+                key: value
+                for key, value in source.actor_context.items()
+                if key not in {"behavior_modes", "initial_behavior_mode", "protected_memory_refs"}
+            }
+            actor["cognition"] = {
+                key: value
+                for key, value in actor["cognition"].items()
+                if key in {"version", "behavior", "effective_behavior", "recalled_memories"}
+            }
+            source = source.model_copy(update={"actor_context": actor})
         builder = DirectorContextBuilder()
         lore = artifacts.get("lore", LoreEvidence())
         narrative = artifacts.get("narrative")
@@ -1662,7 +1690,31 @@ class BoundedDirectorExecutor:
         assert run is not None
 
         def compile_current(value: TurnAnalysis) -> ExecutionPlan:
-            return compile_execution_plan(
+            from npc_director.orchestration.cognition import (
+                BehaviorDecisionRejected,
+                preview_behavior,
+            )
+
+            try:
+                preview = preview_behavior(run.director_input, value)
+            except BehaviorDecisionRejected as error:
+                run.execution_trace.nodes.append(
+                    NodeTrace(
+                        node_id="behavior-admission",
+                        role="runtime",
+                        status="blocked",
+                        error=str(error),
+                        output={
+                            "candidate": value.behavior_decision.model_dump()
+                            if value.behavior_decision
+                            else None,
+                            "disposition": "retain_previous_mode",
+                        },
+                    )
+                )
+                value.behavior_decision = None
+                preview = preview_behavior(run.director_input, value)
+            compiled = compile_execution_plan(
                 value,
                 max_nodes=run.max_nodes,
                 revision=run.execution_trace.revisions,
@@ -1674,6 +1726,22 @@ class BoundedDirectorExecutor:
                     and all(goal.kind == "respond" for goal in value.goals)
                 ),
             )
+
+            cognition = preview.actor_context.get("cognition")
+            if cognition:
+                mode = cognition["effective_behavior"]["mode_id"]
+                allowed = next(
+                    m["allowed_operations"]
+                    for m in cognition["mode_catalog"]
+                    if m["mode_id"] == mode
+                )
+                if any(
+                    n.kind not in allowed
+                    for n in compiled.nodes
+                    if n.kind not in {"screenwriter", "performance", "quality"}
+                ):
+                    raise ValueError("compiled plan exceeds configured behavior scope")
+            return compiled
 
         try:
             return analysis, compile_current(analysis)
@@ -1697,7 +1765,8 @@ class BoundedDirectorExecutor:
                         "repair_feedback": (
                             "修复执行图结构，保留原目标、条件和证据边界。depends_on只引用本次"
                             "operations中实际存在的id，不引用goal id、工具名或未来节点。"
-                            "不要创建环；Narrative先确定粒度，Author随后创作。"
+                            "模式引用只用当前cognition目录中的e1/m1等短引用。continue必须保留当前mode_id；"
+                            "切换需new_evidence等原因及可见引用。不要创建环；Narrative先确定粒度，Author随后创作。"
                             "台词、演出、质量节点由Runtime追加。编译错误：" + str(error)
                         ),
                     }
@@ -2092,7 +2161,8 @@ def _compact_prompt_payload(value: Any) -> Any:
     state = result.get("conversation_state")
     if isinstance(state, dict) and recent:
         state["recent_expressions"] = [
-            text for text in state.get("recent_expressions", [])
+            text
+            for text in state.get("recent_expressions", [])
             if not any(line.endswith(": " + text) for line in recent)
         ]
     return result
