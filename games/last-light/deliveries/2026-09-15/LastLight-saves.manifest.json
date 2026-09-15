@@ -1,0 +1,232 @@
+{
+  "kind": "world saves + NPC memory + checkpoints; no model credentials",
+  "sqlite_databases": 21,
+  "files": [
+    {
+      "path": "checkpoints/5aa61ce5271e41288e0ecfb9b8153284/director",
+      "bytes": 28672,
+      "sha256": "6d4e78de3d48fc26ba0b45cb8102b590804f38a93e2809fc172542126ee0c6b5"
+    },
+    {
+      "path": "checkpoints/5aa61ce5271e41288e0ecfb9b8153284/world.json",
+      "bytes": 7734,
+      "sha256": "05e59a3a6b860cf7954f321b03f7467ba26fcac46fbd560b082ad0a1736de8b3"
+    },
+    {
+      "path": "checkpoints/639672458f2c466d83f232ab9d776095/director",
+      "bytes": 28672,
+      "sha256": "6d4e78de3d48fc26ba0b45cb8102b590804f38a93e2809fc172542126ee0c6b5"
+    },
+    {
+      "path": "checkpoints/639672458f2c466d83f232ab9d776095/world.json",
+      "bytes": 7734,
+      "sha256": "1b17fd682da2bc8c01ad9ae3684c3fe214ce6d1b027b308ebe31979d328c6e69"
+    },
+    {
+      "path": "checkpoints/a40a3bce1e2f4493b2b4888899c2a1c3/director",
+      "bytes": 28672,
+      "sha256": "6d4e78de3d48fc26ba0b45cb8102b590804f38a93e2809fc172542126ee0c6b5"
+    },
+    {
+      "path": "checkpoints/a40a3bce1e2f4493b2b4888899c2a1c3/world.json",
+      "bytes": 7734,
+      "sha256": "ce6aa958b1b3a461fdc51375cf609229bc67756b8372e7e0b6fe1abe379b0462"
+    },
+    {
+      "path": "director/1f91dbc6cea54459a82f74bea895d31e/service.sqlite",
+      "bytes": 397312,
+      "sha256": "abb6a1b6b156f841a6828e87b20a108fb12a77c8a723fdb090e7ca9b2a6f3d24"
+    },
+    {
+      "path": "director/2c0ea156b7ad4833818d8ad1e83d28a4/service.sqlite",
+      "bytes": 28672,
+      "sha256": "6d4e78de3d48fc26ba0b45cb8102b590804f38a93e2809fc172542126ee0c6b5"
+    },
+    {
+      "path": "director/3e4c49f72c7c4459b9435f88475eb785/service.sqlite",
+      "bytes": 1167360,
+      "sha256": "287765edc6462f187f08586360204605faf80adca8d26426ba7700345c4115ba"
+    },
+    {
+      "path": "director/4263e7a6cab1451dbc68fa8c0495c0ff/service.sqlite",
+      "bytes": 397312,
+      "sha256": "e4948f040d3e0c513b19b99725d91252fcf44842d38bed26f1418fb4c54b50b8"
+    },
+    {
+      "path": "director/59446606d2a940b6ba47bd5dd6b00c0d/service.sqlite",
+      "bytes": 409600,
+      "sha256": "d1eddf8fe3040cccb7169412ae8ac30540f9681bfa5a08297342e522a43def2b"
+    },
+    {
+      "path": "director/5aa61ce5271e41288e0ecfb9b8153284/service.sqlite",
+      "bytes": 28672,
+      "sha256": "6d4e78de3d48fc26ba0b45cb8102b590804f38a93e2809fc172542126ee0c6b5"
+    },
+    {
+      "path": "director/639672458f2c466d83f232ab9d776095/service.sqlite",
+      "bytes": 28672,
+      "sha256": "6d4e78de3d48fc26ba0b45cb8102b590804f38a93e2809fc172542126ee0c6b5"
+    },
+    {
+      "path": "director/67688472cfbe4e6b9670f2e93729d2c1/service.sqlite",
+      "bytes": 409600,
+      "sha256": "714fa016cecffbf14ef59d9860bebceffe913cc55b5febe400445528030e77be"
+    },
+    {
+      "path": "director/700eca89fb694b4da03773e76ca93d69/service.sqlite",
+      "bytes": 28672,
+      "sha256": "6d4e78de3d48fc26ba0b45cb8102b590804f38a93e2809fc172542126ee0c6b5"
+    },
+    {
+      "path": "director/72cc929eb74e40a0a338fe96126277cd/service.sqlite",
+      "bytes": 397312,
+      "sha256": "2d3e199c238a91045758716af7eeb9e5d627c11d93cf41c063c7d9ef6b48a2fd"
+    },
+    {
+      "path": "director/942693b4bbc341cfb2ca84456b40cf42/service.sqlite",
+      "bytes": 28672,
+      "sha256": "6d4e78de3d48fc26ba0b45cb8102b590804f38a93e2809fc172542126ee0c6b5"
+    },
+    {
+      "path": "director/9697450d33a34bafb7db380d5fa85d78/service.sqlite",
+      "bytes": 409600,
+      "sha256": "8b2665c9aa71b1578dd4581d8a567756424c57a1177d4346b8cc44a830b505f8"
+    },
+    {
+      "path": "director/a40a3bce1e2f4493b2b4888899c2a1c3/service.sqlite",
+      "bytes": 28672,
+      "sha256": "6d4e78de3d48fc26ba0b45cb8102b590804f38a93e2809fc172542126ee0c6b5"
+    },
+    {
+      "path": "director/c2cf320c356c44fe9e5c92c9969e06d8/service.sqlite",
+      "bytes": 274432,
+      "sha256": "2a300470108e24284f7d7fd87c578828c81cda92e93cb4e89edb7101e9be2b1a"
+    },
+    {
+      "path": "director/d3276d432284478d801e537f80f9fc8e/service.sqlite",
+      "bytes": 28672,
+      "sha256": "6d4e78de3d48fc26ba0b45cb8102b590804f38a93e2809fc172542126ee0c6b5"
+    },
+    {
+      "path": "director/e5120749264640309596ede808fe1804/service.sqlite",
+      "bytes": 397312,
+      "sha256": "aeab46305b6e7ef2429d9c8945e83a4a015cea7be60677d766b82842dd785467"
+    },
+    {
+      "path": "director/f6c97df0f85543118bd24ca7f0b8cd38/service.sqlite",
+      "bytes": 397312,
+      "sha256": "29048633e7ec071bbe6fbede73a8a12fce0b8825f8054f8c4e26110c9d22e2c1"
+    },
+    {
+      "path": "director/usage.sqlite",
+      "bytes": 28672,
+      "sha256": "5be0dd8412186f8df69613b697da08d35d2ccf2f4a44e06f2c273260a5c25180"
+    },
+    {
+      "path": "world/1f91dbc6cea54459a82f74bea895d31e.json",
+      "bytes": 5644,
+      "sha256": "91fcb333f527c14339f35c44c4c597aa63f7cb2fd837e3de3038db928533da0e"
+    },
+    {
+      "path": "world/2c0ea156b7ad4833818d8ad1e83d28a4.json",
+      "bytes": 5644,
+      "sha256": "9c88b8f112ed27c74c3b7b2375dc793ec107a553502fa079bb534277879a5d73"
+    },
+    {
+      "path": "world/3e4c49f72c7c4459b9435f88475eb785.backup.json",
+      "bytes": 25404,
+      "sha256": "93f6ad043c7752460aafa945468da061a72f80f53b5a6e14a46e0130acf7eb73"
+    },
+    {
+      "path": "world/3e4c49f72c7c4459b9435f88475eb785.json",
+      "bytes": 25404,
+      "sha256": "abd907f0c49ee66002705c750cedaf0b58280b80c7cb241f10c26fd16f793201"
+    },
+    {
+      "path": "world/4263e7a6cab1451dbc68fa8c0495c0ff.json",
+      "bytes": 5644,
+      "sha256": "1c3ffed1b4c2fe456a2e13e2c0da452a696b82e5a2ea2e35e7638edec0e8fe11"
+    },
+    {
+      "path": "world/59446606d2a940b6ba47bd5dd6b00c0d.json",
+      "bytes": 5644,
+      "sha256": "20549c399689cfb44de96bad55b359f625b041c63a6f394d2f49f691b9469340"
+    },
+    {
+      "path": "world/5aa61ce5271e41288e0ecfb9b8153284.backup.json",
+      "bytes": 7116,
+      "sha256": "037a9db01a7dac349e18158e68b669f1eab9a7475b5c22bd23b87b200d5d2dd0"
+    },
+    {
+      "path": "world/5aa61ce5271e41288e0ecfb9b8153284.json",
+      "bytes": 7108,
+      "sha256": "8e5213c2e26fc19fd5023124b1019a5e297bc975641e94deb0853c7a5cae2522"
+    },
+    {
+      "path": "world/639672458f2c466d83f232ab9d776095.backup.json",
+      "bytes": 7116,
+      "sha256": "b2c6935542bfda894c7b1cb2a04be649bfe2542181f31fb5bfd839506bc87732"
+    },
+    {
+      "path": "world/639672458f2c466d83f232ab9d776095.json",
+      "bytes": 7108,
+      "sha256": "32d4779991db98824f8bbc0168a7407660eb689e016b472fde6921a77d4478e3"
+    },
+    {
+      "path": "world/67688472cfbe4e6b9670f2e93729d2c1.json",
+      "bytes": 5644,
+      "sha256": "146ecac861c131f86a797733b29cdcef8376f2ecb5134e211faaa317e527b844"
+    },
+    {
+      "path": "world/700eca89fb694b4da03773e76ca93d69.json",
+      "bytes": 5644,
+      "sha256": "05bac4941b7559899b7f8ee2129b6e50366eca47383e09efb2e10f65b559016d"
+    },
+    {
+      "path": "world/72cc929eb74e40a0a338fe96126277cd.json",
+      "bytes": 5644,
+      "sha256": "6b0b82c371f7a8e93d2b4ebbc46650e6379417873274b41cce0ddb83a0dbd81c"
+    },
+    {
+      "path": "world/942693b4bbc341cfb2ca84456b40cf42.json",
+      "bytes": 5644,
+      "sha256": "4e5984c1786a017bfa66204422916fed627d0d438cfea09d655df4e3e3f422c1"
+    },
+    {
+      "path": "world/9697450d33a34bafb7db380d5fa85d78.json",
+      "bytes": 5644,
+      "sha256": "7c16209c2c1f6bffcbbe4ba72fe3894ffb0295deef703a41c5f7341bfa657ea7"
+    },
+    {
+      "path": "world/a40a3bce1e2f4493b2b4888899c2a1c3.backup.json",
+      "bytes": 7116,
+      "sha256": "65cde536e0daa0392fa9698497f48bf8aec564eabe031d02f96aab779b9100ab"
+    },
+    {
+      "path": "world/a40a3bce1e2f4493b2b4888899c2a1c3.json",
+      "bytes": 7108,
+      "sha256": "ea4dbda18376ecc817bfd06456f1a2d12d89d9bc706ba90a0e1a9eb98910718a"
+    },
+    {
+      "path": "world/c2cf320c356c44fe9e5c92c9969e06d8.json",
+      "bytes": 5644,
+      "sha256": "f6ed979879ee4ac2fe81920de6424cae5bfe8cd50442ce4b24e4a2af85b09940"
+    },
+    {
+      "path": "world/d3276d432284478d801e537f80f9fc8e.json",
+      "bytes": 5644,
+      "sha256": "edd4cdecf6c7255bd223aef23fb076ea61da7af54c3740828f73d202fa7ce2cd"
+    },
+    {
+      "path": "world/e5120749264640309596ede808fe1804.json",
+      "bytes": 5644,
+      "sha256": "672e572d9d0c998a544107f8eec94d5198c216ad21ce5ad5363082edd5bbaa8f"
+    },
+    {
+      "path": "world/f6c97df0f85543118bd24ca7f0b8cd38.json",
+      "bytes": 5644,
+      "sha256": "d3a6eb0319acd982f950d8429a0d709e8568ac1cb2b1ed78e14e36b66e92ba83"
+    }
+  ],
+  "archive_sha256": "3847390a1586d6bcb04e42d06be7c593390b1c17d919126f6bc6e0da8b2951af"
+}

@@ -12,6 +12,7 @@
     "Assets/LastLight/Resources/Presentation/Actions.json*",
     "Assets/LastLight/Resources/Presentation/Sockets.json*",
     "integration/**",
+    "deliveries/**",
     "README.md",
     "pyproject.toml",
     ".env.example"
@@ -32,6 +33,7 @@
     "Assets/LastLight/Resources/Presentation/Assets.asset*"
   ],
   "rules": [
+    "deliveries contains explicitly authorized historical save archives only; live saves, credentials and application binaries remain excluded.",
     "Do not initialize Git in the P4 workspace.",
     "Source and assets must keep their paired .meta files.",
     "Do not overwrite locally modified assets during code sync.",
