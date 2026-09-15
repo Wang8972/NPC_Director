@@ -3,7 +3,7 @@ using System;
 namespace LastLight
 {
     // This wire model deliberately matches the authoritative Python projection.
-    // JsonUtility does not support dictionaries; collections are always arrays.
+    // Incoming DTOs use GameJson to preserve null execution/job/performance objects.
     [Serializable] public sealed class GameView
     {
         public string session_id, mode, room_id, objective, chapter, ending, ending_title, ending_text;

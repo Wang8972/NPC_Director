@@ -28,7 +28,7 @@ namespace LastLight.QA
             foreach(string file in views)
             {
                 GameView snapshot=null;Exception error=null;
-                try{snapshot=JsonUtility.FromJson<GameView>(File.ReadAllText(file));}
+                try{snapshot=GameJson.Deserialize<GameView>(File.ReadAllText(file));}
                 catch(Exception exception){error=exception;}
                 if(error!=null||snapshot==null){Check(false,"parse_view",file);continue;}
                 string name=Path.GetFileName(file).Replace(".view.json","");
@@ -42,7 +42,7 @@ namespace LastLight.QA
             foreach(string file in sequences)
             {
                 Sequence sequence=null;Exception error=null;
-                try{sequence=JsonUtility.FromJson<Sequence>(File.ReadAllText(file));}
+                try{sequence=GameJson.Deserialize<Sequence>(File.ReadAllText(file));}
                 catch(Exception exception){error=exception;}
                 if(error!=null||sequence?.before==null||sequence.execution==null||sequence.after==null)
                 {Check(false,"parse_sequence",file);continue;}

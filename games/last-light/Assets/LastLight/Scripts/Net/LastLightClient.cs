@@ -9,7 +9,7 @@ namespace LastLight
 {
     public sealed class LastLightClient : MonoBehaviour
     {
-        public string Endpoint { get; set; } = "http://127.0.0.1:8765";
+        public string Endpoint { get; set; } = "http://127.0.0.1:8766";
         public int TimeoutSeconds { get; set; } = 25;
         readonly HashSet<UnityWebRequest> requests = new HashSet<UnityWebRequest>();
 
@@ -41,7 +41,7 @@ namespace LastLight
                 string raw = request.downloadHandler == null ? "" : request.downloadHandler.text;
                 if (!string.IsNullOrWhiteSpace(raw))
                 {
-                    try { result = JsonUtility.FromJson<ApiResponse>(raw); }
+                    try { result = GameJson.Deserialize<ApiResponse>(raw); }
                     catch (Exception) { /* Return the bounded, readable error below. */ }
                 }
                 if (result == null) result = new ApiResponse();

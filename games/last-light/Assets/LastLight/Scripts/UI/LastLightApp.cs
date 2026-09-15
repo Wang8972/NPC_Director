@@ -46,8 +46,8 @@ namespace LastLight
             Application.targetFrameRate = 60;
             PresentationClock.Reset();
             qaCapture=Array.IndexOf(Environment.GetCommandLineArgs(),"--qa-capture")>=0;
-            endpoint = PlayerPrefs.GetString("lastlight.endpoint", "http://127.0.0.1:8765");
-            if (!LastLightClient.IsLoopbackEndpoint(endpoint)) endpoint = "http://127.0.0.1:8765";
+            endpoint = PlayerPrefs.GetString("lastlight.endpoint", "http://127.0.0.1:8766");
+            if (!LastLightClient.IsLoopbackEndpoint(endpoint)) endpoint = "http://127.0.0.1:8766";
             volume = PlayerPrefs.GetFloat("lastlight.volume", .65f);
             lowQuality = PlayerPrefs.GetInt("lastlight.low_quality", 0) == 1;
             reducedMotion = PlayerPrefs.GetInt("lastlight.reduced_motion", 0) == 1;
@@ -75,6 +75,7 @@ namespace LastLight
             PresentationClock.Paused=modalOpen||titleOpen||qaPauseRequested||(!Application.isFocused&&!qaCapture);
             world?.SetPresentationPaused(PresentationClock.Paused);
             PresentationClock.Tick(Time.unscaledDeltaTime);
+            ReleaseChatFocusForGameplayIntent();
             bool typing = IsTyping();
             if (world != null) world.SetInputBlocked(titleOpen || introPlaying || modalOpen || busy || animating || typing || view == null || view.execution != null || !string.IsNullOrEmpty(view.ending));
             if (statusText != null && !string.IsNullOrEmpty(statusMessage) && Time.unscaledTime > statusUntil)
@@ -108,6 +109,36 @@ namespace LastLight
             if (EventSystem.current == null || EventSystem.current.currentSelectedGameObject == null) return false;
             var input = EventSystem.current.currentSelectedGameObject.GetComponent<TMP_InputField>();
             return input != null && input.isFocused;
+        }
+
+        /// <summary>
+        /// TMP keeps an input field selected after the player clicks the 3D scene.  Because
+        /// world input is deliberately disabled while typing, that otherwise creates a
+        /// focus trap: the scene click, WASD and E can never reach TrainWorld.  Release an
+        /// empty chat field when the player clearly intends to return to exploration.
+        /// Non-empty text is preserved so ordinary Latin/IME entry is never mistaken for
+        /// movement.
+        /// </summary>
+        void ReleaseChatFocusForGameplayIntent()
+        {
+            if (chatInput == null || !chatInput.isFocused || EventSystem.current == null) return;
+            if (titleOpen || introPlaying || modalOpen) return;
+
+            var pointer = Pointer.current;
+            if (pointer != null && pointer.press.wasPressedThisFrame)
+            {
+                Vector2 screenPoint = pointer.position.ReadValue();
+                if (!RectTransformUtility.RectangleContainsScreenPoint(chatInput.transform as RectTransform, screenPoint, null))
+                {
+                    chatInput.DeactivateInputField();
+                    EventSystem.current.SetSelectedGameObject(null);
+                    return;
+                }
+            }
+
+            // An empty input still owns keyboard input: WASD/E may be the
+            // first character of a message or an IME composition.  Only an
+            // outside click (above) or Escape (Update) releases that focus.
         }
 
         IEnumerator ConnectService(bool launch)

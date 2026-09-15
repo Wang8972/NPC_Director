@@ -147,12 +147,12 @@ namespace LastLight
             UiFactory.FlowText(body, serviceReady ? "服务已连接" : string.IsNullOrEmpty(connectionError)?launcher.Status:connectionError, 25, UiFactory.Amber);
             UiFactory.FlowText(body, "完整发行包会尝试自动启动后台。AI 的模型和凭据在服务端配置；不需要填写到游戏窗口。", 24, UiFactory.Muted);
             UiFactory.FlowText(body, "服务地址", 23);
-            var address = UiFactory.Input("Endpoint", body, "http://127.0.0.1:8765",54); address.text = endpoint;
+            var address = UiFactory.Input("Endpoint", body, "http://127.0.0.1:8766",54); address.text = endpoint;
             UiFactory.FlowText(body, "可选：本机 Python 可执行文件路径", 23);
             var python = UiFactory.Input("Python", body, "发行包通常无需填写",54); python.text=PlayerPrefs.GetString("lastlight.python","");
             UiFactory.Button("Connect", body, "保存并重新连接", () =>
             {
-                if (!LastLightClient.IsLoopbackEndpoint(address.text)) { SetStatus("请输入本机 HTTP 地址，例如 http://127.0.0.1:8765。",10); return; }
+                if (!LastLightClient.IsLoopbackEndpoint(address.text)) { SetStatus("请输入本机 HTTP 地址，例如 http://127.0.0.1:8766。",10); return; }
                 endpoint=address.text.TrimEnd('/'); client.Endpoint=endpoint;
                 PlayerPrefs.SetString("lastlight.endpoint",endpoint); PlayerPrefs.SetString("lastlight.python",python.text.Trim()); PlayerPrefs.Save();
                 CloseModal(); StartCoroutine(ConnectService(true));

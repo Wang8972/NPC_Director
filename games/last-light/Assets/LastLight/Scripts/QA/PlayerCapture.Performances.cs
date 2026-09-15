@@ -13,7 +13,7 @@ namespace LastLight.QA
             foreach(string file in Directory.GetFiles(inputDirectory,"*.performance.json").OrderBy(f=>f))
             {
                 PerformanceFixture fixture=null;Exception error=null;
-                try{fixture=JsonUtility.FromJson<PerformanceFixture>(File.ReadAllText(file));}
+                try{fixture=GameJson.Deserialize<PerformanceFixture>(File.ReadAllText(file));}
                 catch(Exception exception){error=exception;}
                 if(error!=null||fixture?.before==null||fixture.line==null){Check(false,"performance_fixture",file);continue;}
                 yield return RunLineFixture(fixture,false,false,false);

@@ -68,6 +68,13 @@ class PlanIdRequest(RevisionRequest):
     plan_id: str = Field(min_length=1, max_length=120)
 
 
+class CancelPlanRequest(RevisionRequest):
+    # Builds made before execution.plan_id was projected can send an empty/null
+    # id while still showing the one active batch.  Cancellation is safe to
+    # recover server-side because the authoritative world identifies that batch.
+    plan_id: str | None = Field(default=None, max_length=120)
+
+
 class CompleteRequest(RevisionRequest):
     execution_id: str = Field(min_length=1, max_length=160)
 
@@ -246,9 +253,21 @@ def create_app(data_dir: Path | str | None = None, director_factory=None) -> Fas
             return await world_changed(sid, result)
 
     @app.post("/sessions/{sid}/cancel")
-    async def cancel_plan(sid: str, request: PlanIdRequest):
+    async def cancel_plan(sid: str, request: CancelPlanRequest):
         async with lock(sid):
-            result = check(sid, request.expected_revision).cancel(request.plan_id)
+            world = check(sid, request.expected_revision)
+            plan_id = (request.plan_id or "").strip()
+            if not plan_id:
+                execution = world.state.get("execution") or {}
+                plan_id = execution.get("plan_id", "")
+            if not plan_id:
+                cancellable = [plan["id"] for plan in world.state.get("plans", [])
+                               if plan.get("status") not in {"completed", "cancelled", "failed"}]
+                if len(cancellable) == 1:
+                    plan_id = cancellable[0]
+            if not plan_id:
+                raise HTTPException(400, "无法确定要取消的计划，请刷新当前进度后重试。")
+            result = world.cancel(plan_id)
             persist(sid)
             return reply(sid, result)
 

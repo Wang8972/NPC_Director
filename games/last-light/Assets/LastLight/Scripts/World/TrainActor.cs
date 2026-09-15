@@ -17,6 +17,7 @@ namespace LastLight
         public bool Arrived=>Vector3.Distance(transform.position,Destination)<.035f;
         public bool HasHeldItem=>heldHands.Count>0||personalCup!=null;
         public GameObject Visual { get; private set; }
+        GameObject animationRoot;
         public string ActiveClip { get; private set; }="idle";
         public float Phase { get; private set; }
         readonly Dictionary<string,Transform> bones=new Dictionary<string,Transform>();
@@ -41,6 +42,9 @@ namespace LastLight
             Visual=Instantiate(PresentationAssets.Required.Character(Id),transform,false);Visual.name="Visual";PresentationSockets.Attach(Visual,"actor");
             foreach(var t in Visual.GetComponentsInChildren<Transform>())
             {if(!bones.ContainsKey(t.name)){bones[t.name]=t;bind[t.name]=(t.localPosition,t.localRotation);}}
+            animationRoot=bones["Rig"].gameObject;
+            var animator=animationRoot.GetComponent<Animator>()??animationRoot.AddComponent<Animator>();
+            animator.applyRootMotion=false;animator.enabled=true;
             face=Visual.GetComponentsInChildren<SkinnedMeshRenderer>().FirstOrDefault(r=>r.sharedMesh.blendShapeCount>0);
             Socket("hand_r");Socket("hand_l");Socket("carry_front");Socket("stow");Socket("support_l");Socket("support_r");
             if(Id=="zhou")
@@ -98,7 +102,7 @@ namespace LastLight
         {
             if(!CanGesture(action,layer))return;
             var before=bones.ToDictionary(k=>k.Key,k=>(p:k.Value.localPosition,q:k.Value.localRotation));
-            var motion=PresentationAssets.Required.Clip(action);motion.clip.SampleAnimation(Visual,Mathf.Clamp(seconds,0,motion.duration));
+            var motion=PresentationAssets.Required.Clip(action);motion.clip.SampleAnimation(animationRoot,Mathf.Clamp(seconds,0,motion.duration));
             foreach(var pair in bones)
             {
                 string name=pair.Key;var t=pair.Value;var old=before[name];
@@ -124,7 +128,7 @@ namespace LastLight
             var motion=PresentationAssets.Required.Clip(clip);float time=Working?workPhase:(motion.loop?Phase:idleWindow);
             if(motion.loop)time=Mathf.Repeat(time,motion.duration);
             else time=Mathf.Min(time,holdWork?motion.duration*.55f:motion.duration);
-            motion.clip.SampleAnimation(Visual,time);ActiveClip=clip;
+            motion.clip.SampleAnimation(animationRoot,time);ActiveClip=clip;
             if(ExternalMovement&&Pose!="carried_litter")
                 foreach(var side in new[]{"L","R"})
                 {

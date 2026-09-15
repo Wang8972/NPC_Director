@@ -43,6 +43,10 @@ namespace LastLight
             var exe = FindPython(root);
             var uri = new Uri(endpoint);
             var packaged = Path.Combine(root, "runtime", "last-light-server.exe");
+#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+            var macPackaged = Path.Combine(root, "runtime", "last-light-server");
+            if (File.Exists(macPackaged)) packaged = macPackaged;
+#endif
             var runner = Path.Combine(root, "tools", "run_server.py");
             var arguments = "-m uvicorn last_light.api:app --host 127.0.0.1 --port " + uri.Port;
             if (File.Exists(packaged)) { exe = packaged; arguments = "--host 127.0.0.1 --port " + uri.Port; }
@@ -57,6 +61,14 @@ namespace LastLight
             };
             start.EnvironmentVariables["PYTHONUNBUFFERED"] = "1";
             start.EnvironmentVariables["PYTHONIOENCODING"] = "utf-8";
+            var config = Path.Combine(Application.persistentDataPath,".env");
+            var template = Path.Combine(root,".env.example");
+            if (!File.Exists(config) && File.Exists(template))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(config));
+                File.Copy(template,config);
+            }
+            start.EnvironmentVariables["LAST_LIGHT_CONFIG"] = config;
             try
             {
                 process = new Process { StartInfo = start, EnableRaisingEvents = true };
@@ -92,7 +104,9 @@ namespace LastLight
                 if (string.IsNullOrEmpty(candidate)) continue;
                 var directory = new DirectoryInfo(candidate);
                 for (int i = 0; directory != null && i < 4; i++, directory = directory.Parent)
-                    if (Directory.Exists(Path.Combine(directory.FullName, "backend", "last_light")) || File.Exists(Path.Combine(directory.FullName, "runtime", "last-light-server.exe"))) return directory.FullName;
+                    if (Directory.Exists(Path.Combine(directory.FullName, "backend", "last_light")) ||
+                        File.Exists(Path.Combine(directory.FullName, "runtime", "last-light-server.exe")) ||
+                        File.Exists(Path.Combine(directory.FullName, "runtime", "last-light-server"))) return directory.FullName;
             }
             return null;
         }

@@ -80,12 +80,18 @@ class SocialDecision(StrictModel):
         return {"kind": self.kind, "decision_id": decision_id, **{k: raw[k] for k in keys}}
 
 
+class ObjectiveActionBinding(StrictModel):
+    step_id: str = Field(min_length=1, max_length=120)
+    action_id: str = Field(min_length=1, max_length=120)
+
+
 class TrainMeaning(StrictModel):
     """Ground an already generated v2 beat into suggestions and social acts."""
 
     title: str = Field(default="", max_length=100)
     steps: list[TrainStep] = Field(default_factory=list, max_length=12)
     decisions: list[SocialDecision] = Field(default_factory=list, max_length=6)
+    objective_actions: list[ObjectiveActionBinding] = Field(default_factory=list, max_length=16)
 
     @model_validator(mode="after")
     def closed_plan(self):

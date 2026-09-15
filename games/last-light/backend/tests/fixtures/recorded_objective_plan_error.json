@@ -1,0 +1,91 @@
+{
+  "turn_id": "turn:ede9edfc80c5088107b39e2c4edb8c1f56f8c9b2",
+  "steps": [
+    {
+      "action": "从工具架领取应急手电",
+      "completion_condition": "",
+      "depends_on": [],
+      "description": "陈默接受前往工具架领取应急手电的任务，明确这是自己承担的部分。",
+      "objective": {
+        "objective_id": "last_light_rescue",
+        "quest_id": "last_light_rescue",
+        "version": 0
+      },
+      "step_id": "accept_collect_lamp"
+    },
+    {
+      "action": "提议领取工具和备件",
+      "completion_condition": "",
+      "depends_on": [
+        "accept_collect_lamp"
+      ],
+      "description": "陈默提议在取手电的同时一并领取应急工具和密封接头备件，以便后续检测与修复。",
+      "objective": {
+        "objective_id": "last_light_rescue",
+        "quest_id": "last_light_rescue",
+        "version": 0
+      },
+      "step_id": "propose_collect_tools_spares"
+    }
+  ],
+  "policy": {
+    "allowed_actions": [
+      "dialogue",
+      "npc_message",
+      "quest_transition",
+      "collect_tools",
+      "collect_lamp",
+      "collect_spares",
+      "collect_stretcher",
+      "examine_log",
+      "inspect_joint",
+      "isolate_aux",
+      "verify_isolation",
+      "repair_joint",
+      "retest_repair",
+      "restore_aux",
+      "manual_cutoff",
+      "restore_phone",
+      "call_control",
+      "connect_radio",
+      "radio_request",
+      "disconnect_radio",
+      "take_backup",
+      "return_backup",
+      "connect_medical",
+      "disconnect_medical",
+      "close_vent",
+      "move_mother",
+      "assess_mother",
+      "prepare_stretcher",
+      "clear_aisle",
+      "announce_facts",
+      "count_passengers",
+      "clear_trolley",
+      "free_internal_door",
+      "call_child",
+      "scout_walkway",
+      "open_outer_door",
+      "final_sweep",
+      "shelter_group",
+      "await_rescue",
+      "wait",
+      "give_tools",
+      "give_spares",
+      "give_lamp",
+      "join_briefing"
+    ],
+    "objective_refs": [
+      {
+        "objective_id": "last_light_rescue",
+        "quest_id": "last_light_rescue",
+        "version": 0
+      },
+      {
+        "objective_id": "objective:ede9edfc80c5088107b39e2c4edb8c1f56f8c9b2",
+        "quest_id": null,
+        "version": 0
+      }
+    ]
+  }
+}

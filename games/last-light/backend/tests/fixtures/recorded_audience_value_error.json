@@ -1,0 +1,38 @@
+{
+  "meaning": {
+    "decisions": [
+      {
+        "kind": "share_fact",
+        "evidence_quote": "列车因为电气异常停了，主电已经切断，现在亮的是应急照明。",
+        "fact_ids": [
+          "train_stopped"
+        ],
+        "audience": [
+          "player",
+          "zhou",
+          "passenger07"
+        ]
+      },
+      {
+        "kind": "share_fact",
+        "evidence_quote": "司机最后报告要求暂不开外门，邻线是否封锁还没收到确认，之后我就没再联系上他。目前没有可靠的恢复或救援时间。",
+        "fact_ids": [
+          "crew_report",
+          "radio_lost",
+          "traffic_unknown"
+        ],
+        "audience": [
+          "player",
+          "zhou",
+          "passenger07"
+        ]
+      }
+    ],
+    "steps": []
+  },
+  "text": "列车因为电气异常停了，主电已经切断，现在亮的是应急照明。司机最后报告要求暂不开外门，邻线是否封锁还没收到确认，之后我就没再联系上他。目前没有可靠的恢复或救援时间。请大家留在车厢里配合清点，不要擅自去开外面的门。",
+  "job_audience": [
+    "lin",
+    "zhou"
+  ]
+}

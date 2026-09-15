@@ -151,15 +151,35 @@ class ProviderConfig:
     wire: str
 
 
+def _compatible_wire(model: str, config: ProviderConfig) -> str:
+    """Select the API surface actually supported by a provider/model pair.
+
+    Codex itself uses ideaLAB's Responses-compatible entry point, so a reused
+    Codex provider advertises ``responses``.  The qwen endpoint behind the same
+    gateway only accepts OpenAI chat/completions (the NPC Director ideaLAB
+    profile has the same constraint).  Sending qwen to Responses produces the
+    gateway PRE-006 error before generation starts.
+    """
+    wire = config.wire.strip().lower()
+    if wire not in {"chat_completions", "responses"}:
+        raise DirectorUnavailable(f"不支持的模型协议: {config.wire}")
+    host = (config.base_url or "").lower()
+    if model.lower().startswith("qwen") and "idealab.alibaba-inc.com" in host:
+        return "chat_completions"
+    return wire
+
+
 def _provider_config(*, load_secret: bool) -> ProviderConfig:
     """Environment first. Optional local Codex credential reuse never writes files."""
-    key = os.getenv("LAST_LIGHT_API_KEY") or os.getenv("OPENAI_API_KEY") or ""
-    url = os.getenv("LAST_LIGHT_BASE_URL") or os.getenv("OPENAI_BASE_URL") or None
+    key = os.getenv("LAST_LIGHT_API_KEY") or ""
+    url = os.getenv("LAST_LIGHT_BASE_URL") or None
     wire = os.getenv("LAST_LIGHT_API", "chat_completions")
     if key:
         return ProviderConfig(key if load_secret else "present", url, wire)
     if os.getenv("LAST_LIGHT_USE_CODEX_AUTH", "0") != "1":
-        return ProviderConfig("", url, wire)
+        key = os.getenv("OPENAI_API_KEY") or ""
+        url = url or os.getenv("OPENAI_BASE_URL") or None
+        return ProviderConfig(key if load_secret else ("present" if key else ""), url, wire)
     import tomllib
     root = Path(os.getenv("CODEX_HOME", str(Path.home() / ".codex")))
     config_path, auth_path = root / "config.toml", root / "auth.json"
@@ -229,13 +249,14 @@ class MeteredTransport:
             config = _provider_config(load_secret=True)
             if not config.api_key:
                 raise DirectorUnavailable("未配置模型凭据")
+            wire = _compatible_wire(self.model, config)
             if self._client is None:
                 self._client = AsyncOpenAI(
                     api_key=config.api_key, base_url=config.base_url,
                     timeout=self.timeout, max_retries=0,
                 )
             async with asyncio.timeout(self.timeout):
-                if config.wire == "responses":
+                if wire == "responses":
                     response = await self._client.responses.create(
                         model=self.model, instructions=instructions,
                         input=str(run_input), max_output_tokens=output_limit, store=False,
@@ -247,11 +268,20 @@ class MeteredTransport:
                         input_tokens, output_tokens = usage.input_tokens, usage.output_tokens
                         total_tokens = usage.total_tokens
                 else:
+                    extra_body = None
+                    if self.model.lower().startswith("qwen"):
+                        # Qwen chat models otherwise spend most of the request
+                        # budget in an invisible reasoning trace.  NPC Director
+                        # already performs explicit bounded planning, so that
+                        # second reasoning loop only adds latency and routinely
+                        # times out the performance pass.
+                        extra_body = {"enable_thinking": False}
                     response = await self._client.chat.completions.create(
                         model=self.model,
                         messages=[{"role": "system", "content": instructions},
                                   {"role": "user", "content": str(run_input)}],
                         max_tokens=output_limit,
+                        extra_body=extra_body,
                     )
                     raw = response.choices[0].message.content or ""
                     usage = response.usage
@@ -259,7 +289,7 @@ class MeteredTransport:
                         input_tokens, output_tokens = usage.prompt_tokens, usage.completion_tokens
                         total_tokens = usage.total_tokens
             self.last_diagnostic = {
-                "node": output_type.__name__, "wire": config.wire, "output_characters": len(raw),
+                "node": output_type.__name__, "wire": wire, "output_characters": len(raw),
                 "status": str(getattr(response, "status", "")),
                 "incomplete_reason": str(getattr(getattr(response, "incomplete_details", None), "reason", "")),
                 "output_excerpt": raw[:600],
@@ -294,7 +324,7 @@ GROUNDING_INSTRUCTIONS = """你是列车游戏的语义接入器，处理 NPC Di
 未取得另一NPC同意的任务仍只是建议。没有可执行提案时 steps 留空。
 decisions 只描述本次当前角色台词明确作出的社会行为，每项 evidence_quote 必须逐字摘自台词。
 同意谈一谈不是接受任务，愿意借用不是已转交，承诺不是已完成，询问他人不是已得到同意。
-share_fact 仅限本人的 known_facts ID，且该条台词实际披露的事实；audience只能是实际受众。
+share_fact 仅限本人的 known_facts ID，且该条台词实际披露的事实。不要推断接收者；省略audience，由运行时使用本句对白登记的真实受众。
 accept_task 是当前NPC亲自接受的 action_ids，条件保留；不得接受其他NPC的任务。
 role=actor表示本人主执行且必须在actor_ids中；明确只协助时role=helper，仅限carry/repair/rescue/care/protect/inspect类，仍须附台词原文。
 loan仅许宁可同意：purpose=radio，明确recipient_id、deadline_tick和reserve；缺条件则不提交。
@@ -302,6 +332,7 @@ child_delegation仅周屿可同意，明确rescuer_id/checkpoint_tick；当前�
 withdraw_loan仅许宁，revoke_task只撤回本人未完成任务；不会自动归还物品或恢复已消耗电量。
 台词只提出条件/询问而未同意，不得输出同意类decision。不得依据语气或好感猜测同意。
 输出TrainMeaning JSON；不要发明对象、事实、能力、天气、医学结论或事故真相。
+若有objective_steps，为每个步骤填写objective_actions的step_id与action_id。action_id只能使用allowed_objective_actions中的程序ID。口头接受、说明、提议或协商步骤使用dialogue；实际取物或检修步骤使用与steps一致的动作ID，绝不能把中文描述填进action_id。不得增加或删除objective_steps。
 """
 
 
@@ -330,6 +361,7 @@ class _TrainExecutor:
                 "列车救援是已登记的last_light_rescue父目标，复用它记录既有救援步骤与分支，不另造同义支线。"
                 "接受任务时明确自己愿承担什么；借电或委托时讲明具体保障和期限。"
                 "不要讲开发术语、ID、token或版本号。不得替其他角色承诺。"
+                "以上限制针对玩家台词；结构化计划steps.action必须使用已注册程序ID，中文说明写在description。"
             ),
         }})
         result = await self.inner.generate(source, repair_feedback=repair_feedback)
@@ -342,6 +374,8 @@ class _TrainExecutor:
             "npc_id": source.npc_id, "player_input": source.player_input,
             "spoken_text": text, "context": context,
             "audience": bridge._audience_for(job, source.npc_id),
+            "objective_steps": [step.model_dump(mode="json") for step in result.objective_steps],
+            "allowed_objective_actions": ["dialogue", *[a["id"] for a in full_context.get("legal_actions", [])]],
             "analysis": result.execution_trace.analysis.model_dump(mode="json")
             if result.execution_trace and result.execution_trace.analysis else {},
         }
@@ -353,6 +387,8 @@ class _TrainExecutor:
         grounded = await bridge._grounding_call(source, agent, payload)
         bridge._assert_current(job)
         meaning = bridge._validate_meaning(grounded.output, source.npc_id, text, full_context, job)
+        result = bridge._bind_objective_actions(result, meaning, full_context)
+        bridge._preflight_objective_plan(source, result)
         bridge._store_grounding(self.sid, source.turn_id, meaning, context)
         return result
 
@@ -409,7 +445,14 @@ class DirectorBridge:
             self.data_dir / "usage.sqlite",
             token_budget if token_budget is not None else int(os.getenv("LAST_LIGHT_TOKEN_BUDGET", "1000000")),
         )
-        self.transport = typed_runner or MeteredTransport(self.model, self.ledger)
+        # Qwen's structured performance pass is materially slower than its
+        # dialogue pass on the ideaLAB gateway.  A 45s transport timeout caused
+        # otherwise valid turns to fail after the dialogue had already been
+        # generated.  Keep the shorter default for other models and allow an
+        # explicit deployment override.
+        default_timeout = 90 if self.model.lower().startswith("qwen") else 45
+        model_timeout = float(os.getenv("LAST_LIGHT_MODEL_TIMEOUT", str(default_timeout)))
+        self.transport = typed_runner or MeteredTransport(self.model, self.ledger, timeout=model_timeout)
         self._test_transport = typed_runner is not None
         self._services: dict[str, Any] = {}
         self._tasks: dict[str, asyncio.Task] = {}
@@ -467,7 +510,7 @@ class DirectorBridge:
             performance_model=self.model, judge_model=self.model, fallback_model=None,
             orchestration_mode="bounded", model_profile="idealab_qwen",
             database_path=self._db_path(sid), character_path=DATA / "characters",
-            lore_path=DATA / "lore", timeout_seconds=45, model_retry_attempts=1,
+            lore_path=DATA / "lore", timeout_seconds=getattr(self.transport, "timeout", 45), model_retry_attempts=1,
             max_output_tokens=2048, max_model_calls=32, max_total_tokens=96_000,
             max_repair_attempts=1, max_node_repairs=1, max_autonomous_turns=6,
             max_episode_participants=4, max_new_quests=1, planning_timeout_seconds=180,
@@ -945,7 +988,7 @@ class DirectorBridge:
         return ["player", *[npc for npc in job["_audience"] if npc != speaker]]
 
     def _validate_meaning(self, meaning, npc, text, context, job):
-        meaning = TrainMeaning.model_validate(meaning)
+        meaning = TrainMeaning.model_validate(meaning).model_copy(deep=True)
         actions = {a["id"]: a for a in context.get("legal_actions", [])}
         known = {f["id"] for f in context.get("known_facts", [])}
         actors = {"player", npc, *self._witnesses(context)}
@@ -962,8 +1005,12 @@ class DirectorBridge:
             if decision.evidence_quote not in text:
                 raise ValueError("social decision is not grounded in this delivered line")
             if decision.kind == "share_fact":
-                if set(decision.fact_ids) - known or set(decision.audience) - set(self._audience_for(job, npc)):
-                    raise ValueError("unknown fact or absent audience")
+                if set(decision.fact_ids) - known:
+                    raise ValueError("unknown fact")
+                # The fact is spoken in this very line, so its recipients must
+                # match the line's delivery envelope. Model-generated recipients
+                # cannot add bystanders or remotely reveal private information.
+                decision.audience = list(dict.fromkeys(self._audience_for(job, npc)))
             if decision.kind in {"accept_task", "revoke_task"}:
                 for action_id in decision.action_ids:
                     action = actions.get(action_id)
@@ -985,6 +1032,49 @@ class DirectorBridge:
                                 "basis_revision": self.engine_lookup(sid).view()["revision"],
                                 "npc_id": context["npc_id"]}),
             ))
+
+    @staticmethod
+    def _bind_objective_actions(result, meaning, context):
+        """Compile action references before the client can see this line."""
+        allowed = {"dialogue", *[a["id"] for a in context.get("legal_actions", [])]}
+        bindings = {b.step_id: b.action_id for b in meaning.objective_actions}
+        ids = {s.step_id for s in result.objective_steps}
+        if len(bindings) != len(meaning.objective_actions) or set(bindings) - ids:
+            raise DirectorUnavailable("计划动作绑定重复或指向不存在的步骤；本句尚未送达")
+        physical = {s.action_id for s in meaning.steps}
+        compiled = []
+        for step in result.objective_steps:
+            action = bindings.get(step.step_id, step.action)
+            if action and action not in allowed:
+                raise DirectorUnavailable("计划尚未绑定有效的动作ID；本句尚未送达")
+            if step.step_id in bindings and action != "dialogue" and action not in physical:
+                raise DirectorUnavailable("计划动作缺少对应的游戏行动建议；本句尚未送达")
+            compiled.append(step.model_copy(update={"action": action}))
+        return result.model_copy(update={"objective_steps": compiled})
+
+    def _preflight_objective_plan(self, source, result):
+        """Run the real publication validator on a disposable database copy."""
+        if not result.objective_steps and not result.objective_events:
+            return
+        import sqlite3
+        service = self._service(source.session_id)
+        policy = service.episodes.content_policy(source, source)
+        with _connect(self._db_path(source.session_id)) as original:
+            clone = sqlite3.connect(":memory:")
+            try:
+                original.backup(clone)
+                clone.row_factory = sqlite3.Row
+                clone.execute("BEGIN")
+                service.episodes.content_store.save_objective_plan_in_connection(
+                    clone, source.session_id, source.npc_id, source.turn_id,
+                    "preflight:" + source.turn_id,
+                    steps=result.objective_steps, events=result.objective_events,
+                    current_objective_refs=policy.objective_refs,
+                    allowed_actions=policy.allowed_actions,
+                )
+            finally:
+                clone.rollback()
+                clone.close()
 
     def _grounding(self, sid, turn_id):
         with _connect(self._db_path(sid)) as db:
@@ -1115,6 +1205,7 @@ class DirectorBridge:
             self._commit_rehearsal(job, line_id)
             return
         token = JOB_CONTEXT.set((job["_sid"], job["id"]))
+        director_committed = False
         try:
             from npc_director.contracts import EngineEvent
             sid = job["_sid"]
@@ -1132,31 +1223,6 @@ class DirectorBridge:
             service.episodes.attach_adapter(_Adapter(self, sid), session_id=sid)
             line = next(line for line in job["lines"] if line["id"] == line_id)
             grounding = self._grounding(sid, delivery["turn_id"])
-            rejected = []
-            if grounding is not None and delivery["state"] != "world_applied":
-                meaning = TrainMeaning.model_validate(grounding["meaning"])
-                for index, decision in enumerate(meaning.decisions):
-                    result = engine.apply_decision(line["npc_id"], decision.world_payload(f"{line_id}:{index}"))
-                    if not result.get("ok"):
-                        rejected.append(str(result.get("error", "条件尚未满足")))
-                if meaning.steps:
-                    job["suggested_title"] = meaning.title or "协商中的救援方案"
-                    job["suggested_steps"] = [
-                        {**step.model_dump(), "status": "proposed", "reason": "待规则确认", "duration": 0}
-                        for step in meaning.steps
-                    ]
-            if hasattr(engine, "record_dialogue") and delivery["state"] != "world_applied":
-                engine.record_dialogue(
-                    line["npc_id"], line["text"], line_id,
-                    source=self.source, emotion=line["emotion"],
-                    audience=self._audience_for(job, line["npc_id"]),
-                )
-            job["_basis_revision"] = engine.view()["revision"]
-            self.persist(sid)
-            if rejected:
-                job["error"] = "部分协商条件尚未成立：" + "；".join(rejected)
-            delivery["state"] = "world_applied"
-            self._save_job(job)
             if delivery.get("playback", {}).get("legacy", True):
                 for event_type in ("ack", "started"):
                     await service.process_engine_event(EngineEvent(
@@ -1179,6 +1245,40 @@ class DirectorBridge:
             finally:
                 turn = await service.turn_store.aget(delivery["turn_id"])
                 if turn is not None and turn.status.value == "completed":
+                    director_committed = True
+                    world_before = deepcopy(engine.__dict__)
+                    basis_before = job["_basis_revision"]
+                    try:
+                        rejected = []
+                        if grounding is not None and delivery["state"] != "world_applied":
+                            meaning = TrainMeaning.model_validate(grounding["meaning"])
+                            for index, decision in enumerate(meaning.decisions):
+                                result = engine.apply_decision(line["npc_id"], decision.world_payload(f"{line_id}:{index}"))
+                                if not result.get("ok"):
+                                    rejected.append(str(result.get("error", "条件尚未满足")))
+                            if meaning.steps:
+                                job["suggested_title"] = meaning.title or "协商中的救援方案"
+                                job["suggested_steps"] = [
+                                    {**step.model_dump(), "status": "proposed", "reason": "待规则确认", "duration": 0}
+                                    for step in meaning.steps
+                                ]
+                        if hasattr(engine, "record_dialogue") and delivery["state"] != "world_applied":
+                            engine.record_dialogue(
+                                line["npc_id"], line["text"], line_id,
+                                source=self.source, emotion=line["emotion"],
+                                audience=self._audience_for(job, line["npc_id"]),
+                            )
+                        job["_basis_revision"] = engine.view()["revision"]
+                        self.persist(sid)
+                    except Exception:
+                        engine.__dict__.clear()
+                        engine.__dict__.update(world_before)
+                        job["_basis_revision"] = basis_before
+                        raise
+                    if rejected:
+                        job["error"] = "部分协商条件尚未成立：" + "；".join(rejected)
+                    delivery["state"] = "world_applied"
+                    self._save_job(job)
                     self._record_published_documents(sid, delivery["turn_id"], line["npc_id"])
                     job["_basis_revision"] = engine.view()["revision"]
                     self.persist(sid)
@@ -1189,7 +1289,14 @@ class DirectorBridge:
         except asyncio.CancelledError:
             raise
         except Exception as error:
-            self._fail(job, error)
+            if director_committed:
+                # The Director transaction is durable; keep delivery retryable.
+                # Social decision IDs and dialogue IDs prevent duplicate effects.
+                job["status"] = "waiting_delivery"
+                job["error"] = "对白已确认，游戏进度保存尚未完成，请再次确认以重试。"
+                self._save_job(job)
+            else:
+                self._fail(job, error)
         finally:
             JOB_CONTEXT.reset(token)
 

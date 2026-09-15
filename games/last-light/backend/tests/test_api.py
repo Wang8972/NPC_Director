@@ -56,6 +56,35 @@ def test_unity_shared_step_dto_is_accepted_but_duration_cannot_cheat(client):
     assert duplicate["ok"] and duplicate["view"]["tick"] == 1
 
 
+@pytest.mark.parametrize("legacy_plan_id", [None, ""])
+def test_cancel_recovers_active_plan_when_legacy_unity_omits_plan_id(client, legacy_plan_id):
+    sid, view = make_session(client)
+    proposed = client.post(f"/sessions/{sid}/plan", json={"expected_revision": view["revision"],
+        "title": "整理过道", "steps": [{"id": "s1", "action_id": "clear_aisle",
+        "actor_id": "player", "target_id": "aisle07"}]}).json()
+    plan = proposed["view"]["plans"][-1]
+    begun = client.post(f"/sessions/{sid}/begin", json={"expected_revision": proposed["view"]["revision"],
+        "plan_id": plan["id"]}).json()
+    response = client.post(f"/sessions/{sid}/cancel", json={"expected_revision": begun["view"]["revision"],
+        "plan_id": legacy_plan_id})
+    assert response.status_code == 200, response.text
+    result = response.json()
+    assert result["ok"]
+    assert result["view"]["execution"] is None
+    assert next(p for p in result["view"]["plans"] if p["id"] == plan["id"])["status"] == "cancelled"
+
+
+def test_cancel_recovers_only_waiting_plan_when_legacy_unity_omits_plan_id(client):
+    sid, view = make_session(client)
+    proposed = client.post(f"/sessions/{sid}/plan", json={"expected_revision": view["revision"],
+        "title": "尚未开始", "steps": [{"id": "s1", "action_id": "clear_aisle",
+        "actor_id": "player", "target_id": "aisle07"}]}).json()
+    plan = proposed["view"]["plans"][-1]
+    response = client.post(f"/sessions/{sid}/cancel", json={"expected_revision": proposed["view"]["revision"]})
+    assert response.status_code == 200, response.text
+    assert next(p for p in response.json()["view"]["plans"] if p["id"] == plan["id"])["status"] == "cancelled"
+
+
 def test_stale_commands_rejected_without_cost(client):
     sid, before = make_session(client)
     moved = client.post(f"/sessions/{sid}/move", json={"expected_revision": before["revision"], "room_id": "cabin06"}).json()

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 namespace LastLight
@@ -165,6 +166,21 @@ namespace LastLight
         {
             if(executionCommitted){SkipExecutionAnimation();SetStatus("这一批结果已经确认，已略过剩余演出。",8);return;}
             if (busy || completing || view == null) return;
+            // Compatibility with saves/views produced before execution.plan_id
+            // was included: recover the only cancellable plan instead of
+            // serializing a null plan_id (which FastAPI correctly rejects).
+            if (string.IsNullOrEmpty(id) && view.execution != null)
+            {
+                var executing = (view.plans ?? Array.Empty<PlanView>()).FirstOrDefault(plan => plan.status == "executing");
+                if (executing != null) id = executing.id;
+            }
+            if (string.IsNullOrEmpty(id))
+            {
+                var candidates = (view.plans ?? Array.Empty<PlanView>()).Where(plan =>
+                    plan.status != "completed" && plan.status != "cancelled" && plan.status != "failed").ToArray();
+                if (candidates.Length == 1) id = candidates[0].id;
+            }
+            if (string.IsNullOrEmpty(id)) { ShowError("无法确定要取消的计划，请刷新当前进度后重试。"); return; }
             if (executionRoutine != null) StopCoroutine(executionRoutine);
             world.SkipAnimation(); executionRoutine = null; animating = false; currentExecutionId = "";
             Mutate("cancel", new PlanIdRequest { plan_id = id, expected_revision = view.revision }, response =>

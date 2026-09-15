@@ -11,6 +11,7 @@ New-Item -ItemType Directory -Force artifacts,Builds/Windows,runtime | Out-Null
 if ($LASTEXITCODE -ne 0) { throw "Offline tests failed; no release produced." }
 & $GamePython -m PyInstaller --noconfirm --clean --onefile --name last-light-server `
     --paths backend --collect-all last_light --collect-all npc_director --collect-all agents `
+    --add-data "$ProjectRoot/backend/last_light/director_data:last_light/director_data" `
     --collect-all tiktoken --collect-all tiktoken_ext --hidden-import uvicorn.logging `
     --hidden-import uvicorn.loops.auto --hidden-import uvicorn.protocols.http.auto `
     --hidden-import uvicorn.protocols.websockets.auto --hidden-import uvicorn.lifespan.on `

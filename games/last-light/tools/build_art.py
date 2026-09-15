@@ -60,7 +60,8 @@ class Mesh:
         self.add(v,f,mat,bone,tag)
     def limb(self,a,b,r1,r2,mat,bone,tag=''):
         a,b=Vector(a),Vector(b);direction=(b-a).normalized()
-        u=direction.cross(Vector((0,1,0))).normalized();v=direction.cross(u)
+        reference=Vector((0,1,0)) if abs(direction.y)<.9 else Vector((1,0,0))
+        u=direction.cross(reference).normalized();v=direction.cross(u)
         verts=[];faces=[];sides=10
         for t,r in ((0,r1),(.18,r1),(.82,r2),(1,r2)):
             for i in range(sides):

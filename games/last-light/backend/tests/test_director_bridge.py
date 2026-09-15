@@ -60,8 +60,9 @@ class WorldDouble:
 
 class RecordedNodes:
     """Scripted transport, never exposed as live AI or a quality evaluation."""
-    def __init__(self, *, cooperate=False, meaning=None):
+    def __init__(self, *, cooperate=False, meaning=None, dialogue_texts=None):
         self.cooperate, self.meaning = cooperate, meaning or {}
+        self.dialogue_texts = dialogue_texts or {}
         self.inputs, self.calls, self.sources = [], [], {}
         self.started, self.release = asyncio.Event(), asyncio.Event()
         self.block = False
@@ -94,7 +95,7 @@ class RecordedNodes:
                         "chen": "我愿意隔离辅助支路，之后仍要验证。",
                         "zhou": "我女儿还在05，我得去接她。",
                         "xu": "借用前我们先说清用途和归还时间。"}[npc]
-            output = DialogueDraft(dialogue={"text": dialogue}, coarse_emotion="neutral", primary_emotion="calm")
+            output = DialogueDraft(dialogue={"text": self.dialogue_texts.get(npc, dialogue)}, coarse_emotion="neutral", primary_emotion="calm")
         elif output_type is PerformanceOutput:
             output = PerformanceOutput(performance={
                 "dialogue": payload["dialogue"], "emotion": {"coarse": "neutral", "primary": "calm"},
@@ -152,6 +153,30 @@ async def test_actual_v2_delivery_and_social_commit_are_idempotent(tmp_path):
     assert complete["suggested_steps"][0]["action_id"] == "count_passengers"
     store = bridge._service(world.sid).episodes.store
     assert store.get_context(world.sid, "lin")["dialogue_events"][-1]["speaker_id"] == "lin"
+    await bridge.close()
+
+
+@pytest.mark.asyncio
+async def test_recorded_value_error_turn_reaches_delivery_without_leaking_to_bystanders(tmp_path):
+    from last_light.engine import WorldEngine
+    fixture = json.loads((Path(__file__).parent / "fixtures/recorded_audience_value_error.json").read_text())
+    world = WorldDouble()
+    world.facts["lin"] = WorldEngine(session_id="fixture").npc_context("lin")["known_facts"]
+    nodes = RecordedNodes(meaning={"lin": fixture["meaning"]}, dialogue_texts={"lin": fixture["text"]})
+    bridge, world, _ = make_bridge(tmp_path, nodes, world)
+    job = await bridge.start(world.sid, "lin", "请问发生了什么事情", ["lin", "zhou"])
+    ready = await poll(bridge, world.sid, job["id"])
+    assert ready["status"] == "waiting_delivery", ready
+    assert ready["lines"][0]["text"] == fixture["text"]
+    assert not world.applied
+    line = ready["lines"][0]["id"]
+    await bridge.acknowledge(world.sid, job["id"], line)
+    complete = await poll(bridge, world.sid, job["id"])
+    assert complete["status"] == "completed", complete
+    await bridge.acknowledge(world.sid, job["id"], line)
+    assert len(world.applied) == 2
+    assert all(decision["audience"] == ["player", "zhou"] for _, decision in world.applied)
+    assert len(world.lines) == 1 and world.tick == 0
     await bridge.close()
 
 
@@ -266,6 +291,120 @@ def test_grounding_rejects_illegal_actions_private_facts_and_forged_consent(tmp_
     with pytest.raises(ValueError, match="another actor"):
         bridge._validate_meaning(TrainMeaning(decisions=[{"kind": "accept_task", "action_ids": ["isolate_aux"],
             "evidence_quote": "我可以"}]), "lin", "我可以", context, job)
+
+
+@pytest.mark.parametrize("model_audience", [[], ["player", "zhou", "passenger07"], ["chen", "xu"], ["invented"]])
+def test_spoken_fact_recipients_are_owned_by_delivery_envelope(tmp_path, model_audience):
+    bridge, world, _ = make_bridge(tmp_path)
+    job = bridge._new_job(world.sid, "lin", "发生了什么？", ["lin", "zhou"])
+    original = TrainMeaning(decisions=[{"kind": "share_fact", "fact_ids": ["traffic_unknown"],
+        "audience": model_audience, "evidence_quote": "邻线状态未确认。"}])
+    validated = bridge._validate_meaning(original, "lin", "邻线状态未确认。", world.npc_context("lin"), job)
+    assert validated.decisions[0].audience == ["player", "zhou"]
+    assert original.decisions[0].audience == model_audience
+    assert not world.applied  # validation never commits facts before delivery
+
+
+def test_private_line_never_inherits_visible_bystanders(tmp_path):
+    bridge, world, _ = make_bridge(tmp_path)
+    job = bridge._new_job(world.sid, "lin", "请只告诉我", ["lin"])
+    validated = bridge._validate_meaning({"decisions": [{"kind": "share_fact",
+        "fact_ids": ["traffic_unknown"], "audience": ["zhou", "chen"],
+        "evidence_quote": "邻线状态未确认。"}]}, "lin", "邻线状态未确认。", world.npc_context("lin"), job)
+    assert validated.decisions[0].audience == ["player"]
+
+
+def test_recorded_prose_action_requires_explicit_validated_binding():
+    from pydantic import BaseModel
+    from npc_director.contracts.content import ObjectiveStep
+    from last_light.director import DirectorUnavailable
+    class PlanResult(BaseModel):
+        objective_steps: list[ObjectiveStep]
+    fixture = json.loads((Path(__file__).parent / "fixtures/recorded_objective_plan_error.json").read_text())
+    original = PlanResult(objective_steps=fixture["steps"])
+    context = {"legal_actions": [{"id": "collect_lamp"}]}
+    with pytest.raises(DirectorUnavailable, match="动作ID"):
+        DirectorBridge._bind_objective_actions(original, TrainMeaning(), context)
+    meaning = TrainMeaning(objective_actions=[{"step_id": s.step_id, "action_id": "dialogue"} for s in original.objective_steps])
+    result = DirectorBridge._bind_objective_actions(original, meaning, context)
+    assert all(s.action == "dialogue" for s in result.objective_steps)
+    assert original.objective_steps[0].action == "从工具架领取应急手电"
+    assert [s.description for s in result.objective_steps] == [s.description for s in original.objective_steps]
+    meaning.objective_actions[0].action_id = "collect_lamp"
+    with pytest.raises(DirectorUnavailable, match="缺少对应"):
+        DirectorBridge._bind_objective_actions(original, meaning, context)
+
+
+@pytest.mark.asyncio
+async def test_director_completion_failure_does_not_commit_world(tmp_path, monkeypatch):
+    from npc_director.governance.content_review import ContentReviewError
+    nodes = RecordedNodes(meaning={"lin": {"decisions": [{"kind": "accept_task",
+        "action_ids": ["count_passengers"], "evidence_quote": "我愿意负责清点"}]}})
+    bridge, world, _ = make_bridge(tmp_path, nodes)
+    job = await bridge.start(world.sid, "lin", "帮我清点", ["lin"])
+    ready = await poll(bridge, world.sid, job["id"])
+    service = bridge._service(world.sid)
+    original = service._process_engine_event
+    async def fail_completion(event):
+        if event.event_type == "completed":
+            raise ContentReviewError("objective plan requires an unregistered action")
+        return await original(event)
+    monkeypatch.setattr(service, "_process_engine_event", fail_completion)
+    with pytest.raises(ValueError):
+        await bridge.acknowledge(world.sid, job["id"], ready["lines"][0]["id"])
+    assert not world.applied and not world.lines and world.revision == 0
+    await bridge.close()
+
+
+@pytest.mark.asyncio
+async def test_recorded_narrative_plan_is_validated_before_playback_and_commits(tmp_path):
+    from npc_director.orchestration.bounded_executor import TypedModelCall
+    fixture = json.loads((Path(__file__).parent / "fixtures/recorded_objective_plan_error.json").read_text())
+    class NarrativeRecording(RecordedNodes):
+        async def __call__(self, agent, raw, output_type):
+            if output_type.__name__ == "NarrativePlan":
+                return TypedModelCall(output=output_type.model_validate({
+                    "objective": "记录口头分工", "steps": fixture["steps"],
+                    "beats": [{"order": 1, "description": "说明自己愿意承担的任务"}],
+                    "scope_decision": {"scope": "step", "parent_objective": fixture["steps"][0]["objective"],
+                        "reason": "已有救援目标内的协商步骤"}}))
+            call = await super().__call__(agent, raw, output_type)
+            if output_type.__name__ == "TurnAnalysis":
+                call.output.needs_narrative = True
+            return call
+    bindings = [{"step_id": step["step_id"], "action_id": "dialogue"} for step in fixture["steps"]]
+    bridge, world, _ = make_bridge(tmp_path, NarrativeRecording(meaning={"lin": {"objective_actions": bindings}}))
+    job = await bridge.start(world.sid, "lin", "安排一下任务", ["lin"])
+    ready = await poll(bridge, world.sid, job["id"])
+    assert ready["status"] == "waiting_delivery", ready
+    await bridge.acknowledge(world.sid, job["id"], ready["lines"][0]["id"])
+    complete = await poll(bridge, world.sid, job["id"])
+    assert complete["status"] == "completed", complete
+    await bridge.close()
+
+
+@pytest.mark.asyncio
+async def test_world_save_failure_after_director_commit_is_retryable(tmp_path):
+    nodes = RecordedNodes(meaning={"lin": {"decisions": [{"kind": "accept_task",
+        "action_ids": ["count_passengers"], "evidence_quote": "我愿意负责清点"}]}})
+    bridge, world, _ = make_bridge(tmp_path, nodes)
+    job = await bridge.start(world.sid, "lin", "帮我清点", ["lin"])
+    ready = await poll(bridge, world.sid, job["id"])
+    line = ready["lines"][0]["id"]
+    def fail_save(sid):
+        raise OSError("injected atomic save failure")
+    bridge.persist = fail_save
+    with pytest.raises(ValueError):
+        await bridge.acknowledge(world.sid, job["id"], line)
+    assert not world.applied and not world.lines and world.revision == 0
+    assert bridge.get_job(world.sid, job["id"])["status"] == "waiting_delivery"
+    bridge.persist = lambda sid: None
+    await bridge.acknowledge(world.sid, job["id"], line)
+    complete = await poll(bridge, world.sid, job["id"])
+    assert complete["status"] == "completed", complete
+    await bridge.acknowledge(world.sid, job["id"], line)
+    assert len(world.applied) == len(world.lines) == 1
+    await bridge.close()
 
 
 @pytest.mark.asyncio

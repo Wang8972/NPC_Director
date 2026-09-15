@@ -1,0 +1,30 @@
+#!/bin/bash
+set -euo pipefail
+
+# Python HTTP clients normally ship Mozilla's CA bundle.  On managed Macs the
+# ideaLAB gateway is signed by a certificate installed in the system trust
+# bundle, so use that bundle unless the launcher environment already selected
+# one explicitly.
+if [[ -f "${LAST_LIGHT_CA_BUNDLE:-/etc/ssl/cert.pem}" ]]; then
+    export SSL_CERT_FILE="${LAST_LIGHT_CA_BUNDLE:-/etc/ssl/cert.pem}"
+fi
+
+server_dir="$(cd "$(dirname "$0")" && pwd)"
+config_file="$HOME/Library/Application Support/LastLight/余灯 · Last Light/.env"
+
+if [[ -f "$config_file" ]]; then
+    while IFS='=' read -r key value; do
+        key="$(printf '%s' "$key" | tr -d '[:space:]')"
+        [[ -z "$key" || "$key" == \#* ]] && continue
+        case "$key" in
+            LAST_LIGHT_*|NPC_DIRECTOR_*|OPENAI_*) ;;
+            *) continue ;;
+        esac
+        value="${value%$'\r'}"
+        if [[ "$value" == \"*\" && "$value" == *\" ]]; then value="${value:1:${#value}-2}"; fi
+        if [[ "$value" == \'*\' && "$value" == *\' ]]; then value="${value:1:${#value}-2}"; fi
+        export "$key=$value"
+    done < "$config_file"
+fi
+
+exec "$server_dir/last-light-server-bin" "$@"
