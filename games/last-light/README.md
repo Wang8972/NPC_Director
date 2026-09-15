@@ -93,11 +93,11 @@ Builds/Windows/
 
 作用：确认游戏和内置后端都已产出。分发时保留整个 `Builds/Windows` 文件夹，不能只复制 EXE。失败日志位于 `artifacts/unity-import.log` 和 `artifacts/unity-build.log`。
 
-## 4. 配置 qwen3.8-max
+## 4. 配置模型服务
 
 在 **完整工作区根目录**编辑 `.env`，例如 `D:\P4Workspaces\LastLight\.env`。本教程先显式启动后端，让配置来源清晰可见。
 
-使用自己的模型服务时：
+使用自己的模型服务时，下面以 `qwen3.8-max` 为例；请按服务实际支持的模型名称、接口协议和地址填写：
 
 ```dotenv
 LAST_LIGHT_MODEL=qwen3.8-max
@@ -143,7 +143,7 @@ Invoke-RestMethod http://127.0.0.1:8766/health
 Start-Process D:\P4Workspaces\LastLight\Builds\Windows\LastLight.exe
 ```
 
-作用：先确认本机服务可连接，再启动游戏。健康信息应包含 `app_id: last-light`、`director_ready: true`、`director.model: qwen3.8-max`。**健康检查只确认配置可用，不会实际请求模型。**
+作用：先确认本机服务可连接，再启动游戏。健康信息应包含 `app_id: last-light`、`director_ready: true`，且 `director.model` 应与你配置的模型名称一致。**健康检查只确认配置可用，不会实际请求模型。**
 
 在游戏中选择“开始新的旅程”，或进入“存档”选择已有会话。看完或跳过开场后，点击 NPC 走近，输入问题，再点“交谈”。正文显示完后点击“继续”确认送达。行动建议还需在“计划”中确认，NPC 说“我去拿”不等于物品已经交付。
 
